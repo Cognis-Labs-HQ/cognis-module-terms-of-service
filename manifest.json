@@ -1,0 +1,239 @@
+{
+    "id": "module-template",
+    "uuid": "cc810afb-4fe6-5ef7-8f0b-e23676e01db3",
+    "name": "module.module_template.name",
+    "version": "1.0.6",
+    "class": "extension",
+    "template": "true",
+    "coreApiVersion": "v1",
+    "capabilities": ["showcase:listItems"],
+    "entrypoints": {
+        "bootstrap": "./bootstrap.js",
+        "api": "./api/index.js",
+        "ui": "./ui/index.html",
+        "cli": "./cli/index.js"
+    },
+    "ui": { "stringsBaseUrl": "/static/modules/module-template/languages" },
+    "publisher": "Cognis Labs HQ",
+    "requires": [],
+    "requiresCapabilities": ["auth:requireAuth", "db:executor"],
+    "summary": "module.module_template.summary",
+    "description": "module.module_template.description",
+    "categories": ["module.module_template.category_developer_tools"],
+    "license": "AGPL-3.0-or-later",
+    "repository": "https://github.com/Cognis-Labs-HQ/cognis-module-template",
+    "homepage": "https://github.com/Cognis-Labs-HQ/cognis-module-template#readme",
+    "support": "https://github.com/Cognis-Labs-HQ/cognis-module-template/issues",
+    "assets": {
+        "screenshots": ["assets/screenshots/cognis-logo.png"],
+        "icon": "assets/icon.svg",
+        "banner": "assets/banner.svg"
+    },
+    "tags": [
+        "module.module_template.tag_template",
+        "module.module_template.tag_development",
+        "module.module_template.tag_example"
+    ],
+    "files": [
+        {
+            "path": ".github/DOCUMENTATION_TEMPLATE.de.md",
+            "sha256": "68da4be565d7fcd6caf74a6eeddd62ee35620063f4fb3c42128c23e98e4c7313"
+        },
+        {
+            "path": ".github/DOCUMENTATION_TEMPLATE.en.md",
+            "sha256": "0430dc1ef9233808219652e78e6079d3b6cf455f04818487e00fd7aa217a07fa"
+        },
+        {
+            "path": ".github/DOCUMENTATION_TEMPLATE.id.md",
+            "sha256": "a701f0f05180972949e4ac159e3d65656fc66b8d07aa72b3832aa312d711cd24"
+        },
+        {
+            "path": ".github/DOCUMENTATION_TEMPLATE.ja.md",
+            "sha256": "8fafead6e01dbab777528e72d1ce924ff3d8e0bd250d21a0a29116fe1ef7ed44"
+        },
+        {
+            "path": ".github/copilot-instructions.md",
+            "sha256": "bf1c027e32aa81dfdbfe5f1da0241f0aeb2743f39470b4aa4f8faae6d5889f41"
+        },
+        {
+            "path": ".gitignore",
+            "sha256": "16d30e4462189fb14dd611bdb708c510630c576a1f35b9383e89a4352da36c97"
+        },
+        {
+            "path": ".prettierignore",
+            "sha256": "ebebb0fe677b8152cac2b29c7d7ef39d41527ab1a14b935df9c8f6f6e66ec936"
+        },
+        {
+            "path": ".prettierrc",
+            "sha256": "fa9273146be8edfd6bbddaff9d0654effb7b4cd67c6163b67e971195d796ead3"
+        },
+        {
+            "path": "LICENSE",
+            "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
+        },
+        {
+            "path": "README.de.md",
+            "sha256": "a995310dcf15077302caed3ab7df6f0c5cf663519bd686fcebc2872ac235eda6"
+        },
+        {
+            "path": "README.en.md",
+            "sha256": "2e60a7090e230bf818fe9de2958c26f06a8fca709abc46ce9ee37f7b3e3bdab7"
+        },
+        {
+            "path": "README.id.md",
+            "sha256": "5de38d816faaef0fc48948b7ccbfc5a81c752898b8e0450439dbac793faa9fab"
+        },
+        {
+            "path": "README.ja.md",
+            "sha256": "4c2ab5563690e0d3d644082c941f9f8eda3e40e72ee9715804fc68f7e76a9a86"
+        },
+        {
+            "path": "api/index.js",
+            "sha256": "8d5d284164317fa3b28ff4e42dc23d88ba0e1f51cc4f511811e50bab655484f8"
+        },
+        {
+            "path": "api/reuse/http.js",
+            "sha256": "6af309497cf411e4d55ae345f75b80d3d4ef2ae76b5353cbc1d8a33d196d6838"
+        },
+        {
+            "path": "api/store.js",
+            "sha256": "0f698375223c2f5e3103f3aed834e403dc787a871d05bcbed6081374f44d19f7"
+        },
+        {
+            "path": "api/tests/bootstrap.test.js",
+            "sha256": "3e306c3f2907b21a2c0abde415041752781dc5a72b99a9685b160615ade8e65d"
+        },
+        {
+            "path": "api/tests/documentation-convention.test.js",
+            "sha256": "191e4d6d5527678beba83ab48f1c77055045d9b28f32d9a1a7a239a390768471"
+        },
+        {
+            "path": "api/tests/http.test.js",
+            "sha256": "1008886fc8722bd499024b815150c7b800e889a5e7d1cd8516339bd609c15054"
+        },
+        {
+            "path": "api/tests/store.test.js",
+            "sha256": "f293219bdb09b14bb17d822cc8cd31efdabd015b7db10733bc4ac349d9c036dc"
+        },
+        {
+            "path": "api/tests/structural-compliance.test.js",
+            "sha256": "f08c46dbd569561a9eaf7ad96ee63861d4d996d62452a181a7bfa96307fd3bd6"
+        },
+        {
+            "path": "api/ui.js",
+            "sha256": "edfaf68ac88c87c73d977b1b97efbdad5722147f36a65e40aa3071f4e15b6a18"
+        },
+        {
+            "path": "assets/banner.svg",
+            "sha256": "157f5636c6c892ac71eb81037ad20bd1005c2778aee3445514762a63ef789dfc"
+        },
+        {
+            "path": "assets/icon.svg",
+            "sha256": "a71eb90ae9528834d16f9fc401d3e98a395da601c149f0c740cb20128ec6c364"
+        },
+        {
+            "path": "assets/screenshots/cognis-logo.png",
+            "sha256": "4ef4d3f734ba671cb380be4c3eac9297ffdb70775a93109257bcd80d0c4dc3e1"
+        },
+        {
+            "path": "bootstrap.js",
+            "sha256": "d2f095f76c688902850bbe9c15745d31a29bbc2d88963d814f971195819f95d8"
+        },
+        {
+            "path": "cli/index.js",
+            "sha256": "70c40a6919f65afe05db81a6c8b53601cd6953eccaaa27be10f96fc7b8659e7e"
+        },
+        {
+            "path": "cli/tests/index.test.js",
+            "sha256": "34d9f94f7d3e526ede5cd5df43a3bf6eed06f5b6ba107a48b02967e4b31d6459"
+        },
+        {
+            "path": "docs/standard.de.md",
+            "sha256": "32f0b8d34beaf0b0eee8f774e5e99831880b68dd773d55bd5f3c8777a09fc886"
+        },
+        {
+            "path": "docs/standard.en.md",
+            "sha256": "56ccf35d3040cd4671d7000c5a5918709521cb7a1d23ede312afbdde72e59107"
+        },
+        {
+            "path": "docs/standard.id.md",
+            "sha256": "578d81aba54b7a91b418d309541cd0eb50f4dad7891329c7064bc47c74c77ea3"
+        },
+        {
+            "path": "docs/standard.ja.md",
+            "sha256": "49720ab2c4cb507b07653e41402a2f0f58a0b4e536439012d8fa27340b481484"
+        },
+        {
+            "path": "package-lock.json",
+            "sha256": "2ec2d12539a6800ee619e5c15a1493c6c2bef44320b3756526752242a348e1aa"
+        },
+        {
+            "path": "package.json",
+            "sha256": "664c24ce9c28ee16d4e43401628987c2b760299202282b8de911a6fddfe74949"
+        },
+        {
+            "path": "routes.json",
+            "sha256": "964f6205c8cd814f2a16c557b133bd989f2f0ab43bb71cbb934f9dee1fea1aea"
+        },
+        {
+            "path": "scripts/update-manifest-hashes.js",
+            "sha256": "97b2cd93f2b872c7ba5d9608960083c9227b4108987e15e1ea7b9a1a1bf08a30"
+        },
+        {
+            "path": "scripts/validate-manifest.js",
+            "sha256": "c1981f7bfb7842fc6536047a52839d2fdd79764dfd3924bf42a81843576272fe"
+        },
+        {
+            "path": "tooling/scripts/lint-placeholder.mjs",
+            "sha256": "c869f4af45abd4f82500f836d5e50af93b9988a56283477ae45bd0aa45f47fd1"
+        },
+        {
+            "path": "tooling/scripts/lint-readable.mjs",
+            "sha256": "fff2e006b2709345baafe18b4147c00541cd3f83d78ff113bb82032f2abcb45f"
+        },
+        {
+            "path": "ui/app.js",
+            "sha256": "37042dc33352c0b9524e86b6295fa558157dd2ecd4c8a6b4835710c8123b43e5"
+        },
+        {
+            "path": "ui/index.html",
+            "sha256": "881f083645dbccac35c89610a7d4a6107efa17ac7daec3527626470212dc62c5"
+        },
+        {
+            "path": "ui/languages/de/strings.xml",
+            "sha256": "95db8ab9a9fa7932eaab51eb12821d2fec184b034b8447e8e03e1ebc00420637"
+        },
+        {
+            "path": "ui/languages/en/strings.xml",
+            "sha256": "2ac99b7c998ba4806946cec9cc1f660176cf4d1239de01f3015f9f09424d781e"
+        },
+        {
+            "path": "ui/languages/id/strings.xml",
+            "sha256": "0de60128ec1be44812ca54512b7e1cb5094e3926489a2af2de42d1fee1b18528"
+        },
+        {
+            "path": "ui/languages/ja/strings.xml",
+            "sha256": "5d28b2043db0d1ed8be12c31a6505f7fe70d93992fd25da69ccd06b82506faaa"
+        },
+        {
+            "path": "ui/navbar.js",
+            "sha256": "5c98315d8b756af9b60e3a3b5ebc9ab882398025d06496b028fb199d0b1cbd69"
+        },
+        {
+            "path": "ui/styles/showcase.css",
+            "sha256": "7f940aa38e4cf24e534654beca18e752646ac3696c084ec5cf03c47beb12bd64"
+        },
+        {
+            "path": "ui/tests/ambiguous-names.test.js",
+            "sha256": "4f490771c3678dcc716b25f4465fb39c9eab476774897cc030c9ec690d2761eb"
+        },
+        {
+            "path": "ui/tests/localization-quality.test.js",
+            "sha256": "4183cebdd4aacbbb61c2b6e6d3acb230198fc253e1911f6d6cfb53cef9c8a820"
+        },
+        {
+            "path": "ui/tests/regression.test.js",
+            "sha256": "112313c3ed5aa4549bbd261ae45e930a7578466f36328c0cce5da00a478c243e"
+        }
+    ]
+}
