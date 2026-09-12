@@ -4,6 +4,8 @@ import test from "node:test";
 
 const source = readFileSync("ui/app.js", "utf8");
 const resources = readFileSync("ui/reuse/resources.js", "utf8");
+const enforcement = readFileSync("ui/consent-enforcement.js", "utf8");
+const registration = readFileSync("ui/registration-consent.js", "utf8");
 
 test("browser code imports the core Markdown renderer through ui:reuse", () => {
     assert.match(resources, /Symbol\.for\("cognis\.uiCtx"\)/);
@@ -11,6 +13,15 @@ test("browser code imports the core Markdown renderer through ui:reuse", () => {
     assert.match(source, /importReuseModule\("markdown-renderer\.js"\)/);
     assert.match(source, /renderMarkdown\(textarea\.value\)/);
     assert.doesNotMatch(source, /host\.reuse|markdownComposer/);
+});
+
+test("consent is enforced during registration and authenticated sessions", () => {
+    assert.match(registration, /createRegistrationField/);
+    assert.match(registration, /completeRegistration/);
+    assert.match(enforcement, /authenticate-session/);
+    assert.match(enforcement, /enforce-setup-requirements/);
+    assert.match(enforcement, /\/api\/v1\/auth\/logout/);
+    assert.match(enforcement, /while \(true\)/);
 });
 
 test("admin contribution follows the Administration sub-composer contract", () => {

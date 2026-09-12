@@ -4,16 +4,14 @@
 
 Adds a **Legal** section to Cognis Administration. Administrators can create and publish Terms of Service, Privacy Policy, and End User License Agreement Markdown documents at `/terms-of-service`, `/privacy-policy`, and `/eula`.
 
-## Cognis core support
+## Required Cognis core support
 
-No additional core change is required for Markdown rendering or Administration registration. The module follows the same contracts as adjacent external modules:
+The existing browser contracts remain sufficient for Markdown rendering, feedback, navigation, and Administration registration. Two supporting core changes are required for consent integration and version persistence:
 
-1. browser code reads `globalThis[Symbol.for("cognis.uiCtx")]`;
-2. it resolves `ui:reuse` through `uiCtx.capabilities.get("ui:reuse")`;
-3. it imports the existing `markdown-renderer.js` with `ui:reuse.importModule()`; and
-4. its `createAdminSection({ i18n, apiFetch })` export supplies the existing Administration sub-composer contract.
+1. **Version-store capability:** expose the append-only storage behind the Docs and Changelog archive as `docs:versionStore`. Its `createStore({ namespace, database, documents })` method must return scoped `ensureSchema()`, `getLatest(slug)`, `publish({ slug, content, actorId })`, and `deleteAll()` operations. `publish` must always append a cryptographically identified immutable version and never update or delete an existing version. This module uses that capability rather than importing Cognis internals.
+2. **Registration UI flow:** add the host-owned `construct-registration-ui` flow with a `compose-form` stage. Load returned integration descriptors on `/register`; for this module, call `createRegistrationField({ i18n })`, block submission when `validateRegistration()` returns an error, and call `completeRegistration({ apiFetch })` after the authenticated account session is established. If completion fails, registration must not navigate into the application.
 
-The Compose and Preview controls are module-owned UI state, while preview and public output use core's existing sanitized `renderMarkdown()` implementation. Toasts and error popups are resolved from their existing `uiCtx` capabilities.
+Existing-account enforcement needs no additional core contract. A lifecycle-scoped navbar plugin extends the existing browser `authenticate-session` flow at `enforce-setup-requirements`; the module uses the existing popup, authenticated fetch, logout, router, and `uiCtx` capability contracts. The Terms and Privacy routes remain public so they can be reviewed before consent.
 
 ## Security and lifecycle
 

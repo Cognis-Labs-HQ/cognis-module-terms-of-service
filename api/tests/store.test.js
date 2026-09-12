@@ -1,48 +1,106 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { DOCUMENTS, LegalDocumentStore } from "../store.js";
+import { LegalDocumentStore } from "../store.js";
 
-test("store uses a module-owned schema and parameterized slug lookup", async () => {
+function versionTracker(latestDocuments = []) {
     const calls = [];
+    return {
+        calls,
+        createStore(options) {
+            calls.push(["create", options]);
+            return {
+                async ensureSchema() {
+                    calls.push(["schema"]);
+                },
+                async getLatest() {
+                    return latestDocuments.shift() ?? null;
+                },
+                async publish(document) {
+                    calls.push(["publish", document]);
+                    return {
+                        slug: document.slug,
+                        version: "immutable-v1",
+                        markdown: document.content,
+                        published_at: "2026-09-12",
+                    };
+                },
+                async deleteAll() {
+                    calls.push(["deleteAll"]);
+                },
+            };
+        },
+    };
+}
+
+test("publishing delegates immutable versions to the core tracker", async () => {
+    const databaseCalls = [];
     const database = {
         async ensureTable(definition) {
-            calls.push(definition);
+            databaseCalls.push(definition);
         },
-        async executeCommand(command) {
-            calls.push(command);
+    };
+    const tracker = versionTracker();
+    const store = new LegalDocumentStore(database, tracker);
+    await store.ensureSchema();
+    const document = await store.publish("eula", "# EULA", "admin-1");
+
+    assert.equal(tracker.calls[0][1].namespace, "terms-of-service");
+    assert.equal(tracker.calls[1][0], "schema");
+    assert.equal(tracker.calls[2][1].actorId, "admin-1");
+    assert.equal(databaseCalls[0].name, "terms_of_service_consents");
+    assert.equal(document.version, "immutable-v1");
+});
+
+test("consent is valid only for both latest document versions", async () => {
+    const tracker = versionTracker([
+        { slug: "terms-of-service", version: "terms-v2", markdown: "terms" },
+        {
+            slug: "privacy-policy",
+            version: "privacy-v3",
+            markdown: "privacy",
+        },
+    ]);
+    const database = {
+        async executeCommand() {
             return {
                 rows: [
                     {
-                        slug: "privacy-policy",
-                        markdown: "# Privacy",
-                        updated_at: "2026-09-08",
+                        terms_version: "terms-v1",
+                        privacy_version: "privacy-v3",
                     },
                 ],
             };
         },
     };
-    const store = new LegalDocumentStore(database);
-    await store.ensureSchema();
-    const document = await store.get("privacy-policy");
-    assert.equal(calls[0].name, "terms_of_service_documents");
-    assert.deepEqual(calls[1].where, [
-        { column: "slug", value: "privacy-policy" },
-    ]);
-    assert.equal(document.path, DOCUMENTS["privacy-policy"]);
+    const status = await new LegalDocumentStore(
+        database,
+        tracker,
+    ).consentStatus("account-1");
+    assert.equal(status.required, true);
+    assert.equal(status.accepted, false);
+    assert.equal(status.termsVersion, "terms-v2");
 });
 
-test("store publishes documents with an upsert", async () => {
-    const commands = [];
+test("recording consent rejects stale versions", async () => {
+    const tracker = versionTracker([
+        { slug: "terms-of-service", version: "terms-current", markdown: "t" },
+        {
+            slug: "privacy-policy",
+            version: "privacy-current",
+            markdown: "p",
+        },
+    ]);
     const database = {
-        async executeCommand(command) {
-            commands.push(command);
-            if (command.option === "SELECT") return { rows: [] };
+        async executeCommand() {
             return { rows: [] };
         },
     };
-    const store = new LegalDocumentStore(database);
-    await store.save("eula", "# EULA", "admin-1");
-    assert.equal(commands[0].option, "UPSERT");
-    assert.equal(commands[0].values.updated_by, "admin-1");
-    assert.deepEqual(commands[0].conflictColumns, ["slug"]);
+    await assert.rejects(
+        new LegalDocumentStore(database, tracker).recordConsent(
+            "account-1",
+            "terms-old",
+            "privacy-current",
+        ),
+        /stale_document_versions/,
+    );
 });

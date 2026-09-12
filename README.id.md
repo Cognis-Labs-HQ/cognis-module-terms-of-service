@@ -4,9 +4,9 @@
 
 Menambahkan bagian **Legal** ke Administrasi Cognis untuk menerbitkan Ketentuan Layanan, Kebijakan Privasi, dan EULA pada `/terms-of-service`, `/privacy-policy`, dan `/eula`.
 
-## Dukungan Cognis core
+## Dukungan Cognis core yang diperlukan
 
-Tidak diperlukan perubahan core tambahan untuk Markdown atau pendaftaran Administrasi. Seperti modul di sekitarnya, kode browser membaca `globalThis[Symbol.for("cognis.uiCtx")]`, memperoleh `ui:reuse` melalui `uiCtx.capabilities.get("ui:reuse")`, lalu mengimpor `markdown-renderer.js`. Kontrol Tulis dan Pratinjau milik modul memakai implementasi `renderMarkdown()` tersanitasi yang sudah tersedia. Toast dan dialog kesalahan diperoleh dari kapabilitas `uiCtx` yang ada. Ekspor `createAdminSection({ i18n, apiFetch })` menyediakan kontrak sub-composer Administrasi yang sudah ada.
+Kontrak browser yang ada sudah cukup untuk Markdown, umpan balik, navigasi, dan Administrasi. Core juga harus mengekspos penyimpanan append-only milik arsip Dokumentasi dan Changelog sebagai kapabilitas `docs:versionStore`, dengan `createStore({ namespace, database, documents })` serta operasi `ensureSchema()`, `getLatest(slug)`, `publish({ slug, content, actorId })`, dan `deleteAll()`. `publish` selalu membuat versi tetap dengan pengenal kriptografis. Core juga harus menyediakan flow `construct-registration-ui` dengan tahap `compose-form`, memuat integrasi pada `/register`, memvalidasi bidangnya, lalu menjalankan `completeRegistration({ apiFetch })` setelah sesi terautentikasi tersedia. Penegakan bagi akun lama memakai kontrak `authenticate-session`, popup, logout, router, dan `uiCtx` yang sudah ada.
 
 ## Keamanan dan siklus hidup
 

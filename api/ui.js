@@ -12,6 +12,10 @@ export function registerUi(ctx) {
         stringsBaseUrl: "/static/modules/terms-of-service/languages",
         access: { minRole: "admin" },
     });
+    ctx.registerNavbarPlugin({
+        scriptUrl: "/static/modules/terms-of-service/consent-enforcement.js",
+        access: { minRole: "user" },
+    });
     for (const slug of PUBLIC_ROUTES) {
         ctx.registerSpaRoute({
             id: `terms-of-service-${slug}`,

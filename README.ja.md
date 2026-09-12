@@ -4,9 +4,9 @@
 
 Cognis の管理画面に **法務** セクションを追加し、利用規約、プライバシーポリシー、EULA を `/terms-of-service`、`/privacy-policy`、`/eula` で公開します。
 
-## Cognis Core のサポート
+## Cognis Core に必要な対応
 
-Markdown または管理画面登録のための Core 変更は不要です。隣接モジュールと同様に、ブラウザーコードは `globalThis[Symbol.for("cognis.uiCtx")]` を読み取り、`uiCtx.capabilities.get("ui:reuse")` で `ui:reuse` を取得して `markdown-renderer.js` をインポートします。モジュール所有の作成・プレビュー切り替えは、既存のサニタイズ済み `renderMarkdown()` 実装を使用します。Toast とエラーダイアログは既存の `uiCtx` Capability から取得します。`createAdminSection({ i18n, apiFetch })` エクスポートが既存の管理 Sub-Composer コントラクトを提供します。
+Markdown、フィードバック、ナビゲーション、管理画面には既存のブラウザーコントラクトで十分です。Core は追加で、Docs と Changelog の追記専用アーカイブを `docs:versionStore` Capability として公開し、`createStore({ namespace, database, documents })` から `ensureSchema()`、`getLatest(slug)`、`publish({ slug, content, actorId })`、`deleteAll()` を提供する必要があります。`publish` は必ず暗号学的識別子を持つ不変バージョンを新規作成します。また、Core 所有の `construct-registration-ui` Flow に `compose-form` Stage を設け、`/register` で統合を読み込み、フィールドを検証し、認証済みセッション確立後に `completeRegistration({ apiFetch })` を実行する必要があります。既存アカウントの強制には既存の `authenticate-session`、Popup、Logout、Router、`uiCtx` コントラクトを使用します。
 
 ## セキュリティとライフサイクル
 

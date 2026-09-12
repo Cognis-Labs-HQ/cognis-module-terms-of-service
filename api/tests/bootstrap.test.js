@@ -18,10 +18,25 @@ function context(registrations) {
             put(path) {
                 registrations.api.push(path);
             },
+            post(path) {
+                registrations.api.push(path);
+            },
         },
         getCapability(name) {
             if (name === "auth:requireAuth") return async () => {};
             if (name === "db:executor") return database;
+            if (name === "docs:versionStore") {
+                return {
+                    createStore: () => ({
+                        async ensureSchema() {},
+                        async getLatest() {
+                            return null;
+                        },
+                        async publish() {},
+                        async deleteAll() {},
+                    }),
+                };
+            }
             assert.fail(`Unexpected capability: ${name}`);
         },
         registerStaticDir() {},
@@ -31,12 +46,20 @@ function context(registrations) {
         registerAdminSection(section) {
             registrations.admin.push(section);
         },
+        registerNavbarPlugin(plugin) {
+            registrations.plugins.push(plugin);
+        },
+        flow: {
+            exists() {
+                return false;
+            },
+        },
         log() {},
     };
 }
 
 test("registers the Legal administration section and public pages", () => {
-    const registrations = { admin: [], api: [], pages: [] };
+    const registrations = { admin: [], api: [], pages: [], plugins: [] };
     bootstrapModule(context(registrations));
 
     assert.equal(
@@ -54,12 +77,31 @@ test("registers the Legal administration section and public pages", () => {
             "/api/v1/modules/terms-of-service/documents/:slug",
         ),
     );
+    assert.match(registrations.plugins[0].scriptUrl, /consent-enforcement/);
 });
 
 test("uninstall deletes content only when requested", async () => {
     const commands = [];
     const ctx = {
-        getCapability() {
+        getCapability(name) {
+            if (name === "docs:versionStore") {
+                return {
+                    createStore: () => ({
+                        async ensureSchema() {
+                            commands.push({
+                                option: "ENSURE",
+                                table: "core_document_versions",
+                            });
+                        },
+                        async deleteAll() {
+                            commands.push({
+                                option: "DELETE",
+                                table: "core_document_versions",
+                            });
+                        },
+                    }),
+                };
+            }
             return {
                 async ensureTable(definition) {
                     commands.push({ option: "ENSURE", table: definition.name });
@@ -75,6 +117,8 @@ test("uninstall deletes content only when requested", async () => {
     await uninstallModule(ctx, { deleteContent: false });
     assert.deepEqual(commands, []);
     await uninstallModule(ctx, { deleteContent: true });
-    assert.equal(commands[0].table, "terms_of_service_documents");
-    assert.equal(commands[1].option, "DELETE");
+    assert.equal(commands[0].table, "core_document_versions");
+    assert.equal(commands[1].table, "terms_of_service_consents");
+    assert.equal(commands[2].table, "terms_of_service_consents");
+    assert.equal(commands[3].table, "core_document_versions");
 });

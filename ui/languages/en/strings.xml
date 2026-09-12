@@ -19,4 +19,13 @@
   <string name="module.terms_of_service.category.legal">Legal</string>
   <string name="module.terms_of_service.tag.legal">Legal</string>
   <string name="module.terms_of_service.tag.administration">Administration</string>
+  <string name="module.terms_of_service.consent.title">Legal Consent Required</string>
+  <string name="module.terms_of_service.consent.prompt">You must accept the latest Terms and Conditions and Privacy Policy to continue using Cognis.</string>
+  <string name="module.terms_of_service.consent.accept">Accept and continue</string>
+  <string name="module.terms_of_service.consent.decline">Decline and log out</string>
+  <string name="module.terms_of_service.consent.signup.prefix">I agree to the</string>
+  <string name="module.terms_of_service.consent.signup.terms">Terms and Conditions</string>
+  <string name="module.terms_of_service.consent.signup.and">and</string>
+  <string name="module.terms_of_service.consent.signup.privacy">Privacy Policy</string>
+  <string name="module.terms_of_service.consent.required">You must agree to the Terms and Conditions and Privacy Policy.</string>
 </resources>

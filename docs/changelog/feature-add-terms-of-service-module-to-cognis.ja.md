@@ -14,7 +14,12 @@ Cognis の Markdown 作成コントラクトを使用して利用規約、プラ
 
 隣接モジュールと同様に `cognis.uiCtx` と `ui:reuse.importModule()` を使用し、既存の Core Markdown レンダラーを直接インポートして、新しい Core Capability を必要とせず既存の管理 Sub-Composer エクスポートを実装します。
 
+## 不変の法的文書バージョンと必須同意
+
+公開するたびに Core の文書バージョン Capability を通じて不変バージョンを作成します。登録時には最新の利用条件とプライバシーポリシーへの明示的な同意を記録し、既存アカウントにはいずれかの文書が変更されるたびに回避できない同意画面を表示します。拒否するとログアウトします。
+
 ## コミット
 
 - [d0e4701](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/d0e4701b5dc43aa21efb59bcffcbc45f4504ec65) — 法的文書公開モジュールを実装。
 - [3f00993](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3f00993d648f17ac8b1fb0953747d9e36e684496) — 既存の Host UI 再利用コントラクトを使用。
+- [27b6605](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/27b66054102cba443e7b9d74213da0099697f695) — 不変バージョンとアカウント単位の法的同意強制を追加。
