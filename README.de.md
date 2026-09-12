@@ -4,9 +4,9 @@
 
 Fügt der Cognis-Administration den Bereich **Rechtliches** hinzu. Administratoren veröffentlichen dort Nutzungsbedingungen, Datenschutzerklärung und Endbenutzer-Lizenzvertrag unter `/terms-of-service`, `/privacy-policy` und `/eula`.
 
-## Erforderliche Unterstützung in Cognis Core
+## Unterstützung durch Cognis Core
 
-Core muss `ui:reuse` über `ctx`, den Browser-Baustein `markdown:composer` mit `bind(options)` und `render(element, markdown)` sowie die lebenszyklusgebundene Methode `ctx.registerAdminSection(options)` bereitstellen. Der Host übergibt Router-, Übersetzungs-, Toast-, Fehlerdialog-, Fokus- und Wiederverwendungsclients an `mount(root, host)`. Renderer und Vorschau müssen dieselbe bereinigte Markdown-Implementierung wie der Nachrichten-Composer verwenden.
+Für Markdown oder die Administrationsregistrierung sind keine Core-Änderungen erforderlich. Wie benachbarte Module liest der Browser `globalThis[Symbol.for("cognis.uiCtx")]`, bezieht `ui:reuse` über `uiCtx.capabilities.get("ui:reuse")` und importiert damit `markdown-renderer.js`. Die moduleigenen Umschalter „Verfassen“ und „Vorschau“ verwenden die bereits vorhandene bereinigte `renderMarkdown()`-Implementierung. Toasts und Fehlerdialoge werden über die vorhandenen `uiCtx`-Capabilities bezogen. `createAdminSection({ i18n, apiFetch })` liefert den vorhandenen Administration-Sub-Composer-Vertrag.
 
 ## Sicherheit und Lebenszyklus
 

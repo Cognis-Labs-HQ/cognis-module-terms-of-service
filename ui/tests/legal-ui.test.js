@@ -3,12 +3,21 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 const source = readFileSync("ui/app.js", "utf8");
+const resources = readFileSync("ui/reuse/resources.js", "utf8");
 
-test("editor delegates Compose, Preview, and rendering to core reuse", () => {
-    assert.match(source, /host\.reuse\.get\("markdown:composer"\)/);
-    assert.match(source, /markdownComposer\.bind/);
-    assert.match(source, /markdownComposer\.render/);
-    assert.doesNotMatch(source, /innerHTML\s*=.*markdown/);
+test("browser code imports the core Markdown renderer through ui:reuse", () => {
+    assert.match(resources, /Symbol\.for\("cognis\.uiCtx"\)/);
+    assert.match(resources, /capabilities\.get\("ui:reuse"\)/);
+    assert.match(source, /importReuseModule\("markdown-renderer\.js"\)/);
+    assert.match(source, /renderMarkdown\(textarea\.value\)/);
+    assert.doesNotMatch(source, /host\.reuse|markdownComposer/);
+});
+
+test("admin contribution follows the Administration sub-composer contract", () => {
+    assert.match(source, /export function createAdminSection/);
+    assert.match(source, /subComposerOptions:/);
+    assert.match(source, /dataReady/);
+    assert.match(source, /onRender\(root\)/);
 });
 
 test("UI supplies all three fixed legal documents", () => {

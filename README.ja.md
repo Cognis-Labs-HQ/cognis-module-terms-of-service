@@ -4,9 +4,9 @@
 
 Cognis の管理画面に **法務** セクションを追加し、利用規約、プライバシーポリシー、EULA を `/terms-of-service`、`/privacy-policy`、`/eula` で公開します。
 
-## Cognis Core に必要な対応
+## Cognis Core のサポート
 
-Core は `ctx` で `ui:reuse` を公開し、`bind(options)` と `render(element, markdown)` を持つブラウザー部品 `markdown:composer`、およびライフサイクル管理された `ctx.registerAdminSection(options)` を提供する必要があります。Host は router、i18n、toast、エラーダイアログ、focus、reuse の各クライアントを `mount(root, host)` に渡します。レンダラーとプレビューにはメッセージ作成画面と同じサニタイズ済み Markdown 実装を使用します。
+Markdown または管理画面登録のための Core 変更は不要です。隣接モジュールと同様に、ブラウザーコードは `globalThis[Symbol.for("cognis.uiCtx")]` を読み取り、`uiCtx.capabilities.get("ui:reuse")` で `ui:reuse` を取得して `markdown-renderer.js` をインポートします。モジュール所有の作成・プレビュー切り替えは、既存のサニタイズ済み `renderMarkdown()` 実装を使用します。Toast とエラーダイアログは既存の `uiCtx` Capability から取得します。`createAdminSection({ i18n, apiFetch })` エクスポートが既存の管理 Sub-Composer コントラクトを提供します。
 
 ## セキュリティとライフサイクル
 

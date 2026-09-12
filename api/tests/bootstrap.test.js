@@ -22,9 +22,6 @@ function context(registrations) {
         getCapability(name) {
             if (name === "auth:requireAuth") return async () => {};
             if (name === "db:executor") return database;
-            if (name === "ui:reuse") {
-                return { has: (entry) => entry === "markdown:composer" };
-            }
             assert.fail(`Unexpected capability: ${name}`);
         },
         registerStaticDir() {},
@@ -42,7 +39,10 @@ test("registers the Legal administration section and public pages", () => {
     const registrations = { admin: [], api: [], pages: [] };
     bootstrapModule(context(registrations));
 
-    assert.equal(registrations.admin[0].group, "legal");
+    assert.equal(
+        registrations.admin[0].label,
+        "module.terms_of_service.admin.title",
+    );
     assert.equal(registrations.admin[0].access.minRole, "admin");
     assert.deepEqual(registrations.pages, [
         "/terms-of-service",
@@ -54,14 +54,6 @@ test("registers the Legal administration section and public pages", () => {
             "/api/v1/modules/terms-of-service/documents/:slug",
         ),
     );
-});
-
-test("fails safely when core does not expose the Markdown composer", () => {
-    const ctx = context({ admin: [], api: [], pages: [] });
-    const original = ctx.getCapability;
-    ctx.getCapability = (name) =>
-        name === "ui:reuse" ? { has: () => false } : original(name);
-    assert.throws(() => bootstrapModule(ctx), /markdown:composer/);
 });
 
 test("uninstall deletes content only when requested", async () => {

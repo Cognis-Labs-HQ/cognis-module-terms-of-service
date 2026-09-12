@@ -4,16 +4,16 @@
 
 Adds a **Legal** section to Cognis Administration. Administrators can create and publish Terms of Service, Privacy Policy, and End User License Agreement Markdown documents at `/terms-of-service`, `/privacy-policy`, and `/eula`.
 
-## Required Cognis core support
+## Cognis core support
 
-This module deliberately does not copy or import Cognis' private message-composer code. Cognis core must:
+No additional core change is required for Markdown rendering or Administration registration. The module follows the same contracts as adjacent external modules:
 
-1. expose `ui:reuse` on the module `ctx`;
-2. register a browser reuse entry named `markdown:composer`;
-3. make `host.reuse.get("markdown:composer")` return an object with `bind(options)` and `render(element, markdown)` methods; and
-4. expose `ctx.registerAdminSection(options)` as a scoped registration removed when the module is disabled.
+1. browser code reads `globalThis[Symbol.for("cognis.uiCtx")]`;
+2. it resolves `ui:reuse` through `uiCtx.capabilities.get("ui:reuse")`;
+3. it imports the existing `markdown-renderer.js` with `ui:reuse.importModule()`; and
+4. its `createAdminSection({ i18n, apiFetch })` export supplies the existing Administration sub-composer contract.
 
-`bind` receives the textarea, Compose and Preview buttons, and both panes. It must use the same sanitized renderer, toolbar behavior, keyboard and accessibility behavior as the core message composer. `render` must sanitize untrusted Markdown before placing it in the supplied module-owned element. The host should pass its router, i18n, toast, error-popup, focus, and reuse clients to the exported `mount(root, host)` function. The registration and reuse handles must be lifecycle-scoped.
+The Compose and Preview controls are module-owned UI state, while preview and public output use core's existing sanitized `renderMarkdown()` implementation. Toasts and error popups are resolved from their existing `uiCtx` capabilities.
 
 ## Security and lifecycle
 

@@ -1,3 +1,19 @@
+import { importReuseModule, uiCtx } from "./reuse/resources.js";
+
+const [
+    { apiFetch },
+    { createI18n },
+    { renderMarkdown, initializeMarkdownCodeCopy },
+    { escapeHtml },
+    { mountWhenDirect },
+] = await Promise.all([
+    importReuseModule("api-client.js"),
+    importReuseModule("i18n.js"),
+    importReuseModule("markdown-renderer.js"),
+    importReuseModule("escape-html.js"),
+    importReuseModule("page-entry.js"),
+]);
+
 const API_PATH = "/api/v1/modules/terms-of-service";
 const DOCUMENTS = [
     { slug: "terms-of-service", titleKey: "terms" },
@@ -5,131 +21,184 @@ const DOCUMENTS = [
     { slug: "eula", titleKey: "eula" },
 ];
 
-function string(host, key) {
-    return host.i18n?.t?.(`module.terms_of_service.${key}`) ?? key;
+function showError(message) {
+    const openErrorPopup = uiCtx.capabilities.get("ui:openErrorPopup");
+    if (typeof openErrorPopup !== "function") {
+        throw new Error(
+            "Required UI capability unavailable: ui:openErrorPopup",
+        );
+    }
+    openErrorPopup({ message });
 }
 
-function showError(host, key) {
-    host.errorPopup?.show?.({ message: string(host, key) });
+function showToast(message) {
+    const toast = uiCtx.capabilities.get("ui:showToast");
+    if (typeof toast !== "function") {
+        throw new Error("Required UI capability unavailable: ui:showToast");
+    }
+    toast(message, { variant: "success" });
 }
 
-async function request(path, options) {
-    const response = await fetch(path, {
-        credentials: "same-origin",
-        ...options,
-    });
+async function readPayload(response) {
     const payload = await response.json();
     if (!response.ok) throw new Error(payload.error?.code ?? "request_failed");
     return payload.data;
 }
 
-function documentPanel(document, host, markdownComposer) {
-    const definition = DOCUMENTS.find((item) => item.slug === document.slug);
-    const panel = window.document.createElement("section");
-    panel.className = "terms-of-service-document card-elevated";
-    panel.innerHTML = `
+function editorMarkup(document, i18n) {
+    return `<div class="terms-of-service-document" data-document="${document.slug}">
         <header class="terms-of-service-document-header">
-            <h2>${string(host, `document.${definition.titleKey}`)}</h2>
+            <h3>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.titleKey}`))}</h3>
             <button class="terms-of-service-add" type="button"
-                aria-label="${string(host, "action.create")}">+</button>
+                aria-label="${escapeHtml(i18n.t("module.terms_of_service.action.create"))}">+</button>
         </header>
         <div class="terms-of-service-editor" hidden>
             <div class="terms-of-service-compose-pane">
-                <label>${string(host, "editor.label")}
-                    <textarea rows="16"></textarea>
+                <label>${escapeHtml(i18n.t("module.terms_of_service.editor.label"))}
+                    <textarea rows="16">${escapeHtml(document.markdown ?? "")}</textarea>
                 </label>
             </div>
             <div class="terms-of-service-preview-pane" hidden></div>
             <div class="terms-of-service-tabs">
-                <button type="button" data-mode="compose">${string(host, "action.compose")}</button>
-                <button type="button" data-mode="preview">${string(host, "action.preview")}</button>
-                <button type="button" data-action="publish">${string(host, "action.publish")}</button>
+                <button type="button" data-mode="compose">${escapeHtml(i18n.t("module.terms_of_service.action.compose"))}</button>
+                <button type="button" data-mode="preview">${escapeHtml(i18n.t("module.terms_of_service.action.preview"))}</button>
+                <button type="button" data-action="publish">${escapeHtml(i18n.t("module.terms_of_service.action.publish"))}</button>
             </div>
-        </div>`;
+        </div>
+    </div>`;
+}
+
+function activateEditor(panel, document, { apiFetch, i18n }) {
     const editor = panel.querySelector(".terms-of-service-editor");
     const textarea = panel.querySelector("textarea");
-    textarea.value = document.markdown ?? "";
+    const composePane = panel.querySelector(".terms-of-service-compose-pane");
+    const previewPane = panel.querySelector(".terms-of-service-preview-pane");
     panel
         .querySelector(".terms-of-service-add")
         .addEventListener("click", () => {
             editor.hidden = false;
             textarea.focus();
         });
-    markdownComposer.bind({
-        root: editor,
-        textarea,
-        composeButton: panel.querySelector('[data-mode="compose"]'),
-        previewButton: panel.querySelector('[data-mode="preview"]'),
-        composePane: panel.querySelector(".terms-of-service-compose-pane"),
-        previewPane: panel.querySelector(".terms-of-service-preview-pane"),
-    });
+    panel
+        .querySelector('[data-mode="compose"]')
+        .addEventListener("click", () => {
+            composePane.hidden = false;
+            previewPane.hidden = true;
+            textarea.focus();
+        });
+    panel
+        .querySelector('[data-mode="preview"]')
+        .addEventListener("click", () => {
+            previewPane.innerHTML = renderMarkdown(textarea.value);
+            composePane.hidden = true;
+            previewPane.hidden = false;
+            initializeMarkdownCodeCopy();
+        });
     panel
         .querySelector('[data-action="publish"]')
         .addEventListener("click", async () => {
             try {
-                await request(`${API_PATH}/documents/${document.slug}`, {
-                    method: "PUT",
-                    headers: { "content-type": "application/json" },
-                    body: JSON.stringify({ markdown: textarea.value }),
-                });
-                host.toast?.show?.({
-                    variant: "success",
-                    message: string(host, "message.published"),
-                });
+                const response = await apiFetch(
+                    `${API_PATH}/documents/${document.slug}`,
+                    {
+                        method: "PUT",
+                        headers: { "content-type": "application/json" },
+                        body: JSON.stringify({ markdown: textarea.value }),
+                    },
+                );
+                await readPayload(response);
+                showToast(i18n.t("module.terms_of_service.message.published"));
             } catch {
-                showError(host, "error.publish");
+                showError(i18n.t("module.terms_of_service.error.publish"));
             }
         });
-    return panel;
 }
 
-async function mountAdministration(root, host, markdownComposer) {
-    root.innerHTML = `<main class="terms-of-service-admin">
-        <h1>${string(host, "admin.title")}</h1>
-        <p>${string(host, "admin.description")}</p>
-        <div class="terms-of-service-documents"></div>
-    </main>`;
-    try {
-        const documents = await request(`${API_PATH}/documents`);
-        const container = root.querySelector(".terms-of-service-documents");
-        for (const document of documents) {
-            container.append(documentPanel(document, host, markdownComposer));
-        }
-    } catch {
-        showError(host, "error.load");
-    }
+export function createAdminSection({ i18n, apiFetch }) {
+    let documents = DOCUMENTS;
+    const dataReady = apiFetch(`${API_PATH}/documents`)
+        .then(readPayload)
+        .then((storedDocuments) => {
+            documents = DOCUMENTS.map((definition) => ({
+                ...definition,
+                ...storedDocuments.find(
+                    (document) => document.slug === definition.slug,
+                ),
+            }));
+        })
+        .catch(() => {
+            showError(i18n.t("module.terms_of_service.error.load"));
+        });
+
+    return {
+        id: "terms-of-service-legal",
+        label: i18n.t("module.terms_of_service.admin.title"),
+        dataReady,
+        subComposerOptions: {
+            allowCustomization: false,
+            preferenceKey: "terms-of-service-legal",
+            heading: i18n.t("module.terms_of_service.admin.title"),
+            onRender(root) {
+                for (const definition of documents) {
+                    const panel = root.querySelector(
+                        `[data-document="${definition.slug}"]`,
+                    );
+                    if (panel) {
+                        activateEditor(panel, definition, { apiFetch, i18n });
+                    }
+                }
+            },
+            elements: DOCUMENTS.map((definition) => ({
+                id: `terms-of-service-${definition.slug}`,
+                label: i18n.t(
+                    `module.terms_of_service.document.${definition.titleKey}`,
+                ),
+                pinned: true,
+                render: () =>
+                    editorMarkup(
+                        documents.find(
+                            (document) => document.slug === definition.slug,
+                        ) ?? definition,
+                        i18n,
+                    ),
+            })),
+        },
+    };
 }
 
-async function mountPublic(root, host, markdownComposer, slug) {
-    const definition = DOCUMENTS.find((item) => item.slug === slug);
+export async function mount(root, { signal } = {}) {
+    const i18n = await createI18n({
+        componentStringBaseUrls: ["/static/modules/terms-of-service/languages"],
+    });
+    const slug = location.pathname.slice(1);
+    const definition = DOCUMENTS.find((document) => document.slug === slug);
+    if (!definition) throw new Error("Unsupported legal document route.");
     root.innerHTML = `<main class="terms-of-service-public card-elevated">
-        <h1>${string(host, `document.${definition.titleKey}`)}</h1>
+        <h1>${escapeHtml(i18n.t(`module.terms_of_service.document.${definition.titleKey}`))}</h1>
         <article class="terms-of-service-rendered"></article>
     </main>`;
     try {
-        const document = await request(`${API_PATH}/public/${slug}`);
-        await markdownComposer.render(
-            root.querySelector(".terms-of-service-rendered"),
-            document.markdown,
-        );
+        const response = await apiFetch(`${API_PATH}/public/${slug}`, {
+            signal,
+        });
+        const document = await readPayload(response);
+        root.querySelector(".terms-of-service-rendered").innerHTML =
+            renderMarkdown(document.markdown);
+        initializeMarkdownCodeCopy();
     } catch {
-        root.querySelector(".terms-of-service-rendered").textContent = string(
-            host,
-            "public.unavailable",
+        root.querySelector(".terms-of-service-rendered").textContent = i18n.t(
+            "module.terms_of_service.public.unavailable",
         );
     }
-}
-
-export async function mount(root, host) {
-    const markdownComposer = await host.reuse.get("markdown:composer");
-    const slug = location.pathname.slice(1);
-    if (DOCUMENTS.some((item) => item.slug === slug)) {
-        await mountPublic(root, host, markdownComposer, slug);
-        return;
-    }
-    await mountAdministration(root, host, markdownComposer);
 }
 
 export function unmount(root) {
     root.replaceChildren();
 }
+
+await mountWhenDirect((root) => {
+    const mountController = new AbortController();
+    return mount(root, { signal: mountController.signal });
+}).catch((error) => {
+    showError(error instanceof Error ? error.message : String(error));
+});
