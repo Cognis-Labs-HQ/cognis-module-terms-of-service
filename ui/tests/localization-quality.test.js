@@ -58,7 +58,7 @@ test("manifest publishes the module locale bundle location", () => {
     );
     assert.equal(
         manifest.ui?.stringsBaseUrl,
-        "/static/modules/module-template/languages",
+        "/static/modules/terms-of-service/languages",
     );
 });
 

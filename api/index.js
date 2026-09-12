@@ -1,8 +1,14 @@
 import { readJson, sendJson } from "./reuse/http.js";
-import { ShowcaseStore } from "./store.js";
+import { DOCUMENTS, LegalDocumentStore } from "./store.js";
 
-function requesterId(request) {
+const MAX_MARKDOWN_BYTES = 1_000_000;
+
+function accountId(request) {
     return String(request.auth?.accountId ?? request.auth?.sub ?? "").trim();
+}
+
+function isKnownSlug(slug) {
+    return Object.hasOwn(DOCUMENTS, slug);
 }
 
 export function registerApi(router, ctx) {
@@ -10,76 +16,116 @@ export function registerApi(router, ctx) {
     const requireAuth = ctx.getCapability("auth:requireAuth");
     if (!database || typeof requireAuth !== "function") {
         throw new Error(
-            "Module template requires db:executor and auth:requireAuth.",
+            "Terms of Service requires db:executor and auth:requireAuth.",
         );
     }
-    const store = new ShowcaseStore(database);
+    const store = new LegalDocumentStore(database);
     const ready = store.ensureSchema();
-    const listItems = async (ownerId) => {
-        await ready;
-        return store.list(ownerId);
-    };
 
     router.get(
-        "/api/v1/modules/module-template/items",
+        "/api/v1/modules/terms-of-service/documents",
         async (request, response) => {
-            await requireAuth(request, response);
+            await requireAuth(request, response, { minRole: "admin" });
             if (response.writableEnded) return;
-            sendJson(response, 200, {
-                data: await listItems(requesterId(request)),
-            });
+            await ready;
+            sendJson(response, 200, { data: await store.list() });
         },
-        { access: { minRole: "user" } },
+        { access: { minRole: "admin" } },
     );
 
-    router.post(
-        "/api/v1/modules/module-template/items",
+    router.put(
+        "/api/v1/modules/terms-of-service/documents/:slug",
         async (request, response) => {
-            await requireAuth(request, response);
+            await requireAuth(request, response, { minRole: "admin" });
             if (response.writableEnded) return;
+            const slug = String(request.params?.slug ?? "");
+            if (!isKnownSlug(slug)) {
+                sendJson(response, 404, {
+                    error: {
+                        code: "unknown_document",
+                        message: "Unknown legal document.",
+                    },
+                });
+                return;
+            }
             try {
-                const body = await readJson(request);
-                const title =
-                    typeof body.title === "string" ? body.title.trim() : "";
-                if (!title || title.length > 120) {
+                const body = await readJson(request, {
+                    maxBytes: MAX_MARKDOWN_BYTES,
+                });
+                if (
+                    typeof body.markdown !== "string" ||
+                    !body.markdown.trim()
+                ) {
                     sendJson(response, 400, {
                         error: {
-                            code: "invalid_title",
-                            message: "Title must contain 1–120 characters.",
+                            code: "invalid_markdown",
+                            message: "Markdown content is required.",
                         },
                     });
                     return;
                 }
                 await ready;
-                const item = await store.create(requesterId(request), title);
-                ctx.log?.("info", "Showcase item created.", {
-                    component: "module-template",
-                    operation: "create_item",
-                    itemId: item.id,
+                const document = await store.save(
+                    slug,
+                    body.markdown,
+                    accountId(request),
+                );
+                ctx.log?.("info", "Legal document published.", {
+                    component: "terms-of-service",
+                    operation: "publishDocument",
+                    slug,
                 });
-                sendJson(response, 201, { data: item });
+                sendJson(response, 200, { data: document });
             } catch (error) {
-                const clientError = [
+                const invalidRequest = [
                     "invalid_json",
                     "request_too_large",
                 ].includes(error.message);
-                ctx.log?.("error", "Showcase item creation failed.", {
-                    component: "module-template",
-                    operation: "create_item",
+                ctx.log?.("error", "Legal document publication failed.", {
+                    component: "terms-of-service",
+                    operation: "publishDocument",
+                    slug,
                     error: error.message,
                 });
-                sendJson(response, clientError ? 400 : 500, {
+                sendJson(response, invalidRequest ? 400 : 500, {
                     error: {
-                        code: clientError ? error.message : "internal_error",
-                        message: clientError
+                        code: invalidRequest ? error.message : "internal_error",
+                        message: invalidRequest
                             ? "The request body is invalid."
-                            : "The item could not be created.",
+                            : "The legal document could not be published.",
                     },
                 });
             }
         },
-        { access: { minRole: "user" } },
+        { access: { minRole: "admin" } },
     );
 
-    return { listItems };
+    router.get(
+        "/api/v1/modules/terms-of-service/public/:slug",
+        async (request, response) => {
+            const slug = String(request.params?.slug ?? "");
+            if (!isKnownSlug(slug)) {
+                sendJson(response, 404, {
+                    error: {
+                        code: "unknown_document",
+                        message: "Unknown legal document.",
+                    },
+                });
+                return;
+            }
+            await ready;
+            const document = await store.get(slug);
+            if (!document) {
+                sendJson(response, 404, {
+                    error: {
+                        code: "not_published",
+                        message: "This document is not published.",
+                    },
+                });
+                return;
+            }
+            sendJson(response, 200, { data: document });
+        },
+        { access: { public: true } },
+    );
 }

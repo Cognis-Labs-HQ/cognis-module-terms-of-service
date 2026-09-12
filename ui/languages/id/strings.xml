@@ -1,14 +1,22 @@
 <resources>
-  <string name="module.module_template.nav">Contoh</string>
-  <string name="module.module_template.title">Contoh modul</string>
-  <string name="module.module_template.intro">Modul Cognis menyeluruh yang kecil.</string>
-  <string name="module.module_template.label">Judul item</string>
-  <string name="module.module_template.create">Buat</string>
-  <string name="module.module_template.name">Templat Modul</string>
-  <string name="module.module_template.summary">Modul referensi menyeluruh untuk kontributor Cognis.</string>
-  <string name="module.module_template.description">Mendemonstrasikan kontrak UI, API, basis data, CLI, kapabilitas, alur, pelokalan, pengujian, dan pemaketan Cognis.</string>
-  <string name="module.module_template.category_developer_tools">Alat Pengembang</string>
-  <string name="module.module_template.tag_template">Templat</string>
-  <string name="module.module_template.tag_development">Pengembangan</string>
-  <string name="module.module_template.tag_example">Contoh</string>
+  <string name="module.terms_of_service.admin.title">Legal</string>
+  <string name="module.terms_of_service.admin.description">Buat dan terbitkan dokumen hukum yang ditampilkan pada rute publik.</string>
+  <string name="module.terms_of_service.document.terms">Ketentuan Layanan (ToS)</string>
+  <string name="module.terms_of_service.document.privacy">Kebijakan Privasi</string>
+  <string name="module.terms_of_service.document.eula">Perjanjian Lisensi Pengguna Akhir</string>
+  <string name="module.terms_of_service.action.create">Buat dokumen</string>
+  <string name="module.terms_of_service.editor.label">Konten Markdown</string>
+  <string name="module.terms_of_service.action.compose">Tulis</string>
+  <string name="module.terms_of_service.action.preview">Pratinjau</string>
+  <string name="module.terms_of_service.action.publish">Terbitkan</string>
+  <string name="module.terms_of_service.message.published">Dokumen hukum telah diterbitkan.</string>
+  <string name="module.terms_of_service.error.publish">Dokumen hukum tidak dapat diterbitkan.</string>
+  <string name="module.terms_of_service.error.load">Dokumen hukum tidak dapat dimuat.</string>
+  <string name="module.terms_of_service.public.unavailable">Dokumen ini belum diterbitkan.</string>
+  <string name="module.terms_of_service.name">Ketentuan Layanan</string>
+  <string name="module.terms_of_service.summary">Terbitkan halaman Ketentuan Layanan, Kebijakan Privasi, dan EULA.</string>
+  <string name="module.terms_of_service.description">Menambahkan administrasi dokumen hukum dan halaman hukum publik yang dirender dengan Markdown.</string>
+  <string name="module.terms_of_service.category.legal">Hukum</string>
+  <string name="module.terms_of_service.tag.legal">Hukum</string>
+  <string name="module.terms_of_service.tag.administration">Administrasi</string>
 </resources>

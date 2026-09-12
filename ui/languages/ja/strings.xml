@@ -1,14 +1,22 @@
 <resources>
-  <string name="module.module_template.nav">サンプル</string>
-  <string name="module.module_template.title">モジュール例</string>
-  <string name="module.module_template.intro">小規模なエンドツーエンドの Cognis モジュールです。</string>
-  <string name="module.module_template.label">項目名</string>
-  <string name="module.module_template.create">作成</string>
-  <string name="module.module_template.name">モジュールテンプレート</string>
-  <string name="module.module_template.summary">Cognis コントリビューター向けのエンドツーエンドのリファレンスモジュール。</string>
-  <string name="module.module_template.description">Cognis の UI、API、データベース、CLI、Capability、フロー、ローカライズ、テスト、パッケージ化の規約を示します。</string>
-  <string name="module.module_template.category_developer_tools">開発ツール</string>
-  <string name="module.module_template.tag_template">テンプレート</string>
-  <string name="module.module_template.tag_development">開発</string>
-  <string name="module.module_template.tag_example">サンプル</string>
+  <string name="module.terms_of_service.admin.title">法務</string>
+  <string name="module.terms_of_service.admin.description">公開ルートに表示する法的文書を作成して公開します。</string>
+  <string name="module.terms_of_service.document.terms">利用規約（ToS）</string>
+  <string name="module.terms_of_service.document.privacy">プライバシーポリシー</string>
+  <string name="module.terms_of_service.document.eula">エンドユーザー使用許諾契約</string>
+  <string name="module.terms_of_service.action.create">文書を作成</string>
+  <string name="module.terms_of_service.editor.label">Markdown コンテンツ</string>
+  <string name="module.terms_of_service.action.compose">作成</string>
+  <string name="module.terms_of_service.action.preview">プレビュー</string>
+  <string name="module.terms_of_service.action.publish">公開</string>
+  <string name="module.terms_of_service.message.published">法的文書を公開しました。</string>
+  <string name="module.terms_of_service.error.publish">法的文書を公開できませんでした。</string>
+  <string name="module.terms_of_service.error.load">法的文書を読み込めませんでした。</string>
+  <string name="module.terms_of_service.public.unavailable">この文書はまだ公開されていません。</string>
+  <string name="module.terms_of_service.name">利用規約</string>
+  <string name="module.terms_of_service.summary">利用規約、プライバシーポリシー、EULA のページを公開します。</string>
+  <string name="module.terms_of_service.description">法的文書の管理機能と Markdown で表示される公開法務ページを追加します。</string>
+  <string name="module.terms_of_service.category.legal">法務</string>
+  <string name="module.terms_of_service.tag.legal">法務</string>
+  <string name="module.terms_of_service.tag.administration">管理</string>
 </resources>

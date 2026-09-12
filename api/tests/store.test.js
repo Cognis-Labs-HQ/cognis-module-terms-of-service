@@ -1,32 +1,48 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { ShowcaseStore } from "../store.js";
+import { DOCUMENTS, LegalDocumentStore } from "../store.js";
 
-test("store creates its schema and scopes lists to an owner", async () => {
+test("store uses a module-owned schema and parameterized slug lookup", async () => {
     const calls = [];
     const database = {
         async ensureTable(definition) {
-            calls.push(["schema", definition]);
+            calls.push(definition);
         },
         async executeCommand(command) {
-            calls.push(["command", command]);
+            calls.push(command);
             return {
                 rows: [
                     {
-                        id: "one",
-                        title: "Read contracts",
-                        created_at: "2026-01-01",
+                        slug: "privacy-policy",
+                        markdown: "# Privacy",
+                        updated_at: "2026-09-08",
                     },
                 ],
             };
         },
     };
-    const store = new ShowcaseStore(database);
+    const store = new LegalDocumentStore(database);
     await store.ensureSchema();
-    const items = await store.list("account-1");
-    assert.equal(calls[0][1].name, "module_template_items");
-    assert.deepEqual(calls[1][1].where, [
-        { column: "owner_id", value: "account-1" },
+    const document = await store.get("privacy-policy");
+    assert.equal(calls[0].name, "terms_of_service_documents");
+    assert.deepEqual(calls[1].where, [
+        { column: "slug", value: "privacy-policy" },
     ]);
-    assert.equal(items[0].title, "Read contracts");
+    assert.equal(document.path, DOCUMENTS["privacy-policy"]);
+});
+
+test("store publishes documents with an upsert", async () => {
+    const commands = [];
+    const database = {
+        async executeCommand(command) {
+            commands.push(command);
+            if (command.option === "SELECT") return { rows: [] };
+            return { rows: [] };
+        },
+    };
+    const store = new LegalDocumentStore(database);
+    await store.save("eula", "# EULA", "admin-1");
+    assert.equal(commands[0].option, "UPSERT");
+    assert.equal(commands[0].values.updated_by, "admin-1");
+    assert.deepEqual(commands[0].conflictColumns, ["slug"]);
 });

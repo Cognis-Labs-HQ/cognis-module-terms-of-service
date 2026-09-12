@@ -1,66 +1,20 @@
-# Cognis external module template
+# Cognis Terms of Service module
 
 **English** · [Deutsch](README.de.md) · [Bahasa Indonesia](README.id.md) · [日本語](README.ja.md)
 
-An intentionally small, installable reference module that touches the **UI, API, database, CLI, capabilities, flows, localization, tests, and marketplace packaging** surfaces of Cognis. It is a learning aid—not a generator—and mirrors the external-module boundary established by Cognis PR #172 and the Jitsi Meet module.
+Adds a **Legal** section to Cognis Administration. Administrators can create and publish Terms of Service, Privacy Policy, and End User License Agreement Markdown documents at `/terms-of-service`, `/privacy-policy`, and `/eula`.
 
-## Start here
+## Required Cognis core support
 
-```sh
-npm install
-npm test
-npm run check:manifest
-```
+This module deliberately does not copy or import Cognis' private message-composer code. Cognis core must:
 
-Install the repository as a Cognis module source, review its permissions, enable it, then open `/showcase` or run `cognisctl module-template:list`.
+1. expose `ui:reuse` on the module `ctx`;
+2. register a browser reuse entry named `markdown:composer`;
+3. make `host.reuse.get("markdown:composer")` return an object with `bind(options)` and `render(element, markdown)` methods; and
+4. expose `ctx.registerAdminSection(options)` as a scoped registration removed when the module is disabled.
 
-## Architecture map
+`bind` receives the textarea, Compose and Preview buttons, and both panes. It must use the same sanitized renderer, toolbar behavior, keyboard and accessibility behavior as the core message composer. `render` must sanitize untrusted Markdown before placing it in the supplied module-owned element. The host should pass its router, i18n, toast, error-popup, focus, and reuse clients to the exported `mount(root, host)` function. The registration and reuse handles must be lifecycle-scoped.
 
-| Path            | Responsibility                                                                            | Key lesson                                               |
-| --------------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| `manifest.json` | Identity, compatibility, capabilities, entrypoints, store metadata, immutable file hashes | UUIDs are dependencies; IDs are human-readable           |
-| `bootstrap.js`  | Sole host integration point                                                               | Register through `ctx`; never import Cognis internals    |
-| `routes.json`   | Up-front page access declaration                                                          | The host validates protected routes before activation    |
-| `api/index.js`  | Authenticated HTTP boundary and orchestration                                             | Validate input and delegate persistence                  |
-| `api/store.js`  | Portable database-executor commands and schema                                            | Never bind a module to a database driver                 |
-| `api/ui.js`     | Static assets, SPA route, navigation                                                      | Host registration makes disable/uninstall cleanup scoped |
-| `ui/`           | Browser entrypoint, styling, four locale bundles                                          | Set `ui.stringsBaseUrl`; use host routes/toasts          |
-| `cli/index.js`  | `cognisctl` extension                                                                     | CLI calls the public API instead of bypassing it         |
-| `docs/`         | Contributor deep dives                                                                    | Explain contracts and safe extension patterns            |
-| `scripts/`      | Package integrity checks                                                                  | Every shipped file has a SHA-256 digest                  |
+## Security and lifecycle
 
-## Lifecycle and boundaries
-
-1. Cognis validates `manifest.json`, component dependencies, capability requirements, routes, and file digests.
-2. Enabling calls `bootstrapModule(ctx)`. The module registers UI/API contributions, publishes a capability, and extends a flow.
-3. API handlers authenticate and validate. The store owns schema and persistence through `db:executor`.
-4. UI and CLI consume the same HTTP API. Other components may consume `showcase:listItems` through `ctx`.
-5. Scoped registrations are removed when disabled. Add and return an explicit disposer if you create timers, listeners, sockets, or other resources outside scoped registrations.
-6. Uninstalling calls `uninstallModule(ctx, { deleteContent })`; the template deletes its database rows only when the administrator requests content deletion.
-
-Cross-component behavior belongs in **capabilities** (a callable contract) or **flows** (ordered extension stages). Do not reach into Cognis, gateways, or sibling module source trees. Required component links in `requires` are UUIDs; runtime contracts belong in `requiresCapabilities`.
-
-## Forking this template
-
-1. Choose a stable readable ID and generate a new UUID once. Never reuse this template UUID in a published fork.
-2. Rename package, command, API/static paths, DB table prefix, localization namespace, flow extension IDs, and capability keys.
-3. Replace publisher/repository/support metadata and artwork.
-4. Keep manifest/package/lock versions identical, and set `ui.stringsBaseUrl` in the manifest to the module’s locale bundle base URL.
-5. Add only capabilities the module truly needs, and keep route access least-privileged.
-6. Run `npm run manifest:hashes` last, then `npm run check` and `git diff --check`.
-
-See [`docs/standard.en.md`](docs/standard.en.md) before implementing a production module; equivalent German, Indonesian, and Japanese references live beside it.
-
-## Contributor quality checks
-
-This template includes the same automated contributor guardrails used by the Jitsi Meet module: Prettier formatting, readability limits, external-module structural checks, documentation-template parity, and ambiguous-name checks.
-
-```sh
-npm install
-npm run lint
-npm test
-npm run check:manifest
-git diff --check
-```
-
-New contract documentation can start from the localized templates in `.github/DOCUMENTATION_TEMPLATE.<language>.md`. Keep all four template variants structurally synchronized.
+Only administrators may list or publish documents. Public readers can only retrieve one of the three fixed document slugs. Content is retained across disable/re-enable and removed on uninstall only when `deleteContent` is true.

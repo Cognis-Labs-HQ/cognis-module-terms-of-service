@@ -2,73 +2,72 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { bootstrapModule, uninstallModule } from "../../bootstrap.js";
 
-function createContext(registrations) {
+function context(registrations) {
+    const database = {
+        async ensureTable() {},
+        async executeCommand() {
+            return { rows: [] };
+        },
+    };
     return {
         moduleRoot: process.cwd(),
         router: {
             get(path) {
-                registrations.routes.push(path);
+                registrations.api.push(path);
             },
-            post(path) {
-                registrations.routes.push(path);
+            put(path) {
+                registrations.api.push(path);
             },
         },
         getCapability(name) {
-            if (name === "auth:requireAuth") return () => ({ role: "user" });
-            if (name === "db:executor") {
-                return {
-                    ensureTable() {},
-                    executeCommand() {
-                        return { rows: [] };
-                    },
-                };
+            if (name === "auth:requireAuth") return async () => {};
+            if (name === "db:executor") return database;
+            if (name === "ui:reuse") {
+                return { has: (entry) => entry === "markdown:composer" };
             }
             assert.fail(`Unexpected capability: ${name}`);
         },
         registerStaticDir() {},
         registerSpaRoute(route) {
-            registrations.routes.push(route.base);
+            registrations.pages.push(route.base);
         },
-        registerNavbarPlugin() {},
-        contributePublicCapability(name, value) {
-            registrations.capabilities.push([name, value]);
-        },
-        registerFlow(flow) {
-            registrations.flows.push(flow);
-        },
-        flow: {
-            exists() {
-                return false;
-            },
-            extend(...args) {
-                registrations.extensions.push(args);
-            },
+        registerAdminSection(section) {
+            registrations.admin.push(section);
         },
         log() {},
     };
 }
 
-test("registers template surfaces through ctx", () => {
-    const registrations = {
-        routes: [],
-        capabilities: [],
-        extensions: [],
-        flows: [],
-    };
-    bootstrapModule(createContext(registrations));
+test("registers the Legal administration section and public pages", () => {
+    const registrations = { admin: [], api: [], pages: [] };
+    bootstrapModule(context(registrations));
 
-    assert.ok(registrations.routes.includes("/showcase"));
-    assert.equal(registrations.capabilities[0][0], "showcase:listItems");
-    assert.equal(registrations.flows[0].id, "showcase-items");
-    assert.equal(registrations.extensions[0][0], "showcase-items");
+    assert.equal(registrations.admin[0].group, "legal");
+    assert.equal(registrations.admin[0].access.minRole, "admin");
+    assert.deepEqual(registrations.pages, [
+        "/terms-of-service",
+        "/privacy-policy",
+        "/eula",
+    ]);
+    assert.ok(
+        registrations.api.includes(
+            "/api/v1/modules/terms-of-service/documents/:slug",
+        ),
+    );
 });
 
-test("uninstall deletes saved content only when requested", async () => {
+test("fails safely when core does not expose the Markdown composer", () => {
+    const ctx = context({ admin: [], api: [], pages: [] });
+    const original = ctx.getCapability;
+    ctx.getCapability = (name) =>
+        name === "ui:reuse" ? { has: () => false } : original(name);
+    assert.throws(() => bootstrapModule(ctx), /markdown:composer/);
+});
+
+test("uninstall deletes content only when requested", async () => {
     const commands = [];
-    const logs = [];
     const ctx = {
-        getCapability(name) {
-            assert.equal(name, "db:executor");
+        getCapability() {
             return {
                 async ensureTable(definition) {
                     commands.push({ option: "ENSURE", table: definition.name });
@@ -79,19 +78,11 @@ test("uninstall deletes saved content only when requested", async () => {
                 },
             };
         },
-        log(level, message, metadata) {
-            logs.push({ level, message, metadata });
-        },
+        log() {},
     };
-
     await uninstallModule(ctx, { deleteContent: false });
     assert.deepEqual(commands, []);
-
     await uninstallModule(ctx, { deleteContent: true });
-    assert.deepEqual(commands, [
-        { option: "ENSURE", table: "module_template_items" },
-        { option: "DELETE", table: "module_template_items" },
-    ]);
-    assert.equal(logs[0].level, "info");
-    assert.equal(logs[0].metadata.operation, "uninstall_cleanup");
+    assert.equal(commands[0].table, "terms_of_service_documents");
+    assert.equal(commands[1].option, "DELETE");
 });

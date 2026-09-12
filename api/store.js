@@ -1,19 +1,23 @@
-import { randomUUID } from "node:crypto";
+export const DOCUMENTS = Object.freeze({
+    "terms-of-service": "/terms-of-service",
+    "privacy-policy": "/privacy-policy",
+    eula: "/eula",
+});
 
-export class ShowcaseStore {
+export class LegalDocumentStore {
     constructor(database) {
         this.database = database;
     }
 
     async ensureSchema() {
         await this.database.ensureTable({
-            name: "module_template_items",
+            name: "terms_of_service_documents",
             columns: [
-                { name: "id", type: "text", primaryKey: true },
-                { name: "title", type: "text", notNull: true },
-                { name: "owner_id", type: "text", notNull: true },
+                { name: "slug", type: "text", primaryKey: true },
+                { name: "markdown", type: "text", notNull: true },
+                { name: "updated_by", type: "text", notNull: true },
                 {
-                    name: "created_at",
+                    name: "updated_at",
                     type: "timestamp",
                     notNull: true,
                     default: "now",
@@ -22,35 +26,54 @@ export class ShowcaseStore {
         });
     }
 
-    async list(ownerId) {
+    async get(slug) {
         const result = await this.database.executeCommand({
             option: "SELECT",
-            table: "module_template_items",
-            columns: ["id", "title", "created_at"],
-            where: [{ column: "owner_id", value: ownerId }],
-            orderBy: [{ column: "created_at", direction: "desc" }],
+            table: "terms_of_service_documents",
+            columns: ["slug", "markdown", "updated_at"],
+            where: [{ column: "slug", value: slug }],
         });
-        return (result.rows ?? []).map((row) => ({
-            id: String(row.id),
-            title: String(row.title),
-            createdAt: row.created_at,
-        }));
+        const row = result.rows?.[0];
+        return row
+            ? {
+                  slug: String(row.slug),
+                  markdown: String(row.markdown),
+                  updatedAt: row.updated_at,
+                  path: DOCUMENTS[slug],
+              }
+            : null;
     }
 
-    async create(ownerId, title) {
-        const item = { id: randomUUID(), title, ownerId };
+    async list() {
+        const documents = await Promise.all(
+            Object.keys(DOCUMENTS).map((slug) => this.get(slug)),
+        );
+        return Object.keys(DOCUMENTS).map(
+            (slug, index) =>
+                documents[index] ?? { slug, path: DOCUMENTS[slug] },
+        );
+    }
+
+    async save(slug, markdown, accountId) {
         await this.database.executeCommand({
-            option: "INSERT",
-            table: "module_template_items",
-            values: { id: item.id, title, owner_id: ownerId },
+            option: "UPSERT",
+            table: "terms_of_service_documents",
+            conflictColumns: ["slug"],
+            values: {
+                slug,
+                markdown,
+                updated_by: accountId,
+                updated_at: new Date().toISOString(),
+            },
+            update: ["markdown", "updated_by", "updated_at"],
         });
-        return item;
+        return this.get(slug);
     }
 
-    async deleteAllData() {
+    async deleteAll() {
         await this.database.executeCommand({
             option: "DELETE",
-            table: "module_template_items",
+            table: "terms_of_service_documents",
         });
     }
 }
