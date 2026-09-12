@@ -129,6 +129,22 @@
             "sha256": "0fab7cc85e31ab4c952d46b9d4eb24c7212bff003c075608de264eb489cfa241"
         },
         {
+            "path": "docs/standard.de.md",
+            "sha256": "32f0b8d34beaf0b0eee8f774e5e99831880b68dd773d55bd5f3c8777a09fc886"
+        },
+        {
+            "path": "docs/standard.en.md",
+            "sha256": "56ccf35d3040cd4671d7000c5a5918709521cb7a1d23ede312afbdde72e59107"
+        },
+        {
+            "path": "docs/standard.id.md",
+            "sha256": "578d81aba54b7a91b418d309541cd0eb50f4dad7891329c7064bc47c74c77ea3"
+        },
+        {
+            "path": "docs/standard.ja.md",
+            "sha256": "49720ab2c4cb507b07653e41402a2f0f58a0b4e536439012d8fa27340b481484"
+        },
+        {
             "path": "package-lock.json",
             "sha256": "9d274e285acdb182e2b14b8c133a0a46ff59175e511a7b7cd168e8339bdfc515"
         },

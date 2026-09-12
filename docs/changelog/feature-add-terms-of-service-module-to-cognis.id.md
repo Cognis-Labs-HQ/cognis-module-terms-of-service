@@ -1,6 +1,6 @@
 # Modul Ketentuan Layanan
 
-**Cabang fitur:** `work`
+**Cabang fitur:** `feature-add-terms-of-service-module-to-cognis`
 
 ## Administrasi dokumen hukum
 
@@ -12,4 +12,4 @@ Menerbitkan tiga rute publik tetap dengan rendering Markdown tersanitasi, penyim
 
 ## Commit
 
-- [4412584](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/441258407991125e5e7f31d280a550bdc447b48f) — Mengimplementasikan modul penerbitan dokumen hukum.
+- [d0e4701](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/d0e4701b5dc43aa21efb59bcffcbc45f4504ec65) — Mengimplementasikan modul penerbitan dokumen hukum.

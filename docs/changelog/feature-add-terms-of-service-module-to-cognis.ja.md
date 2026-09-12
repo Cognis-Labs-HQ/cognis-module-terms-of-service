@@ -1,6 +1,6 @@
 # 利用規約モジュール
 
-**機能ブランチ:** `work`
+**機能ブランチ:** `feature-add-terms-of-service-module-to-cognis`
 
 ## 法的文書の管理
 
@@ -12,4 +12,4 @@ Cognis の Markdown 作成コントラクトを使用して利用規約、プラ
 
 ## コミット
 
-- [4412584](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/441258407991125e5e7f31d280a550bdc447b48f) — 法的文書公開モジュールを実装。
+- [d0e4701](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/d0e4701b5dc43aa21efb59bcffcbc45f4504ec65) — 法的文書公開モジュールを実装。

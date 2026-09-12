@@ -1,6 +1,6 @@
 # Terms of Service module
 
-**Feature branch:** `work`
+**Feature branch:** `feature-add-terms-of-service-module-to-cognis`
 
 ## Legal document administration
 
@@ -12,4 +12,4 @@ Publishes the three fixed public routes with sanitized Markdown rendering, persi
 
 ## Commits
 
-- [4412584](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/441258407991125e5e7f31d280a550bdc447b48f) — Implement the legal document publishing module.
+- [d0e4701](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/d0e4701b5dc43aa21efb59bcffcbc45f4504ec65) — Implement the legal document publishing module.
