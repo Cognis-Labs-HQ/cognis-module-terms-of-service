@@ -1,32 +1,106 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { ShowcaseStore } from "../store.js";
+import { LegalDocumentStore } from "../store.js";
 
-test("store creates its schema and scopes lists to an owner", async () => {
+function versionTracker(latestDocuments = []) {
     const calls = [];
+    return {
+        calls,
+        createStore(options) {
+            calls.push(["create", options]);
+            return {
+                async ensureSchema() {
+                    calls.push(["schema"]);
+                },
+                async getLatest() {
+                    return latestDocuments.shift() ?? null;
+                },
+                async publish(document) {
+                    calls.push(["publish", document]);
+                    return {
+                        slug: document.slug,
+                        version: "immutable-v1",
+                        markdown: document.content,
+                        published_at: "2026-09-12",
+                    };
+                },
+                async deleteAll() {
+                    calls.push(["deleteAll"]);
+                },
+            };
+        },
+    };
+}
+
+test("publishing delegates immutable versions to the core tracker", async () => {
+    const databaseCalls = [];
     const database = {
         async ensureTable(definition) {
-            calls.push(["schema", definition]);
+            databaseCalls.push(definition);
         },
-        async executeCommand(command) {
-            calls.push(["command", command]);
+    };
+    const tracker = versionTracker();
+    const store = new LegalDocumentStore(database, tracker);
+    await store.ensureSchema();
+    const document = await store.publish("eula", "# EULA", "admin-1");
+
+    assert.equal(tracker.calls[0][1].namespace, "terms-of-service");
+    assert.equal(tracker.calls[1][0], "schema");
+    assert.equal(tracker.calls[2][1].actorId, "admin-1");
+    assert.equal(databaseCalls[0].name, "terms_of_service_consents");
+    assert.equal(document.version, "immutable-v1");
+});
+
+test("consent is valid only for both latest document versions", async () => {
+    const tracker = versionTracker([
+        { slug: "terms-of-service", version: "terms-v2", markdown: "terms" },
+        {
+            slug: "privacy-policy",
+            version: "privacy-v3",
+            markdown: "privacy",
+        },
+    ]);
+    const database = {
+        async executeCommand() {
             return {
                 rows: [
                     {
-                        id: "one",
-                        title: "Read contracts",
-                        created_at: "2026-01-01",
+                        terms_version: "terms-v1",
+                        privacy_version: "privacy-v3",
                     },
                 ],
             };
         },
     };
-    const store = new ShowcaseStore(database);
-    await store.ensureSchema();
-    const items = await store.list("account-1");
-    assert.equal(calls[0][1].name, "module_template_items");
-    assert.deepEqual(calls[1][1].where, [
-        { column: "owner_id", value: "account-1" },
+    const status = await new LegalDocumentStore(
+        database,
+        tracker,
+    ).consentStatus("account-1");
+    assert.equal(status.required, true);
+    assert.equal(status.accepted, false);
+    assert.equal(status.termsVersion, "terms-v2");
+});
+
+test("recording consent rejects stale versions", async () => {
+    const tracker = versionTracker([
+        { slug: "terms-of-service", version: "terms-current", markdown: "t" },
+        {
+            slug: "privacy-policy",
+            version: "privacy-current",
+            markdown: "p",
+        },
     ]);
-    assert.equal(items[0].title, "Read contracts");
+    const database = {
+        async executeCommand() {
+            return { rows: [] };
+        },
+    };
+    await assert.rejects(
+        new LegalDocumentStore(database, tracker).recordConsent(
+            "account-1",
+            "terms-old",
+            "privacy-current",
+        ),
+        /stale_document_versions/,
+    );
 });

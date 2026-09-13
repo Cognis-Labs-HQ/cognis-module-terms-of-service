@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { lstatSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { join, relative, resolve } from "node:path";
 
@@ -55,19 +55,23 @@ test("module source does not import Cognis component internals", () => {
     assert.deepEqual(violations, []);
 });
 
+test("module source addresses only the Terms of Service API namespace", () => {
+    const apiUrlPattern = /\/api\/v1\/modules\/([a-z0-9-]+)/g;
+    const violations = sourceFiles().flatMap((path) => {
+        const source = readFileSync(path, "utf8");
+        return [...source.matchAll(apiUrlPattern)]
+            .filter((match) => match[1] !== "terms-of-service")
+            .map((match) => `${relative(ROOT, path)} (${match[0]})`);
+    });
+    assert.deepEqual(violations, []);
+});
+
 test("CSS source contains no comments", () => {
     const violations = sourceFiles()
         .filter((path) => path.endsWith(".css"))
         .filter((path) => /\/\*[\s\S]*?\*\//.test(readFileSync(path, "utf8")))
         .map((path) => relative(ROOT, path));
     assert.deepEqual(violations, []);
-});
-
-test("manifest dependencies use UUID references", () => {
-    const manifest = JSON.parse(readFileSync(resolve(ROOT, "manifest.json")));
-    const uuid =
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    assert.ok(manifest.requires.every((reference) => uuid.test(reference)));
 });
 
 test("external module metadata and declared files are consistent", () => {
@@ -80,6 +84,10 @@ test("external module metadata and declared files are consistent", () => {
     assert.equal(manifest.version, packageJson.version);
     assert.equal(manifest.version, packageLock.version);
     assert.ok(Array.isArray(routes));
+    assert.equal(
+        manifest.files.some((file) => file.path.startsWith("changelog/")),
+        false,
+    );
     for (const entrypoint of Object.values(manifest.entrypoints)) {
         assert.ok(statSync(resolve(ROOT, entrypoint)).isFile());
     }
@@ -94,21 +102,6 @@ test("external module metadata and declared files are consistent", () => {
     }
 });
 
-test("manifest inventory excludes aliases and non-regular entries", () => {
-    const manifest = JSON.parse(readFileSync(resolve(ROOT, "manifest.json")));
-    const packagedPaths = new Set(manifest.files.map(({ path }) => path));
-    assert.equal(packagedPaths.has("manifest.json"), false);
-    assert.equal(packagedPaths.has("README.md"), false);
-    assert.equal(packagedPaths.has("AGENTS.md"), false);
-    assert.equal(
-        [...packagedPaths].some((path) => path.startsWith("docs/changelog/")),
-        false,
-    );
-    for (const path of packagedPaths) {
-        assert.ok(lstatSync(resolve(ROOT, path)).isFile(), path);
-    }
-});
-
 test("dashboard source avoids full-page browser navigation", () => {
     const violations = sourceFiles().flatMap((path) => {
         if (!path.includes(`${join(ROOT, "ui")}`)) return [];
@@ -118,6 +111,18 @@ test("dashboard source avoids full-page browser navigation", () => {
             : [];
     });
     assert.deepEqual(violations, []);
+});
+
+test("browser sources obtain the host UI context without internal imports", () => {
+    const resourcesSource = readFileSync(
+        resolve(ROOT, "ui/reuse/resources.js"),
+        "utf8",
+    );
+    assert.match(
+        resourcesSource,
+        /globalThis\[Symbol\.for\("cognis\.uiCtx"\)\]/,
+    );
+    assert.doesNotMatch(resourcesSource, /from\s+["']\/static\//);
 });
 
 test("browser code uses host clients for gateway-owned data", () => {

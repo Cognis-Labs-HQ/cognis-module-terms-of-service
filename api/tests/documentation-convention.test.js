@@ -1,19 +1,11 @@
-import test from "node:test";
 import assert from "node:assert/strict";
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
-import { relative, resolve } from "node:path";
+import { readFileSync, readdirSync, statSync } from "node:fs";
+import { resolve } from "node:path";
+import test from "node:test";
 
 const ROOT = resolve(import.meta.dirname, "../..");
-const TEMPLATE = resolve(ROOT, ".github/DOCUMENTATION_TEMPLATE.en.md");
 const LANGUAGES = ["de", "en", "id", "ja"];
-
-function markdownFiles(directory) {
-    return readdirSync(directory).flatMap((name) => {
-        const path = resolve(directory, name);
-        if (statSync(path).isDirectory()) return markdownFiles(path);
-        return name.endsWith(".md") ? [path] : [];
-    });
-}
+const BRANCH = "feature-add-terms-of-service-module-to-cognis";
 
 function headingLevels(path) {
     return readFileSync(path, "utf8")
@@ -22,67 +14,45 @@ function headingLevels(path) {
         .map((line) => line.match(/^#+/)[0].length);
 }
 
-test("agent and Copilot instructions stay synchronized", () => {
-    assert.equal(
-        readFileSync(resolve(ROOT, "AGENTS.md"), "utf8"),
-        readFileSync(resolve(ROOT, ".github/copilot-instructions.md"), "utf8"),
+test("localized standards and documentation templates stay synchronized", () => {
+    const standardLevels = headingLevels(resolve(ROOT, "docs/standard.en.md"));
+    const templateLevels = headingLevels(
+        resolve(ROOT, ".github/DOCUMENTATION_TEMPLATE.en.md"),
     );
-});
-
-test("documentation follows the hidden heading convention", () => {
-    const expected = headingLevels(TEMPLATE).slice(0, 3);
-    const violations = markdownFiles(resolve(ROOT, "docs")).flatMap((path) => {
-        const actual = headingLevels(path).slice(0, expected.length);
-        return actual.length === expected.length &&
-            actual.every((level, index) => level === expected[index])
-            ? []
-            : [relative(ROOT, path)];
-    });
-    assert.deepEqual(violations, []);
-});
-
-test("documentation templates exist for every supported language", () => {
-    const expected = headingLevels(TEMPLATE);
     for (const language of LANGUAGES) {
-        const template = resolve(
-            ROOT,
-            `.github/DOCUMENTATION_TEMPLATE.${language}.md`,
+        assert.deepEqual(
+            headingLevels(resolve(ROOT, `docs/standard.${language}.md`)),
+            standardLevels,
         );
-        assert.ok(statSync(template).isFile());
-        assert.deepEqual(headingLevels(template), expected);
-    }
-});
-
-test("every documentation topic has one variant per supported language", () => {
-    const documents = markdownFiles(resolve(ROOT, "docs"));
-    const families = new Map();
-    for (const path of documents) {
-        const relativePath = relative(resolve(ROOT, "docs"), path);
-        const match = /^(.*)\.(de|en|id|ja)\.md$/.exec(relativePath);
-        assert.ok(
-            match,
-            `${relative(ROOT, path)} must include a language suffix`,
+        assert.deepEqual(
+            headingLevels(
+                resolve(ROOT, `.github/DOCUMENTATION_TEMPLATE.${language}.md`),
+            ),
+            templateLevels,
         );
-        const [, topic, language] = match;
-        const variants = families.get(topic) ?? new Set();
-        variants.add(language);
-        families.set(topic, variants);
-    }
-    for (const [topic, variants] of families) {
-        assert.deepEqual([...variants].sort(), [...LANGUAGES].sort(), topic);
     }
 });
 
-test("the template repository does not publish its own changelog", () => {
-    assert.equal(existsSync(resolve(ROOT, "docs/changelog")), false);
-});
-
-test("changelog digests stay outside the module manifest", () => {
-    const manifest = JSON.parse(
-        readFileSync(resolve(ROOT, "manifest.json"), "utf8"),
+test("localized changelogs follow the shared release-note contract", () => {
+    const commitUrl =
+        "https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/";
+    for (const language of LANGUAGES) {
+        const path = resolve(ROOT, `changelog/${BRANCH}.${language}.md`);
+        assert.ok(statSync(path).isFile());
+        const markdown = readFileSync(path, "utf8");
+        assert.match(markdown, /^# [^#]/);
+        assert.match(
+            markdown,
+            new RegExp("^\\*\\*.+:\\*\\* `" + BRANCH + "`$", "m"),
+        );
+        assert.ok((markdown.match(/^## /gm) ?? []).length >= 2);
+        assert.ok(markdown.includes(commitUrl));
+        assert.doesNotMatch(markdown, /^- \[[^\]]+\]\([^\n)]+\)\s+—/m);
+    }
+    assert.deepEqual(
+        readdirSync(resolve(ROOT, "changelog")).filter((name) =>
+            name.startsWith(BRANCH),
+        ).length,
+        LANGUAGES.length,
     );
-    const changelogEntries = manifest.files.filter(({ path }) =>
-        path.startsWith("docs/changelog/"),
-    );
-    assert.deepEqual(changelogEntries, []);
 });

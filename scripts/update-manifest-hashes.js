@@ -17,7 +17,7 @@ const paths = execFileSync(
             path &&
             path !== "manifest.json" &&
             path !== "README.md" &&
-            !path.startsWith("docs/changelog/") &&
+            !path.startsWith("changelog/") &&
             existsSync(path) &&
             lstatSync(path).isFile(),
     )

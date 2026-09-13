@@ -1,6 +1,5 @@
 [
-    {
-        "path": "/showcase",
-        "access": { "minRole": "user" }
-    }
+    { "path": "/terms-of-service", "access": { "public": true } },
+    { "path": "/privacy-policy", "access": { "public": true } },
+    { "path": "/eula", "access": { "public": true } }
 ]

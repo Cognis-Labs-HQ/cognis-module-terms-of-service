@@ -1,85 +1,225 @@
 import { readJson, sendJson } from "./reuse/http.js";
-import { ShowcaseStore } from "./store.js";
+import { DOCUMENTS, LegalDocumentStore } from "./store.js";
 
-function requesterId(request) {
+const MAX_MARKDOWN_BYTES = 1_000_000;
+
+function accountId(request) {
     return String(request.auth?.accountId ?? request.auth?.sub ?? "").trim();
+}
+
+function isKnownSlug(slug) {
+    return Object.hasOwn(DOCUMENTS, slug);
+}
+
+export function consentFailure(error) {
+    const status =
+        error.message === "invalid_json"
+            ? 400
+            : error.message === "request_too_large"
+              ? 413
+              : error.message === "stale_document_versions"
+                ? 409
+                : 500;
+    return {
+        status,
+        payload: {
+            error: {
+                code: status < 500 ? error.message : "internal_error",
+                message:
+                    status === 409
+                        ? "The legal documents changed; review them again."
+                        : status < 500
+                          ? "The consent request is invalid."
+                          : "Consent could not be recorded.",
+            },
+        },
+    };
 }
 
 export function registerApi(router, ctx) {
     const database = ctx.getCapability("db:executor");
     const requireAuth = ctx.getCapability("auth:requireAuth");
-    if (!database || typeof requireAuth !== "function") {
+    const versionTracker = ctx.getCapability("docs:versionStore");
+    if (
+        !database ||
+        typeof requireAuth !== "function" ||
+        typeof versionTracker?.createStore !== "function"
+    ) {
         throw new Error(
-            "Module template requires db:executor and auth:requireAuth.",
+            "Terms of Service requires db:executor, auth:requireAuth, and docs:versionStore.",
         );
     }
-    const store = new ShowcaseStore(database);
+    const store = new LegalDocumentStore(database, versionTracker);
     const ready = store.ensureSchema();
-    const listItems = async (ownerId) => {
-        await ready;
-        return store.list(ownerId);
-    };
 
     router.get(
-        "/api/v1/modules/module-template/items",
+        "/api/v1/modules/terms-of-service/documents",
         async (request, response) => {
-            await requireAuth(request, response);
+            await requireAuth(request, response, "admin");
             if (response.writableEnded) return;
+            await ready;
+            sendJson(response, 200, { data: await store.listLatest() });
+        },
+        { access: { minRole: "admin" } },
+    );
+
+    router.put(
+        "/api/v1/modules/terms-of-service/documents/:slug",
+        async (request, response) => {
+            await requireAuth(request, response, "admin");
+            if (response.writableEnded) return;
+            const slug = String(request.params?.slug ?? "");
+            if (!isKnownSlug(slug)) {
+                sendJson(response, 404, {
+                    error: {
+                        code: "unknown_document",
+                        message: "Unknown legal document.",
+                    },
+                });
+                return;
+            }
+            try {
+                const body = await readJson(request, {
+                    maxBytes: MAX_MARKDOWN_BYTES,
+                });
+                if (
+                    typeof body.markdown !== "string" ||
+                    !body.markdown.trim()
+                ) {
+                    sendJson(response, 400, {
+                        error: {
+                            code: "invalid_markdown",
+                            message: "Markdown content is required.",
+                        },
+                    });
+                    return;
+                }
+                await ready;
+                const document = await store.publish(
+                    slug,
+                    body.markdown,
+                    accountId(request),
+                );
+                ctx.log?.("info", "Legal document published.", {
+                    component: "terms-of-service",
+                    operation: "publishDocument",
+                    slug,
+                });
+                sendJson(response, 200, { data: document });
+            } catch (error) {
+                const invalidRequest = [
+                    "invalid_json",
+                    "request_too_large",
+                ].includes(error.message);
+                ctx.log?.("error", "Legal document publication failed.", {
+                    component: "terms-of-service",
+                    operation: "publishDocument",
+                    slug,
+                    error: error.message,
+                });
+                sendJson(response, invalidRequest ? 400 : 500, {
+                    error: {
+                        code: invalidRequest ? error.message : "internal_error",
+                        message: invalidRequest
+                            ? "The request body is invalid."
+                            : "The legal document could not be published.",
+                    },
+                });
+            }
+        },
+        { access: { minRole: "admin" } },
+    );
+
+    router.get(
+        "/api/v1/modules/terms-of-service/public/:slug",
+        async (request, response) => {
+            const slug = String(request.params?.slug ?? "");
+            if (!isKnownSlug(slug)) {
+                sendJson(response, 404, {
+                    error: {
+                        code: "unknown_document",
+                        message: "Unknown legal document.",
+                    },
+                });
+                return;
+            }
+            await ready;
+            const document = await store.getLatest(slug);
+            if (!document) {
+                sendJson(response, 404, {
+                    error: {
+                        code: "not_published",
+                        message: "This document is not published.",
+                    },
+                });
+                return;
+            }
+            sendJson(response, 200, { data: document });
+        },
+        { access: { public: true } },
+    );
+
+    router.get(
+        "/api/v1/modules/terms-of-service/consent",
+        async (request, response) => {
+            await requireAuth(request, response, "user");
+            if (response.writableEnded) return;
+            await ready;
             sendJson(response, 200, {
-                data: await listItems(requesterId(request)),
+                data: await store.consentStatus(accountId(request)),
             });
         },
         { access: { minRole: "user" } },
     );
 
     router.post(
-        "/api/v1/modules/module-template/items",
+        "/api/v1/modules/terms-of-service/consent",
         async (request, response) => {
-            await requireAuth(request, response);
+            await requireAuth(request, response, "user");
             if (response.writableEnded) return;
             try {
                 const body = await readJson(request);
-                const title =
-                    typeof body.title === "string" ? body.title.trim() : "";
-                if (!title || title.length > 120) {
+                const termsVersion = String(body.termsVersion ?? "").trim();
+                const privacyVersion = String(body.privacyVersion ?? "").trim();
+                if (
+                    !termsVersion ||
+                    !privacyVersion ||
+                    body.accepted !== true
+                ) {
                     sendJson(response, 400, {
                         error: {
-                            code: "invalid_title",
-                            message: "Title must contain 1–120 characters.",
+                            code: "consent_required",
+                            message:
+                                "Current legal documents must be accepted.",
                         },
                     });
                     return;
                 }
                 await ready;
-                const item = await store.create(requesterId(request), title);
-                ctx.log?.("info", "Showcase item created.", {
-                    component: "module-template",
-                    operation: "create_item",
-                    itemId: item.id,
+                const status = await store.recordConsent(
+                    accountId(request),
+                    termsVersion,
+                    privacyVersion,
+                );
+                ctx.log?.("info", "Legal consent recorded.", {
+                    component: "terms-of-service",
+                    operation: "recordConsent",
+                    accountId: accountId(request),
+                    termsVersion,
+                    privacyVersion,
                 });
-                sendJson(response, 201, { data: item });
+                sendJson(response, 201, { data: status });
             } catch (error) {
-                const clientError = [
-                    "invalid_json",
-                    "request_too_large",
-                ].includes(error.message);
-                ctx.log?.("error", "Showcase item creation failed.", {
-                    component: "module-template",
-                    operation: "create_item",
+                const failure = consentFailure(error);
+                ctx.log?.("error", "Legal consent recording failed.", {
+                    component: "terms-of-service",
+                    operation: "recordConsent",
+                    accountId: accountId(request),
                     error: error.message,
                 });
-                sendJson(response, clientError ? 400 : 500, {
-                    error: {
-                        code: clientError ? error.message : "internal_error",
-                        message: clientError
-                            ? "The request body is invalid."
-                            : "The item could not be created.",
-                    },
-                });
+                sendJson(response, failure.status, failure.payload);
             }
         },
         { access: { minRole: "user" } },
     );
-
-    return { listItems };
 }

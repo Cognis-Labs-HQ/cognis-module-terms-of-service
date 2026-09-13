@@ -2,73 +2,106 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { bootstrapModule, uninstallModule } from "../../bootstrap.js";
 
-function createContext(registrations) {
+function context(registrations) {
+    const database = {
+        async ensureTable() {},
+        async executeCommand() {
+            return { rows: [] };
+        },
+    };
     return {
         moduleRoot: process.cwd(),
         router: {
             get(path) {
-                registrations.routes.push(path);
+                registrations.api.push(path);
+            },
+            put(path) {
+                registrations.api.push(path);
             },
             post(path) {
-                registrations.routes.push(path);
+                registrations.api.push(path);
             },
         },
         getCapability(name) {
-            if (name === "auth:requireAuth") return () => ({ role: "user" });
-            if (name === "db:executor") {
+            if (name === "auth:requireAuth") return async () => {};
+            if (name === "db:executor") return database;
+            if (name === "docs:versionStore") {
                 return {
-                    ensureTable() {},
-                    executeCommand() {
-                        return { rows: [] };
-                    },
+                    createStore: () => ({
+                        async ensureSchema() {},
+                        async getLatest() {
+                            return null;
+                        },
+                        async publish() {},
+                        async deleteAll() {},
+                    }),
                 };
             }
             assert.fail(`Unexpected capability: ${name}`);
         },
         registerStaticDir() {},
         registerSpaRoute(route) {
-            registrations.routes.push(route.base);
+            registrations.pages.push(route.base);
         },
-        registerNavbarPlugin() {},
-        contributePublicCapability(name, value) {
-            registrations.capabilities.push([name, value]);
+        registerAdminSection(section) {
+            registrations.admin.push(section);
         },
-        registerFlow(flow) {
-            registrations.flows.push(flow);
+        registerNavbarPlugin(plugin) {
+            registrations.plugins.push(plugin);
         },
         flow: {
             exists() {
                 return false;
-            },
-            extend(...args) {
-                registrations.extensions.push(args);
             },
         },
         log() {},
     };
 }
 
-test("registers template surfaces through ctx", () => {
-    const registrations = {
-        routes: [],
-        capabilities: [],
-        extensions: [],
-        flows: [],
-    };
-    bootstrapModule(createContext(registrations));
+test("registers the Legal administration section and public pages", () => {
+    const registrations = { admin: [], api: [], pages: [], plugins: [] };
+    bootstrapModule(context(registrations));
 
-    assert.ok(registrations.routes.includes("/showcase"));
-    assert.equal(registrations.capabilities[0][0], "showcase:listItems");
-    assert.equal(registrations.flows[0].id, "showcase-items");
-    assert.equal(registrations.extensions[0][0], "showcase-items");
+    assert.equal(
+        registrations.admin[0].label,
+        "module.terms_of_service.admin.title",
+    );
+    assert.equal(registrations.admin[0].access.minRole, "admin");
+    assert.deepEqual(registrations.pages, [
+        "/terms-of-service",
+        "/privacy-policy",
+        "/eula",
+    ]);
+    assert.ok(
+        registrations.api.includes(
+            "/api/v1/modules/terms-of-service/documents/:slug",
+        ),
+    );
+    assert.match(registrations.plugins[0].scriptUrl, /consent-enforcement/);
 });
 
-test("uninstall deletes saved content only when requested", async () => {
+test("uninstall deletes content only when requested", async () => {
     const commands = [];
-    const logs = [];
     const ctx = {
         getCapability(name) {
-            assert.equal(name, "db:executor");
+            if (name === "docs:versionStore") {
+                return {
+                    createStore: () => ({
+                        async ensureSchema() {
+                            commands.push({
+                                option: "ENSURE",
+                                table: "core_document_versions",
+                            });
+                        },
+                        async deleteAll() {
+                            commands.push({
+                                option: "DELETE",
+                                table: "core_document_versions",
+                            });
+                        },
+                    }),
+                };
+            }
             return {
                 async ensureTable(definition) {
                     commands.push({ option: "ENSURE", table: definition.name });
@@ -79,19 +112,13 @@ test("uninstall deletes saved content only when requested", async () => {
                 },
             };
         },
-        log(level, message, metadata) {
-            logs.push({ level, message, metadata });
-        },
+        log() {},
     };
-
     await uninstallModule(ctx, { deleteContent: false });
     assert.deepEqual(commands, []);
-
     await uninstallModule(ctx, { deleteContent: true });
-    assert.deepEqual(commands, [
-        { option: "ENSURE", table: "module_template_items" },
-        { option: "DELETE", table: "module_template_items" },
-    ]);
-    assert.equal(logs[0].level, "info");
-    assert.equal(logs[0].metadata.operation, "uninstall_cleanup");
+    assert.equal(commands[0].table, "core_document_versions");
+    assert.equal(commands[1].table, "terms_of_service_consents");
+    assert.equal(commands[2].table, "terms_of_service_consents");
+    assert.equal(commands[3].table, "core_document_versions");
 });

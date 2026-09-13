@@ -1,38 +1,45 @@
 {
-    "id": "module-template",
+    "id": "terms-of-service",
     "uuid": "cc810afb-4fe6-5ef7-8f0b-e23676e01db3",
-    "name": "module.module_template.name",
-    "version": "1.0.6",
+    "name": "module.terms_of_service.name",
+    "version": "1.2.2",
     "class": "extension",
-    "template": "true",
     "coreApiVersion": "v1",
-    "capabilities": ["showcase:listItems"],
+    "capabilities": [],
     "entrypoints": {
         "bootstrap": "./bootstrap.js",
         "api": "./api/index.js",
         "ui": "./ui/index.html",
         "cli": "./cli/index.js"
     },
-    "ui": { "stringsBaseUrl": "/static/modules/module-template/languages" },
+    "ui": { "stringsBaseUrl": "/static/modules/terms-of-service/languages" },
     "publisher": "Cognis Labs HQ",
     "requires": [],
-    "requiresCapabilities": ["auth:requireAuth", "db:executor"],
-    "summary": "module.module_template.summary",
-    "description": "module.module_template.description",
-    "categories": ["module.module_template.category_developer_tools"],
+    "requiresCapabilities": [
+        "auth:requireAuth",
+        "db:executor",
+        "ui:reuse",
+        "ui:showToast",
+        "ui:openErrorPopup",
+        "ui:log",
+        "ui:navigate",
+        "docs:versionStore"
+    ],
+    "summary": "module.terms_of_service.summary",
+    "description": "module.terms_of_service.description",
+    "categories": ["module.terms_of_service.category.legal"],
     "license": "AGPL-3.0-or-later",
-    "repository": "https://github.com/Cognis-Labs-HQ/cognis-module-template",
-    "homepage": "https://github.com/Cognis-Labs-HQ/cognis-module-template#readme",
-    "support": "https://github.com/Cognis-Labs-HQ/cognis-module-template/issues",
+    "repository": "https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service",
+    "homepage": "https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service#readme",
+    "support": "https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/issues",
     "assets": {
         "screenshots": ["assets/screenshots/cognis-logo.png"],
         "icon": "assets/icon.svg",
         "banner": "assets/banner.svg"
     },
     "tags": [
-        "module.module_template.tag_template",
-        "module.module_template.tag_development",
-        "module.module_template.tag_example"
+        "module.terms_of_service.tag.legal",
+        "module.terms_of_service.tag.administration"
     ],
     "files": [
         {
@@ -53,7 +60,7 @@
         },
         {
             "path": ".github/copilot-instructions.md",
-            "sha256": "bf1c027e32aa81dfdbfe5f1da0241f0aeb2743f39470b4aa4f8faae6d5889f41"
+            "sha256": "0d7d2c1652edcdd175f6a8261d16632329403f3f9fd9a0a737dd81b23f2ee4ba"
         },
         {
             "path": ".gitignore",
@@ -73,23 +80,23 @@
         },
         {
             "path": "README.de.md",
-            "sha256": "a995310dcf15077302caed3ab7df6f0c5cf663519bd686fcebc2872ac235eda6"
+            "sha256": "fef1db6045705bb56817f2581a3562f7219a6dd0908eb2d3357c9e5dc7894a3c"
         },
         {
             "path": "README.en.md",
-            "sha256": "2e60a7090e230bf818fe9de2958c26f06a8fca709abc46ce9ee37f7b3e3bdab7"
+            "sha256": "5c9950d686d18987cf9436709e0c782de3b77ce992a5b4ad060d7dc22dc29792"
         },
         {
             "path": "README.id.md",
-            "sha256": "5de38d816faaef0fc48948b7ccbfc5a81c752898b8e0450439dbac793faa9fab"
+            "sha256": "e8865776c28ce4b23d7e32097975e13610a684e173e15c3621fd42a7e919bbd7"
         },
         {
             "path": "README.ja.md",
-            "sha256": "4c2ab5563690e0d3d644082c941f9f8eda3e40e72ee9715804fc68f7e76a9a86"
+            "sha256": "519fabfb4540af16968e41dfca170560ce44303fc520066c316c6a0c61ed87af"
         },
         {
             "path": "api/index.js",
-            "sha256": "8d5d284164317fa3b28ff4e42dc23d88ba0e1f51cc4f511811e50bab655484f8"
+            "sha256": "f535c9991d52ea92f16fe3a9f48c83643e3da9ecca0656d659e6826945502dc4"
         },
         {
             "path": "api/reuse/http.js",
@@ -97,15 +104,19 @@
         },
         {
             "path": "api/store.js",
-            "sha256": "0f698375223c2f5e3103f3aed834e403dc787a871d05bcbed6081374f44d19f7"
+            "sha256": "9e0f40a2548c6553b9d6030f0b212d93ee6a465c56440fe29e9cf2fd128f68ca"
         },
         {
             "path": "api/tests/bootstrap.test.js",
-            "sha256": "3e306c3f2907b21a2c0abde415041752781dc5a72b99a9685b160615ade8e65d"
+            "sha256": "6c586347ce4ec9cedec362665dadd0648894e69f192f4405cef354a04e6bfdb0"
+        },
+        {
+            "path": "api/tests/consent-errors.test.js",
+            "sha256": "f0c15e13eb96d7885120976f6d5a57fa6012bf1132e5d686234379271fc8eaad"
         },
         {
             "path": "api/tests/documentation-convention.test.js",
-            "sha256": "191e4d6d5527678beba83ab48f1c77055045d9b28f32d9a1a7a239a390768471"
+            "sha256": "b04f3f93876ffef3c5ac4840f440f5c74699c489b07e4b2c8adf119f8dc5a34e"
         },
         {
             "path": "api/tests/http.test.js",
@@ -113,15 +124,15 @@
         },
         {
             "path": "api/tests/store.test.js",
-            "sha256": "f293219bdb09b14bb17d822cc8cd31efdabd015b7db10733bc4ac349d9c036dc"
+            "sha256": "3e5492f14da5b6b2939d8fbe3c19feeeb7c8663f82841fa1f329dc15682c0bdb"
         },
         {
             "path": "api/tests/structural-compliance.test.js",
-            "sha256": "f08c46dbd569561a9eaf7ad96ee63861d4d996d62452a181a7bfa96307fd3bd6"
+            "sha256": "37495cf2911f56e7dd279df7ee46bbd77fdd76a98b63f982dacddaa7cf5887de"
         },
         {
             "path": "api/ui.js",
-            "sha256": "edfaf68ac88c87c73d977b1b97efbdad5722147f36a65e40aa3071f4e15b6a18"
+            "sha256": "4f2562e9e9326b8bcbfe6c85d6adcc4712e3f9b14651f82e4e8953690280a451"
         },
         {
             "path": "assets/banner.svg",
@@ -137,51 +148,51 @@
         },
         {
             "path": "bootstrap.js",
-            "sha256": "d2f095f76c688902850bbe9c15745d31a29bbc2d88963d814f971195819f95d8"
+            "sha256": "06542ccd8be08b3edc4db0a2ac5f7f131a149c9b3dcc5fc4de7c4ed584eb5156"
         },
         {
             "path": "cli/index.js",
-            "sha256": "70c40a6919f65afe05db81a6c8b53601cd6953eccaaa27be10f96fc7b8659e7e"
+            "sha256": "e1265f020eec5a25eb36c36009ea35e42f14c790f56039543ebbfd6924856fe5"
         },
         {
             "path": "cli/tests/index.test.js",
-            "sha256": "34d9f94f7d3e526ede5cd5df43a3bf6eed06f5b6ba107a48b02967e4b31d6459"
+            "sha256": "2ebc3a53252a801a0cc6ea0dc9c0757a9d7f31eaecd8f6a536fb35dd70e2d862"
         },
         {
             "path": "docs/standard.de.md",
-            "sha256": "32f0b8d34beaf0b0eee8f774e5e99831880b68dd773d55bd5f3c8777a09fc886"
+            "sha256": "316d83d19b035dc84adf32c995f73478c78c74e3865ead194391481e408b55d5"
         },
         {
             "path": "docs/standard.en.md",
-            "sha256": "56ccf35d3040cd4671d7000c5a5918709521cb7a1d23ede312afbdde72e59107"
+            "sha256": "74a0c8e84d94512a6c2962e1de373ba76156c81122da284708e440608d02009e"
         },
         {
             "path": "docs/standard.id.md",
-            "sha256": "578d81aba54b7a91b418d309541cd0eb50f4dad7891329c7064bc47c74c77ea3"
+            "sha256": "35c19165d8675c01edc4e91e75c88191b8c2a94301544fcfe804b21f3063f3e1"
         },
         {
             "path": "docs/standard.ja.md",
-            "sha256": "49720ab2c4cb507b07653e41402a2f0f58a0b4e536439012d8fa27340b481484"
+            "sha256": "8f8aa0f815ec0e77ae18c5c49681835c148defb8e1246de6bd09af781921ffd3"
         },
         {
             "path": "package-lock.json",
-            "sha256": "2ec2d12539a6800ee619e5c15a1493c6c2bef44320b3756526752242a348e1aa"
+            "sha256": "ad26b6bf9238da8f348c1771a53117a9642bee90f6fd0c2efde6966fdbe5bcf0"
         },
         {
             "path": "package.json",
-            "sha256": "664c24ce9c28ee16d4e43401628987c2b760299202282b8de911a6fddfe74949"
+            "sha256": "9c8f05e937ab7810906c02afa154943b4718bd190bbaad4801ee0f0557252cef"
         },
         {
             "path": "routes.json",
-            "sha256": "964f6205c8cd814f2a16c557b133bd989f2f0ab43bb71cbb934f9dee1fea1aea"
+            "sha256": "76496400ebf634e4971900f73c372fa609662d4f93fb94fef97e68dac14e9a09"
         },
         {
             "path": "scripts/update-manifest-hashes.js",
-            "sha256": "97b2cd93f2b872c7ba5d9608960083c9227b4108987e15e1ea7b9a1a1bf08a30"
+            "sha256": "2979c2ac7132309211f24f5ae608fd8280a200e5332cb6076816c77f1279674c"
         },
         {
             "path": "scripts/validate-manifest.js",
-            "sha256": "c1981f7bfb7842fc6536047a52839d2fdd79764dfd3924bf42a81843576272fe"
+            "sha256": "e629dca493ec21e35270c8233c109178cbd14d982949752314becc10c1ebc373"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -193,47 +204,51 @@
         },
         {
             "path": "ui/app.js",
-            "sha256": "37042dc33352c0b9524e86b6295fa558157dd2ecd4c8a6b4835710c8123b43e5"
+            "sha256": "880f52a4c70cabcd8f1197e91a4de505e9ec72630e273d9e4669693ce2c00147"
+        },
+        {
+            "path": "ui/consent-enforcement.js",
+            "sha256": "5cbe8e4a46f95ee74879f0153ec1a2238fd5f46eaa8c9be1b4504c35e66f02d9"
         },
         {
             "path": "ui/index.html",
-            "sha256": "881f083645dbccac35c89610a7d4a6107efa17ac7daec3527626470212dc62c5"
+            "sha256": "ad9bdc2bc9349b935b0b33129fb1e23e3f8e2285e8bfa7ac05d99fc298be6e29"
         },
         {
             "path": "ui/languages/de/strings.xml",
-            "sha256": "95db8ab9a9fa7932eaab51eb12821d2fec184b034b8447e8e03e1ebc00420637"
+            "sha256": "667f6cf021d958751d3d3b842513b11e284cd47c4777c433074fbe3989609d79"
         },
         {
             "path": "ui/languages/en/strings.xml",
-            "sha256": "2ac99b7c998ba4806946cec9cc1f660176cf4d1239de01f3015f9f09424d781e"
+            "sha256": "e818a32f6624120d1458126ece8c3f18b227492e5c1748f5324dd336eda7ef2f"
         },
         {
             "path": "ui/languages/id/strings.xml",
-            "sha256": "0de60128ec1be44812ca54512b7e1cb5094e3926489a2af2de42d1fee1b18528"
+            "sha256": "57d9369b4fd7a47122eeb67e5f265ec508fbb980ee2150774fe83e0828f2e66f"
         },
         {
             "path": "ui/languages/ja/strings.xml",
-            "sha256": "5d28b2043db0d1ed8be12c31a6505f7fe70d93992fd25da69ccd06b82506faaa"
+            "sha256": "4a900535493fdc638b5e9ea835ef051348c200f4e2ff13019f6ae42926ce9633"
         },
         {
-            "path": "ui/navbar.js",
-            "sha256": "5c98315d8b756af9b60e3a3b5ebc9ab882398025d06496b028fb199d0b1cbd69"
+            "path": "ui/registration-consent.js",
+            "sha256": "4dde9bd5746bd9b970ed37754d1ac4a1b50aa7b4d5c4cc42c694513ffa83fa82"
         },
         {
-            "path": "ui/styles/showcase.css",
-            "sha256": "7f940aa38e4cf24e534654beca18e752646ac3696c084ec5cf03c47beb12bd64"
+            "path": "ui/reuse/resources.js",
+            "sha256": "904f27234d1eb84897e43927ce3f9ccc19cf49a7219bdf89826d78ab89dd383c"
         },
         {
-            "path": "ui/tests/ambiguous-names.test.js",
-            "sha256": "4f490771c3678dcc716b25f4465fb39c9eab476774897cc030c9ec690d2761eb"
+            "path": "ui/styles/legal.css",
+            "sha256": "c681742c9ec3c58e44910f93d060962c8b11e986a83aec800732779dd960103c"
+        },
+        {
+            "path": "ui/tests/legal-ui.test.js",
+            "sha256": "1aa957af6d67684ac53d2294cf37a56bac5847aa0b9e58dfc33a11b6394cecda"
         },
         {
             "path": "ui/tests/localization-quality.test.js",
-            "sha256": "4183cebdd4aacbbb61c2b6e6d3acb230198fc253e1911f6d6cfb53cef9c8a820"
-        },
-        {
-            "path": "ui/tests/regression.test.js",
-            "sha256": "112313c3ed5aa4549bbd261ae45e930a7578466f36328c0cce5da00a478c243e"
+            "sha256": "9a1025a296dbc5764715344ab459b8eb24cb2345a498d25746ad0979584bfc80"
         }
     ]
 }

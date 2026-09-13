@@ -1,63 +1,19 @@
-# Cognis External Module Standard
+# Terms of Service Module Standard
 
-This template is an installable reference for isolated API, UI, CLI, persistence, capability, flow, localization, lifecycle, testing, and packaging contracts. Use it as a contract map, not as a generator.
+This document defines the supported architecture of the Cognis Terms of Service external module.
 
-## Usage Examples
+## Public Contract
 
-- Open `/showcase` after enabling the module to use its localized page-composer UI.
-- Run `cognisctl module-template:list` to consume the same authenticated API through the CLI.
-- Resolve `showcase:listItems` through `ctx` instead of importing module internals.
-- Extend the `showcase-items` flow through a named, removable stage.
-- Disable and re-enable the module to verify that scoped registrations are repeatable.
+The module registers the public `/terms-of-service`, `/privacy-policy`, and `/eula` SPA routes. Administration receives one localized Legal section through `registerAdminSection`; authenticated API routes require the least privileged applicable role.
 
-## Technical Specification
+Published legal content is Markdown rendered by Cognis through `ui:reuse`. Each save appends an immutable version through `docs:versionStore`. The module never imports Cognis internals or a concrete database driver.
 
-The rules below aggregate the core runtime contract and patterns proven by adjacent Cognis modules.
+## Consent and Lifecycle
 
-### Repository and Manifest Contract
+The module records the exact Terms and Privacy versions accepted by each account. Registration must require explicit consent. The authenticated-session flow blocks accounts whose recorded versions are not current; acceptance records both versions and declining logs the account out. Public legal pages remain available during enforcement.
 
-- One repository delivers one module. Keep `manifest.json`, `package.json`, `routes.json`, and `bootstrap.js` at its root.
-- Preserve the UUID forever and use UUIDs for required components. Keep manifest, package, and lockfile versions synchronized.
-- Declare exact repository-relative entrypoint and asset paths. Keep `routes.json` an array and `package.json` an ES module package.
-- Set `ui.stringsBaseUrl`, namespace locale keys with lowercase period-delimited words, and provide German, English, Indonesian, and Japanese key parity.
-- Declare only necessary routes, capabilities, dependencies, and permissions. Regenerate `manifest.files` last. Exclude the manifest, `docs/changelog/`, the optional root `README.md` compatibility alias, and every symbolic link or other non-regular entry. Localized README files remain regular packaged files.
+Scoped registrations are removed when the module is disabled. Documents and consent survive disable and restart; uninstall removes them only when `deleteContent` is true. Browser resources use `cognis.uiCtx`, host feedback, navigation, API, popup, i18n, and page-entry contracts.
 
-### Isolation and Lifecycle
+## Repository Quality
 
-- `bootstrap.js` orchestrates all host integration through its scoped `ctx`; it does not contain feature implementation or import Cognis internals.
-- Capabilities are neutral contracts. Colon-delimited capability and flow-name segments use camel case. Optional components are discovered by capability.
-- Meaningful orchestration uses named flows and stable, removable stages. Route handlers validate and coordinate while capabilities perform provider-specific work.
-- A disposer or `teardownModule` removes unscoped timers, listeners, sockets, and scripts. `uninstallModule(ctx, { deleteContent })` preserves external content unless deletion was explicitly requested.
-- Verify install, enable-disable-enable, and uninstall. No route, asset registration, UI contribution, capability, or flow hook may leak across cycles.
-
-### UI and Host Ownership
-
-- Compose pages with the host page composer and navigate through the host router. Use links for navigation and buttons for actions.
-- A module styles only module-owned descendants of its mount root. It does not mutate the shell, `document.body`, `document.head`, or host-owned classes.
-- Obtain shared UI primitives and styles from `ui:reuse`; load runtime scripts through `ui:resourceLoader` and dispose their handles.
-- Use host toast, error/decision popup, timestamp, theme, font, avatar, and focus contracts. Do not use browser dialogs, page reload navigation, arbitrary status nodes, CSS comments, or copied host CSS.
-- Localize visible and accessibility text in all four XML bundles. Prefer themeable SVG assets to emoji and platform glyphs.
-
-### API, Data, and Configuration
-
-- Validate, normalize, authenticate, and authorize at the boundary before business logic. Return stable errors without internal details.
-- Keep storage behind ctx-provided executors and module-owned stores; parameterize queries and namespace schema objects. Never import a concrete driver.
-- Do not invent a result limit when callers omit one. Validate explicitly requested limits without silently clamping them.
-- Use manifest `ui.preferences` plus the module config API for administrator settings, not a second settings screen. Preserve config across disable/restart and never return stored passwords.
-- Put user secrets in the host keyring. Generate identifiers and secrets with Web Crypto or Node Crypto, never `Math.random()`.
-- Log state changes at `info`, caught failures at `error` with safe structured context, and uncaught failures as fatal. Intentional fallbacks are logged, never silent.
-
-### Structure and Quality
-
-- Keep server, browser, CLI, documentation, data, tooling, and artwork in `api/`, `ui/`, `cli/`, `docs/`, `data/`, `scripts/` or `tooling/`, and `assets/` respectively.
-- Put genuinely cross-cutting layer-local code in `reuse/`; keep feature code near its owner and avoid `shared`, `utils`, `helpers`, and `common` directories.
-- Keep files cohesive and at most 1000 lines. Prefer descriptive names, readable control flow, useful constraint comments, and no obsolete compatibility shims.
-- Tests run standalone with local ctx fakes and cover public APIs, capabilities, flows, authorization, localization, lifecycle, and manifest integrity.
-
-### Release Checklist
-
-1. Review dependency UUIDs, required capabilities, route access, metadata, translations, artwork, and secret handling.
-2. Synchronize the manifest, package, and lockfile versions for contract, code, schema, or API changes.
-3. Run `npm install`, `npm run lint`, and `npm test`.
-4. Run `npm run manifest:hashes` after the final shipped-file edit, then `npm run check:manifest` and `git diff --check`.
-5. For non-template modules, add the four localized `docs/changelog/<branch>.<lang>.md` files and finish their commit provenance without digesting changelogs.
+Root manifest, package, lockfile, and route metadata remain synchronized. Server code lives in `api/`, browser code in `ui/`, operational commands in `cli/`, localized documentation in `docs/`, release metadata in `changelog/`, and artwork in `assets/`. Tests use local capability fakes and cover routes, persistence, flows, lifecycle, localization, and packaging.

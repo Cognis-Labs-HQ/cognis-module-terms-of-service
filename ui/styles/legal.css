@@ -1,0 +1,61 @@
+.terms-of-service-admin,
+.terms-of-service-public {
+    display: grid;
+    gap: 1rem;
+    margin: 2rem auto;
+    max-width: 64rem;
+    padding: 1.5rem;
+}
+
+.terms-of-service-documents {
+    display: grid;
+    gap: 1rem;
+}
+
+.terms-of-service-document {
+    padding: 1rem;
+}
+
+.terms-of-service-document-header,
+.terms-of-service-tabs {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+}
+
+.terms-of-service-document-header h2 {
+    margin: 0;
+}
+
+.terms-of-service-add {
+    font-size: 1.5rem;
+    min-height: 2.5rem;
+    min-width: 2.5rem;
+}
+
+.terms-of-service-editor,
+.terms-of-service-compose-pane label {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.terms-of-service-editor textarea {
+    box-sizing: border-box;
+    font: inherit;
+    resize: vertical;
+    width: 100%;
+}
+
+.terms-of-service-preview-pane,
+.terms-of-service-rendered {
+    min-height: 12rem;
+}
+
+.terms-of-service-tabs {
+    justify-content: flex-start;
+}
+
+.terms-of-service-tabs [data-action="publish"] {
+    margin-inline-start: auto;
+}
