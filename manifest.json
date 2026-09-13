@@ -1,8 +1,8 @@
 {
     "id": "terms-of-service",
-    "uuid": "cc810afb-4fe6-5ef7-8f0b-e23676e01db3",
+    "uuid": "e6f133ec-ccd9-4dbb-96bd-1ccf52a359de",
     "name": "module.terms_of_service.name",
-    "version": "1.2.2",
+    "version": "1.2.4",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [],
@@ -128,7 +128,7 @@
         },
         {
             "path": "api/tests/structural-compliance.test.js",
-            "sha256": "37495cf2911f56e7dd279df7ee46bbd77fdd76a98b63f982dacddaa7cf5887de"
+            "sha256": "239d7487190d69f44d7b5c135841ce71d284946fffa4f844cae63a29cb7cb29d"
         },
         {
             "path": "api/ui.js",
@@ -176,11 +176,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "ad26b6bf9238da8f348c1771a53117a9642bee90f6fd0c2efde6966fdbe5bcf0"
+            "sha256": "b7f3690c0e5f174b89654c49bdcf724d50f0225a7eb86f79a45b5b9fb5facca7"
         },
         {
             "path": "package.json",
-            "sha256": "9c8f05e937ab7810906c02afa154943b4718bd190bbaad4801ee0f0557252cef"
+            "sha256": "2abc1e9384d8bcabe2061e6bba9d0fa4d1dc53ae9fd6683b042aa07a476cb765"
         },
         {
             "path": "routes.json",
