@@ -21,6 +21,13 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /authenticate-session/);
     assert.match(enforcement, /enforce-setup-requirements/);
     assert.match(enforcement, /\/api\/v1\/auth\/logout/);
+    assert.match(enforcement, /response\.ok/);
+    assert.match(enforcement, /validate-stored-token/);
+    assert.match(enforcement, /apply-alternate-auth/);
+    assert.doesNotMatch(
+        enforcement,
+        /!localStorage\.getItem\("cognis_access_token"\)/,
+    );
     assert.match(enforcement, /while \(true\)/);
 });
 

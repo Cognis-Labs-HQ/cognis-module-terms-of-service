@@ -31,22 +31,26 @@ async function consentStatus() {
 }
 
 async function logout() {
-    await fetch("/api/v1/auth/logout", {
-        method: "POST",
-        credentials: "same-origin",
-        headers: localStorage.getItem("cognis_access_token")
-            ? {
-                  authorization: `Bearer ${localStorage.getItem("cognis_access_token")}`,
-              }
-            : {},
-    }).catch((error) => {
+    try {
+        const token = localStorage.getItem("cognis_access_token");
+        const response = await fetch("/api/v1/auth/logout", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: token ? { authorization: `Bearer ${token}` } : {},
+        });
+        if (!response.ok) {
+            throw new Error(`logout_http_${response.status}`);
+        }
+        clearStoredAuthSession();
+        return true;
+    } catch (error) {
         uiCtx.capabilities.get("ui:log")?.("error", "Logout request failed.", {
             component: "terms-of-service",
             operation: "declineConsentLogout",
             error: error instanceof Error ? error.message : String(error),
         });
-    });
-    clearStoredAuthSession();
+        return false;
+    }
 }
 
 async function requestConsent(status, i18n) {
@@ -85,19 +89,29 @@ async function requestConsent(status, i18n) {
             continue;
         }
         if (action === "decline") {
-            await logout();
-            return false;
+            if (await logout()) return false;
         }
     }
 }
 
-async function enforceConsent() {
-    if (
-        PUBLIC_PATHS.has(location.pathname) ||
-        !localStorage.getItem("cognis_access_token")
-    ) {
+function firstStageResult(stageCtx, stageId) {
+    const results = stageCtx?.stageResults?.[stageId];
+    return Array.isArray(results) ? results.find(Boolean) : results;
+}
+
+async function enforceConsent(stageCtx) {
+    if (PUBLIC_PATHS.has(location.pathname)) {
         return { requiresSetup: false };
     }
+    const storedSession = firstStageResult(stageCtx, "validate-stored-token");
+    const alternateSession = firstStageResult(stageCtx, "apply-alternate-auth");
+    if (!storedSession?.valid && !alternateSession?.authenticated) {
+        return { requiresSetup: false };
+    }
+    return enforceAuthenticatedConsent();
+}
+
+async function enforceAuthenticatedConsent() {
     const status = await consentStatus();
     if (!status.required || status.accepted) return { requiresSetup: false };
     const i18n = await createI18n({
@@ -116,7 +130,7 @@ uiCtx.extendFlow(
     enforceConsent,
 );
 
-await enforceConsent().then((result) => {
+await enforceAuthenticatedConsent().then((result) => {
     if (result.redirectTo) {
         const navigate = uiCtx.capabilities.get("ui:navigate");
         if (typeof navigate !== "function") {

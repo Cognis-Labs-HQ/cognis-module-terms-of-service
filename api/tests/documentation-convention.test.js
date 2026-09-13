@@ -47,6 +47,7 @@ test("localized changelogs follow the shared release-note contract", () => {
         );
         assert.ok((markdown.match(/^## /gm) ?? []).length >= 2);
         assert.ok(markdown.includes(commitUrl));
+        assert.doesNotMatch(markdown, /^- \[[^\]]+\]\([^\n)]+\)\s+—/m);
     }
     assert.deepEqual(
         readdirSync(resolve(ROOT, "changelog")).filter((name) =>

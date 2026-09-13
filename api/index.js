@@ -11,6 +11,31 @@ function isKnownSlug(slug) {
     return Object.hasOwn(DOCUMENTS, slug);
 }
 
+export function consentFailure(error) {
+    const status =
+        error.message === "invalid_json"
+            ? 400
+            : error.message === "request_too_large"
+              ? 413
+              : error.message === "stale_document_versions"
+                ? 409
+                : 500;
+    return {
+        status,
+        payload: {
+            error: {
+                code: status < 500 ? error.message : "internal_error",
+                message:
+                    status === 409
+                        ? "The legal documents changed; review them again."
+                        : status < 500
+                          ? "The consent request is invalid."
+                          : "Consent could not be recorded.",
+            },
+        },
+    };
+}
+
 export function registerApi(router, ctx) {
     const database = ctx.getCapability("db:executor");
     const requireAuth = ctx.getCapability("auth:requireAuth");
@@ -185,25 +210,14 @@ export function registerApi(router, ctx) {
                 });
                 sendJson(response, 201, { data: status });
             } catch (error) {
-                const clientError = [
-                    "invalid_json",
-                    "request_too_large",
-                    "stale_document_versions",
-                ].includes(error.message);
+                const failure = consentFailure(error);
                 ctx.log?.("error", "Legal consent recording failed.", {
                     component: "terms-of-service",
                     operation: "recordConsent",
                     accountId: accountId(request),
                     error: error.message,
                 });
-                sendJson(response, clientError ? 409 : 500, {
-                    error: {
-                        code: clientError ? error.message : "internal_error",
-                        message: clientError
-                            ? "The legal documents changed; review them again."
-                            : "Consent could not be recorded.",
-                    },
-                });
+                sendJson(response, failure.status, failure.payload);
             }
         },
         { access: { minRole: "user" } },

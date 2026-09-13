@@ -22,9 +22,14 @@ Every publication creates an immutable version through the core document-version
 
 Aligns the repository with the maintained Jitsi Meet and Nextcloud Whiteboard module conventions: shared root changelogs, module-specific synchronized AI instructions, restored CLI integration, concise current-state standards, and standalone documentation and structural contract tests.
 
+## Consent enforcement handles every authenticated session
+
+Consent checks now use the authentication flow results rather than assuming a local token. Declined consent clears local state only after a successful server logout, and malformed, oversized, stale, and internal consent failures return distinct HTTP semantics.
+
 ## Commits
 
-- [d0e4701](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/d0e4701b5dc43aa21efb59bcffcbc45f4504ec65) — Implement the legal document publishing module.
-- [3f00993](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3f00993d648f17ac8b1fb0953747d9e36e684496) — Consume the existing host UI reuse contracts.
-- [27b6605](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/27b66054102cba443e7b9d74213da0099697f695) — Add immutable versions and per-account legal consent enforcement.
-- [361dac2](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/361dac2396c03224fc407f79d400bb6c163c61ec) — Align external module structure and contributor guardrails.
+- [d0e4701](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/d0e4701b5dc43aa21efb59bcffcbc45f4504ec65)
+- [3f00993](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3f00993d648f17ac8b1fb0953747d9e36e684496)
+- [27b6605](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/27b66054102cba443e7b9d74213da0099697f695)
+- [361dac2](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/361dac2396c03224fc407f79d400bb6c163c61ec)
+- [cc866f7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/cc866f742cd4ff5a342cd37f6cd400e3ab0442fb)
