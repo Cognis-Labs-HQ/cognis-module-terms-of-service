@@ -1,10 +1,10 @@
 {
     "name": "@cognis/module-terms-of-service",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "private": false,
     "type": "module",
     "scripts": {
-        "test": "node --test api/tests/*.test.js ui/tests/*.test.js",
+        "test": "node --test api/tests/*.test.js cli/tests/*.test.js ui/tests/*.test.js",
         "check:manifest": "node scripts/validate-manifest.js",
         "manifest:hashes": "node scripts/update-manifest-hashes.js",
         "lint": "node ./tooling/scripts/lint-placeholder.mjs && node ./tooling/scripts/lint-readable.mjs",

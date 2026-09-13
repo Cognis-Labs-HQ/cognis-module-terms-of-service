@@ -2,14 +2,15 @@
     "id": "terms-of-service",
     "uuid": "cc810afb-4fe6-5ef7-8f0b-e23676e01db3",
     "name": "module.terms_of_service.name",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [],
     "entrypoints": {
         "bootstrap": "./bootstrap.js",
         "api": "./api/index.js",
-        "ui": "./ui/index.html"
+        "ui": "./ui/index.html",
+        "cli": "./cli/index.js"
     },
     "ui": { "stringsBaseUrl": "/static/modules/terms-of-service/languages" },
     "publisher": "Cognis Labs HQ",
@@ -59,7 +60,7 @@
         },
         {
             "path": ".github/copilot-instructions.md",
-            "sha256": "bf1c027e32aa81dfdbfe5f1da0241f0aeb2743f39470b4aa4f8faae6d5889f41"
+            "sha256": "0d7d2c1652edcdd175f6a8261d16632329403f3f9fd9a0a737dd81b23f2ee4ba"
         },
         {
             "path": ".gitignore",
@@ -110,12 +111,20 @@
             "sha256": "6c586347ce4ec9cedec362665dadd0648894e69f192f4405cef354a04e6bfdb0"
         },
         {
+            "path": "api/tests/documentation-convention.test.js",
+            "sha256": "ea262409f80086e5af6e4943d8000d1fe36811f9bd775c9d693f9e188decf0c2"
+        },
+        {
             "path": "api/tests/http.test.js",
             "sha256": "1008886fc8722bd499024b815150c7b800e889a5e7d1cd8516339bd609c15054"
         },
         {
             "path": "api/tests/store.test.js",
             "sha256": "3e5492f14da5b6b2939d8fbe3c19feeeb7c8663f82841fa1f329dc15682c0bdb"
+        },
+        {
+            "path": "api/tests/structural-compliance.test.js",
+            "sha256": "37495cf2911f56e7dd279df7ee46bbd77fdd76a98b63f982dacddaa7cf5887de"
         },
         {
             "path": "api/ui.js",
@@ -138,28 +147,36 @@
             "sha256": "06542ccd8be08b3edc4db0a2ac5f7f131a149c9b3dcc5fc4de7c4ed584eb5156"
         },
         {
+            "path": "cli/index.js",
+            "sha256": "e1265f020eec5a25eb36c36009ea35e42f14c790f56039543ebbfd6924856fe5"
+        },
+        {
+            "path": "cli/tests/index.test.js",
+            "sha256": "2ebc3a53252a801a0cc6ea0dc9c0757a9d7f31eaecd8f6a536fb35dd70e2d862"
+        },
+        {
             "path": "docs/standard.de.md",
-            "sha256": "32f0b8d34beaf0b0eee8f774e5e99831880b68dd773d55bd5f3c8777a09fc886"
+            "sha256": "316d83d19b035dc84adf32c995f73478c78c74e3865ead194391481e408b55d5"
         },
         {
             "path": "docs/standard.en.md",
-            "sha256": "56ccf35d3040cd4671d7000c5a5918709521cb7a1d23ede312afbdde72e59107"
+            "sha256": "74a0c8e84d94512a6c2962e1de373ba76156c81122da284708e440608d02009e"
         },
         {
             "path": "docs/standard.id.md",
-            "sha256": "578d81aba54b7a91b418d309541cd0eb50f4dad7891329c7064bc47c74c77ea3"
+            "sha256": "35c19165d8675c01edc4e91e75c88191b8c2a94301544fcfe804b21f3063f3e1"
         },
         {
             "path": "docs/standard.ja.md",
-            "sha256": "49720ab2c4cb507b07653e41402a2f0f58a0b4e536439012d8fa27340b481484"
+            "sha256": "8f8aa0f815ec0e77ae18c5c49681835c148defb8e1246de6bd09af781921ffd3"
         },
         {
             "path": "package-lock.json",
-            "sha256": "f86fc1d7a90248e270ae58593f3ad24c05776dfc4721337cefc6391f13cfec4c"
+            "sha256": "7847c9b1e18f1982f7a6508da3da1f8210c3905f4a165629de822f2a50a1836a"
         },
         {
             "path": "package.json",
-            "sha256": "3c12e86b02c5c06db30b3f8d5ec6d718cfcebd866819e889470d73036af2b37d"
+            "sha256": "5892407a0da649852d9020996b950aa81f49fcc0a8514cbb245c5651a260c1de"
         },
         {
             "path": "routes.json",
@@ -167,11 +184,11 @@
         },
         {
             "path": "scripts/update-manifest-hashes.js",
-            "sha256": "97b2cd93f2b872c7ba5d9608960083c9227b4108987e15e1ea7b9a1a1bf08a30"
+            "sha256": "2979c2ac7132309211f24f5ae608fd8280a200e5332cb6076816c77f1279674c"
         },
         {
             "path": "scripts/validate-manifest.js",
-            "sha256": "c1981f7bfb7842fc6536047a52839d2fdd79764dfd3924bf42a81843576272fe"
+            "sha256": "e629dca493ec21e35270c8233c109178cbd14d982949752314becc10c1ebc373"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",

@@ -1,82 +1,119 @@
-# AI instructions for Cognis external modules
+# AI Instructions for Terms of Service
 
-These instructions apply to this entire repository and define the safe defaults that forks of this template should retain.
+These instructions are the module-relevant subset of the Cognis repository guidance. They apply to this entire repository.
 
 ## Session startup
 
-Run `npm install` before exploration or development. Use `rg` rather than recursive `grep` for searches. Read every applicable `AGENTS.md` and `.github/copilot-instructions.md` before editing files.
+Before exploring, implementing, linting, or testing, run:
+
+```sh
+pip install ripgrep
+npm install
+```
+
+Use `rg` rather than recursive `grep` for searches.
 
 ## External module contract
 
-One repository delivers exactly one module. Keep `manifest.json`, `package.json`, `routes.json`, and `bootstrap.js` at the repository root. Preserve the module UUID permanently; IDs are readable labels, but UUIDs are lifecycle and dependency identities. Use UUIDs in `requires`. Synchronize the versions in the manifest, package, and lockfile for every code, schema, API, or contract change, retain `"type": "module"`, and keep `routes.json` as an array, including when it is empty.
+This repository delivers exactly one external Cognis module. Keep these files at the repository root:
 
-Always set `ui.stringsBaseUrl` in `manifest.json` to the module-owned locale bundle base URL; this is essential so Cognis can resolve localized manifest metadata before the module UI loads. Every entrypoint, asset, screenshot, and `manifest.files` item must be a regular repository-relative file with exact filename casing and must remain inside the checkout. Declare only capabilities and routes that the module actually needs, keep protected access least-privileged, and document why each requirement exists.
+- `manifest.json`
+- `package.json`
+- `routes.json`
+- `bootstrap.js`
+- declared API, UI, and CLI entrypoints
 
-After the final file change, run `npm run manifest:hashes`. The digest inventory contains only regular packaged files: exclude `manifest.json` because it cannot hash itself, `docs/changelog/` because changelogs are host-discovered release metadata, the optional root `README.md` compatibility alias because the host resolves localized README files directly, and every symbolic link, directory, socket, or other non-regular filesystem entry. Never replace those exclusions with hashes of symlink targets. Changelog SHA-256 sums must never be added to `manifest.json`. Keep publisher, repository, homepage, support, license, categories, tags, and localized README metadata accurate. Never commit generated secrets, credentials, private repository tokens, or personal data.
+Preserve the module UUID permanently. The readable ID may change, but the UUID must never be replaced, transferred, or reused. Every `requires` value must be a component UUID.
 
-## Component isolation, capabilities, and flows
+Always set `ui.stringsBaseUrl` in `manifest.json` to the module-owned locale bundle base URL so Cognis can resolve localized manifest metadata before the module UI loads.
 
-`bootstrap.js` is the sole host integration entrypoint and should contain orchestration rather than business logic. Treat `ctx` as the complete cross-component bus. Obtain behavior through capabilities, contribute public behavior through neutral capabilities and named flow stages, and detect optional components by capability. Use camel case inside each colon-delimited capability or flow-name segment. Keep capability contracts use-case-neutral: callers provide feature-specific labels, icons, and action identifiers.
+The module version must be bumped for every change. The versions in `manifest.json`, `package.json`, and `package-lock.json` must remain synchronized. Keep `package.json` configured with `"type": "module"`, keep `routes.json` as an array, and ensure every declared entrypoint and asset is a regular repository-relative file with exact filename casing.
 
-Never import Cognis internals, sibling components, database drivers, auth implementations, gateways, adapters, or private package implementations. Pass authentication, authorization, persistence, request, logging, and UI behavior into handlers through a `ctx`-derived context. Route handlers validate and orchestrate; the owning capability executes provider-specific work. Browser consumers use gateway-owned UI clients rather than calling another gateway's API endpoints directly.
+Keep repository, homepage, and support metadata pointed at this project. After the final file change, regenerate every SHA-256 digest in `manifest.files`. Do not include `manifest.json` in its own digest list. Verify all declared digests before committing.
 
-Create meaningful orchestration as named flows with stable, ordered stage IDs. Extend a flow with removable stages instead of branching on a known component or editing its internals. A module may create a flow only when it owns that operation. Register everything through the scoped context so the host can track it.
+Do not add generated secrets. Keep store artwork and screenshots free of credentials and personal data. Document requested capabilities and review new dependencies carefully.
 
-Return a disposer from `bootstrapModule` or export `teardownModule(ctx)` for resources scoped registration cannot remove. Export `uninstallModule(ctx, { deleteContent })` when the module persists content outside its checkout; preserve content unless `deleteContent` is true. Test install, enable-disable-enable, and uninstall paths. No route, static directory, UI contribution, capability, flow, stage, timer, listener, socket, or runtime script may survive teardown.
+## Component isolation and ctx
+
+`bootstrap.js` is the sole system integration entrypoint. It may import repository-local files, but runtime code and tests must not import Cognis source-tree internals, sibling components, or private package implementations.
+
+Treat `ctx` as the complete cross-component bus:
+
+- Obtain external behavior through `ctx` capabilities.
+- Register exported behavior through capabilities and named flow stages.
+- Detect optional components by checking their capabilities.
+- Extend existing flows instead of importing or editing another component.
+- Keep flow hooks removable so disabling the module cleanly removes its behavior.
+- Pass authentication, authorization, request, and persistence helpers into route handlers through a ctx-derived route context.
+- Return a disposer from `bootstrapModule` or export `teardownModule(ctx)` when the module owns timers, listeners, sockets, or other work that scoped registration cannot remove automatically.
+- Ensure enable-disable-enable and uninstall cycles leave no routes, static directories, UI contributions, capabilities, flows, flow hooks, timers, listeners, or sockets behind.
+
+Route handlers orchestrate and validate; capabilities execute provider-specific work. Never access a database driver, auth implementation, gateway store, adapter, or external service directly from a route handler.
 
 ## Structure and reuse
 
-Keep server code in `api/`, browser code in `ui/`, CLI code in `cli/`, localized documentation in `docs/`, datasets in `data/`, tooling in `scripts/` or `tooling/`, and artwork in `assets/`. Put tests beside their layer or in `tests/`, according to the repository's established layout. Module-specific operational controls belong in a `cognisctl` extension under `cli/`; they should call public contracts rather than bypassing them.
+Keep the external-module root layout intact. Server handlers belong under `api/`, browser resources under `ui/`, CLI controls under `cli/`, localized documentation under `docs/`, and store artwork under `assets/`.
 
-Put genuinely reusable layer-local code in `reuse/`; do not create `shared`, `utils`, `helpers`, or `common` directories. Promote a reusable abstraction when adjacent work reveals duplicated, parameterizable behavior, but keep feature-specific code beside its feature. Avoid redundant filenames when the containing directory already supplies the context.
+Use `reuse/` for genuinely cross-cutting utilities within a layer. Do not create directories named `shared`, `utils`, `helpers`, or `common`. Keep feature-specific implementation beside the feature rather than promoting it prematurely.
 
-Keep source files at or below 1000 lines. Prefer cohesive modules, early returns, and descriptive names over dense expressions. Avoid ambiguous one- or two-letter names except conventional coordinates, counters, row/column names, `_`, and `id`. Comments explain non-obvious intent, constraints, or alternate control flow—not syntax or edit history. Do not add compatibility shims for obsolete contracts or tests whose only purpose is asserting that deleted legacy artifacts remain absent.
+Keep modules cohesive and files at or below 1000 lines. Prefer existing capabilities, flows, and reusable abstractions over parallel infrastructure. Use descriptive function and variable names; avoid abbreviations and one- or two-letter bindings except conventional coordinates, loop counters, row/column counters, `_`, and `id`.
 
-## UI and localization
+## UI requirements
 
-Build dashboard content with host page-composer and client-side router contracts. The module owns only descendants rendered into the content root passed to `mount()`. Never manipulate or style the dashboard shell, `document.body`, `document.head`, or host-owned classes. End selectors at a module-namespaced class or ID; a host theme selector may appear only as an ancestor. Obtain host reusable modules and common styles through `ui:reuse`, and load third-party runtime scripts through `ui:resourceLoader`; dispose resource handles on unmount instead of appending scripts directly.
+Build dashboard content through the Cognis page composer and client-side router contracts supplied by the host. Do not implement full-page navigation with `window.location.href`, `window.location.replace`, or `window.location.reload`.
 
-Never navigate with `window.location.href`, `window.location.replace`, or `window.location.reload`. Use links for navigation and buttons for actions. Destructive actions use the host's destructive styling; cancellation is not destructive. Use host router, toast, error-popup, decision-popup, timestamp, theme, font, avatar, and focus contracts. Do not use `alert`, `confirm`, or `prompt`, write transient status into arbitrary DOM nodes, depend on browser console output for operational failures, copy host CSS, add CSS comments, or use emoji/platform glyphs where a themeable SVG is appropriate.
+Resolve all user-facing text through module-owned XML language resources. Namespace module keys as `module.terms_of_service.*`, keep keys lowercase ASCII with dots, hyphens, and underscores, and preserve German, English, Indonesian, and Japanese parity. Translate values in each locale rather than copying English. Route user-facing timestamps through the host timestamp capability and respect the user's font and theme preferences.
 
-Put every user-facing string in the German, English, Indonesian, and Japanese XML locale files with matching keys and genuine translations. Namespace keys to the module and use lowercase period-delimited words (for example `module.example.canvas.label`); do not use underscores or kebab-case between words. Localize manifest metadata, page titles, subtitles, labels, errors, empty states, accessibility text, and CLI-facing output where the host contract supports it.
+Use the host toast capability for transient feedback. Do not use `alert`, `confirm`, or `prompt`, and do not write result messages directly into arbitrary DOM nodes. Use decision popups only when deliberate user input is required.
 
-## API, persistence, configuration, and security
+User avatars must retain the standard Cognis behavior: profile preview on hover and profile navigation on click.
 
-Validate, bound, sanitize, and normalize at API boundaries. Authenticate and authorize before business logic, use least privilege and secure defaults, and return stable public errors without internal details. Do not impose an arbitrary result limit when the caller did not request one; validate an explicit limit without silently clamping or substituting it.
+Do not add comments to CSS. Prefer themeable SVG assets over emoji or platform-dependent icon glyphs.
 
-Keep persistence behind `ctx` capabilities and module-owned stores. Parameterize queries, keep schema/table names module-namespaced, and never bind the module to a concrete database driver. State-changing activity is logged at `info`. Caught failures are logged at `error` with safe structured metadata including component, operation, and relevant non-secret identifiers; uncaught runtime failures are fatal. Do not leave silent catches; log an intentional fallback before continuing.
+## API, security, and logging
 
-Use manifest `ui.preferences` and the module-owned `GET`/`PUT /api/v1/modules/<id>/config` contract for administrator configuration rather than building a second settings UI. Persist configuration across disable and restart; clear it only through uninstall semantics. Never return stored passwords. User-specific secrets belong in the host keyring and configuration secrets must use the host's concealed-value contract. Use Web Crypto or Node Crypto—not `Math.random()`—for identifiers, tokens, keys, and generated values.
+Validate and sanitize all input at the API boundary. Authenticate and authorize before business logic, use least privilege and secure defaults, and never expose internal error details to clients.
 
-Declare hard dependencies sparingly and prefer capability requirements or soft dependencies for optional integrations. Disabled modules must not run their normal bootstrap. Use a declared `disabledApi` entrypoint only when configuration must work while disabled, and register only routes explicitly allowed in that state.
+Log caught failures at `error` level with structured, safe metadata including component, operation, and relevant identifiers. Mark uncaught runtime failures as fatal. Log state-changing user activity at `info` level. Do not leave silent `catch` blocks; log an intentional fallback before continuing.
+
+Do not use `Math.random()` for identifiers, tokens, keys, or user-visible generated values. Use Web Crypto or Node Crypto.
+
+Do not introduce compatibility shims for obsolete schemas or API shapes. Do not write tests asserting that removed legacy artifacts are absent.
 
 ## Tests and quality
 
-Tests must run in this standalone repository with local fakes for host capabilities. Test public route, capability, flow, lifecycle, authorization, localization, and manifest contracts rather than Cognis or sibling implementations. Every behavior change requires tests, safe logging, and synchronized documentation. Keep localized documentation variants structurally and semantically synchronized.
+Tests live beside this module under `api/tests/` and `ui/tests/`. They must run from this standalone repository and use local fakes for every external capability. Test public route, capability, and flow contracts rather than importing sibling Cognis implementations.
 
-Run all of the following before committing:
+Before committing, run at minimum:
 
 ```sh
 npm install
-npm run lint
 npm test
-npm run manifest:hashes
-npm run check:manifest
 git diff --check
 ```
 
-Use the repository Prettier configuration: four-space indentation, double quotes in JavaScript, and trailing commas in multiline structures. Avoid tabs and trailing whitespace. Never wrap imports in `try`/`catch`. Do not add AI reasoning, session notes, or process commentary to product-facing files.
+Use the repository Prettier configuration: four-space indentation, double quotes in JavaScript, and trailing commas for multiline arrays and objects. Avoid tabs and trailing whitespace. Never wrap imports in `try`/`catch`.
 
-## Changelog entries
+Every behavior change requires appropriate tests, logging, and documentation. Keep documentation variants synchronized. Do not add AI reasoning, session notes, or process commentary to product-facing files.
 
-Store changelog entries in the shared `docs/changelog/` directory; do not create a root `CHANGELOG.md` or component-local changelog directories. Every pull request must add one entry in each supported language (`de`, `en`, `id`, and `ja`) using `<branch-name-without-copilot-prefix>.<lang>.md` filenames.
+Standard documentation describes the module's current supported behavior and integration contract. Keep it concise and cohesive by updating existing sections instead of appending a running history of fixes. Release chronology, superseded behavior, migration notes, and implementation history belong only in `changelog/`.
 
-This template repository is the sole exception: do not create changelog entries for changes made to the template itself. The requirement above applies to external modules created from this template and must remain in these inherited instructions.
+### Changelog entries (strict requirement)
 
-Each localized entry must contain, in this order, a level-one localized title, a localized bold feature-branch label, one or more level-two change headings with explanatory body text, and a localized level-two commit section. Use one change point per level-two heading because Cognis uses those headings as release-popup summaries. Translate the prose and provenance labels rather than copying English into other languages.
+Store changelog entries under `changelog/` in one shared directory instead of a root `CHANGELOG.md`. Every pull request must add exactly one changelog set in every supported app language (de, en, id, ja). Use the filename pattern `<branch-name-without-copilot-prefix>.<lang>.md`; for example, branch `copilot/cleanup-strings-and-codebase` produces `cleanup-strings-and-codebase.en.md`, `cleanup-strings-and-codebase.de.md`, `cleanup-strings-and-codebase.id.md`, and `cleanup-strings-and-codebase.ja.md`. Do not create additional changelog sets for later commits in the same pull request or append those changes to another feature's changelog.
 
-List implementation provenance as Markdown links whose targets use the module repository's full `/commit/<full-sha>` URL; the visible label may use the seven-character short reference. Before finishing, ensure the commit list records the immediately preceding implementation commit. If this requires a final bookkeeping commit, restrict it to the localized changelog files; because changelogs are excluded from the digest inventory, this bookkeeping step must not modify `manifest.json`. Existing changelog entries are immutable except for factual corrections.
+Changelog entry structure is mandatory and must match Cognis core and adjacent modules:
+
+- `# ...` — localized changelog title used as the release summary title.
+- `**Feature Branch:** ...` — the complete branch name without modification except removal of a leading `copilot/` prefix; localize the label while preserving the branch value.
+- `## ...` — one localized change point per heading; these headings are shown as dot-point summaries in release popups.
+- Body content under each change-point heading — localized full details shown on the changelog page.
+- `## Commits` — a localized final section containing a Markdown list of implementation commit links. Each link must use the full `https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/<full-sha>` target; its visible label may use the seven-character short SHA.
+
+Every implementation commit described by the current pull request's changelog must ensure the commit list links the immediately preceding implementation commit. Finish with a dedicated bookkeeping commit, when needed, that changes only the four localized changelog files to record the preceding implementation commit; that bookkeeping commit must not add unrelated changes or link itself. Keep all four variants structurally synchronized and translate every title, label, change-point heading, and body. Existing changelog entries are historical records and remain immutable except for factual corrections.
 
 ## Review discipline
 
-Treat human and automated review comments as actionable engineering feedback unless they conflict with higher-priority instructions. Record deliberately deferred work in root `TODO.md` with a concrete technical reason. Keep changes focused while leaving directly touched areas cleaner than you found them.
+Treat human and automated review comments as actionable engineering feedback. Implement technically sound corrections unless they conflict with a higher-priority instruction or architectural requirement. Record any intentionally deferred review item in root `TODO.md` with a concrete technical reason.
+
+Keep changes focused, but improve directly adjacent violations when touching a file. Leave the repository cleaner, more secure, and more internally consistent than you found it.
