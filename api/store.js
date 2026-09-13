@@ -9,7 +9,7 @@ function documentFromRow(row) {
     return {
         slug: String(row.slug),
         version: String(row.version),
-        markdown: String(row.markdown),
+        markdown: String(row.content),
         publishedAt: row.published_at,
         path: DOCUMENTS[row.slug],
     };

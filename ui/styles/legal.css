@@ -9,16 +9,17 @@
 
 .terms-of-service-documents {
     display: grid;
+    gap: 0.75rem;
+    padding: 0.25rem;
     width: 100%;
 }
 
 .terms-of-service-document {
-    border-block-end: 1px solid var(--color-border);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    overflow: clip;
     width: 100%;
-}
-
-.terms-of-service-document:first-child {
-    border-block-start: 1px solid var(--color-border);
 }
 
 .terms-of-service-document-header {
@@ -28,7 +29,7 @@
     gap: 0.75rem;
     grid-template-columns: minmax(0, 1fr) auto auto;
     list-style: none;
-    padding: 1rem;
+    padding: 0.875rem 1rem;
 }
 
 .terms-of-service-document-header::-webkit-details-marker {
@@ -36,6 +37,7 @@
 }
 
 .terms-of-service-document-header h3 {
+    font-size: 1rem;
     margin: 0;
 }
 
@@ -54,11 +56,12 @@
 }
 
 .terms-of-service-editor {
+    border-block-start: 1px solid var(--color-border);
     box-sizing: border-box;
     display: grid;
     gap: 0;
     min-width: 0;
-    padding: 0 1rem 1.25rem;
+    padding: 1rem;
     width: 100%;
 }
 
@@ -74,7 +77,7 @@
     color: var(--color-text);
     font: inherit;
     border-radius: 0.25rem 0.25rem 0 0;
-    min-height: 20rem;
+    min-height: 16rem;
     padding: 1rem;
     resize: none;
     width: 100%;

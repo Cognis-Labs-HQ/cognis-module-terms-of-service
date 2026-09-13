@@ -304,7 +304,7 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                     id: "terms-of-service-documents",
                     label: i18n.t("module.terms_of_service.admin.title"),
                     pinned: true,
-                    gridSize: { default: [12, 12], min: [4, 4], max: "full" },
+                    gridSize: { default: [12, 6], min: [6, 4], max: "full" },
                     render: () => documentsMarkup(documents, i18n),
                 },
             ],

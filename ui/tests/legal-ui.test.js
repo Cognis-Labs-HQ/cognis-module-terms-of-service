@@ -78,5 +78,6 @@ test("UI supplies all three fixed legal documents", () => {
         assert.match(source, new RegExp(`slug: "${slug}"`));
     }
     assert.match(source, /id: "terms-of-service-documents"/);
+    assert.match(source, /default: \[12, 6\]/);
     assert.match(source, /max: "full"/);
 });
