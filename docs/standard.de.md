@@ -14,7 +14,7 @@ Die Editoren für Rechtsdokumente verwenden die Cognis-Utilities für Informatio
 
 Das Modul speichert die genauen Versionen von Bedingungen und Datenschutzerklärung, denen jedes Konto zugestimmt hat. Die Registrierung verlangt eine ausdrückliche Zustimmung. Der Flow für authentifizierte Sitzungen sperrt Konten ohne aktuelle Zustimmung; Zustimmung speichert beide Versionen, Ablehnung meldet das Konto ab. Öffentliche Rechtsseiten bleiben dabei erreichbar.
 
-Bereichsgebundene Registrierungen werden beim Deaktivieren entfernt. Dokumente und Zustimmungen überdauern Deaktivierung und Neustart; die Deinstallation entfernt sie nur mit `deleteContent`. Browser-Ressourcen verwenden `cognis.uiCtx` sowie die Host-Verträge für Feedback, Navigation, API, Popup, Lokalisierung und Seiteneinstieg.
+Bereichsgebundene Registrierungen werden beim Deaktivieren entfernt. Stellt ein bereits geladener Browser-Hook fest, dass der Zustimmungsendpunkt des Moduls während einer Aktualisierung oder eines Neustarts entfernt wurde, protokolliert er den nicht verfügbaren Endpunkt, beendet weitere Zustimmungsanfragen und gibt die Navigation frei. Dokumente und Zustimmungen überdauern Deaktivierung und Neustart; die Deinstallation entfernt sie nur mit `deleteContent`. Browser-Ressourcen verwenden `cognis.uiCtx` sowie die Host-Verträge für Feedback, Navigation, API, Popup, Lokalisierung und Seiteneinstieg.
 
 ## Repository-Qualität
 

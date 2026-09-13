@@ -42,6 +42,14 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /response\.ok/);
     assert.match(enforcement, /validate-stored-token/);
     assert.match(enforcement, /apply-alternate-auth/);
+    assert.match(enforcement, /response\.status === 404/);
+    assert.match(enforcement, /if \(!consentEndpointAvailable\) return null/);
+    assert.match(enforcement, /consentEndpointAvailable = false/);
+    assert.match(enforcement, /operation: "loadConsentStatus"/);
+    assert.match(
+        enforcement,
+        /if \(!status\) return \{ requiresSetup: false \}/,
+    );
     assert.doesNotMatch(
         enforcement,
         /!localStorage\.getItem\("cognis_access_token"\)/,

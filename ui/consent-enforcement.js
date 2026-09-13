@@ -21,11 +21,26 @@ const PUBLIC_PATHS = new Set([
     "/privacy-policy",
     "/eula",
 ]);
+let consentEndpointAvailable = true;
 
 async function consentStatus() {
+    if (!consentEndpointAvailable) return null;
     const response = await apiFetch(API_PATH, {
         suppressAccessDeniedEvent: true,
     });
+    if (response.status === 404) {
+        consentEndpointAvailable = false;
+        uiCtx.capabilities.get("ui:log")?.(
+            "info",
+            "Consent enforcement skipped because the module endpoint is unavailable.",
+            {
+                component: "terms-of-service",
+                operation: "loadConsentStatus",
+                endpointStatus: response.status,
+            },
+        );
+        return null;
+    }
     if (!response.ok) throw new Error("consent_status_unavailable");
     return (await response.json()).data;
 }
@@ -113,6 +128,7 @@ async function enforceConsent(stageCtx) {
 
 async function enforceAuthenticatedConsent() {
     const status = await consentStatus();
+    if (!status) return { requiresSetup: false };
     if (!status.required || status.accepted) return { requiresSetup: false };
     const i18n = await createI18n({
         componentStringBaseUrls: ["/static/modules/terms-of-service/languages"],

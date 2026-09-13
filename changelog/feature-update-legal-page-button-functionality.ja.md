@@ -18,7 +18,13 @@
 
 ページの直接 Mount を3つの公開法的文書ルートに限定し、`/administration` で Contribution を読み込んだ際に未対応ルートエラーが発生しないようにします。
 
+## モジュール再起動中も Navigation を維持
+
+読み込み済みの同意 Hook がモジュールの更新または再起動中に Endpoint 不在の応答を受けた場合、Authentication Flow を拒否して Navigation を妨げる代わりに、Lifecycle Fallback を記録し、以降の確認を停止して処理を継続するようにしました。
+
 ## コミット
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
 - [877d0ab](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/877d0abd97b345c5a95dbbff3c5ed12f90ee03f7)
+- [2d2b595](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2d2b59547b04d5f9a1f34483f3ef264749b31c81)
+- [4432dc8](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/4432dc8ee1a2d7887b99b0eeee70c8c030d40926)
