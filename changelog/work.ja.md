@@ -42,6 +42,10 @@ Cognis の外部モジュールルーターはパスを完全一致で照合す�
 
 認証済み Navbar 統合とともに同意用 Stylesheet を読み込み、更新時と SPA ナビゲーション時の表示を一致させます。コアの Pill をコンパクトに保ち、文書リンクを改行し、公開済みの完全なバージョンセットを保存して、同意を閉じる前に保存済み状態を検証します。
 
+## 公開法務文書ページを統一
+
+公開法務ルートから重複する Popup を削除し、各文書をホストの Page Composer で描画します。完全な Shell を備えたページは自然な文書スクロールを使用し、描画された Markdown セクション見出しからサイドナビゲーションを構築します。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -53,3 +57,5 @@ Cognis の外部モジュールルーターはパスを完全一致で照合す�
 - [b9c93cc](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b9c93cc2de5693f69cdf63bb0d1d9419ef5c7ceb)
 - [1adbdf7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1adbdf77939aa53f70f2fef75b93bce9841bd746)
 - [0c9207e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0c9207e9a3c872266558207cc5a8d61f4c63ca12)
+
+- [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)

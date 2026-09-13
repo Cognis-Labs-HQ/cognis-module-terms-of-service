@@ -9,7 +9,7 @@ const [
     { createUnsavedChangesBar },
     { renderInfoTooltip },
     { createCollapsibleSectionComposer },
-    { openPopup: openDocumentPopup },
+    { createPageComposer },
 ] = await Promise.all([
     importReuseModule("api-client.js"),
     importReuseModule("i18n.js"),
@@ -19,7 +19,7 @@ const [
     importReuseModule("unsaved-changes.js"),
     importReuseModule("info-tooltip.js"),
     importReuseModule("collapsible-section-composer.js"),
-    importReuseModule("popup.js"),
+    importReuseModule("page-composer/index.js"),
 ]);
 
 const API_PATH = "/api/v1/modules/terms-of-service";
@@ -28,6 +28,7 @@ const DOCUMENTS = [
     { slug: "privacy-policy", titleKey: "privacy" },
     { slug: "eula", titleKey: "eula" },
 ];
+const publicPageComposers = new WeakMap();
 
 function showError(message) {
     const openErrorPopup = uiCtx.capabilities.get("ui:openErrorPopup");
@@ -305,19 +306,16 @@ export async function mount(root, { signal } = {}) {
     const slug = location.pathname.slice(1);
     const definition = DOCUMENTS.find((document) => document.slug === slug);
     if (!definition) throw new Error("Unsupported legal document route.");
-    root.innerHTML = `<main class="terms-of-service-public card-elevated">
-        <h1>${escapeHtml(i18n.t(`module.terms_of_service.document.${definition.titleKey}`))}</h1>
-        <article class="terms-of-service-rendered"></article>
-    </main>`;
+    const title = i18n.t(
+        `module.terms_of_service.document.${definition.titleKey}`,
+    );
+    let renderedMarkdown = "";
     try {
         const response = await apiFetch(`${API_PATH}/public/${slug}`, {
             signal,
         });
         const document = await readPayload(response);
-        const renderedMarkdown = renderMarkdown(document.markdown);
-        root.querySelector(".terms-of-service-rendered").innerHTML =
-            renderedMarkdown;
-        initializeMarkdownCodeCopy();
+        renderedMarkdown = renderMarkdown(document.markdown);
         const footerLinks = uiCtx.capabilities.get("ui:footerLinks");
         const footerLinkId = `terms-of-service:${slug}`;
         if (!footerLinks?.list?.().some((link) => link.id === footerLinkId)) {
@@ -330,21 +328,77 @@ export async function mount(root, { signal } = {}) {
                 ),
             });
         }
-        await openDocumentPopup({
-            title: i18n.t(
-                `module.terms_of_service.document.${definition.titleKey}`,
-            ),
-            body: `<article class="terms-of-service-rendered">${renderedMarkdown}</article>`,
-            maxWidth: "min(90vw, 80rem)",
-        });
     } catch {
-        root.querySelector(".terms-of-service-rendered").textContent = i18n.t(
-            "module.terms_of_service.public.unavailable",
-        );
+        renderedMarkdown = `<p>${escapeHtml(
+            i18n.t("module.terms_of_service.public.unavailable"),
+        )}</p>`;
     }
+
+    const navigationItems = [];
+    const composer = createPageComposer(root, {
+        allowCustomization: false,
+        elements: [
+            {
+                id: `${slug}-document`,
+                label: title,
+                pinned: true,
+                gridSize: { default: [12, 8], min: [6, 4], max: "full" },
+                render: () =>
+                    `<article class="terms-of-service-rendered content-panel">${renderedMarkdown}</article>`,
+            },
+        ],
+        preferenceKey: `terms-of-service-public-${slug}`,
+        i18n,
+        pageContext: { title, subtitle: "" },
+        toolbar: [
+            {
+                id: "document-sections",
+                label: title,
+                render: () =>
+                    `<nav class="terms-of-service-public-navigation">${navigationItems.join("")}</nav>`,
+            },
+        ],
+        toolbarScrollable: true,
+        contentScrolling: false,
+        requireAccountSession: false,
+        onRender() {
+            const article = root.querySelector(".terms-of-service-rendered");
+            navigationItems.length = 0;
+            article?.querySelectorAll("h2, h3").forEach((heading, index) => {
+                const id = `${slug}-section-${index + 1}`;
+                heading.id = id;
+                navigationItems.push(
+                    `<a href="#${id}" data-document-section>${escapeHtml(heading.textContent)}</a>`,
+                );
+            });
+            const navigation = root.querySelector(
+                ".terms-of-service-public-navigation",
+            );
+            if (navigation) navigation.innerHTML = navigationItems.join("");
+            initializeMarkdownCodeCopy();
+        },
+    });
+    publicPageComposers.get(root)?.destroy?.();
+    publicPageComposers.set(root, composer);
+    await composer.init();
+    root.addEventListener(
+        "click",
+        (event) => {
+            const link = event.target.closest("[data-document-section]");
+            if (!link) return;
+            event.preventDefault();
+            root.querySelector(link.getAttribute("href"))?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        },
+        { signal },
+    );
 }
 
 export function unmount(root) {
+    publicPageComposers.get(root)?.destroy?.();
+    publicPageComposers.delete(root);
     root.replaceChildren();
 }
 

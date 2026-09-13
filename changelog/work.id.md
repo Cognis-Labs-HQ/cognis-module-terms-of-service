@@ -42,6 +42,10 @@ Menggunakan satu popup persetujuan wajib, kotak centang bergaya inti, pil Baru/P
 
 Memuat stylesheet persetujuan bersama integrasi navbar terautentikasi agar penyegaran dan navigasi SPA dirender sama. Menjaga pil inti tetap ringkas, menempatkan tautan dokumen pada baris tersendiri, menyimpan set versi terbitan lengkap, dan memverifikasi status tersimpan sebelum menutup persetujuan.
 
+## Halaman dokumen hukum publik disatukan
+
+Menghapus popup yang berlebihan dari rute hukum publik dan merender setiap dokumen melalui penyusun halaman host. Halaman dengan shell penuh yang dihasilkan memakai pengguliran dokumen alami dan membangun navigasi samping dari judul bagian Markdown yang dirender.
+
 ## Commit
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -53,3 +57,5 @@ Memuat stylesheet persetujuan bersama integrasi navbar terautentikasi agar penye
 - [b9c93cc](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b9c93cc2de5693f69cdf63bb0d1d9419ef5c7ceb)
 - [1adbdf7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1adbdf77939aa53f70f2fef75b93bce9841bd746)
 - [0c9207e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0c9207e9a3c872266558207cc5a8d61f4c63ca12)
+
+- [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)

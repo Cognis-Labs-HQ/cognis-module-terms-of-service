@@ -42,6 +42,10 @@ Uses one mandatory consent popup, core-styled checkboxes, inline New/Update pill
 
 Loads the consent stylesheet with the authenticated navbar integration so refreshes and SPA navigation render identically. Keeps the core pill compact, places the document link on its own line, persists the complete published version set, and verifies the stored state before dismissing consent.
 
+## Unified public legal document pages
+
+Removes the redundant popup from public legal routes and renders each document through the host page composer. The resulting full-shell page uses natural document scrolling and builds its side navigation from the rendered Markdown section headings.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -53,3 +57,5 @@ Loads the consent stylesheet with the authenticated navbar integration so refres
 - [b9c93cc](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b9c93cc2de5693f69cdf63bb0d1d9419ef5c7ceb)
 - [1adbdf7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1adbdf77939aa53f70f2fef75b93bce9841bd746)
 - [0c9207e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0c9207e9a3c872266558207cc5a8d61f4c63ca12)
+
+- [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)

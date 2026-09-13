@@ -13,6 +13,7 @@ test("browser code imports the core Markdown renderer through ui:reuse", () => {
     assert.match(resources, /Symbol\.for\("cognis\.uiCtx"\)/);
     assert.match(resources, /capabilities\.get\("ui:reuse"\)/);
     assert.match(source, /importReuseModule\("markdown-renderer\.js"\)/);
+    assert.match(source, /importReuseModule\("page-composer\/index\.js"\)/);
     assert.match(source, /renderMarkdown\(textarea\.value\)/);
     assert.doesNotMatch(source, /host\.reuse|markdownComposer/);
 });
@@ -137,4 +138,15 @@ test("UI supplies all three fixed legal documents", () => {
     assert.match(source, /id: "terms-of-service-documents"/);
     assert.match(source, /default: \[12, 6\]/);
     assert.match(source, /max: "full"/);
+});
+
+test("public legal documents use one naturally scrolling composed page", () => {
+    assert.match(source, /createPageComposer\(root, \{/);
+    assert.match(source, /contentScrolling: false/);
+    assert.match(source, /requireAccountSession: false/);
+    assert.match(source, /toolbarScrollable: true/);
+    assert.match(source, /querySelectorAll\("h2, h3"\)/);
+    assert.match(source, /data-document-section/);
+    assert.match(source, /publicPageComposers\.get\(root\)\?\.destroy/);
+    assert.doesNotMatch(source, /openDocumentPopup/);
 });

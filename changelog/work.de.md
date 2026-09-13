@@ -42,6 +42,10 @@ Verwendet ein einziges obligatorisches Zustimmungspopup, Kontrollkästchen im Co
 
 Lädt das Zustimmungs-Stylesheet mit der authentifizierten Navbar-Integration, damit Aktualisierungen und SPA-Navigation identisch dargestellt werden. Hält die Core-Pill kompakt, setzt den Dokumentlink in eine eigene Zeile, speichert den vollständigen veröffentlichten Versionssatz und prüft den gespeicherten Status vor dem Schließen der Zustimmung.
 
+## Öffentliche Rechtsdokumentseiten vereinheitlicht
+
+Entfernt das redundante Popup aus öffentlichen Rechtsrouten und stellt jedes Dokument über den Seiten-Composer des Hosts dar. Die resultierende Seite mit vollständiger Shell verwendet natürliches Dokument-Scrolling und erstellt ihre Seitennavigation aus den gerenderten Markdown-Abschnittsüberschriften.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -53,3 +57,5 @@ Lädt das Zustimmungs-Stylesheet mit der authentifizierten Navbar-Integration, d
 - [b9c93cc](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b9c93cc2de5693f69cdf63bb0d1d9419ef5c7ceb)
 - [1adbdf7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1adbdf77939aa53f70f2fef75b93bce9841bd746)
 - [0c9207e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0c9207e9a3c872266558207cc5a8d61f4c63ca12)
+
+- [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)
