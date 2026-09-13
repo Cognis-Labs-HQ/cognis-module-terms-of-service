@@ -58,6 +58,10 @@ Menambahkan tabel persetujuan pengguna yang dapat dicari dan dipaginasi sepuluh 
 
 Mengganti paginator laporan buatan modul dengan kapabilitas bersama `ui:pagination`. Menerima satu dokumen terbitan tidak lagi menulis nilai null untuk dokumen Privasi atau EULA yang belum diterbitkan, sehingga pemeriksaan persetujuan tetap mandiri dan kompatibel dengan kolom database non-null yang ada.
 
+## Kepemilikan tautan footer dibuat idempoten
+
+Menghapus pendaftaran footer dari halaman publik agar penegakan persetujuan menjadi satu-satunya pemilik tautan hukum. Registri host juga diperiksa sebelum menambah tautan sehingga ID ganda saat pemuatan halaman atau peralihan skrip lama dapat dicegah.
+
 ## Commit
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -77,3 +81,5 @@ Mengganti paginator laporan buatan modul dengan kapabilitas bersama `ui:paginati
 - [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)
 
 - [1c0203a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1c0203adde325888d4c31a628453f941b9a1ddab)
+
+- [97517b6](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/97517b67ae09218a9179879151547a582008e83c)

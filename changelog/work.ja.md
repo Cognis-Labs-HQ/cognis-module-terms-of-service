@@ -58,6 +58,10 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 
 モジュール独自のレポートページングを共有 `ui:pagination` 機能に置き換えます。1つの公開済み文書を承認するとき、未公開のプライバシーまたは EULA 文書に Null を書き込まないため、同意確認の独立性と既存の非 Null データベース列との互換性が保たれます。
 
+## Footer Link の所有を冪等化
+
+公開ページから Footer 登録を削除し、同意強制だけが法務 Link を所有するようにします。追加前に Host Registry も確認し、ページ読み込み時や古い Script からの切り替え時に ID が重複することを防ぎます。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -77,3 +81,5 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 - [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)
 
 - [1c0203a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1c0203adde325888d4c31a628453f941b9a1ddab)
+
+- [97517b6](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/97517b67ae09218a9179879151547a582008e83c)

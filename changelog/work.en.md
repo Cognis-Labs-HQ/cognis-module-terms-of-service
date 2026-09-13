@@ -58,6 +58,10 @@ Adds a searchable, ten-row paginated user consent table to every legal document 
 
 Replaces the module's report paginator with the shared `ui:pagination` capability. Accepting one published document no longer writes nulls for unpublished Privacy or EULA documents, preserving independent consent checks and compatibility with existing non-null database columns.
 
+## Made footer-link ownership idempotent
+
+Removes public-page footer registration so consent enforcement is the only owner of legal footer links. It also checks the host registry before adding links, preventing duplicate IDs during page loading or a stale-script handover.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -77,3 +81,5 @@ Replaces the module's report paginator with the shared `ui:pagination` capabilit
 - [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)
 
 - [1c0203a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1c0203adde325888d4c31a628453f941b9a1ddab)
+
+- [97517b6](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/97517b67ae09218a9179879151547a582008e83c)

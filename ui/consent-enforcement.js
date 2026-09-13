@@ -58,6 +58,8 @@ function syncFooterLinks(documents, i18n) {
     if (typeof footerLinks?.add !== "function") return;
     for (const document of documents) {
         if (footerLinkDisposers.has(document.slug)) continue;
+        const linkId = `terms-of-service:${document.slug}`;
+        if (footerLinks.list?.().some((link) => link.id === linkId)) continue;
         const titleKey =
             document.slug === "terms-of-service"
                 ? "terms"
@@ -67,7 +69,7 @@ function syncFooterLinks(documents, i18n) {
         footerLinkDisposers.set(
             document.slug,
             footerLinks.add({
-                id: `terms-of-service:${document.slug}`,
+                id: linkId,
                 side: "right",
                 href: document.path,
                 label: i18n.t(`module.terms_of_service.document.${titleKey}`),

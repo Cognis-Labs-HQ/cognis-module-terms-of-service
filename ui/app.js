@@ -450,18 +450,6 @@ export async function mount(root, { signal } = {}) {
         });
         const document = await readPayload(response);
         renderedMarkdown = renderMarkdown(document.markdown);
-        const footerLinks = uiCtx.capabilities.get("ui:footerLinks");
-        const footerLinkId = `terms-of-service:${slug}`;
-        if (!footerLinks?.list?.().some((link) => link.id === footerLinkId)) {
-            footerLinks?.add?.({
-                id: footerLinkId,
-                side: "right",
-                href: `/${slug}`,
-                label: i18n.t(
-                    `module.terms_of_service.document.${definition.titleKey}`,
-                ),
-            });
-        }
     } catch {
         renderedMarkdown = `<p>${escapeHtml(
             i18n.t("module.terms_of_service.public.unavailable"),

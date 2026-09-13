@@ -58,6 +58,10 @@ Fügt jedem Rechtsdokument eine durchsuchbare, auf zehn Zeilen paginierte Benutz
 
 Ersetzt die modulseitige Berichtsseitennavigation durch die gemeinsame Fähigkeit `ui:pagination`. Beim Akzeptieren eines einzelnen veröffentlichten Dokuments werden für unveröffentlichte Datenschutz- oder EULA-Dokumente keine Nullwerte mehr geschrieben; dadurch bleiben Zustimmungen unabhängig und bestehende Nicht-Null-Datenbankspalten kompatibel.
 
+## Eigentümerschaft der Footer-Links idempotent gemacht
+
+Entfernt die Footer-Registrierung von öffentlichen Seiten, sodass die Zustimmungserzwingung alleinige Eigentümerin der Rechtslinks ist. Vor dem Hinzufügen wird außerdem die Host-Registry geprüft, wodurch doppelte IDs beim Seitenladen oder beim Wechsel von veralteten Skripten vermieden werden.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -77,3 +81,5 @@ Ersetzt die modulseitige Berichtsseitennavigation durch die gemeinsame Fähigkei
 - [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)
 
 - [1c0203a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1c0203adde325888d4c31a628453f941b9a1ddab)
+
+- [97517b6](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/97517b67ae09218a9179879151547a582008e83c)

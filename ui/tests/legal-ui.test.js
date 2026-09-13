@@ -86,6 +86,8 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /\/api\/v1\/auth\/account-lifecycle/);
     assert.match(enforcement, /action: "delete"/);
     assert.match(enforcement, /ui:footerLinks/);
+    assert.match(enforcement, /footerLinks\.list\?\.\(\)/);
+    assert.doesNotMatch(source, /capabilities\.get\("ui:footerLinks"\)/);
     assert.match(enforcement, /response\.ok/);
     assert.match(enforcement, /validate-stored-token/);
     assert.match(enforcement, /apply-alternate-auth/);
