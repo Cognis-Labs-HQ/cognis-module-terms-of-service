@@ -21,8 +21,10 @@ test("legal editors use Cognis utilities and standard action variants", () => {
     assert.match(source, /createUnsavedChangesBar/);
     assert.match(source, /renderInfoTooltip/);
     assert.match(source, /terms-of-service-document-action btn-confirm/);
+    assert.match(source, /module\.terms_of_service\.action\.add/);
     assert.match(source, /classList\.add\("btn-cancel"\)/);
     assert.match(source, /await openPopup\(\{/);
+    assert.match(source, /terms-of-service-collapse-icon/);
     assert.doesNotMatch(source, /data-action="publish"/);
 });
 
@@ -31,6 +33,9 @@ test("dirty tracker save publishes updates and sends a success toast", () => {
     assert.match(source, /method: "PUT"/);
     assert.match(source, /message\.updated/);
     assert.match(source, /showToast/);
+    assert.match(source, /\.floating-toolbar/);
+    assert.match(source, /createUnsavedChangesBar\(slot/);
+    assert.match(source, /error: new Error\(message\)/);
 });
 
 test("consent is enforced during registration and authenticated sessions", () => {
@@ -72,4 +77,6 @@ test("UI supplies all three fixed legal documents", () => {
     for (const slug of ["terms-of-service", "privacy-policy", "eula"]) {
         assert.match(source, new RegExp(`slug: "${slug}"`));
     }
+    assert.match(source, /id: "terms-of-service-documents"/);
+    assert.match(source, /max: "full"/);
 });

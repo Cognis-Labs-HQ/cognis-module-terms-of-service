@@ -5,6 +5,7 @@
   <string name="module.terms_of_service.document.privacy">Privacy Policy</string>
   <string name="module.terms_of_service.document.eula">End User License Agreement</string>
   <string name="module.terms_of_service.action.create">Create document</string>
+  <string name="module.terms_of_service.action.add">Add</string>
   <string name="module.terms_of_service.editor.content">Legal document content</string>
   <string name="module.terms_of_service.editor.markdown_hint">Markdown is supported.</string>
   <string name="module.terms_of_service.editor.more_information">More information</string>

@@ -5,6 +5,7 @@
   <string name="module.terms_of_service.document.privacy">Kebijakan Privasi</string>
   <string name="module.terms_of_service.document.eula">Perjanjian Lisensi Pengguna Akhir</string>
   <string name="module.terms_of_service.action.create">Buat dokumen</string>
+  <string name="module.terms_of_service.action.add">Tambah</string>
   <string name="module.terms_of_service.editor.content">Konten dokumen hukum</string>
   <string name="module.terms_of_service.editor.markdown_hint">Markdown didukung.</string>
   <string name="module.terms_of_service.editor.more_information">Informasi selengkapnya</string>

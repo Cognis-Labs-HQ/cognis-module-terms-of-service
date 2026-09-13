@@ -5,6 +5,7 @@
   <string name="module.terms_of_service.document.privacy">Datenschutzerklärung</string>
   <string name="module.terms_of_service.document.eula">Endbenutzer-Lizenzvertrag</string>
   <string name="module.terms_of_service.action.create">Dokument erstellen</string>
+  <string name="module.terms_of_service.action.add">Hinzufügen</string>
   <string name="module.terms_of_service.editor.content">Inhalt des Rechtsdokuments</string>
   <string name="module.terms_of_service.editor.markdown_hint">Markdown wird unterstützt.</string>
   <string name="module.terms_of_service.editor.more_information">Weitere Informationen</string>

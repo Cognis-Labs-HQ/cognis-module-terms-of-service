@@ -22,9 +22,15 @@ Membatasi pemasangan halaman langsung pada tiga rute dokumen hukum publik agar p
 
 Saat hook persetujuan yang telah dimuat menerima respons endpoint yang tidak ditemukan ketika modul diperbarui atau dimulai ulang, hook kini mencatat fallback siklus hidup, menghentikan pemeriksaan berikutnya, dan melanjutkan alih-alih menolak flow autentikasi serta memblokir navigasi.
 
+## Pengeditan diselaraskan dengan Administrasi
+
+Menggabungkan semua dokumen hukum dalam satu bagian berkelanjutan selebar penuh dengan judul SVG yang dapat diciutkan serta tombol Tambah atau Hapus sebaris. Tooltip Markdown kini terpasang langsung pada judul Legal, pengeditan memakai pelacak perubahan mengambang host, Tulis dan Pratinjau menyerupai kontrol Pesan, dan kegagalan penyimpanan menampilkan galat lokal yang bermakna.
+
 ## Commit
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
 - [877d0ab](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/877d0abd97b345c5a95dbbff3c5ed12f90ee03f7)
 - [2d2b595](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2d2b59547b04d5f9a1f34483f3ef264749b31c81)
 - [4432dc8](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/4432dc8ee1a2d7887b99b0eeee70c8c030d40926)
+- [a3ea3cd](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a3ea3cd458906443f8316daa0304e48a0da5eb27)
+- [1f11f9b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1f11f9b4e568e0f53dfeaa5900b333cc354a2e62)

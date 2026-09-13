@@ -32,7 +32,10 @@ function showError(message) {
             "Required UI capability unavailable: ui:openErrorPopup",
         );
     }
-    openErrorPopup({ message });
+    openErrorPopup({
+        error: new Error(message),
+        context: "terms-of-service",
+    });
 }
 
 function showToast(message) {
@@ -49,32 +52,38 @@ async function readPayload(response) {
     return payload.data;
 }
 
+function collapseIconMarkup() {
+    return `<svg class="terms-of-service-collapse-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+        <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>`;
+}
+
 function editorMarkup(document, i18n) {
-    return `<div class="terms-of-service-document" data-document="${document.slug}">
-        <header class="terms-of-service-document-header">
+    return `<details class="terms-of-service-document" data-document="${document.slug}">
+        <summary class="terms-of-service-document-header">
             <h3>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.titleKey}`))}</h3>
             <button class="terms-of-service-document-action btn-confirm" type="button"
-                aria-label="${escapeHtml(i18n.t("module.terms_of_service.action.create"))}">+</button>
-        </header>
+                aria-label="${escapeHtml(i18n.t("module.terms_of_service.action.add"))}">${escapeHtml(i18n.t("module.terms_of_service.action.add"))}</button>
+            ${collapseIconMarkup()}
+        </summary>
         <div class="terms-of-service-editor" hidden>
             <div class="terms-of-service-compose-pane">
                 <textarea rows="16" aria-label="${escapeHtml(i18n.t("module.terms_of_service.editor.content"))}">${escapeHtml(document.markdown ?? "")}</textarea>
             </div>
             <div class="terms-of-service-preview-pane" hidden></div>
             <div class="terms-of-service-tabs">
-                <button type="button" data-mode="compose" aria-pressed="true">${escapeHtml(i18n.t("module.terms_of_service.action.compose"))}</button>
-                <button type="button" data-mode="preview" aria-pressed="false">${escapeHtml(i18n.t("module.terms_of_service.action.preview"))}</button>
-            </div>
-            <div class="terms-of-service-dirty-bar" hidden>
-                <span>${escapeHtml(i18n.t("module.terms_of_service.editor.unsaved"))}</span>
-                <button class="btn-cancel btn-animated" type="button" data-action="discard">${escapeHtml(i18n.t("module.terms_of_service.action.discard"))}</button>
-                <button class="btn-confirm btn-animated" type="button" data-action="save">${escapeHtml(i18n.t("module.terms_of_service.action.save"))}</button>
+                <button class="terms-of-service-mode-toggle" type="button" data-mode="compose" aria-pressed="true">${escapeHtml(i18n.t("module.terms_of_service.action.compose"))}</button>
+                <button class="terms-of-service-mode-toggle" type="button" data-mode="preview" aria-pressed="false">${escapeHtml(i18n.t("module.terms_of_service.action.preview"))}</button>
             </div>
         </div>
-    </div>`;
+    </details>`;
 }
 
-function activateEditor(panel, document, { apiFetch, i18n, openPopup }) {
+function activateEditor(
+    panel,
+    document,
+    { apiFetch, dirtyBar, i18n, openPopup },
+) {
     const editor = panel.querySelector(".terms-of-service-editor");
     const textarea = panel.querySelector("textarea");
     const composePane = panel.querySelector(".terms-of-service-compose-pane");
@@ -85,34 +94,24 @@ function activateEditor(panel, document, { apiFetch, i18n, openPopup }) {
     const composeButton = panel.querySelector('[data-mode="compose"]');
     const previewButton = panel.querySelector('[data-mode="preview"]');
     let savedMarkdown = document.markdown ?? "";
-    const dirtyBar = createUnsavedChangesBar(
-        panel.querySelector(".terms-of-service-dirty-bar"),
-        {
-            onSave: async () => {
-                try {
-                    const response = await apiFetch(
-                        `${API_PATH}/documents/${document.slug}`,
-                        {
-                            method: "PUT",
-                            headers: { "content-type": "application/json" },
-                            body: JSON.stringify({ markdown: textarea.value }),
-                        },
-                    );
-                    await readPayload(response);
-                    savedMarkdown = textarea.value;
-                    showToast(
-                        i18n.t("module.terms_of_service.message.updated"),
-                    );
-                } catch {
-                    showError(i18n.t("module.terms_of_service.error.save"));
-                    throw new Error("legal_document_save_failed");
-                }
+
+    async function save() {
+        if (textarea.value === savedMarkdown) return;
+        const response = await apiFetch(
+            `${API_PATH}/documents/${document.slug}`,
+            {
+                method: "PUT",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ markdown: textarea.value }),
             },
-            onDiscard: () => {
-                textarea.value = savedMarkdown;
-            },
-        },
-    );
+        );
+        await readPayload(response);
+        savedMarkdown = textarea.value;
+    }
+
+    function discard() {
+        textarea.value = savedMarkdown;
+    }
 
     function selectMode(mode) {
         const previewSelected = mode === "preview";
@@ -131,8 +130,10 @@ function activateEditor(panel, document, { apiFetch, i18n, openPopup }) {
     textarea.addEventListener("input", () => {
         dirtyBar.markDirty(document.slug, textarea.value !== savedMarkdown);
     });
-    documentAction.addEventListener("click", async () => {
+    documentAction.addEventListener("click", async (event) => {
+        event.preventDefault();
         if (editor.hidden) {
+            panel.open = true;
             editor.hidden = false;
             documentAction.textContent = i18n.t(
                 "module.terms_of_service.action.remove",
@@ -168,16 +169,69 @@ function activateEditor(panel, document, { apiFetch, i18n, openPopup }) {
         dirtyBar.markDirty(document.slug, false);
         selectMode("compose");
         editor.hidden = true;
-        documentAction.textContent = "+";
+        documentAction.textContent = i18n.t(
+            "module.terms_of_service.action.add",
+        );
         documentAction.setAttribute(
             "aria-label",
-            i18n.t("module.terms_of_service.action.create"),
+            i18n.t("module.terms_of_service.action.add"),
         );
         documentAction.classList.remove("btn-cancel");
         documentAction.classList.add("btn-confirm");
     });
     composeButton.addEventListener("click", () => selectMode("compose"));
     previewButton.addEventListener("click", () => selectMode("preview"));
+    return { discard, save };
+}
+
+function mountFloatingDirtyTracker(root, i18n, controllers) {
+    const floatingToolbar = root.querySelector(".floating-toolbar");
+    if (!floatingToolbar) {
+        throw new Error("Required floating toolbar unavailable.");
+    }
+    floatingToolbar
+        .querySelector('[data-floating-slot="terms-of-service-changes"]')
+        ?.remove();
+    const slot = document.createElement("div");
+    slot.dataset.floatingSlot = "terms-of-service-changes";
+    slot.hidden = true;
+    slot.innerHTML = `<span>${escapeHtml(i18n.t("module.terms_of_service.editor.unsaved"))}</span>
+        <button class="btn-cancel btn-animated" type="button" data-action="discard">${escapeHtml(i18n.t("module.terms_of_service.action.discard"))}</button>
+        <button class="btn-confirm btn-animated" type="button" data-action="save">${escapeHtml(i18n.t("module.terms_of_service.action.save"))}</button>`;
+    floatingToolbar.appendChild(slot);
+    const syncToolbar = () => {
+        floatingToolbar.hidden = !Array.from(
+            floatingToolbar.querySelectorAll("[data-floating-slot]"),
+        ).some((candidate) => !candidate.hidden);
+    };
+    new MutationObserver(syncToolbar).observe(slot, {
+        attributes: true,
+        attributeFilter: ["hidden"],
+    });
+    const dirtyBar = createUnsavedChangesBar(slot, {
+        onSave: async () => {
+            try {
+                await Promise.all(
+                    controllers.map((controller) => controller.save()),
+                );
+                showToast(i18n.t("module.terms_of_service.message.updated"));
+            } catch (error) {
+                showError(i18n.t("module.terms_of_service.error.save"));
+                throw error;
+            }
+        },
+        onDiscard: () => {
+            controllers.forEach((controller) => controller.discard());
+        },
+    });
+    syncToolbar();
+    return dirtyBar;
+}
+
+function documentsMarkup(documents, i18n) {
+    return `<div class="terms-of-service-documents">
+        ${documents.map((document) => editorMarkup(document, i18n)).join("")}
+    </div>`;
 }
 
 export function createAdminSection({ i18n, apiFetch, openPopup }) {
@@ -205,12 +259,10 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
             preferenceKey: "terms-of-service-legal",
             heading: i18n.t("module.terms_of_service.admin.title"),
             onRender(root) {
-                const firstPanel = root.querySelector(
-                    ".terms-of-service-document",
+                const section = root.querySelector("#terms-of-service-legal");
+                const heading = section?.querySelector(
+                    ":scope > .sub-composer-heading",
                 );
-                const heading = firstPanel
-                    ?.closest(".sub-composer-inner")
-                    ?.parentElement?.querySelector(".sub-composer-heading");
                 if (heading && !heading.querySelector(".info-tooltip")) {
                     heading.insertAdjacentHTML(
                         "beforeend",
@@ -225,33 +277,37 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                         ),
                     );
                 }
+                const controllers = [];
+                const dirtyBar = mountFloatingDirtyTracker(
+                    root,
+                    i18n,
+                    controllers,
+                );
                 for (const definition of documents) {
                     const panel = root.querySelector(
                         `[data-document="${definition.slug}"]`,
                     );
                     if (panel) {
-                        activateEditor(panel, definition, {
-                            apiFetch,
-                            i18n,
-                            openPopup,
-                        });
+                        controllers.push(
+                            activateEditor(panel, definition, {
+                                apiFetch,
+                                dirtyBar,
+                                i18n,
+                                openPopup,
+                            }),
+                        );
                     }
                 }
             },
-            elements: DOCUMENTS.map((definition) => ({
-                id: `terms-of-service-${definition.slug}`,
-                label: i18n.t(
-                    `module.terms_of_service.document.${definition.titleKey}`,
-                ),
-                pinned: true,
-                render: () =>
-                    editorMarkup(
-                        documents.find(
-                            (document) => document.slug === definition.slug,
-                        ) ?? definition,
-                        i18n,
-                    ),
-            })),
+            elements: [
+                {
+                    id: "terms-of-service-documents",
+                    label: i18n.t("module.terms_of_service.admin.title"),
+                    pinned: true,
+                    gridSize: { default: [12, 12], min: [4, 4], max: "full" },
+                    render: () => documentsMarkup(documents, i18n),
+                },
+            ],
         },
     };
 }
