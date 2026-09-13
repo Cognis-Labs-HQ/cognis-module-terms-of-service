@@ -21,29 +21,34 @@
     align-items: center;
     display: flex;
     gap: 0.75rem;
-    justify-content: space-between;
 }
 
-.terms-of-service-document-header h2 {
+.terms-of-service-document-header h3 {
     margin: 0;
 }
 
-.terms-of-service-add {
-    font-size: 1.5rem;
-    min-height: 2.5rem;
-    min-width: 2.5rem;
+.terms-of-service-document-action {
+    margin-inline-start: 0.25rem;
 }
 
-.terms-of-service-editor,
-.terms-of-service-compose-pane label {
+.terms-of-service-editor {
     display: grid;
-    gap: 0.75rem;
+    gap: 0;
 }
 
 .terms-of-service-editor textarea {
     box-sizing: border-box;
     font: inherit;
-    resize: vertical;
+    border-radius: 0.25rem 0.25rem 0 0;
+    resize: none;
+    width: 100%;
+}
+
+.terms-of-service-preview-pane {
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem 0.25rem 0 0;
+    box-sizing: border-box;
+    padding: 0.75rem;
     width: 100%;
 }
 
@@ -53,9 +58,36 @@
 }
 
 .terms-of-service-tabs {
-    justify-content: flex-start;
+    gap: 0;
 }
 
-.terms-of-service-tabs [data-action="publish"] {
-    margin-inline-start: auto;
+.terms-of-service-tabs button {
+    border-radius: 0 0 0.25rem 0.25rem;
+    flex: 1 1 50%;
+    width: 50%;
+}
+
+.terms-of-service-tabs button + button {
+    border-inline-start: 0;
+}
+
+.terms-of-service-tabs button[aria-pressed="true"] {
+    background: color-mix(
+        in srgb,
+        var(--color-accent) 22%,
+        var(--color-surface)
+    );
+    border-color: var(--color-accent);
+}
+
+.terms-of-service-dirty-bar {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-block-start: 0.75rem;
+}
+
+.terms-of-service-dirty-bar span {
+    margin-inline-end: auto;
 }

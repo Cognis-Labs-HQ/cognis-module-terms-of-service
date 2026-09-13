@@ -8,6 +8,8 @@ Das Modul registriert die öffentlichen SPA-Routen `/terms-of-service`, `/privac
 
 Veröffentlichte Rechtsinhalte sind Markdown, das Cognis über `ui:reuse` darstellt. Jede Speicherung fügt über `docs:versionStore` eine unveränderliche Version hinzu. Das Modul importiert weder Cognis-Interna noch einen konkreten Datenbanktreiber.
 
+Die Editoren für Rechtsdokumente verwenden die Cognis-Utilities für Informations-Tooltips und Änderungsverfolgung. Beim Erstellen eines Editors erscheint ein Markdown-Eingabefeld in voller Breite mit verbundenen Schaltflächen für Verfassen und Vorschau; die Speichern-Aktion der Änderungsverfolgung veröffentlicht Aktualisierungen und meldet den Erfolg über den Host-Toast, während das Entfernen eines Editors bestätigt werden muss.
+
 ## Zustimmung und Lebenszyklus
 
 Das Modul speichert die genauen Versionen von Bedingungen und Datenschutzerklärung, denen jedes Konto zugestimmt hat. Die Registrierung verlangt eine ausdrückliche Zustimmung. Der Flow für authentifizierte Sitzungen sperrt Konten ohne aktuelle Zustimmung; Zustimmung speichert beide Versionen, Ablehnung meldet das Konto ab. Öffentliche Rechtsseiten bleiben dabei erreichbar.

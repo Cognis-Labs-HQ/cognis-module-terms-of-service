@@ -15,6 +15,24 @@ test("browser code imports the core Markdown renderer through ui:reuse", () => {
     assert.doesNotMatch(source, /host\.reuse|markdownComposer/);
 });
 
+test("legal editors use Cognis utilities and standard action variants", () => {
+    assert.match(source, /importReuseModule\("unsaved-changes\.js"\)/);
+    assert.match(source, /importReuseModule\("info-tooltip\.js"\)/);
+    assert.match(source, /createUnsavedChangesBar/);
+    assert.match(source, /renderInfoTooltip/);
+    assert.match(source, /terms-of-service-document-action btn-confirm/);
+    assert.match(source, /classList\.add\("btn-cancel"\)/);
+    assert.match(source, /await openPopup\(\{/);
+    assert.doesNotMatch(source, /data-action="publish"/);
+});
+
+test("dirty tracker save publishes updates and sends a success toast", () => {
+    assert.match(source, /data-action="save"/);
+    assert.match(source, /method: "PUT"/);
+    assert.match(source, /message\.updated/);
+    assert.match(source, /showToast/);
+});
+
 test("consent is enforced during registration and authenticated sessions", () => {
     assert.match(registration, /createRegistrationField/);
     assert.match(registration, /completeRegistration/);

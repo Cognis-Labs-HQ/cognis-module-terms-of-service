@@ -8,6 +8,8 @@ Modul mendaftarkan rute SPA publik `/terms-of-service`, `/privacy-policy`, dan `
 
 Konten hukum yang diterbitkan berupa Markdown yang dirender Cognis melalui `ui:reuse`. Setiap penyimpanan menambahkan versi tetap melalui `docs:versionStore`. Modul tidak pernah mengimpor internal Cognis atau driver basis data tertentu.
 
+Editor dokumen hukum memakai utilitas tooltip informasi dan pelacak perubahan Cognis. Pembuatan editor menampilkan kotak penulisan Markdown selebar penuh dengan tombol Tulis dan Pratinjau yang tersambung; tindakan Simpan pada pelacak perubahan menerbitkan pembaruan dan melaporkan keberhasilan melalui toast host, sedangkan penghapusan editor memerlukan konfirmasi.
+
 ## Persetujuan dan Siklus Hidup
 
 Modul mencatat versi Ketentuan dan Privasi persis yang disetujui setiap akun. Pendaftaran wajib meminta persetujuan tegas. Flow sesi terautentikasi memblokir akun yang persetujuannya tidak mutakhir; penerimaan mencatat kedua versi dan penolakan mengeluarkan akun. Halaman hukum publik tetap tersedia selama penegakan.
