@@ -53,13 +53,18 @@ async function readPayload(response) {
 }
 
 function editorMarkup(document, i18n) {
+    const hasPublishedContent = Boolean(
+        document.version && String(document.markdown ?? "").trim(),
+    );
+    const actionKey = hasPublishedContent ? "remove" : "add";
+    const actionVariant = hasPublishedContent ? "btn-cancel" : "btn-confirm";
     return `<section class="terms-of-service-document" data-document="${document.slug}">
         <header class="terms-of-service-document-header">
             <h3>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.titleKey}`))}</h3>
-            <button class="terms-of-service-document-action btn-confirm" type="button"
-                aria-label="${escapeHtml(i18n.t("module.terms_of_service.action.add"))}">${escapeHtml(i18n.t("module.terms_of_service.action.add"))}</button>
+            <button class="terms-of-service-document-action ${actionVariant}" type="button"
+                aria-label="${escapeHtml(i18n.t(`module.terms_of_service.action.${actionKey}`))}">${escapeHtml(i18n.t(`module.terms_of_service.action.${actionKey}`))}</button>
         </header>
-        <div class="terms-of-service-editor" hidden>
+        <div class="terms-of-service-editor"${hasPublishedContent ? "" : " hidden"}>
             <div class="terms-of-service-compose-pane">
                 <textarea rows="16" aria-label="${escapeHtml(i18n.t("module.terms_of_service.editor.content"))}">${escapeHtml(document.markdown ?? "")}</textarea>
             </div>

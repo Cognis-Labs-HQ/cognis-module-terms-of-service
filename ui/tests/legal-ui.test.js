@@ -21,7 +21,12 @@ test("legal editors use Cognis utilities and standard action variants", () => {
     assert.match(source, /importReuseModule\("info-tooltip\.js"\)/);
     assert.match(source, /createUnsavedChangesBar/);
     assert.match(source, /renderInfoTooltip/);
-    assert.match(source, /terms-of-service-document-action btn-confirm/);
+    assert.match(
+        source,
+        /terms-of-service-document-action \$\{actionVariant\}/,
+    );
+    assert.match(source, /hasPublishedContent/);
+    assert.match(source, /actionVariant/);
     assert.match(source, /module\.terms_of_service\.action\.add/);
     assert.match(source, /classList\.add\("btn-cancel"\)/);
     assert.match(source, /await openPopup\(\{/);
@@ -69,6 +74,11 @@ test("consent is enforced during registration and authenticated sessions", () =>
         /!localStorage\.getItem\("cognis_access_token"\)/,
     );
     assert.match(enforcement, /while \(true\)/);
+    assert.match(enforcement, /CONSENT_REFRESH_INTERVAL_MS = 5_000/);
+    assert.match(enforcement, /enforceAuthenticatedConsentOnce/);
+    assert.match(enforcement, /scheduleConsentRefresh/);
+    assert.match(enforcement, /export function teardownConsentEnforcement/);
+    assert.match(enforcement, /operation: "refreshConsentStatus"/);
 });
 
 test("admin contribution follows the Administration sub-composer contract", () => {

@@ -18,8 +18,13 @@
 
 Cognis の外部モジュールルーターはパスを完全一致で照合するため、固定された法的文書ごとに正確な PUT ルートと公開 GET ルートを登録しました。破棄すると未公開エディターを閉じて操作を追加に戻し、エディターとモードペインはブラウザーでサイズ変更されることなく利用可能な幅全体を明示的に使用します。
 
+## 公開済みエディターと同意更新を復旧
+
+管理画面を更新すると、保存済み文書が保持された Markdown と削除操作を伴って開いた状態で表示されます。表示中の認証済みセッションは5秒ごとに同意を再確認し、重複するポップアップを防ぐため確認を直列化し、ページのアンロード時またはモジュールエンドポイントの消失時に更新タイマーを停止します。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
 - [e20d857](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/e20d857715e08f3656717ad55a5918fe236820ab)
 - [3fcbc91](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3fcbc91f42e61309ef7bd56491ddcf4311f605fd)
+- [cc4f1ba](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/cc4f1ba0582fd8d87b96c5e678e968467f86d988)

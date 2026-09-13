@@ -18,8 +18,13 @@ Uses the authenticated claims returned by `auth:requireAuth` when attributing do
 
 Registers one exact PUT and public GET route for each fixed legal document because the Cognis external-module router performs exact-path matching. Discard now closes an unpublished editor and returns its action to Add, while the editor and mode panes explicitly occupy the full available width without browser resizing.
 
+## Restored published editors and prompt refreshes
+
+Saved documents now render open with their persisted Markdown and a Remove action when Administration is refreshed. Visible authenticated sessions recheck consent every five seconds, serializing checks to prevent duplicate popups and stopping the refresh timer when the page unloads or the module endpoint disappears.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
 - [e20d857](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/e20d857715e08f3656717ad55a5918fe236820ab)
 - [3fcbc91](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3fcbc91f42e61309ef7bd56491ddcf4311f605fd)
+- [cc4f1ba](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/cc4f1ba0582fd8d87b96c5e678e968467f86d988)

@@ -21,7 +21,10 @@ const PUBLIC_PATHS = new Set([
     "/privacy-policy",
     "/eula",
 ]);
+const CONSENT_REFRESH_INTERVAL_MS = 5_000;
 let consentEndpointAvailable = true;
+let consentRefreshTimer;
+let enforcementPromise;
 
 async function consentStatus() {
     if (!consentEndpointAvailable) return null;
@@ -123,7 +126,7 @@ async function enforceConsent(stageCtx) {
     if (!storedSession?.valid && !alternateSession?.authenticated) {
         return { requiresSetup: false };
     }
-    return enforceAuthenticatedConsent();
+    return enforceAuthenticatedConsentOnce();
 }
 
 async function enforceAuthenticatedConsent() {
@@ -139,6 +142,51 @@ async function enforceAuthenticatedConsent() {
         : { requiresSetup: true, redirectTo: LOGIN_PATH };
 }
 
+function enforceAuthenticatedConsentOnce() {
+    if (!enforcementPromise) {
+        enforcementPromise = enforceAuthenticatedConsent().finally(() => {
+            enforcementPromise = undefined;
+        });
+    }
+    return enforcementPromise;
+}
+
+function scheduleConsentRefresh() {
+    clearTimeout(consentRefreshTimer);
+    if (!consentEndpointAvailable) return;
+    consentRefreshTimer = setTimeout(async () => {
+        try {
+            if (
+                document.visibilityState === "visible" &&
+                !PUBLIC_PATHS.has(location.pathname) &&
+                localStorage.getItem("cognis_access_token")
+            ) {
+                await enforceAuthenticatedConsentOnce();
+            }
+        } catch (error) {
+            uiCtx.capabilities.get("ui:log")?.(
+                "error",
+                "Periodic consent enforcement failed.",
+                {
+                    component: "terms-of-service",
+                    operation: "refreshConsentStatus",
+                    error:
+                        error instanceof Error ? error.message : String(error),
+                },
+            );
+        } finally {
+            scheduleConsentRefresh();
+        }
+    }, CONSENT_REFRESH_INTERVAL_MS);
+}
+
+export function teardownConsentEnforcement() {
+    clearTimeout(consentRefreshTimer);
+    consentRefreshTimer = undefined;
+}
+
+window.addEventListener("pagehide", teardownConsentEnforcement, { once: true });
+
 uiCtx.extendFlow(
     "authenticate-session",
     "enforce-setup-requirements",
@@ -146,7 +194,7 @@ uiCtx.extendFlow(
     enforceConsent,
 );
 
-await enforceAuthenticatedConsent().then((result) => {
+await enforceAuthenticatedConsentOnce().then((result) => {
     if (result.redirectTo) {
         const navigate = uiCtx.capabilities.get("ui:navigate");
         if (typeof navigate !== "function") {
@@ -155,3 +203,4 @@ await enforceAuthenticatedConsent().then((result) => {
         return navigate(result.redirectTo);
     }
 });
+scheduleConsentRefresh();
