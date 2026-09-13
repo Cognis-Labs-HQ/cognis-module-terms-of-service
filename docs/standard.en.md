@@ -8,7 +8,7 @@ The module registers the public `/terms-of-service`, `/privacy-policy`, and `/eu
 
 Published legal content is Markdown rendered by Cognis through `ui:reuse`. Each save appends an immutable version through `docs:versionStore`. The module never imports Cognis internals or a concrete database driver.
 
-Legal editors share one full-width card group with compact document rows with inline actions and no redundant disclosure controls and inline Add or Remove controls. They use the Cognis information-tooltip and floating dirty-tracker utilities. Adding an editor exposes a padded, non-resizable Markdown composer with message-composer-style Compose and Preview controls; the dirty tracker's Save action publishes updates and reports success through the host toast, while removing an editor requires confirmation.
+Legal editors share one full-width card group with compact document rows with inline actions and no redundant disclosure controls and inline Add or Remove controls. They use the Cognis information-tooltip and floating dirty-tracker utilities. Adding an editor exposes a padded, non-resizable Markdown composer with message-composer-style Compose and Preview controls; the dirty tracker's Save action publishes updates through one exact API route per fixed document and reports success through the host toast. Discard restores published content, or closes an unsaved new editor and returns its action to Add; removing an editor requires confirmation.
 
 ## Consent and Lifecycle
 

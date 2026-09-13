@@ -67,6 +67,8 @@
 }
 
 .terms-of-service-compose-pane {
+    display: block;
+    max-width: none;
     min-width: 0;
     width: 100%;
 }
@@ -78,7 +80,10 @@
     color: var(--color-text);
     font: inherit;
     border-radius: 0.25rem 0.25rem 0 0;
+    display: block;
+    max-inline-size: none;
     min-height: 16rem;
+    min-inline-size: 100%;
     padding: 1rem;
     resize: none;
     width: 100%;

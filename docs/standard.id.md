@@ -8,7 +8,7 @@ Modul mendaftarkan rute SPA publik `/terms-of-service`, `/privacy-policy`, dan `
 
 Konten hukum yang diterbitkan berupa Markdown yang dirender Cognis melalui `ui:reuse`. Setiap penyimpanan menambahkan versi tetap melalui `docs:versionStore`. Modul tidak pernah mengimpor internal Cognis atau driver basis data tertentu.
 
-Editor dokumen hukum berbagi satu kelompok kartu ringkas selebar penuh dengan baris dokumen ringkas dengan tindakan Tambah atau Hapus sebaris tanpa kontrol pengungkapan yang berlebihan. Editor memakai utilitas tooltip informasi dan pelacak perubahan mengambang Cognis. Penambahan editor menampilkan kotak penulisan Markdown dengan padding yang tidak dapat diubah ukurannya serta tombol Tulis dan Pratinjau bergaya penyusun Pesan; tindakan Simpan pada pelacak perubahan menerbitkan pembaruan dan melaporkan keberhasilan melalui toast host, sedangkan penghapusan editor memerlukan konfirmasi.
+Editor dokumen hukum berbagi satu kelompok kartu ringkas selebar penuh dengan baris dokumen ringkas dengan tindakan Tambah atau Hapus sebaris tanpa kontrol pengungkapan yang berlebihan. Editor memakai utilitas tooltip informasi dan pelacak perubahan mengambang Cognis. Penambahan editor menampilkan kotak penulisan Markdown dengan padding yang tidak dapat diubah ukurannya serta tombol Tulis dan Pratinjau bergaya penyusun Pesan; tindakan Simpan pada pelacak perubahan menerbitkan pembaruan melalui satu rute API persis untuk setiap dokumen tetap dan melaporkan keberhasilan melalui toast host. Buang memulihkan konten yang telah diterbitkan, atau menutup editor baru yang belum disimpan dan mengembalikan tindakannya ke Tambah; penghapusan editor memerlukan konfirmasi.
 
 ## Persetujuan dan Siklus Hidup
 

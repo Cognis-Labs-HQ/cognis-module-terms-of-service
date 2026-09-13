@@ -10,7 +10,7 @@ test("publishing attributes the document to authenticated claims", async () => {
         get() {},
         post() {},
         put(path, handler) {
-            if (path.endsWith("/:slug")) putHandler = handler;
+            if (path.endsWith("/terms-of-service")) putHandler = handler;
         },
     };
     const ctx = {
@@ -44,7 +44,6 @@ test("publishing attributes the document to authenticated claims", async () => {
     registerApi(router, ctx);
 
     const request = Readable.from([JSON.stringify({ markdown: "# Terms" })]);
-    request.params = { slug: "terms-of-service" };
     const response = {
         writableEnded: false,
         writeHead(status) {

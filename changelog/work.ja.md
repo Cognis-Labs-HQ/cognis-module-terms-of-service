@@ -14,7 +14,12 @@
 
 `auth:requireAuth` が返す認証済みクレームを文書公開の実行者として使用し、保存時に空の実行者IDが送信されないようにしました。「法的情報」見出しでは Markdown ツールチップを内容と同時に描画し、文書操作を見出しのすぐ横に配置しました。重複した開閉矢印を削除し、明示的な非表示スタイルによってエディターの閉鎖と作成・プレビューペインの切り替えを確実にします。
 
+## 固定文書ルートを登録
+
+Cognis の外部モジュールルーターはパスを完全一致で照合するため、固定された法的文書ごとに正確な PUT ルートと公開 GET ルートを登録しました。破棄すると未公開エディターを閉じて操作を追加に戻し、エディターとモードペインはブラウザーでサイズ変更されることなく利用可能な幅全体を明示的に使用します。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
 - [e20d857](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/e20d857715e08f3656717ad55a5918fe236820ab)
+- [3fcbc91](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3fcbc91f42e61309ef7bd56491ddcf4311f605fd)

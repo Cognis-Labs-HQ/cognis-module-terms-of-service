@@ -74,8 +74,17 @@ test("registers the Legal administration section and public pages", () => {
     ]);
     assert.ok(
         registrations.api.includes(
-            "/api/v1/modules/terms-of-service/documents/:slug",
+            "/api/v1/modules/terms-of-service/documents/terms-of-service",
         ),
+    );
+    assert.ok(
+        registrations.api.includes(
+            "/api/v1/modules/terms-of-service/public/privacy-policy",
+        ),
+    );
+    assert.equal(
+        registrations.api.some((path) => path.includes(":")),
+        false,
     );
     assert.match(registrations.plugins[0].scriptUrl, /consent-enforcement/);
 });

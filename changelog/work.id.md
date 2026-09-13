@@ -14,7 +14,12 @@ Menampilkan ketiga dokumen sebagai kartu ringkas yang terpisah, mengurangi tingg
 
 Menggunakan klaim terautentikasi yang dikembalikan oleh `auth:requireAuth` untuk mengatribusikan penerbitan dokumen sehingga Simpan tidak lagi mengirim pengenal pelaku kosong. Judul Hukum kini merender tooltip Markdown bersama kontennya, tindakan dokumen berada tepat di sebelah judulnya, panah pengungkapan yang berlebihan dihapus, dan gaya status tersembunyi secara andal menutup editor serta mengganti panel Tulis atau Pratinjau.
 
+## Rute dokumen konkret didaftarkan
+
+Mendaftarkan satu rute PUT dan GET publik yang persis untuk setiap dokumen hukum tetap karena router modul eksternal Cognis mencocokkan jalur secara persis. Buang kini menutup editor yang belum diterbitkan dan mengembalikan tindakannya ke Tambah, sedangkan editor dan panel mode secara tegas memakai seluruh lebar yang tersedia tanpa pengubahan ukuran oleh peramban.
+
 ## Commit
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
 - [e20d857](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/e20d857715e08f3656717ad55a5918fe236820ab)
+- [3fcbc91](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3fcbc91f42e61309ef7bd56491ddcf4311f605fd)

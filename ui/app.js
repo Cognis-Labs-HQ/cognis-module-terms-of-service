@@ -104,6 +104,21 @@ function activateEditor(
 
     function discard() {
         textarea.value = savedMarkdown;
+        if (!savedMarkdown) closeEditor();
+    }
+
+    function closeEditor() {
+        selectMode("compose");
+        editor.hidden = true;
+        documentAction.textContent = i18n.t(
+            "module.terms_of_service.action.add",
+        );
+        documentAction.setAttribute(
+            "aria-label",
+            i18n.t("module.terms_of_service.action.add"),
+        );
+        documentAction.classList.remove("btn-cancel");
+        documentAction.classList.add("btn-confirm");
     }
 
     function selectMode(mode) {
@@ -159,17 +174,7 @@ function activateEditor(
         if (result !== "remove") return;
         textarea.value = savedMarkdown;
         dirtyBar.markDirty(document.slug, false);
-        selectMode("compose");
-        editor.hidden = true;
-        documentAction.textContent = i18n.t(
-            "module.terms_of_service.action.add",
-        );
-        documentAction.setAttribute(
-            "aria-label",
-            i18n.t("module.terms_of_service.action.add"),
-        );
-        documentAction.classList.remove("btn-cancel");
-        documentAction.classList.add("btn-confirm");
+        closeEditor();
     });
     composeButton.addEventListener("click", () => selectMode("compose"));
     previewButton.addEventListener("click", () => selectMode("preview"));

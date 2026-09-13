@@ -39,6 +39,11 @@ test("dirty tracker save publishes updates and sends a success toast", () => {
     assert.match(source, /showToast/);
     assert.match(source, /\.floating-toolbar/);
     assert.match(source, /createUnsavedChangesBar\(slot/);
+    assert.match(source, /if \(!savedMarkdown\) closeEditor\(\)/);
+    assert.match(
+        source,
+        /function closeEditor\(\)[\s\S]*editor\.hidden = true/,
+    );
     assert.match(source, /error: new Error\(message\)/);
 });
 
