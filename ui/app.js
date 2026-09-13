@@ -9,6 +9,7 @@ const [
     { createUnsavedChangesBar },
     { renderInfoTooltip },
     { createCollapsibleSectionComposer },
+    { openPopup: openDocumentPopup },
 ] = await Promise.all([
     importReuseModule("api-client.js"),
     importReuseModule("i18n.js"),
@@ -18,6 +19,7 @@ const [
     importReuseModule("unsaved-changes.js"),
     importReuseModule("info-tooltip.js"),
     importReuseModule("collapsible-section-composer.js"),
+    importReuseModule("popup.js"),
 ]);
 
 const API_PATH = "/api/v1/modules/terms-of-service";
@@ -312,9 +314,29 @@ export async function mount(root, { signal } = {}) {
             signal,
         });
         const document = await readPayload(response);
+        const renderedMarkdown = renderMarkdown(document.markdown);
         root.querySelector(".terms-of-service-rendered").innerHTML =
-            renderMarkdown(document.markdown);
+            renderedMarkdown;
         initializeMarkdownCodeCopy();
+        const footerLinks = uiCtx.capabilities.get("ui:footerLinks");
+        const footerLinkId = `terms-of-service:${slug}`;
+        if (!footerLinks?.list?.().some((link) => link.id === footerLinkId)) {
+            footerLinks?.add?.({
+                id: footerLinkId,
+                side: "right",
+                href: `/${slug}`,
+                label: i18n.t(
+                    `module.terms_of_service.document.${definition.titleKey}`,
+                ),
+            });
+        }
+        await openDocumentPopup({
+            title: i18n.t(
+                `module.terms_of_service.document.${definition.titleKey}`,
+            ),
+            body: `<article class="terms-of-service-rendered">${renderedMarkdown}</article>`,
+            maxWidth: "min(90vw, 80rem)",
+        });
     } catch {
         root.querySelector(".terms-of-service-rendered").textContent = i18n.t(
             "module.terms_of_service.public.unavailable",

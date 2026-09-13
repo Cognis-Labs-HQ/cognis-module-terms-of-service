@@ -34,6 +34,10 @@ Liest gespeichertes Markdown aus dem tatsächlichen Antwortfeld des Versionsspei
 
 Verfolgt Bestätigungen unabhängig für jede veröffentlichte Version von Bedingungen, Datenschutzerklärung und EULA. Dauerhafte Zustimmungsaufforderungen zeigen Kontrollkästchenkarten nur für neue oder aktualisierte Dokumente mit Übermittlung der exakten Version sowie Aktionen für Abmeldung und Kontoeinstellungen. Die Editorfläche besitzt eine feste Modushöhe, ein nicht skalierbares Eingabefeld in voller Breite und darunter gepolsterte neutrale Steuerelemente.
 
+## Obligatorische Zustimmung und Rechtsnavigation integriert
+
+Verwendet ein einziges obligatorisches Zustimmungspopup, Kontrollkästchen im Core-Stil, integrierte Neu-/Aktualisierungsmarken, einen Ablehnungs-Tooltip und den Host-Abmelde-Flow sowie den authentifizierten Endpunkt zur Kontolöschung. Öffentliche Dokumentrouten sind wirklich öffentlich, zeigen Markdown in einem großformatigen Popup und veröffentlichte Dokumente tragen über `ui:footerLinks` rechtsbündige Footer-Links bei.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -43,3 +47,4 @@ Verfolgt Bestätigungen unabhängig für jede veröffentlichte Version von Bedin
 - [5ffec53](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5ffec53354d1e93bf49b3850c64a56b3ccb1cef9)
 - [427af9d](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/427af9d50be3bde15cb3f2fe53f44e5a7b743965)
 - [b9c93cc](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b9c93cc2de5693f69cdf63bb0d1d9419ef5c7ceb)
+- [1adbdf7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1adbdf77939aa53f70f2fef75b93bce9841bd746)

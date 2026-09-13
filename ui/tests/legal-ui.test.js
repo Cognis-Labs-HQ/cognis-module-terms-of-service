@@ -79,7 +79,11 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(registration, /completeRegistration/);
     assert.match(enforcement, /authenticate-session/);
     assert.match(enforcement, /enforce-setup-requirements/);
-    assert.match(enforcement, /\/api\/v1\/auth\/logout/);
+    assert.match(enforcement, /runFlow\("logout"/);
+    assert.match(enforcement, /mandatory: true/);
+    assert.match(enforcement, /\/api\/v1\/auth\/account-lifecycle/);
+    assert.match(enforcement, /action: "delete"/);
+    assert.match(enforcement, /ui:footerLinks/);
     assert.match(enforcement, /response\.ok/);
     assert.match(enforcement, /validate-stored-token/);
     assert.match(enforcement, /apply-alternate-auth/);
@@ -97,6 +101,7 @@ test("consent is enforced during registration and authenticated sessions", () =>
     );
     assert.match(enforcement, /while \(true\)/);
     assert.match(enforcement, /terms-of-service-consent-card/);
+    assert.match(enforcement, /form-builder-input/);
     assert.match(enforcement, /data-consent-document/);
     assert.match(enforcement, /acceptedVersions/);
     assert.match(enforcement, /CONSENT_REFRESH_INTERVAL_MS = 5_000/);

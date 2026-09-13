@@ -1,18 +1,12 @@
 import { importReuseModule, uiCtx } from "./reuse/resources.js";
 
-const [
-    { apiFetch },
-    { clearStoredAuthSession },
-    { createI18n },
-    { openPopup },
-    { escapeHtml },
-] = await Promise.all([
-    importReuseModule("api-client.js"),
-    importReuseModule("auth-session.js"),
-    importReuseModule("i18n.js"),
-    importReuseModule("popup.js"),
-    importReuseModule("escape-html.js"),
-]);
+const [{ apiFetch }, { createI18n }, { openPopup }, { escapeHtml }] =
+    await Promise.all([
+        importReuseModule("api-client.js"),
+        importReuseModule("i18n.js"),
+        importReuseModule("popup.js"),
+        importReuseModule("escape-html.js"),
+    ]);
 
 const API_PATH = "/api/v1/modules/terms-of-service/consent";
 const LOGIN_PATH = "/login";
@@ -27,6 +21,30 @@ const CONSENT_REFRESH_INTERVAL_MS = 5_000;
 let consentEndpointAvailable = true;
 let consentRefreshTimer;
 let enforcementPromise;
+const footerLinkDisposers = new Map();
+
+function syncFooterLinks(documents, i18n) {
+    const footerLinks = uiCtx.capabilities.get("ui:footerLinks");
+    if (typeof footerLinks?.add !== "function") return;
+    for (const document of documents) {
+        if (footerLinkDisposers.has(document.slug)) continue;
+        const titleKey =
+            document.slug === "terms-of-service"
+                ? "terms"
+                : document.slug === "privacy-policy"
+                  ? "privacy"
+                  : "eula";
+        footerLinkDisposers.set(
+            document.slug,
+            footerLinks.add({
+                id: `terms-of-service:${document.slug}`,
+                side: "right",
+                href: document.path,
+                label: i18n.t(`module.terms_of_service.document.${titleKey}`),
+            }),
+        );
+    }
+}
 
 async function consentStatus() {
     if (!consentEndpointAvailable) return null;
@@ -50,27 +68,43 @@ async function consentStatus() {
     return (await response.json()).data;
 }
 
-async function logout() {
-    try {
-        const token = localStorage.getItem("cognis_access_token");
-        const response = await fetch("/api/v1/auth/logout", {
-            method: "POST",
-            credentials: "same-origin",
-            headers: token ? { authorization: `Bearer ${token}` } : {},
-        });
-        if (!response.ok) {
-            throw new Error(`logout_http_${response.status}`);
-        }
-        clearStoredAuthSession();
-        return true;
-    } catch (error) {
-        uiCtx.capabilities.get("ui:log")?.("error", "Logout request failed.", {
-            component: "terms-of-service",
-            operation: "declineConsentLogout",
-            error: error instanceof Error ? error.message : String(error),
-        });
-        return false;
-    }
+async function deleteCurrentAccount(i18n) {
+    let password = "";
+    const result = await openPopup({
+        title: i18n.t("module.terms_of_service.consent.delete_account"),
+        body: `<label>${escapeHtml(i18n.t("module.terms_of_service.consent.password"))}
+            <input class="form-builder-input" type="password" autocomplete="current-password" data-delete-account-password>
+        </label>`,
+        variant: "danger",
+        actions: [
+            {
+                id: "cancel",
+                label: i18n.t("module.terms_of_service.action.keep"),
+                variant: "neutral",
+            },
+            {
+                id: "confirm",
+                label: i18n.t("module.terms_of_service.consent.delete_account"),
+                variant: "cancel",
+            },
+        ],
+        onAction(actionId, overlay) {
+            if (actionId !== "confirm") return true;
+            password = overlay.querySelector(
+                "[data-delete-account-password]",
+            )?.value;
+            return Boolean(password);
+        },
+    });
+    if (result !== "confirm") return false;
+    const response = await apiFetch("/api/v1/auth/account-lifecycle", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action: "delete", password }),
+    });
+    if (!response.ok) throw new Error("account_deletion_failed");
+    await uiCtx.runFlow("logout", { reason: "accountDeleted" });
+    return true;
 }
 
 async function requestConsent(status, i18n) {
@@ -87,16 +121,23 @@ async function requestConsent(status, i18n) {
                         (
                             document,
                         ) => `<label class="terms-of-service-consent-card">
-                            <input type="checkbox" data-consent-document="${escapeHtml(document.slug)}">
-                            <span><strong>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.slug === "terms-of-service" ? "terms" : document.slug === "privacy-policy" ? "privacy" : "eula"}`))}</strong>
-                            <span class="state-pill pill-active">${escapeHtml(i18n.t("module.terms_of_service.consent.updated"))}</span>
+                            <input class="form-builder-input" type="checkbox" data-consent-document="${escapeHtml(document.slug)}">
+                            <span><span class="terms-of-service-consent-title"><strong>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.slug === "terms-of-service" ? "terms" : document.slug === "privacy-policy" ? "privacy" : "eula"}`))}</strong>
+                            <span class="state-pill pill-active">${escapeHtml(i18n.t(`module.terms_of_service.consent.${document.state}`))}</span></span>
                             <span>${escapeHtml(i18n.t("module.terms_of_service.consent.read_latest"))} <a href="${escapeHtml(document.path)}" target="_blank" rel="noopener">${escapeHtml(i18n.t("module.terms_of_service.consent.here"))}</a></span></span>
                         </label>`,
                     )
                     .join("")}</div>`,
             variant: "warning",
-            closeOnBackdrop: false,
-            closeOnEscape: false,
+            mandatory: true,
+            onOpen(overlay) {
+                overlay
+                    .querySelector('[data-popup-action="decline"]')
+                    ?.setAttribute(
+                        "title",
+                        i18n.t("module.terms_of_service.consent.decline_hint"),
+                    );
+            },
             onAction(actionId, overlay) {
                 if (actionId !== "submit") return true;
                 const checked = Array.from(
@@ -120,7 +161,7 @@ async function requestConsent(status, i18n) {
                     variant: "cancel",
                 },
                 {
-                    id: "logout",
+                    id: "decline",
                     label: i18n.t("module.terms_of_service.consent.decline"),
                     variant: "cancel",
                 },
@@ -144,13 +185,12 @@ async function requestConsent(status, i18n) {
             status = await consentStatus();
             continue;
         }
-        if (action === "logout") {
-            if (await logout()) return false;
+        if (action === "decline") {
+            await uiCtx.runFlow("logout", { reason: "termsDeclined" });
+            return false;
         }
         if (action === "delete") {
-            const navigate = uiCtx.capabilities.get("ui:navigate");
-            await navigate?.("/settings#account");
-            return false;
+            if (await deleteCurrentAccount(i18n)) return false;
         }
     }
 }
@@ -175,10 +215,11 @@ async function enforceConsent(stageCtx) {
 async function enforceAuthenticatedConsent() {
     const status = await consentStatus();
     if (!status) return { requiresSetup: false };
-    if (!status.required || status.accepted) return { requiresSetup: false };
     const i18n = await createI18n({
         componentStringBaseUrls: ["/static/modules/terms-of-service/languages"],
     });
+    syncFooterLinks(status.documents, i18n);
+    if (!status.required || status.accepted) return { requiresSetup: false };
     const accepted = await requestConsent(status, i18n);
     return accepted
         ? { requiresSetup: false }
@@ -226,6 +267,8 @@ function scheduleConsentRefresh() {
 export function teardownConsentEnforcement() {
     clearTimeout(consentRefreshTimer);
     consentRefreshTimer = undefined;
+    footerLinkDisposers.forEach((dispose) => dispose());
+    footerLinkDisposers.clear();
 }
 
 window.addEventListener("pagehide", teardownConsentEnforcement, { once: true });

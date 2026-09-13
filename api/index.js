@@ -137,7 +137,6 @@ export function registerApi(router, ctx) {
                 }
                 sendJson(response, 200, { data: document });
             },
-            { access: { public: true } },
         );
     }
 

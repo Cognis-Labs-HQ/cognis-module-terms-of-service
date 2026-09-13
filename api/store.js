@@ -98,6 +98,9 @@ export class LegalDocumentStore {
             .filter((document) => document.version)
             .map((document) => ({
                 ...document,
+                state: consent?.[versionColumns[document.slug]]
+                    ? "updated"
+                    : "new",
                 accepted:
                     consent?.[versionColumns[document.slug]] ===
                     document.version,

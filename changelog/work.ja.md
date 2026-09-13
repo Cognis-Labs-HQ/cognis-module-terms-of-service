@@ -34,6 +34,10 @@ Cognis の外部モジュールルーターはパスを完全一致で照合す�
 
 公開済みの利用条件、プライバシー、EULA の各バージョンに対する承認を個別に追跡します。永続的な同意要求には新規または更新された文書だけがチェックボックスカードとして表示され、正確なバージョンの送信、ログアウト、アカウント設定の操作を提供します。エディター面は固定モード高さ、全幅でサイズ変更不可の入力欄、下部に余白を持つ中立コントロールを備えます。
 
+## 必須同意と法的ナビゲーションを統合
+
+単一の必須同意 Popup、コア形式のチェックボックス、行内の新規/更新版 Pill、拒否 Tooltip とホストのログアウト Flow、認証済みアカウントライフサイクル削除 Endpoint を使用します。公開文書 Route は実際に公開され、Markdown を全画面サイズの Popup で描画し、公開済み文書は `ui:footerLinks` を介して右寄せ Footer Link を提供します。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -43,3 +47,4 @@ Cognis の外部モジュールルーターはパスを完全一致で照合す�
 - [5ffec53](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5ffec53354d1e93bf49b3850c64a56b3ccb1cef9)
 - [427af9d](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/427af9d50be3bde15cb3f2fe53f44e5a7b743965)
 - [b9c93cc](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b9c93cc2de5693f69cdf63bb0d1d9419ef5c7ceb)
+- [1adbdf7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1adbdf77939aa53f70f2fef75b93bce9841bd746)
