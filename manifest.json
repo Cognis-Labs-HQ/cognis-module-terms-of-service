@@ -34,8 +34,8 @@
     "support": "https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/issues",
     "assets": {
         "screenshots": ["assets/screenshots/cognis-logo.png"],
-        "icon": "assets/icon.svg",
-        "banner": "assets/banner.svg"
+        "icon": "assets/icon.png",
+        "banner": "assets/banner.png"
     },
     "tags": [
         "module.terms_of_service.tag.legal",
@@ -135,12 +135,12 @@
             "sha256": "4f2562e9e9326b8bcbfe6c85d6adcc4712e3f9b14651f82e4e8953690280a451"
         },
         {
-            "path": "assets/banner.svg",
-            "sha256": "157f5636c6c892ac71eb81037ad20bd1005c2778aee3445514762a63ef789dfc"
+            "path": "assets/banner.png",
+            "sha256": "a0ac60fedccf06979ea4581aa1d3e1d6eae9ca50b547ac36e735a0c8c7befd8d"
         },
         {
-            "path": "assets/icon.svg",
-            "sha256": "a71eb90ae9528834d16f9fc401d3e98a395da601c149f0c740cb20128ec6c364"
+            "path": "assets/icon.png",
+            "sha256": "7e71656d996b84ddd9ab7a6c1464f1b6cdda55e9ea5d2f585c98cacf678b6a7e"
         },
         {
             "path": "assets/screenshots/cognis-logo.png",
