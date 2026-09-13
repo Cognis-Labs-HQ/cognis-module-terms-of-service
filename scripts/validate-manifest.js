@@ -27,6 +27,16 @@ assert.ok(
 );
 for (const entrypoint of Object.values(manifest.entrypoints))
     await access(entrypoint);
+for (const asset of Object.values(manifest.assets).flat()) {
+    assert.ok(
+        typeof asset === "string" &&
+            !asset.startsWith("/") &&
+            !asset.split("/").includes("..") &&
+            existsSync(asset) &&
+            lstatSync(asset).isFile(),
+        `invalid asset: ${asset}`,
+    );
+}
 const expectedPaths = execFileSync(
     "git",
     ["ls-files", "--cached", "--others", "--exclude-standard"],

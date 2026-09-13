@@ -2,7 +2,7 @@
     "id": "terms-of-service",
     "uuid": "e6f133ec-ccd9-4dbb-96bd-1ccf52a359de",
     "name": "module.terms_of_service.name",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [],
@@ -32,11 +32,7 @@
     "repository": "https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service",
     "homepage": "https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service#readme",
     "support": "https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/issues",
-    "assets": {
-        "screenshots": ["assets/screenshots/cognis-logo.png"],
-        "icon": "assets/icon.png",
-        "banner": "assets/banner.png"
-    },
+    "assets": { "icon": "assets/icon.png", "banner": "assets/banner.png" },
     "tags": [
         "module.terms_of_service.tag.legal",
         "module.terms_of_service.tag.administration"
@@ -128,7 +124,7 @@
         },
         {
             "path": "api/tests/structural-compliance.test.js",
-            "sha256": "239d7487190d69f44d7b5c135841ce71d284946fffa4f844cae63a29cb7cb29d"
+            "sha256": "54a2c78f3cad25133558376c0a2341876171a95dc6d0741cc8e047f49fb9d37e"
         },
         {
             "path": "api/ui.js",
@@ -141,10 +137,6 @@
         {
             "path": "assets/icon.png",
             "sha256": "7e71656d996b84ddd9ab7a6c1464f1b6cdda55e9ea5d2f585c98cacf678b6a7e"
-        },
-        {
-            "path": "assets/screenshots/cognis-logo.png",
-            "sha256": "4ef4d3f734ba671cb380be4c3eac9297ffdb70775a93109257bcd80d0c4dc3e1"
         },
         {
             "path": "bootstrap.js",
@@ -176,11 +168,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "a85c5ce51f6140205922f8b8d119f7d6cf0fb16308fbf9356bca236d3ca78e48"
+            "sha256": "664044552b21aa1ec416bd45ecec97e168e42cebd49eacc7707b800131ff6fbb"
         },
         {
             "path": "package.json",
-            "sha256": "561fdd9e6b5b6facc4ac069714460aeebd5cd29b13396cf02fc8110d7f65ad1d"
+            "sha256": "230e3187e22ed465824ca4f8b72e1726d351e1ab68e16c0287a19f4d8cd6d46c"
         },
         {
             "path": "routes.json",
@@ -192,7 +184,7 @@
         },
         {
             "path": "scripts/validate-manifest.js",
-            "sha256": "e629dca493ec21e35270c8233c109178cbd14d982949752314becc10c1ebc373"
+            "sha256": "562cf41fe3371eaf93064df5210adad4b0d53170ace326871ab857dfe7c8082a"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",

@@ -92,6 +92,12 @@ test("external module metadata and declared files are consistent", () => {
     for (const entrypoint of Object.values(manifest.entrypoints)) {
         assert.ok(statSync(resolve(ROOT, entrypoint)).isFile());
     }
+    for (const asset of Object.values(manifest.assets).flat()) {
+        assert.equal(typeof asset, "string");
+        assert.equal(asset.startsWith("/"), false);
+        assert.equal(asset.split("/").includes(".."), false);
+        assert.ok(statSync(resolve(ROOT, asset)).isFile(), asset);
+    }
     for (const file of manifest.files) {
         const path = resolve(ROOT, file.path);
         assert.ok(statSync(path).isFile(), file.path);
