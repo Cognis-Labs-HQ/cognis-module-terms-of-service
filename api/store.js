@@ -9,7 +9,7 @@ function documentFromRow(row) {
     return {
         slug: String(row.slug),
         version: String(row.version),
-        markdown: String(row.markdown),
+        markdown: String(row.content),
         publishedAt: row.published_at,
         path: DOCUMENTS[row.slug],
     };
@@ -145,7 +145,7 @@ export class LegalDocumentStore {
                 "consented_at",
             ],
         });
-        return { ...status, accepted: true, consentedAt };
+        return this.consentStatus(accountId);
     }
 
     async deleteAll() {

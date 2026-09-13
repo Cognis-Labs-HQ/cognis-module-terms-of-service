@@ -38,6 +38,10 @@ Melacak pengakuan secara terpisah untuk setiap versi Ketentuan, Privasi, dan EUL
 
 Menggunakan satu popup persetujuan wajib, kotak centang bergaya inti, pil Baru/Pembaruan sebaris, tooltip penolakan dan flow keluar host, serta endpoint penghapusan siklus hidup akun terautentikasi. Rute dokumen publik benar-benar publik, merender Markdown dalam popup ukuran penuh, dan dokumen terbitan menyumbangkan tautan footer rata kanan melalui `ui:footerLinks`.
 
+## Tampilan dan penyimpanan persetujuan distabilkan
+
+Memuat stylesheet persetujuan bersama integrasi navbar terautentikasi agar penyegaran dan navigasi SPA dirender sama. Menjaga pil inti tetap ringkas, menempatkan tautan dokumen pada baris tersendiri, menyimpan set versi terbitan lengkap, dan memverifikasi status tersimpan sebelum menutup persetujuan.
+
 ## Commit
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -48,3 +52,4 @@ Menggunakan satu popup persetujuan wajib, kotak centang bergaya inti, pil Baru/P
 - [427af9d](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/427af9d50be3bde15cb3f2fe53f44e5a7b743965)
 - [b9c93cc](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b9c93cc2de5693f69cdf63bb0d1d9419ef5c7ceb)
 - [1adbdf7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1adbdf77939aa53f70f2fef75b93bce9841bd746)
+- [0c9207e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0c9207e9a3c872266558207cc5a8d61f4c63ca12)

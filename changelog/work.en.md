@@ -38,6 +38,10 @@ Tracks acknowledgements independently for every published Terms, Privacy, and EU
 
 Uses one mandatory consent popup, core-styled checkboxes, inline New/Update pills, a decline tooltip and host logout flow, plus the authenticated account-lifecycle deletion endpoint. Public document routes are truly public, render Markdown in a full-size popup, and published documents contribute right-aligned footer links through `ui:footerLinks`.
 
+## Stabilized consent presentation and persistence
+
+Loads the consent stylesheet with the authenticated navbar integration so refreshes and SPA navigation render identically. Keeps the core pill compact, places the document link on its own line, persists the complete published version set, and verifies the stored state before dismissing consent.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -48,3 +52,4 @@ Uses one mandatory consent popup, core-styled checkboxes, inline New/Update pill
 - [427af9d](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/427af9d50be3bde15cb3f2fe53f44e5a7b743965)
 - [b9c93cc](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b9c93cc2de5693f69cdf63bb0d1d9419ef5c7ceb)
 - [1adbdf7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1adbdf77939aa53f70f2fef75b93bce9841bd746)
+- [0c9207e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0c9207e9a3c872266558207cc5a8d61f4c63ca12)

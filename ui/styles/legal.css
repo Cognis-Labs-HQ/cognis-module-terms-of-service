@@ -110,3 +110,19 @@
     display: grid;
     gap: 0.5rem;
 }
+
+.terms-of-service-consent-title {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.terms-of-service-consent-title .state-pill {
+    flex: none;
+    width: fit-content;
+}
+
+.terms-of-service-consent-read {
+    display: block;
+}

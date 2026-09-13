@@ -7,6 +7,7 @@ const resources = readFileSync("ui/reuse/resources.js", "utf8");
 const enforcement = readFileSync("ui/consent-enforcement.js", "utf8");
 const registration = readFileSync("ui/registration-consent.js", "utf8");
 const legalStyles = readFileSync("ui/styles/legal.css", "utf8");
+const uiRegistration = readFileSync("api/ui.js", "utf8");
 
 test("browser code imports the core Markdown renderer through ui:reuse", () => {
     assert.match(resources, /Symbol\.for\("cognis\.uiCtx"\)/);
@@ -104,6 +105,13 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /form-builder-input/);
     assert.match(enforcement, /data-consent-document/);
     assert.match(enforcement, /acceptedVersions/);
+    assert.match(enforcement, /status\.documents\.map/);
+    assert.match(enforcement, /terms-of-service-consent-read/);
+    assert.match(
+        uiRegistration,
+        /registerNavbarPlugin\([\s\S]*stylesheets: \["\/static\/modules\/terms-of-service\/styles\/legal\.css"\]/,
+    );
+    assert.match(legalStyles, /terms-of-service-consent-title \.state-pill/);
     assert.match(enforcement, /CONSENT_REFRESH_INTERVAL_MS = 5_000/);
     assert.match(enforcement, /enforceAuthenticatedConsentOnce/);
     assert.match(enforcement, /scheduleConsentRefresh/);

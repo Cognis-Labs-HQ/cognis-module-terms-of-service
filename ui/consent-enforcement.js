@@ -124,7 +124,7 @@ async function requestConsent(status, i18n) {
                             <input class="form-builder-input" type="checkbox" data-consent-document="${escapeHtml(document.slug)}">
                             <span><span class="terms-of-service-consent-title"><strong>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.slug === "terms-of-service" ? "terms" : document.slug === "privacy-policy" ? "privacy" : "eula"}`))}</strong>
                             <span class="state-pill pill-active">${escapeHtml(i18n.t(`module.terms_of_service.consent.${document.state}`))}</span></span>
-                            <span>${escapeHtml(i18n.t("module.terms_of_service.consent.read_latest"))} <a href="${escapeHtml(document.path)}" target="_blank" rel="noopener">${escapeHtml(i18n.t("module.terms_of_service.consent.here"))}</a></span></span>
+                            <span class="terms-of-service-consent-read">${escapeHtml(i18n.t("module.terms_of_service.consent.read_latest"))} <a href="${escapeHtml(document.path)}" target="_blank" rel="noopener">${escapeHtml(i18n.t("module.terms_of_service.consent.here"))}</a></span></span>
                         </label>`,
                     )
                     .join("")}</div>`,
@@ -145,7 +145,7 @@ async function requestConsent(status, i18n) {
                 ).filter((checkbox) => checkbox.checked);
                 if (checked.length !== pendingDocuments.length) return false;
                 acceptedVersions = Object.fromEntries(
-                    pendingDocuments.map((document) => [
+                    status.documents.map((document) => [
                         document.slug,
                         document.version,
                     ]),

@@ -20,7 +20,7 @@ function versionTracker(latestDocuments = []) {
                     return {
                         slug: document.slug,
                         version: "immutable-v1",
-                        markdown: document.content,
+                        content: document.content,
                         published_at: "2026-09-12",
                     };
                 },
@@ -54,11 +54,11 @@ test("publishing delegates immutable versions to the core tracker", async () => 
 
 test("consent identifies each unacknowledged published document", async () => {
     const tracker = versionTracker([
-        { slug: "terms-of-service", version: "terms-v2", markdown: "terms" },
+        { slug: "terms-of-service", version: "terms-v2", content: "terms" },
         {
             slug: "privacy-policy",
             version: "privacy-v3",
-            markdown: "privacy",
+            content: "privacy",
         },
     ]);
     const database = {
@@ -90,11 +90,11 @@ test("consent identifies each unacknowledged published document", async () => {
 
 test("recording consent rejects stale versions", async () => {
     const tracker = versionTracker([
-        { slug: "terms-of-service", version: "terms-current", markdown: "t" },
+        { slug: "terms-of-service", version: "terms-current", content: "t" },
         {
             slug: "privacy-policy",
             version: "privacy-current",
-            markdown: "p",
+            content: "p",
         },
     ]);
     const database = {
@@ -109,4 +109,46 @@ test("recording consent rejects stale versions", async () => {
         }),
         /stale_document_versions/,
     );
+});
+
+test("recording consent persists every accepted document version", async () => {
+    const documents = [
+        { slug: "terms-of-service", version: "terms-v2", content: "terms" },
+        { slug: "privacy-policy", version: "privacy-v3", content: "privacy" },
+    ];
+    const tracker = {
+        createStore() {
+            return {
+                async getLatest(slug) {
+                    return (
+                        documents.find((document) => document.slug === slug) ??
+                        null
+                    );
+                },
+            };
+        },
+    };
+    let consent;
+    const database = {
+        async executeCommand(command) {
+            if (command.option === "UPSERT") {
+                consent = command.values;
+                return { rows: [] };
+            }
+            return { rows: consent ? [consent] : [] };
+        },
+    };
+    const status = await new LegalDocumentStore(
+        database,
+        tracker,
+    ).recordConsent("account-1", {
+        "terms-of-service": "terms-v2",
+        "privacy-policy": "privacy-v3",
+    });
+
+    assert.equal(consent.account_id, "account-1");
+    assert.equal(consent.terms_version, "terms-v2");
+    assert.equal(consent.privacy_version, "privacy-v3");
+    assert.equal(status.required, false);
+    assert.equal(status.accepted, true);
 });
