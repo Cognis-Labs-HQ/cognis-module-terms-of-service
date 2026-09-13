@@ -19,7 +19,15 @@ test("browser code imports the core Markdown renderer through ui:reuse", () => {
 test("legal editors use Cognis utilities and standard action variants", () => {
     assert.match(source, /importReuseModule\("unsaved-changes\.js"\)/);
     assert.match(source, /importReuseModule\("info-tooltip\.js"\)/);
+    assert.match(
+        source,
+        /importReuseModule\("collapsible-section-composer\.js"\)/,
+    );
     assert.match(source, /createUnsavedChangesBar/);
+    assert.match(
+        source,
+        /createCollapsibleSectionComposer\(\{ escapeHtml \}\)/,
+    );
     assert.match(source, /renderInfoTooltip/);
     assert.match(
         source,
@@ -27,28 +35,31 @@ test("legal editors use Cognis utilities and standard action variants", () => {
     );
     assert.match(source, /hasPublishedContent/);
     assert.match(source, /actionVariant/);
-    assert.match(source, /module\.terms_of_service\.action\.add/);
-    assert.match(source, /classList\.add\("btn-cancel"\)/);
+    assert.match(source, /actionKey = hasPublishedContent \? "remove" : "add"/);
+    assert.match(source, /classList\.toggle\("btn-cancel", expanded\)/);
     assert.match(source, /await openPopup\(\{/);
-    assert.match(source, /<header class="terms-of-service-document-header">/);
-    assert.doesNotMatch(source, /<details|<summary|collapseIconMarkup/);
+    assert.match(source, /controlsHtml:/);
+    assert.match(source, /contentHtml:/);
+    assert.match(source, /title: i18n\.t/);
+    assert.doesNotMatch(source, /terms-of-service-tabs|collapseIconMarkup/);
     assert.match(source, /function documentsMarkup[\s\S]*renderInfoTooltip/);
-    assert.match(legalStyles, /terms-of-service-editor\[hidden\]/);
+    assert.match(legalStyles, /terms-of-service-compose-pane\[hidden\]/);
     assert.doesNotMatch(source, /data-action="publish"/);
 });
 
 test("dirty tracker save publishes updates and sends a success toast", () => {
-    assert.match(source, /data-action="save"/);
     assert.match(source, /method: "PUT"/);
     assert.match(source, /message\.updated/);
     assert.match(source, /showToast/);
-    assert.match(source, /\.floating-toolbar/);
+    assert.match(source, /data-floating-slot="admin-changes-bar"/);
     assert.match(source, /createUnsavedChangesBar\(slot/);
     assert.match(source, /if \(!savedMarkdown\) closeEditor\(\)/);
-    assert.match(
-        source,
-        /function closeEditor\(\)[\s\S]*editor\.hidden = true/,
-    );
+    assert.match(source, /function closeEditor\(\)[\s\S]*panel\.open = false/);
+    assert.match(source, /confirmMessage:/);
+    assert.match(source, /panel\.addEventListener\("toggle"/);
+    assert.match(source, /onUnmount\(\)[\s\S]*dirtyBar\?\.destroy/);
+    assert.match(source, /if \(!slot\?\.isConnected\) return null/);
+    assert.match(source, /if \(!section\?\.isConnected\) return null/);
     assert.match(source, /error: new Error\(message\)/);
 });
 

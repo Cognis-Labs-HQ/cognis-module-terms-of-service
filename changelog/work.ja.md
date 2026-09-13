@@ -22,9 +22,14 @@ Cognis の外部モジュールルーターはパスを完全一致で照合す�
 
 管理画面を更新すると、保存済み文書が保持された Markdown と削除操作を伴って開いた状態で表示されます。表示中の認証済みセッションは5秒ごとに同意を再確認し、重複するポップアップを防ぐため確認を直列化し、ページのアンロード時またはモジュールエンドポイントの消失時に更新タイマーを停止します。
 
+## ホストの折りたたみセクションを採用
+
+法的文書ディスクリプターをホストの折りたたみセクション Composer で描画し、サニタイズ済みのローカライズタイトル、行内の追加/削除と作成/プレビュー操作、エディター内容を提供します。モジュールはセクション切断時に失敗することなくホスト管理画面のフローティングスロットへ接続し、ローカライズされた移動警告を渡し、アンマウント時に変更追跡を破棄します。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
 - [e20d857](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/e20d857715e08f3656717ad55a5918fe236820ab)
 - [3fcbc91](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3fcbc91f42e61309ef7bd56491ddcf4311f605fd)
 - [cc4f1ba](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/cc4f1ba0582fd8d87b96c5e678e968467f86d988)
+- [5ffec53](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5ffec53354d1e93bf49b3850c64a56b3ccb1cef9)

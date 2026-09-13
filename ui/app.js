@@ -8,6 +8,7 @@ const [
     { mountWhenDirect },
     { createUnsavedChangesBar },
     { renderInfoTooltip },
+    { createCollapsibleSectionComposer },
 ] = await Promise.all([
     importReuseModule("api-client.js"),
     importReuseModule("i18n.js"),
@@ -16,6 +17,7 @@ const [
     importReuseModule("page-entry.js"),
     importReuseModule("unsaved-changes.js"),
     importReuseModule("info-tooltip.js"),
+    importReuseModule("collapsible-section-composer.js"),
 ]);
 
 const API_PATH = "/api/v1/modules/terms-of-service";
@@ -52,29 +54,29 @@ async function readPayload(response) {
     return payload.data;
 }
 
-function editorMarkup(document, i18n) {
+function documentDescriptor(document, i18n) {
     const hasPublishedContent = Boolean(
         document.version && String(document.markdown ?? "").trim(),
     );
     const actionKey = hasPublishedContent ? "remove" : "add";
     const actionVariant = hasPublishedContent ? "btn-cancel" : "btn-confirm";
-    return `<section class="terms-of-service-document" data-document="${document.slug}">
-        <header class="terms-of-service-document-header">
-            <h3>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.titleKey}`))}</h3>
-            <button class="terms-of-service-document-action ${actionVariant}" type="button"
+    return {
+        id: document.slug,
+        title: i18n.t(`module.terms_of_service.document.${document.titleKey}`),
+        className: "terms-of-service-document",
+        contentClassName: "terms-of-service-document-content",
+        open: hasPublishedContent,
+        controlsHtml: `<button class="terms-of-service-document-action ${actionVariant}" type="button"
                 aria-label="${escapeHtml(i18n.t(`module.terms_of_service.action.${actionKey}`))}">${escapeHtml(i18n.t(`module.terms_of_service.action.${actionKey}`))}</button>
-        </header>
-        <div class="terms-of-service-editor"${hasPublishedContent ? "" : " hidden"}>
+            <button class="terms-of-service-mode-toggle" type="button" data-mode="compose" aria-pressed="true"${hasPublishedContent ? "" : " hidden"}>${escapeHtml(i18n.t("module.terms_of_service.action.compose"))}</button>
+            <button class="terms-of-service-mode-toggle" type="button" data-mode="preview" aria-pressed="false"${hasPublishedContent ? "" : " hidden"}>${escapeHtml(i18n.t("module.terms_of_service.action.preview"))}</button>`,
+        contentHtml: `<div class="terms-of-service-editor">
             <div class="terms-of-service-compose-pane">
                 <textarea rows="16" aria-label="${escapeHtml(i18n.t("module.terms_of_service.editor.content"))}">${escapeHtml(document.markdown ?? "")}</textarea>
             </div>
             <div class="terms-of-service-preview-pane" hidden></div>
-            <div class="terms-of-service-tabs">
-                <button class="terms-of-service-mode-toggle" type="button" data-mode="compose" aria-pressed="true">${escapeHtml(i18n.t("module.terms_of_service.action.compose"))}</button>
-                <button class="terms-of-service-mode-toggle" type="button" data-mode="preview" aria-pressed="false">${escapeHtml(i18n.t("module.terms_of_service.action.preview"))}</button>
-            </div>
-        </div>
-    </section>`;
+        </div>`,
+    };
 }
 
 function activateEditor(
@@ -82,7 +84,6 @@ function activateEditor(
     document,
     { apiFetch, dirtyBar, i18n, openPopup },
 ) {
-    const editor = panel.querySelector(".terms-of-service-editor");
     const textarea = panel.querySelector("textarea");
     const composePane = panel.querySelector(".terms-of-service-compose-pane");
     const previewPane = panel.querySelector(".terms-of-service-preview-pane");
@@ -91,6 +92,7 @@ function activateEditor(
     );
     const composeButton = panel.querySelector('[data-mode="compose"]');
     const previewButton = panel.querySelector('[data-mode="preview"]');
+    const modeButtons = [composeButton, previewButton];
     let savedMarkdown = document.markdown ?? "";
 
     async function save() {
@@ -114,16 +116,24 @@ function activateEditor(
 
     function closeEditor() {
         selectMode("compose");
-        editor.hidden = true;
+        panel.open = false;
+        syncEditorControls(false);
+    }
+
+    function syncEditorControls(expanded) {
+        modeButtons.forEach((button) => {
+            button.hidden = !expanded;
+        });
+        const actionKey = expanded ? "remove" : "add";
         documentAction.textContent = i18n.t(
-            "module.terms_of_service.action.add",
+            `module.terms_of_service.action.${actionKey}`,
         );
         documentAction.setAttribute(
             "aria-label",
-            i18n.t("module.terms_of_service.action.add"),
+            i18n.t(`module.terms_of_service.action.${actionKey}`),
         );
-        documentAction.classList.remove("btn-cancel");
-        documentAction.classList.add("btn-confirm");
+        documentAction.classList.toggle("btn-cancel", expanded);
+        documentAction.classList.toggle("btn-confirm", !expanded);
     }
 
     function selectMode(mode) {
@@ -141,21 +151,13 @@ function activateEditor(
     }
 
     textarea.addEventListener("input", () => {
-        dirtyBar.markDirty(document.slug, textarea.value !== savedMarkdown);
+        dirtyBar?.markDirty(document.slug, textarea.value !== savedMarkdown);
     });
     documentAction.addEventListener("click", async (event) => {
         event.preventDefault();
-        if (editor.hidden) {
-            editor.hidden = false;
-            documentAction.textContent = i18n.t(
-                "module.terms_of_service.action.remove",
-            );
-            documentAction.setAttribute(
-                "aria-label",
-                i18n.t("module.terms_of_service.action.remove"),
-            );
-            documentAction.classList.remove("btn-confirm");
-            documentAction.classList.add("btn-cancel");
+        if (!panel.open) {
+            panel.open = true;
+            syncEditorControls(true);
             textarea.focus();
             return;
         }
@@ -178,39 +180,30 @@ function activateEditor(
         });
         if (result !== "remove") return;
         textarea.value = savedMarkdown;
-        dirtyBar.markDirty(document.slug, false);
+        dirtyBar?.markDirty(document.slug, false);
         closeEditor();
     });
-    composeButton.addEventListener("click", () => selectMode("compose"));
-    previewButton.addEventListener("click", () => selectMode("preview"));
+    composeButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        selectMode("compose");
+    });
+    previewButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        selectMode("preview");
+    });
+    panel.addEventListener("toggle", () => {
+        syncEditorControls(panel.open);
+    });
     return { discard, save };
 }
 
 function mountFloatingDirtyTracker(root, i18n, controllers) {
-    const floatingToolbar = root.querySelector(".floating-toolbar");
-    if (!floatingToolbar) {
-        throw new Error("Required floating toolbar unavailable.");
-    }
-    floatingToolbar
-        .querySelector('[data-floating-slot="terms-of-service-changes"]')
-        ?.remove();
-    const slot = document.createElement("div");
-    slot.dataset.floatingSlot = "terms-of-service-changes";
-    slot.hidden = true;
-    slot.innerHTML = `<span>${escapeHtml(i18n.t("module.terms_of_service.editor.unsaved"))}</span>
-        <button class="btn-cancel btn-animated" type="button" data-action="discard">${escapeHtml(i18n.t("module.terms_of_service.action.discard"))}</button>
-        <button class="btn-confirm btn-animated" type="button" data-action="save">${escapeHtml(i18n.t("module.terms_of_service.action.save"))}</button>`;
-    floatingToolbar.appendChild(slot);
-    const syncToolbar = () => {
-        floatingToolbar.hidden = !Array.from(
-            floatingToolbar.querySelectorAll("[data-floating-slot]"),
-        ).some((candidate) => !candidate.hidden);
-    };
-    new MutationObserver(syncToolbar).observe(slot, {
-        attributes: true,
-        attributeFilter: ["hidden"],
-    });
+    const section = root.querySelector("#terms-of-service-legal");
+    if (!section?.isConnected) return null;
+    const slot = root.querySelector('[data-floating-slot="admin-changes-bar"]');
+    if (!slot?.isConnected) return null;
     const dirtyBar = createUnsavedChangesBar(slot, {
+        confirmMessage: i18n.t("module.terms_of_service.editor.unsaved"),
         onSave: async () => {
             try {
                 await Promise.all(
@@ -226,11 +219,11 @@ function mountFloatingDirtyTracker(root, i18n, controllers) {
             controllers.forEach((controller) => controller.discard());
         },
     });
-    syncToolbar();
     return dirtyBar;
 }
 
 function documentsMarkup(documents, i18n) {
+    const sectionComposer = createCollapsibleSectionComposer({ escapeHtml });
     return `<div class="terms-of-service-heading">
         <h2>${escapeHtml(i18n.t("module.terms_of_service.admin.title"))}</h2>
         ${renderInfoTooltip(
@@ -240,12 +233,13 @@ function documentsMarkup(documents, i18n) {
         )}
     </div>
     <div class="terms-of-service-documents">
-        ${documents.map((document) => editorMarkup(document, i18n)).join("")}
+        ${sectionComposer.render(documents.map((document) => documentDescriptor(document, i18n)))}
     </div>`;
 }
 
 export function createAdminSection({ i18n, apiFetch, openPopup }) {
     let documents = DOCUMENTS;
+    let dirtyBar;
     const dataReady = apiFetch(`${API_PATH}/documents`)
         .then(readPayload)
         .then((storedDocuments) => {
@@ -270,14 +264,11 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
             heading: "",
             onRender(root) {
                 const controllers = [];
-                const dirtyBar = mountFloatingDirtyTracker(
-                    root,
-                    i18n,
-                    controllers,
-                );
+                dirtyBar?.destroy?.();
+                dirtyBar = mountFloatingDirtyTracker(root, i18n, controllers);
                 for (const definition of documents) {
                     const panel = root.querySelector(
-                        `[data-document="${definition.slug}"]`,
+                        `[data-collapsible-section="${definition.slug}"]`,
                     );
                     if (panel) {
                         controllers.push(
@@ -290,6 +281,10 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                         );
                     }
                 }
+            },
+            onUnmount() {
+                dirtyBar?.destroy?.();
+                dirtyBar = undefined;
             },
             elements: [
                 {

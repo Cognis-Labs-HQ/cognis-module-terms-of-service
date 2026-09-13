@@ -19,31 +19,11 @@
 }
 
 .terms-of-service-documents {
-    display: grid;
-    gap: 0.75rem;
-    padding: 0.25rem;
     width: 100%;
 }
 
 .terms-of-service-document {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 0.5rem;
-    overflow: clip;
-    width: 100%;
-}
-
-.terms-of-service-document-header {
-    align-items: center;
-    display: flex;
-    gap: 0.75rem;
-    justify-content: space-between;
-    padding: 0.875rem 1rem;
-}
-
-.terms-of-service-document-header h3 {
-    font-size: 1rem;
-    margin: 0;
+    margin-inline: 0;
 }
 
 .terms-of-service-document-action {
@@ -51,7 +31,6 @@
 }
 
 .terms-of-service-editor {
-    border-block-start: 1px solid var(--color-border);
     box-sizing: border-box;
     display: grid;
     gap: 0;
@@ -60,7 +39,6 @@
     width: 100%;
 }
 
-.terms-of-service-editor[hidden],
 .terms-of-service-compose-pane[hidden],
 .terms-of-service-preview-pane[hidden] {
     display: none;
@@ -79,7 +57,7 @@
     box-sizing: border-box;
     color: var(--color-text);
     font: inherit;
-    border-radius: 0.25rem 0.25rem 0 0;
+    border-radius: 0.25rem;
     display: block;
     max-inline-size: none;
     min-height: 16rem;
@@ -100,39 +78,4 @@
 .terms-of-service-preview-pane,
 .terms-of-service-rendered {
     min-height: 12rem;
-}
-
-.terms-of-service-tabs {
-    display: grid;
-    gap: 0;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.terms-of-service-tabs button {
-    background: var(--color-surface-elevated);
-    border: 1px solid var(--color-border);
-    border-radius: 0 0 0.25rem 0.25rem;
-    color: var(--color-text);
-    cursor: pointer;
-    font: inherit;
-    font-size: 0.78rem;
-    padding: 0.5rem 0.75rem;
-    width: 100%;
-}
-
-.terms-of-service-tabs button + button {
-    border-inline-start: 0;
-}
-
-.terms-of-service-tabs button[aria-pressed="true"] {
-    background: color-mix(
-        in srgb,
-        var(--color-accent) 22%,
-        var(--color-surface)
-    );
-    border-color: var(--color-accent);
-}
-
-.terms-of-service-tabs button:hover {
-    filter: brightness(1.1);
 }

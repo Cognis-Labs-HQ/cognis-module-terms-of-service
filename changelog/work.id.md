@@ -22,9 +22,14 @@ Mendaftarkan satu rute PUT dan GET publik yang persis untuk setiap dokumen hukum
 
 Dokumen tersimpan kini dirender terbuka dengan Markdown yang dipertahankan dan tindakan Hapus saat Administrasi disegarkan. Sesi terautentikasi yang terlihat memeriksa ulang persetujuan setiap lima detik, menjalankan pemeriksaan secara berurutan untuk mencegah popup ganda, dan menghentikan timer penyegaran ketika halaman dibongkar atau endpoint modul menghilang.
 
+## Bagian host yang dapat diciutkan diterapkan
+
+Merender deskriptor dokumen hukum melalui penyusun bagian host yang dapat diciutkan dengan judul terlokalisasi yang disanitasi, kontrol Tambah/Hapus dan Tulis/Pratinjau sebaris, serta konten editor. Modul kini terhubung ke slot mengambang Administrasi host tanpa gagal saat bagian terlepas, menyediakan peringatan navigasi yang dilokalkan, dan menghancurkan pelacak perubahan saat dilepas.
+
 ## Commit
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
 - [e20d857](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/e20d857715e08f3656717ad55a5918fe236820ab)
 - [3fcbc91](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3fcbc91f42e61309ef7bd56491ddcf4311f605fd)
 - [cc4f1ba](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/cc4f1ba0582fd8d87b96c5e678e968467f86d988)
+- [5ffec53](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5ffec53354d1e93bf49b3850c64a56b3ccb1cef9)
