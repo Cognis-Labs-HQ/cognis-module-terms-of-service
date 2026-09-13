@@ -1,6 +1,6 @@
 # Correct PNG store artwork integration
 
-**Feature Branch:** work
+**Feature Branch:** feature-fix-usage-of-banner.png-and-icon.png
 
 ## Published the new icon and banner correctly
 

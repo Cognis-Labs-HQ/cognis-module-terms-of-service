@@ -1,6 +1,6 @@
 # Perbaikan integrasi karya visual toko PNG
 
-**Cabang Fitur:** work
+**Cabang Fitur:** feature-fix-usage-of-banner.png-and-icon.png
 
 ## Ikon dan banner baru diterbitkan dengan benar
 

@@ -1,6 +1,6 @@
 # Korrekte Einbindung der PNG-Shopgrafiken
 
-**Feature-Branch:** work
+**Feature-Branch:** feature-fix-usage-of-banner.png-and-icon.png
 
 ## Neues Symbol und Banner korrekt veröffentlicht
 

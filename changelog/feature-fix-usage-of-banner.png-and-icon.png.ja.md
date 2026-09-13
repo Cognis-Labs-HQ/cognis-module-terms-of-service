@@ -1,6 +1,6 @@
 # PNG ストア画像の統合を修正
 
-**機能ブランチ:** work
+**機能ブランチ:** feature-fix-usage-of-banner.png-and-icon.png
 
 ## 新しいアイコンとバナーを正しく公開
 
