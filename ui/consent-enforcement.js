@@ -157,7 +157,7 @@ async function requestConsent(status, i18n) {
                             <div class="terms-of-service-consent-content">
                                 <div class="terms-of-service-consent-title"><strong>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.slug === "terms-of-service" ? "terms" : document.slug === "privacy-policy" ? "privacy" : "eula"}`))}</strong>
                                 <span class="state-pill pill-active">${escapeHtml(i18n.t(`module.terms_of_service.consent.${document.state}`))}</span></div>
-                                <div class="terms-of-service-consent-read">${escapeHtml(i18n.t("module.terms_of_service.consent.read_latest"))} <a href="${escapeHtml(document.path)}" target="_blank" rel="noopener">${escapeHtml(i18n.t("module.terms_of_service.consent.here"))}</a></div>
+                                <div class="terms-of-service-consent-read">${escapeHtml(i18n.t("module.terms_of_service.consent.read_latest"))} <a href="${escapeHtml(document.path)}" target="_blank" rel="noopener noreferrer">${escapeHtml(i18n.t("module.terms_of_service.consent.here"))}</a></div>
                             </div>
                         </label>`,
                     )
@@ -165,6 +165,15 @@ async function requestConsent(status, i18n) {
             variant: "warning",
             mandatory: true,
             onOpen(overlay) {
+                overlay
+                    .querySelectorAll(
+                        '.terms-of-service-consent-read a[target="_blank"]',
+                    )
+                    .forEach((link) => {
+                        link.addEventListener("click", (event) => {
+                            event.stopPropagation();
+                        });
+                    });
                 overlay
                     .querySelector('[data-popup-action="decline"]')
                     ?.setAttribute(

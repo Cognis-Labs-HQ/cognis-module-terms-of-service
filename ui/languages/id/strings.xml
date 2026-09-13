@@ -28,7 +28,7 @@
   <string name="module.terms_of_service.category.legal">Hukum</string>
   <string name="module.terms_of_service.tag.legal">Hukum</string>
   <string name="module.terms_of_service.tag.administration">Administrasi</string>
-  <string name="module.terms_of_service.consent.title">Ketentuan dan Kebijakan Privasi Diperbarui</string>
+  <string name="module.terms_of_service.consent.title">Persetujuan Diperlukan</string>
   <string name="module.terms_of_service.consent.prompt">Anda harus menerima hal berikut untuk terus menggunakan Cognis.</string>
   <string name="module.terms_of_service.consent.new">Baru</string>
   <string name="module.terms_of_service.consent.decline_hint">Anda akan keluar</string>

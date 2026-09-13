@@ -113,6 +113,8 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /acceptedVersions/);
     assert.match(enforcement, /status\.documents\.map/);
     assert.match(enforcement, /terms-of-service-consent-read/);
+    assert.match(enforcement, /target="_blank" rel="noopener noreferrer"/);
+    assert.match(enforcement, /event\.stopPropagation\(\)/);
     assert.match(
         enforcement,
         /if \(status\.accepted && !status\.required\) return true/,

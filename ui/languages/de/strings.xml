@@ -28,7 +28,7 @@
   <string name="module.terms_of_service.category.legal">Rechtliches</string>
   <string name="module.terms_of_service.tag.legal">Rechtliches</string>
   <string name="module.terms_of_service.tag.administration">Administration</string>
-  <string name="module.terms_of_service.consent.title">Aktualisierte Bedingungen und Datenschutzerklärung</string>
+  <string name="module.terms_of_service.consent.title">Zustimmung erforderlich</string>
   <string name="module.terms_of_service.consent.prompt">Sie müssen Folgendes akzeptieren, um Cognis weiter zu verwenden.</string>
   <string name="module.terms_of_service.consent.new">Neu</string>
   <string name="module.terms_of_service.consent.decline_hint">Sie werden abgemeldet</string>

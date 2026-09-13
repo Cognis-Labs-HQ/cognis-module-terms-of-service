@@ -28,7 +28,7 @@
   <string name="module.terms_of_service.category.legal">法務</string>
   <string name="module.terms_of_service.tag.legal">法務</string>
   <string name="module.terms_of_service.tag.administration">管理</string>
-  <string name="module.terms_of_service.consent.title">更新された規約とプライバシーポリシー</string>
+  <string name="module.terms_of_service.consent.title">同意が必要です</string>
   <string name="module.terms_of_service.consent.prompt">Cognis を引き続き利用するには、以下に同意する必要があります。</string>
   <string name="module.terms_of_service.consent.new">新規</string>
   <string name="module.terms_of_service.consent.decline_hint">ログアウトします</string>

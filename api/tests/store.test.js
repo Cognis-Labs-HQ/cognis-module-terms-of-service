@@ -48,6 +48,32 @@ test("publishing delegates immutable versions to the core tracker", async () => 
     assert.equal(tracker.calls[1][0], "schema");
     assert.equal(tracker.calls[2][1].actorId, "admin-1");
     assert.equal(databaseCalls[0].name, "terms_of_service_consents");
+    assert.deepEqual(
+        databaseCalls[0].columns
+            .filter(({ name }) => name.endsWith("_version"))
+            .map(({ name, notNull, default: defaultValue }) => ({
+                name,
+                notNull,
+                default: defaultValue,
+            })),
+        [
+            {
+                name: "terms_version",
+                notNull: true,
+                default: "unpublished",
+            },
+            {
+                name: "privacy_version",
+                notNull: true,
+                default: "unpublished",
+            },
+            {
+                name: "eula_version",
+                notNull: true,
+                default: "unpublished",
+            },
+        ],
+    );
     assert.equal(document.version, "immutable-v1");
     assert.equal(document.markdown, "# EULA");
 });
@@ -190,7 +216,7 @@ test("consent reports expose the selected document version per account", async (
     ]);
 });
 
-test("recording one published document satisfies legacy non-null columns", async () => {
+test("recording one published document supplies every non-null version column", async () => {
     const document = {
         slug: "terms-of-service",
         version: "terms-v1",
@@ -223,8 +249,8 @@ test("recording one published document satisfies legacy non-null columns", async
     });
 
     assert.equal(consent.terms_version, "terms-v1");
-    assert.equal(consent.privacy_version, "");
-    assert.equal(consent.eula_version, "");
+    assert.equal(consent.privacy_version, "unpublished");
+    assert.equal(consent.eula_version, "unpublished");
     assert.equal(status.required, false);
     assert.equal(status.accepted, true);
 });

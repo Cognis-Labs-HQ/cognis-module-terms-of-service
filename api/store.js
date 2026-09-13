@@ -4,6 +4,8 @@ export const DOCUMENTS = Object.freeze({
     eula: "/eula",
 });
 
+const UNPUBLISHED_VERSION = "unpublished";
+
 function documentFromRow(row) {
     if (!row) return null;
     return {
@@ -36,9 +38,24 @@ export class LegalDocumentStore {
             name: "terms_of_service_consents",
             columns: [
                 { name: "account_id", type: "text", primaryKey: true },
-                { name: "terms_version", type: "text" },
-                { name: "privacy_version", type: "text" },
-                { name: "eula_version", type: "text" },
+                {
+                    name: "terms_version",
+                    type: "text",
+                    notNull: true,
+                    default: UNPUBLISHED_VERSION,
+                },
+                {
+                    name: "privacy_version",
+                    type: "text",
+                    notNull: true,
+                    default: UNPUBLISHED_VERSION,
+                },
+                {
+                    name: "eula_version",
+                    type: "text",
+                    notNull: true,
+                    default: UNPUBLISHED_VERSION,
+                },
                 {
                     name: "consented_at",
                     type: "timestamp",
@@ -129,9 +146,9 @@ export class LegalDocumentStore {
         const consentedAt = new Date().toISOString();
         const values = {
             account_id: accountId,
-            terms_version: versions["terms-of-service"] ?? "",
-            privacy_version: versions["privacy-policy"] ?? "",
-            eula_version: versions.eula ?? "",
+            terms_version: versions["terms-of-service"] ?? UNPUBLISHED_VERSION,
+            privacy_version: versions["privacy-policy"] ?? UNPUBLISHED_VERSION,
+            eula_version: versions.eula ?? UNPUBLISHED_VERSION,
             consented_at: consentedAt,
         };
         await this.database.executeCommand({

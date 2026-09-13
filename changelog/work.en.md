@@ -62,6 +62,10 @@ Replaces the module's report paginator with the shared `ui:pagination` capabilit
 
 Removes public-page footer registration so consent enforcement is the only owner of legal footer links. It also checks the host registry before adding links, preventing duplicate IDs during page loading or a stale-script handover.
 
+## Reliable consent persistence and external document links
+
+Defines every consent version column through the `db:executor` schema contract as non-null with an explicit unpublished sentinel, and supplies that sentinel in structured inserts when a legal document is not published. Consent document links now bypass the host SPA router so their `_blank` target reliably opens a new tab, and the popup title is shortened to “Consent Required.”
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -83,3 +87,5 @@ Removes public-page footer registration so consent enforcement is the only owner
 - [1c0203a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1c0203adde325888d4c31a628453f941b9a1ddab)
 
 - [97517b6](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/97517b67ae09218a9179879151547a582008e83c)
+
+- [bd907c3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/bd907c37acc039a80e9128712d3ae89ec0f92fb4)

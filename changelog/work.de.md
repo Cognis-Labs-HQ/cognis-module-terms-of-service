@@ -62,6 +62,10 @@ Ersetzt die modulseitige Berichtsseitennavigation durch die gemeinsame Fähigkei
 
 Entfernt die Footer-Registrierung von öffentlichen Seiten, sodass die Zustimmungserzwingung alleinige Eigentümerin der Rechtslinks ist. Vor dem Hinzufügen wird außerdem die Host-Registry geprüft, wodurch doppelte IDs beim Seitenladen oder beim Wechsel von veralteten Skripten vermieden werden.
 
+## Zuverlässige Speicherung der Zustimmung und externe Dokumentlinks
+
+Definiert jede Zustimmungsversion über den Schemakontrakt von `db:executor` als nicht null mit einem ausdrücklichen Platzhalter für unveröffentlichte Dokumente und übergibt diesen Platzhalter bei strukturierten Einfügungen, wenn ein Rechtsdokument nicht veröffentlicht ist. Links zu Zustimmungsdokumenten umgehen nun den SPA-Router des Hosts, sodass ihr `_blank`-Ziel zuverlässig einen neuen Tab öffnet; der Popup-Titel lautet kürzer „Zustimmung erforderlich“.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -83,3 +87,5 @@ Entfernt die Footer-Registrierung von öffentlichen Seiten, sodass die Zustimmun
 - [1c0203a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1c0203adde325888d4c31a628453f941b9a1ddab)
 
 - [97517b6](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/97517b67ae09218a9179879151547a582008e83c)
+
+- [bd907c3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/bd907c37acc039a80e9128712d3ae89ec0f92fb4)
