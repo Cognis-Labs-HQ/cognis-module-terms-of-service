@@ -132,11 +132,11 @@
         },
         {
             "path": "assets/banner.png",
-            "sha256": "a0ac60fedccf06979ea4581aa1d3e1d6eae9ca50b547ac36e735a0c8c7befd8d"
+            "sha256": "ff4ec9cfc9ac64e818e05d496fa1794c847110dd26caa82a2686be86b3011dd7"
         },
         {
             "path": "assets/icon.png",
-            "sha256": "7e71656d996b84ddd9ab7a6c1464f1b6cdda55e9ea5d2f585c98cacf678b6a7e"
+            "sha256": "a8e6fb888ba616bca4a9bea993cafbf585ff5b0cab11e5fdc19302002440b7ea"
         },
         {
             "path": "bootstrap.js",
