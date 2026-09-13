@@ -4,7 +4,7 @@
 
 ## Gespeicherte Dokumentinhalte wiederhergestellt
 
-Ordnet das dokumentierte Feld `content` des Core-Versionsspeichers wieder Markdown zu, damit neu veröffentlichte Dokumente korrekt zurückgegeben werden und die Speichern-Aktion der Änderungsverfolgung erfolgreich abgeschlossen werden kann.
+Ordnet das zurückgegebene Feld `markdown` des Core-Versionsspeichers der Modulantwort zu, damit neu veröffentlichte Dokumente korrekt zurückgegeben werden und die Speichern-Aktion der Änderungsverfolgung erfolgreich abgeschlossen werden kann.
 
 ## Layout des Rechtsdokument-Editors verbessert
 
@@ -26,6 +26,10 @@ Gespeicherte Dokumente werden nach dem Neuladen der Administration geöffnet mit
 
 Rendert Deskriptoren für Rechtsdokumente über den einklappbaren Abschnitts-Composer des Hosts mit bereinigten lokalisierten Titeln, integrierten Aktionen zum Hinzufügen/Entfernen und Verfassen/Vorschau sowie Editorinhalten. Das Modul bindet sich nun ohne Fehler bei abgetrenntem Abschnitt an den schwebenden Administrations-Slot des Hosts, liefert die lokalisierte Navigationswarnung und zerstört seine Änderungsverfolgung beim Aushängen.
 
+## Persistierten Editorzustand und Composer-Layout korrigiert
+
+Liest gespeichertes Markdown aus dem tatsächlichen Antwortfeld des Versionsspeichers, sodass neu geladene Editoren nie `undefined` anzeigen. Der Zustand Hinzufügen/Entfernen hängt nur davon ab, ob eine gespeicherte Version vorhanden ist. Der Tooltip „Rechtliches“ ist in seiner Überschrift gruppiert, und neutrale Aktionen für Verfassen/Vorschau teilen sich unter dem nicht skalierbaren Editor in voller Breite eine Zeile zu gleichen Teilen.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -33,3 +37,4 @@ Rendert Deskriptoren für Rechtsdokumente über den einklappbaren Abschnitts-Com
 - [3fcbc91](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3fcbc91f42e61309ef7bd56491ddcf4311f605fd)
 - [cc4f1ba](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/cc4f1ba0582fd8d87b96c5e678e968467f86d988)
 - [5ffec53](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5ffec53354d1e93bf49b3850c64a56b3ccb1cef9)
+- [427af9d](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/427af9d50be3bde15cb3f2fe53f44e5a7b743965)

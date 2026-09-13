@@ -4,7 +4,7 @@
 
 ## Restored saved document content
 
-Maps the core version store's documented `content` field back to Markdown so newly published documents return correctly and the dirty tracker's Save action can complete successfully.
+Maps the core version store's returned `markdown` field into the module document response so newly published documents return correctly and the dirty tracker's Save action can complete successfully.
 
 ## Refined the Legal editor layout
 
@@ -26,6 +26,10 @@ Saved documents now render open with their persisted Markdown and a Remove actio
 
 Renders legal document descriptors through the host collapsible-section composer with sanitized localized titles, inline Add/Remove and Compose/Preview controls, and editor content. The module now attaches to the host Administration floating slot without failing when detached, supplies the localized navigation warning, and destroys its unsaved-changes tracker on unmount.
 
+## Fixed persisted editor state and composition layout
+
+Reads persisted Markdown from the version store’s actual response field, so refreshed editors never display `undefined`. Add/Remove state now depends only on whether a stored version exists. The Legal tooltip is grouped inside its heading, and neutral Compose/Preview actions share an equal-width row beneath the full-width, non-resizable editor.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -33,3 +37,4 @@ Renders legal document descriptors through the host collapsible-section composer
 - [3fcbc91](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3fcbc91f42e61309ef7bd56491ddcf4311f605fd)
 - [cc4f1ba](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/cc4f1ba0582fd8d87b96c5e678e968467f86d988)
 - [5ffec53](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5ffec53354d1e93bf49b3850c64a56b3ccb1cef9)
+- [427af9d](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/427af9d50be3bde15cb3f2fe53f44e5a7b743965)

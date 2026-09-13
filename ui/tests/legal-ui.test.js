@@ -36,7 +36,10 @@ test("legal editors use Cognis utilities and standard action variants", () => {
     assert.match(source, /hasPublishedContent/);
     assert.match(source, /actionVariant/);
     assert.match(source, /actionKey = hasPublishedContent \? "remove" : "add"/);
-    assert.match(source, /classList\.toggle\("btn-cancel", expanded\)/);
+    assert.match(
+        source,
+        /classList\.toggle\("btn-cancel", hasStoredDocument\)/,
+    );
     assert.match(source, /await openPopup\(\{/);
     assert.match(source, /controlsHtml:/);
     assert.match(source, /contentHtml:/);
@@ -56,7 +59,15 @@ test("dirty tracker save publishes updates and sends a success toast", () => {
     assert.match(source, /if \(!savedMarkdown\) closeEditor\(\)/);
     assert.match(source, /function closeEditor\(\)[\s\S]*panel\.open = false/);
     assert.match(source, /confirmMessage:/);
-    assert.match(source, /panel\.addEventListener\("toggle"/);
+    assert.match(source, /hasStoredDocument/);
+    assert.match(source, /syncDocumentAction/);
+    assert.doesNotMatch(source, /panel\.addEventListener\("toggle"/);
+    assert.match(source, /terms-of-service-mode-toggle btn-neutral/);
+    assert.match(
+        source,
+        /collapsible-section-action-row terms-of-service-mode-row/,
+    );
+    assert.match(legalStyles, /resize: none !important/);
     assert.match(source, /onUnmount\(\)[\s\S]*dirtyBar\?\.destroy/);
     assert.match(source, /if \(!slot\?\.isConnected\) return null/);
     assert.match(source, /if \(!section\?\.isConnected\) return null/);

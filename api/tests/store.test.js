@@ -20,7 +20,7 @@ function versionTracker(latestDocuments = []) {
                     return {
                         slug: document.slug,
                         version: "immutable-v1",
-                        content: document.content,
+                        markdown: document.content,
                         published_at: "2026-09-12",
                     };
                 },
@@ -54,11 +54,11 @@ test("publishing delegates immutable versions to the core tracker", async () => 
 
 test("consent is valid only for both latest document versions", async () => {
     const tracker = versionTracker([
-        { slug: "terms-of-service", version: "terms-v2", content: "terms" },
+        { slug: "terms-of-service", version: "terms-v2", markdown: "terms" },
         {
             slug: "privacy-policy",
             version: "privacy-v3",
-            content: "privacy",
+            markdown: "privacy",
         },
     ]);
     const database = {

@@ -4,7 +4,7 @@
 
 ## 保存済み文書の内容を復旧
 
-コアのバージョンストアで文書化された `content` フィールドを Markdown に正しく対応付け、新しく公開した文書が正しく返され、変更追跡の保存操作が正常に完了するようにしました。
+コアのバージョンストアが返す `markdown` フィールドをモジュールの文書レスポンスに対応付け、新しく公開した文書が正しく返され、変更追跡の保存操作が正常に完了するようにしました。
 
 ## 法的文書エディターのレイアウトを改善
 
@@ -26,6 +26,10 @@ Cognis の外部モジュールルーターはパスを完全一致で照合す�
 
 法的文書ディスクリプターをホストの折りたたみセクション Composer で描画し、サニタイズ済みのローカライズタイトル、行内の追加/削除と作成/プレビュー操作、エディター内容を提供します。モジュールはセクション切断時に失敗することなくホスト管理画面のフローティングスロットへ接続し、ローカライズされた移動警告を渡し、アンマウント時に変更追跡を破棄します。
 
+## 保存済みエディター状態と作成レイアウトを修正
+
+バージョンストアの実際のレスポンスフィールドから保存済み Markdown を読み取り、更新後のエディターに `undefined` が表示されないようにしました。追加/削除の状態は保存済みバージョンの有無だけで決まります。「法的情報」のツールチップを見出し内にまとめ、中立な作成/プレビュー操作を全幅でサイズ変更不可のエディター下部に同幅で配置しました。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -33,3 +37,4 @@ Cognis の外部モジュールルーターはパスを完全一致で照合す�
 - [3fcbc91](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3fcbc91f42e61309ef7bd56491ddcf4311f605fd)
 - [cc4f1ba](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/cc4f1ba0582fd8d87b96c5e678e968467f86d988)
 - [5ffec53](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5ffec53354d1e93bf49b3850c64a56b3ccb1cef9)
+- [427af9d](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/427af9d50be3bde15cb3f2fe53f44e5a7b743965)

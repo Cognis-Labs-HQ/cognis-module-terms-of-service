@@ -4,7 +4,7 @@
 
 ## Konten dokumen tersimpan dipulihkan
 
-Memetakan kembali bidang `content` yang didokumentasikan dari penyimpanan versi inti menjadi Markdown agar dokumen yang baru diterbitkan dikembalikan dengan benar dan tindakan Simpan pada pelacak perubahan dapat diselesaikan dengan sukses.
+Memetakan bidang `markdown` yang dikembalikan penyimpanan versi inti ke respons dokumen modul agar dokumen yang baru diterbitkan dikembalikan dengan benar dan tindakan Simpan pada pelacak perubahan dapat diselesaikan dengan sukses.
 
 ## Tata letak editor Hukum disempurnakan
 
@@ -26,6 +26,10 @@ Dokumen tersimpan kini dirender terbuka dengan Markdown yang dipertahankan dan t
 
 Merender deskriptor dokumen hukum melalui penyusun bagian host yang dapat diciutkan dengan judul terlokalisasi yang disanitasi, kontrol Tambah/Hapus dan Tulis/Pratinjau sebaris, serta konten editor. Modul kini terhubung ke slot mengambang Administrasi host tanpa gagal saat bagian terlepas, menyediakan peringatan navigasi yang dilokalkan, dan menghancurkan pelacak perubahan saat dilepas.
 
+## Status editor tersimpan dan tata letak penulisan diperbaiki
+
+Membaca Markdown tersimpan dari bidang respons aktual penyimpanan versi sehingga editor yang disegarkan tidak pernah menampilkan `undefined`. Status Tambah/Hapus kini hanya bergantung pada keberadaan versi tersimpan. Tooltip Hukum dikelompokkan di dalam judulnya, dan tindakan netral Tulis/Pratinjau berbagi baris dengan lebar sama di bawah editor selebar penuh yang tidak dapat diubah ukurannya.
+
 ## Commit
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -33,3 +37,4 @@ Merender deskriptor dokumen hukum melalui penyusun bagian host yang dapat diciut
 - [3fcbc91](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3fcbc91f42e61309ef7bd56491ddcf4311f605fd)
 - [cc4f1ba](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/cc4f1ba0582fd8d87b96c5e678e968467f86d988)
 - [5ffec53](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5ffec53354d1e93bf49b3850c64a56b3ccb1cef9)
+- [427af9d](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/427af9d50be3bde15cb3f2fe53f44e5a7b743965)

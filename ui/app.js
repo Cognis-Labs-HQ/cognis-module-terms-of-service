@@ -67,14 +67,16 @@ function documentDescriptor(document, i18n) {
         contentClassName: "terms-of-service-document-content",
         open: hasPublishedContent,
         controlsHtml: `<button class="terms-of-service-document-action ${actionVariant}" type="button"
-                aria-label="${escapeHtml(i18n.t(`module.terms_of_service.action.${actionKey}`))}">${escapeHtml(i18n.t(`module.terms_of_service.action.${actionKey}`))}</button>
-            <button class="terms-of-service-mode-toggle" type="button" data-mode="compose" aria-pressed="true"${hasPublishedContent ? "" : " hidden"}>${escapeHtml(i18n.t("module.terms_of_service.action.compose"))}</button>
-            <button class="terms-of-service-mode-toggle" type="button" data-mode="preview" aria-pressed="false"${hasPublishedContent ? "" : " hidden"}>${escapeHtml(i18n.t("module.terms_of_service.action.preview"))}</button>`,
+                aria-label="${escapeHtml(i18n.t(`module.terms_of_service.action.${actionKey}`))}">${escapeHtml(i18n.t(`module.terms_of_service.action.${actionKey}`))}</button>`,
         contentHtml: `<div class="terms-of-service-editor">
             <div class="terms-of-service-compose-pane">
                 <textarea rows="16" aria-label="${escapeHtml(i18n.t("module.terms_of_service.editor.content"))}">${escapeHtml(document.markdown ?? "")}</textarea>
             </div>
             <div class="terms-of-service-preview-pane" hidden></div>
+            <div class="collapsible-section-action-row terms-of-service-mode-row">
+                <button class="terms-of-service-mode-toggle btn-neutral" type="button" data-mode="compose" aria-pressed="true">${escapeHtml(i18n.t("module.terms_of_service.action.compose"))}</button>
+                <button class="terms-of-service-mode-toggle btn-neutral" type="button" data-mode="preview" aria-pressed="false">${escapeHtml(i18n.t("module.terms_of_service.action.preview"))}</button>
+            </div>
         </div>`,
     };
 }
@@ -92,8 +94,8 @@ function activateEditor(
     );
     const composeButton = panel.querySelector('[data-mode="compose"]');
     const previewButton = panel.querySelector('[data-mode="preview"]');
-    const modeButtons = [composeButton, previewButton];
     let savedMarkdown = document.markdown ?? "";
+    let hasStoredDocument = Boolean(document.version && savedMarkdown.trim());
 
     async function save() {
         if (textarea.value === savedMarkdown) return;
@@ -107,6 +109,8 @@ function activateEditor(
         );
         await readPayload(response);
         savedMarkdown = textarea.value;
+        hasStoredDocument = true;
+        syncDocumentAction();
     }
 
     function discard() {
@@ -117,14 +121,10 @@ function activateEditor(
     function closeEditor() {
         selectMode("compose");
         panel.open = false;
-        syncEditorControls(false);
     }
 
-    function syncEditorControls(expanded) {
-        modeButtons.forEach((button) => {
-            button.hidden = !expanded;
-        });
-        const actionKey = expanded ? "remove" : "add";
+    function syncDocumentAction() {
+        const actionKey = hasStoredDocument ? "remove" : "add";
         documentAction.textContent = i18n.t(
             `module.terms_of_service.action.${actionKey}`,
         );
@@ -132,8 +132,8 @@ function activateEditor(
             "aria-label",
             i18n.t(`module.terms_of_service.action.${actionKey}`),
         );
-        documentAction.classList.toggle("btn-cancel", expanded);
-        documentAction.classList.toggle("btn-confirm", !expanded);
+        documentAction.classList.toggle("btn-cancel", hasStoredDocument);
+        documentAction.classList.toggle("btn-confirm", !hasStoredDocument);
     }
 
     function selectMode(mode) {
@@ -155,9 +155,8 @@ function activateEditor(
     });
     documentAction.addEventListener("click", async (event) => {
         event.preventDefault();
-        if (!panel.open) {
+        if (!hasStoredDocument) {
             panel.open = true;
-            syncEditorControls(true);
             textarea.focus();
             return;
         }
@@ -191,9 +190,6 @@ function activateEditor(
         event.preventDefault();
         selectMode("preview");
     });
-    panel.addEventListener("toggle", () => {
-        syncEditorControls(panel.open);
-    });
     return { discard, save };
 }
 
@@ -225,12 +221,13 @@ function mountFloatingDirtyTracker(root, i18n, controllers) {
 function documentsMarkup(documents, i18n) {
     const sectionComposer = createCollapsibleSectionComposer({ escapeHtml });
     return `<div class="terms-of-service-heading">
-        <h2>${escapeHtml(i18n.t("module.terms_of_service.admin.title"))}</h2>
-        ${renderInfoTooltip(
-            i18n.t("module.terms_of_service.editor.markdown_hint"),
-            i18n.t("module.terms_of_service.editor.more_information"),
-            "terms-of-service-markdown",
-        )}
+        <h2>${escapeHtml(i18n.t("module.terms_of_service.admin.title"))}
+            ${renderInfoTooltip(
+                i18n.t("module.terms_of_service.editor.markdown_hint"),
+                i18n.t("module.terms_of_service.editor.more_information"),
+                "terms-of-service-markdown",
+            )}
+        </h2>
     </div>
     <div class="terms-of-service-documents">
         ${sectionComposer.render(documents.map((document) => documentDescriptor(document, i18n)))}

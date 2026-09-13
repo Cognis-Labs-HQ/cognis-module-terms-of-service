@@ -30,6 +30,7 @@ test("publishing attributes the document to authenticated claims", async () => {
                             publishInput = input;
                             return {
                                 ...input,
+                                markdown: input.content,
                                 version: "version-1",
                                 published_at: "2026-09-13T00:00:00.000Z",
                             };
