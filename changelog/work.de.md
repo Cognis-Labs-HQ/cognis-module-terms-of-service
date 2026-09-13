@@ -46,6 +46,10 @@ Lädt das Zustimmungs-Stylesheet mit der authentifizierten Navbar-Integration, d
 
 Entfernt das redundante Popup aus öffentlichen Rechtsrouten und stellt jedes Dokument über den Seiten-Composer des Hosts dar. Die resultierende Seite mit vollständiger Shell verwendet natürliches Dokument-Scrolling und erstellt ihre Seitennavigation aus den gerenderten Markdown-Abschnittsüberschriften.
 
+## Zustimmungselemente und Speicherung korrigiert
+
+Verwendet die wiederverwendbaren Choice-Checkbox- und State-Pill-Stile von Cognis, garantiert eine separate Dokumentlinkzeile und wartet vor dem Öffnen der Zustimmung auf diese Stile. Die Zustimmung verwendet jetzt den strukturierten Datenbankvertrag für INSERT mit Konfliktaktualisierung und prüft das gespeicherte Ergebnis, damit akzeptierte Versionen bei der Navigation nicht erneut angefordert werden.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -59,3 +63,5 @@ Entfernt das redundante Popup aus öffentlichen Rechtsrouten und stellt jedes Do
 - [0c9207e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0c9207e9a3c872266558207cc5a8d61f4c63ca12)
 
 - [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)
+
+- [f500db9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f500db9c46919a4e9bf2911751340eb515b3213e)

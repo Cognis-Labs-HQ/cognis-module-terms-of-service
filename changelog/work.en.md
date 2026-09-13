@@ -46,6 +46,10 @@ Loads the consent stylesheet with the authenticated navbar integration so refres
 
 Removes the redundant popup from public legal routes and renders each document through the host page composer. The resulting full-shell page uses natural document scrolling and builds its side navigation from the rendered Markdown section headings.
 
+## Corrected consent controls and storage
+
+Uses Cognis's reusable choice-checkbox and state-pill styles, guarantees a separate document-link row, and waits for those styles before opening consent. Consent now uses the structured database INSERT conflict-update contract and verifies the stored result, preventing accepted versions from being requested again during navigation.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -59,3 +63,5 @@ Removes the redundant popup from public legal routes and renders each document t
 - [0c9207e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0c9207e9a3c872266558207cc5a8d61f4c63ca12)
 
 - [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)
+
+- [f500db9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f500db9c46919a4e9bf2911751340eb515b3213e)

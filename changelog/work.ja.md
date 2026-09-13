@@ -46,6 +46,10 @@ Cognis の外部モジュールルーターはパスを完全一致で照合す�
 
 公開法務ルートから重複する Popup を削除し、各文書をホストの Page Composer で描画します。完全な Shell を備えたページは自然な文書スクロールを使用し、描画された Markdown セクション見出しからサイドナビゲーションを構築します。
 
+## 同意コントロールと保存を修正
+
+Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを使用し、文書リンクを必ず別行に配置し、同意を開く前にこれらのスタイルの読み込みを待機します。同意は構造化データベースの INSERT 競合更新契約を使用して保存結果を検証するため、承認済みバージョンがナビゲーション中に再要求されません。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -59,3 +63,5 @@ Cognis の外部モジュールルーターはパスを完全一致で照合す�
 - [0c9207e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0c9207e9a3c872266558207cc5a8d61f4c63ca12)
 
 - [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)
+
+- [f500db9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f500db9c46919a4e9bf2911751340eb515b3213e)

@@ -127,23 +127,27 @@ export class LegalDocumentStore {
             throw new Error("stale_document_versions");
         }
         const consentedAt = new Date().toISOString();
+        const values = {
+            account_id: accountId,
+            terms_version: versions["terms-of-service"] ?? null,
+            privacy_version: versions["privacy-policy"] ?? null,
+            eula_version: versions.eula ?? null,
+            consented_at: consentedAt,
+        };
         await this.database.executeCommand({
-            option: "UPSERT",
+            option: "INSERT",
             table: "terms_of_service_consents",
-            conflictColumns: ["account_id"],
-            values: {
-                account_id: accountId,
-                terms_version: versions["terms-of-service"] ?? null,
-                privacy_version: versions["privacy-policy"] ?? null,
-                eula_version: versions.eula ?? null,
-                consented_at: consentedAt,
+            values,
+            conflict: {
+                action: "update",
+                target: ["account_id"],
+                update: {
+                    terms_version: values.terms_version,
+                    privacy_version: values.privacy_version,
+                    eula_version: values.eula_version,
+                    consented_at: values.consented_at,
+                },
             },
-            update: [
-                "terms_version",
-                "privacy_version",
-                "eula_version",
-                "consented_at",
-            ],
         });
         return this.consentStatus(accountId);
     }

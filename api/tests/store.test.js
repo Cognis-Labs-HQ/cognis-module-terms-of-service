@@ -129,9 +129,11 @@ test("recording consent persists every accepted document version", async () => {
         },
     };
     let consent;
+    let writeCommand;
     const database = {
         async executeCommand(command) {
-            if (command.option === "UPSERT") {
+            if (command.option === "INSERT") {
+                writeCommand = command;
                 consent = command.values;
                 return { rows: [] };
             }
@@ -149,6 +151,9 @@ test("recording consent persists every accepted document version", async () => {
     assert.equal(consent.account_id, "account-1");
     assert.equal(consent.terms_version, "terms-v2");
     assert.equal(consent.privacy_version, "privacy-v3");
+    assert.equal(writeCommand.conflict.action, "update");
+    assert.deepEqual(writeCommand.conflict.target, ["account_id"]);
+    assert.equal(writeCommand.conflict.update.terms_version, "terms-v2");
     assert.equal(status.required, false);
     assert.equal(status.accepted, true);
 });

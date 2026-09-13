@@ -103,11 +103,18 @@ test("consent is enforced during registration and authenticated sessions", () =>
     );
     assert.match(enforcement, /while \(true\)/);
     assert.match(enforcement, /terms-of-service-consent-card/);
-    assert.match(enforcement, /form-builder-input/);
+    assert.match(enforcement, /class="choice-checkbox"/);
+    assert.match(enforcement, /loadReuseStylesheet\("choice-checkbox\.css"\)/);
+    assert.match(enforcement, /loadReuseStylesheet\("state-pill\.css"\)/);
+    assert.match(enforcement, /loadModuleStylesheet\(\)/);
     assert.match(enforcement, /data-consent-document/);
     assert.match(enforcement, /acceptedVersions/);
     assert.match(enforcement, /status\.documents\.map/);
     assert.match(enforcement, /terms-of-service-consent-read/);
+    assert.match(
+        enforcement,
+        /if \(status\.accepted && !status\.required\) return true/,
+    );
     assert.match(
         uiRegistration,
         /registerNavbarPlugin\([\s\S]*stylesheets: \["\/static\/modules\/terms-of-service\/styles\/legal\.css"\]/,

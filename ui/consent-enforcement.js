@@ -1,4 +1,28 @@
-import { importReuseModule, uiCtx } from "./reuse/resources.js";
+import {
+    importReuseModule,
+    loadReuseStylesheet,
+    uiCtx,
+} from "./reuse/resources.js";
+
+function loadModuleStylesheet() {
+    const href = "/static/modules/terms-of-service/styles/legal.css";
+    const existing = document.querySelector(`link[href="${href}"]`);
+    if (existing?.sheet) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+        const link = existing ?? document.createElement("link");
+        link.addEventListener("load", resolve, { once: true });
+        link.addEventListener(
+            "error",
+            () => reject(new Error("legal_stylesheet_unavailable")),
+            { once: true },
+        );
+        if (!existing) {
+            link.rel = "stylesheet";
+            link.href = href;
+            document.head.append(link);
+        }
+    });
+}
 
 const [{ apiFetch }, { createI18n }, { openPopup }, { escapeHtml }] =
     await Promise.all([
@@ -7,6 +31,12 @@ const [{ apiFetch }, { createI18n }, { openPopup }, { escapeHtml }] =
         importReuseModule("popup.js"),
         importReuseModule("escape-html.js"),
     ]);
+
+await Promise.all([
+    loadReuseStylesheet("choice-checkbox.css"),
+    loadReuseStylesheet("state-pill.css"),
+    loadModuleStylesheet(),
+]);
 
 const API_PATH = "/api/v1/modules/terms-of-service/consent";
 const LOGIN_PATH = "/login";
@@ -121,10 +151,12 @@ async function requestConsent(status, i18n) {
                         (
                             document,
                         ) => `<label class="terms-of-service-consent-card">
-                            <input class="form-builder-input" type="checkbox" data-consent-document="${escapeHtml(document.slug)}">
-                            <span><span class="terms-of-service-consent-title"><strong>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.slug === "terms-of-service" ? "terms" : document.slug === "privacy-policy" ? "privacy" : "eula"}`))}</strong>
-                            <span class="state-pill pill-active">${escapeHtml(i18n.t(`module.terms_of_service.consent.${document.state}`))}</span></span>
-                            <span class="terms-of-service-consent-read">${escapeHtml(i18n.t("module.terms_of_service.consent.read_latest"))} <a href="${escapeHtml(document.path)}" target="_blank" rel="noopener">${escapeHtml(i18n.t("module.terms_of_service.consent.here"))}</a></span></span>
+                            <input class="choice-checkbox" type="checkbox" data-consent-document="${escapeHtml(document.slug)}">
+                            <div class="terms-of-service-consent-content">
+                                <div class="terms-of-service-consent-title"><strong>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.slug === "terms-of-service" ? "terms" : document.slug === "privacy-policy" ? "privacy" : "eula"}`))}</strong>
+                                <span class="state-pill pill-active">${escapeHtml(i18n.t(`module.terms_of_service.consent.${document.state}`))}</span></div>
+                                <div class="terms-of-service-consent-read">${escapeHtml(i18n.t("module.terms_of_service.consent.read_latest"))} <a href="${escapeHtml(document.path)}" target="_blank" rel="noopener">${escapeHtml(i18n.t("module.terms_of_service.consent.here"))}</a></div>
+                            </div>
                         </label>`,
                     )
                     .join("")}</div>`,
@@ -181,8 +213,12 @@ async function requestConsent(status, i18n) {
                     versions: acceptedVersions,
                 }),
             });
-            if (response.ok) return true;
-            status = await consentStatus();
+            if (response.ok) {
+                status = (await response.json()).data;
+                if (status.accepted && !status.required) return true;
+            } else {
+                status = await consentStatus();
+            }
             continue;
         }
         if (action === "decline") {

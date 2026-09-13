@@ -110,7 +110,7 @@
     padding: 1rem;
 }
 
-.terms-of-service-consent-card > span {
+.terms-of-service-consent-content {
     display: grid;
     gap: 0.5rem;
 }
