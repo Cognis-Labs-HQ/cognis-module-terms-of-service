@@ -1,6 +1,6 @@
 # Modernisierte Bearbeitung von Rechtsdokumenten
 
-**Feature-Branch:** work
+**Feature-Branch:** feature-update-legal-page-button-functionality
 
 ## Vereinfachte Dokumentsteuerung
 
@@ -14,6 +14,11 @@ Verwendet die Cognis-Änderungsverfolgung für Speichern und Verwerfen, veröffe
 
 Bietet einen nicht skalierbaren Editor in voller Breite mit gleich breiten, direkt unter der Bearbeitungsfläche verbundenen Schaltflächen für Verfassen und Vorschau.
 
+## Mount-Fehler der Administrationsroute verhindert
+
+Beschränkt das direkte Einbinden der Seite auf die drei öffentlichen Rechtsdokumentrouten, damit das Laden des Beitrags unter `/administration` keinen Fehler wegen einer nicht unterstützten Route auslösen kann.
+
 ## Commits
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
+- [877d0ab](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/877d0abd97b345c5a95dbbff3c5ed12f90ee03f7)

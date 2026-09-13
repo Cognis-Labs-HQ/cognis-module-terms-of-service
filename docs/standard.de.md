@@ -4,7 +4,7 @@ Dieses Dokument definiert die unterstützte Architektur des externen Cognis-Modu
 
 ## Öffentlicher Vertrag
 
-Das Modul registriert die öffentlichen SPA-Routen `/terms-of-service`, `/privacy-policy` und `/eula`. Die Administration erhält über `registerAdminSection` einen lokalisierten Bereich „Rechtliches“; authentifizierte API-Routen verlangen die jeweils geringsten erforderlichen Rechte.
+Das Modul registriert die öffentlichen SPA-Routen `/terms-of-service`, `/privacy-policy` und `/eula`. Sein Browser-Einstiegspunkt wird nur auf diesen öffentlichen Pfaden direkt eingebunden, während die Administration über `registerAdminSection` einen lokalisierten Bereich „Rechtliches“ erhält; authentifizierte API-Routen verlangen die jeweils geringsten erforderlichen Rechte.
 
 Veröffentlichte Rechtsinhalte sind Markdown, das Cognis über `ui:reuse` darstellt. Jede Speicherung fügt über `docs:versionStore` eine unveränderliche Version hinzu. Das Modul importiert weder Cognis-Interna noch einen konkreten Datenbanktreiber.
 

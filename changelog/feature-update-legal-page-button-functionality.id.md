@@ -1,6 +1,6 @@
 # Modernisasi pengeditan dokumen hukum
 
-**Cabang Fitur:** work
+**Cabang Fitur:** feature-update-legal-page-button-functionality
 
 ## Kontrol dokumen yang lebih ringkas
 
@@ -14,6 +14,11 @@ Menggunakan pelacak perubahan Cognis untuk tindakan Simpan dan Buang, menerbitka
 
 Menyediakan editor selebar penuh yang tidak dapat diubah ukurannya dengan kontrol Tulis dan Pratinjau berukuran sama yang tersambung di bawah area pengeditan.
 
+## Galat pemasangan rute Administrasi dicegah
+
+Membatasi pemasangan halaman langsung pada tiga rute dokumen hukum publik agar pemuatan kontribusi di `/administration` tidak memicu galat rute yang tidak didukung.
+
 ## Commit
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
+- [877d0ab](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/877d0abd97b345c5a95dbbff3c5ed12f90ee03f7)

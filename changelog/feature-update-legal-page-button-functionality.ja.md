@@ -1,6 +1,6 @@
 # 法的文書編集を刷新
 
-**機能ブランチ:** work
+**機能ブランチ:** feature-update-legal-page-button-functionality
 
 ## 文書操作を簡潔化
 
@@ -14,6 +14,11 @@
 
 サイズ変更できない全幅エディターと、その編集領域の下に連結された同じ幅の作成・プレビュー操作を提供します。
 
+## 管理ルートの Mount エラーを防止
+
+ページの直接 Mount を3つの公開法的文書ルートに限定し、`/administration` で Contribution を読み込んだ際に未対応ルートエラーが発生しないようにします。
+
 ## コミット
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
+- [877d0ab](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/877d0abd97b345c5a95dbbff3c5ed12f90ee03f7)

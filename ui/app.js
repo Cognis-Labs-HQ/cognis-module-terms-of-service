@@ -286,9 +286,12 @@ export function unmount(root) {
     root.replaceChildren();
 }
 
-await mountWhenDirect((root) => {
-    const mountController = new AbortController();
-    return mount(root, { signal: mountController.signal });
-}).catch((error) => {
-    showError(error instanceof Error ? error.message : String(error));
-});
+const directRouteSlug = location.pathname.slice(1);
+if (DOCUMENTS.some((document) => document.slug === directRouteSlug)) {
+    await mountWhenDirect((root) => {
+        const mountController = new AbortController();
+        return mount(root, { signal: mountController.signal });
+    }).catch((error) => {
+        showError(error instanceof Error ? error.message : String(error));
+    });
+}

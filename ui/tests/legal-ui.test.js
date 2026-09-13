@@ -54,6 +54,10 @@ test("admin contribution follows the Administration sub-composer contract", () =
     assert.match(source, /subComposerOptions:/);
     assert.match(source, /dataReady/);
     assert.match(source, /onRender\(root\)/);
+    assert.match(
+        source,
+        /DOCUMENTS\.some\(\(document\) => document\.slug === directRouteSlug\)/,
+    );
 });
 
 test("UI supplies all three fixed legal documents", () => {
