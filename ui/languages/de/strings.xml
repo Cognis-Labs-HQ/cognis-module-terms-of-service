@@ -54,4 +54,6 @@
   <string name="module.terms_of_service.report.empty">Keine Benutzer gefunden.</string>
   <string name="module.terms_of_service.report.previous">Zurück</string>
   <string name="module.terms_of_service.report.next">Weiter</string>
+  <string name="module.terms_of_service.report.page">Seite {{current}} von {{total}}</string>
+  <string name="module.terms_of_service.report.pages">Seiten des Zustimmungsberichts</string>
 </resources>

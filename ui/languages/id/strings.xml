@@ -54,4 +54,6 @@
   <string name="module.terms_of_service.report.empty">Tidak ada pengguna ditemukan.</string>
   <string name="module.terms_of_service.report.previous">Sebelumnya</string>
   <string name="module.terms_of_service.report.next">Berikutnya</string>
+  <string name="module.terms_of_service.report.page">Halaman {{current}} dari {{total}}</string>
+  <string name="module.terms_of_service.report.pages">Halaman laporan persetujuan</string>
 </resources>

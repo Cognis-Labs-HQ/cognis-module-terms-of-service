@@ -54,6 +54,10 @@ Menggunakan gaya choice-checkbox dan state-pill Cognis yang dapat dipakai ulang,
 
 Menambahkan tabel persetujuan pengguna yang dapat dicari dan dipaginasi sepuluh baris pada setiap dokumen hukum dengan filter Semua, Diterima, dan Belum diterima. Halaman publik kini mengikuti urutan inisialisasi halaman Jitsi untuk pemuatan dan sesi terautentikasi, sementara permukaan editor tetap mencegah perubahan ukuran dan lompatan tata letak.
 
+## Paginasi host dan persetujuan mandiri diterapkan
+
+Mengganti paginator laporan buatan modul dengan kapabilitas bersama `ui:pagination`. Menerima satu dokumen terbitan tidak lagi menulis nilai null untuk dokumen Privasi atau EULA yang belum diterbitkan, sehingga pemeriksaan persetujuan tetap mandiri dan kompatibel dengan kolom database non-null yang ada.
+
 ## Commit
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -71,3 +75,5 @@ Menambahkan tabel persetujuan pengguna yang dapat dicari dan dipaginasi sepuluh 
 - [f500db9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f500db9c46919a4e9bf2911751340eb515b3213e)
 
 - [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)
+
+- [1c0203a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1c0203adde325888d4c31a628453f941b9a1ddab)

@@ -54,6 +54,10 @@ Verwendet die wiederverwendbaren Choice-Checkbox- und State-Pill-Stile von Cogni
 
 Fügt jedem Rechtsdokument eine durchsuchbare, auf zehn Zeilen paginierte Benutzer-Zustimmungstabelle mit den Filtern Alle, Akzeptiert und Ausstehend hinzu. Öffentliche Seiten folgen nun der Jitsi-Initialisierungsreihenfolge für Laden und authentifizierte Sitzungen; feste Editorflächen verhindern Größenänderungen und Layoutsprünge.
 
+## Host-Seitennavigation und unabhängige Zustimmung übernommen
+
+Ersetzt die modulseitige Berichtsseitennavigation durch die gemeinsame Fähigkeit `ui:pagination`. Beim Akzeptieren eines einzelnen veröffentlichten Dokuments werden für unveröffentlichte Datenschutz- oder EULA-Dokumente keine Nullwerte mehr geschrieben; dadurch bleiben Zustimmungen unabhängig und bestehende Nicht-Null-Datenbankspalten kompatibel.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -71,3 +75,5 @@ Fügt jedem Rechtsdokument eine durchsuchbare, auf zehn Zeilen paginierte Benutz
 - [f500db9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f500db9c46919a4e9bf2911751340eb515b3213e)
 
 - [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)
+
+- [1c0203a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1c0203adde325888d4c31a628453f941b9a1ddab)

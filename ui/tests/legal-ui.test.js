@@ -166,8 +166,12 @@ test("administration renders filterable paginated consent reports", () => {
     assert.match(source, /data-consent-filter="\$\{filter\}"/);
     assert.match(source, /data-consent-search/);
     assert.match(source, /REPORT_PAGE_SIZE = 10/);
-    assert.match(source, /data-report-previous/);
-    assert.match(source, /data-report-next/);
+    assert.match(source, /capabilities\.get\("ui:pagination"\)/);
+    assert.match(source, /paginationUi\.createPagination/);
+    assert.match(source, /paginationUi\.renderPaginationControls/);
+    assert.match(source, /paginationUi\.bindPaginationControls/);
+    assert.doesNotMatch(source, /data-report-previous/);
+    assert.doesNotMatch(source, /data-report-next/);
     assert.match(source, /activateConsentReport/);
     assert.match(legalStyles, /terms-of-service-report table/);
     assert.match(legalStyles, /block-size: 20rem/);

@@ -32,6 +32,15 @@ const DOCUMENTS = [
 ];
 const publicPageComposers = new WeakMap();
 const REPORT_PAGE_SIZE = 10;
+const paginationUi = uiCtx.capabilities.get("ui:pagination");
+
+if (
+    typeof paginationUi?.createPagination !== "function" ||
+    typeof paginationUi?.renderPaginationControls !== "function" ||
+    typeof paginationUi?.bindPaginationControls !== "function"
+) {
+    throw new Error("Required UI capability unavailable: ui:pagination");
+}
 
 function showError(message) {
     const openErrorPopup = uiCtx.capabilities.get("ui:openErrorPopup");
@@ -84,7 +93,10 @@ function activateConsentReport(panel, document, i18n) {
     if (!report) return;
     let filter = "all";
     let query = "";
-    let page = 0;
+    const pagination = paginationUi.createPagination({
+        data: [],
+        perPage: REPORT_PAGE_SIZE,
+    });
     const render = () => {
         const users = (document.consentUsers ?? []).filter(
             (user) =>
@@ -92,32 +104,43 @@ function activateConsentReport(panel, document, i18n) {
                     (filter === "accepted" ? user.accepted : !user.accepted)) &&
                 user.label.toLowerCase().includes(query.toLowerCase()),
         );
-        const pageCount = Math.max(
-            1,
-            Math.ceil(users.length / REPORT_PAGE_SIZE),
-        );
-        page = Math.max(0, Math.min(page, pageCount - 1));
-        const rows = users
-            .slice(page * REPORT_PAGE_SIZE, (page + 1) * REPORT_PAGE_SIZE)
+        const page = pagination.updateData(users);
+        const rows = page.items
             .map(
                 (user) =>
                     `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-warning"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td></tr>`,
             )
             .join("");
         report.querySelector("[data-consent-report-table]").innerHTML =
-            `<div class="terms-of-service-report-table-wrap"><table><thead><tr><th>${escapeHtml(i18n.t("module.terms_of_service.report.user"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.status"))}</th></tr></thead><tbody>${rows || `<tr><td colspan="2">${escapeHtml(i18n.t("module.terms_of_service.report.empty"))}</td></tr>`}</tbody></table></div><nav class="terms-of-service-report-pagination"><button type="button" class="btn-neutral" data-report-previous${page === 0 ? " disabled" : ""}>${escapeHtml(i18n.t("module.terms_of_service.report.previous"))}</button><span>${page + 1} / ${pageCount}</span><button type="button" class="btn-neutral" data-report-next${page + 1 >= pageCount ? " disabled" : ""}>${escapeHtml(i18n.t("module.terms_of_service.report.next"))}</button></nav>`;
+            `<div class="terms-of-service-report-table-wrap"><table><thead><tr><th>${escapeHtml(i18n.t("module.terms_of_service.report.user"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.status"))}</th></tr></thead><tbody>${rows || `<tr><td colspan="2">${escapeHtml(i18n.t("module.terms_of_service.report.empty"))}</td></tr>`}</tbody></table></div>${paginationUi.renderPaginationControls(
+                {
+                    page,
+                    labels: {
+                        previous: i18n.t(
+                            "module.terms_of_service.report.previous",
+                        ),
+                        next: i18n.t("module.terms_of_service.report.next"),
+                        status: i18n.t("module.terms_of_service.report.page"),
+                    },
+                    ariaLabel: i18n.t("module.terms_of_service.report.pages"),
+                    escapeHtml,
+                },
+            )}`;
+        paginationUi.bindPaginationControls(report, pagination, {
+            onChange: render,
+        });
     };
     report.addEventListener("input", (event) => {
         if (!event.target.matches("[data-consent-search]")) return;
         query = event.target.value;
-        page = 0;
+        pagination.setPage(0);
         render();
     });
     report.addEventListener("click", (event) => {
         const filterButton = event.target.closest("[data-consent-filter]");
         if (filterButton) {
             filter = filterButton.dataset.consentFilter;
-            page = 0;
+            pagination.setPage(0);
             report
                 .querySelectorAll("[data-consent-filter]")
                 .forEach((button) =>
@@ -126,9 +149,7 @@ function activateConsentReport(panel, document, i18n) {
                         button === filterButton,
                     ),
                 );
-        } else if (event.target.closest("[data-report-previous]")) page -= 1;
-        else if (event.target.closest("[data-report-next]")) page += 1;
-        else return;
+        } else return;
         render();
     });
     render();

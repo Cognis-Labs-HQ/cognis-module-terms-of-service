@@ -54,6 +54,10 @@ Uses Cognis's reusable choice-checkbox and state-pill styles, guarantees a separ
 
 Adds a searchable, ten-row paginated user consent table to every legal document with All, Accepted, and Outstanding filters. Public pages now follow the Jitsi page initialization sequence for loading and authenticated sessions, while fixed editor surfaces prevent resizing and layout jumps.
 
+## Adopted host pagination and detached consent
+
+Replaces the module's report paginator with the shared `ui:pagination` capability. Accepting one published document no longer writes nulls for unpublished Privacy or EULA documents, preserving independent consent checks and compatibility with existing non-null database columns.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -71,3 +75,5 @@ Adds a searchable, ten-row paginated user consent table to every legal document 
 - [f500db9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f500db9c46919a4e9bf2911751340eb515b3213e)
 
 - [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)
+
+- [1c0203a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1c0203adde325888d4c31a628453f941b9a1ddab)

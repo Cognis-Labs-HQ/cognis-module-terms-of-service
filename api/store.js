@@ -129,9 +129,9 @@ export class LegalDocumentStore {
         const consentedAt = new Date().toISOString();
         const values = {
             account_id: accountId,
-            terms_version: versions["terms-of-service"] ?? null,
-            privacy_version: versions["privacy-policy"] ?? null,
-            eula_version: versions.eula ?? null,
+            terms_version: versions["terms-of-service"] ?? "",
+            privacy_version: versions["privacy-policy"] ?? "",
+            eula_version: versions.eula ?? "",
             consented_at: consentedAt,
         };
         await this.database.executeCommand({

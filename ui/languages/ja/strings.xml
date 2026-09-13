@@ -54,4 +54,6 @@
   <string name="module.terms_of_service.report.empty">ユーザーが見つかりません。</string>
   <string name="module.terms_of_service.report.previous">前へ</string>
   <string name="module.terms_of_service.report.next">次へ</string>
+  <string name="module.terms_of_service.report.page">{{total}} ページ中 {{current}} ページ</string>
+  <string name="module.terms_of_service.report.pages">同意レポートのページ</string>
 </resources>

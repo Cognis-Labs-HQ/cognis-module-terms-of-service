@@ -189,3 +189,42 @@ test("consent reports expose the selected document version per account", async (
         },
     ]);
 });
+
+test("recording one published document satisfies legacy non-null columns", async () => {
+    const document = {
+        slug: "terms-of-service",
+        version: "terms-v1",
+        content: "terms",
+    };
+    const tracker = {
+        createStore() {
+            return {
+                async getLatest(slug) {
+                    return slug === document.slug ? document : null;
+                },
+            };
+        },
+    };
+    let consent;
+    const database = {
+        async executeCommand(command) {
+            if (command.option === "INSERT") {
+                consent = command.values;
+                return { rows: [] };
+            }
+            return { rows: consent ? [consent] : [] };
+        },
+    };
+    const status = await new LegalDocumentStore(
+        database,
+        tracker,
+    ).recordConsent("account-1", {
+        "terms-of-service": "terms-v1",
+    });
+
+    assert.equal(consent.terms_version, "terms-v1");
+    assert.equal(consent.privacy_version, "");
+    assert.equal(consent.eula_version, "");
+    assert.equal(status.required, false);
+    assert.equal(status.accepted, true);
+});
