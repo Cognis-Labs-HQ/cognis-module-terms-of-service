@@ -96,6 +96,9 @@ test("consent is enforced during registration and authenticated sessions", () =>
         /!localStorage\.getItem\("cognis_access_token"\)/,
     );
     assert.match(enforcement, /while \(true\)/);
+    assert.match(enforcement, /terms-of-service-consent-card/);
+    assert.match(enforcement, /data-consent-document/);
+    assert.match(enforcement, /acceptedVersions/);
     assert.match(enforcement, /CONSENT_REFRESH_INTERVAL_MS = 5_000/);
     assert.match(enforcement, /enforceAuthenticatedConsentOnce/);
     assert.match(enforcement, /scheduleConsentRefresh/);

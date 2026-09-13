@@ -30,6 +30,11 @@
   <string name="module.terms_of_service.tag.administration">Administration</string>
   <string name="module.terms_of_service.consent.title">Legal Consent Required</string>
   <string name="module.terms_of_service.consent.prompt">You must accept the latest Terms and Conditions and Privacy Policy to continue using Cognis.</string>
+  <string name="module.terms_of_service.consent.updated">Updated</string>
+  <string name="module.terms_of_service.consent.read_latest">Read the latest document</string>
+  <string name="module.terms_of_service.consent.here">here</string>
+  <string name="module.terms_of_service.consent.delete_account">Delete my account</string>
+  <string name="module.terms_of_service.consent.submit">Submit</string>
   <string name="module.terms_of_service.consent.accept">Accept and continue</string>
   <string name="module.terms_of_service.consent.decline">Decline and log out</string>
   <string name="module.terms_of_service.consent.signup.prefix">I agree to the</string>

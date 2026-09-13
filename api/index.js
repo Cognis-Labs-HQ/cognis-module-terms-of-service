@@ -161,11 +161,10 @@ export function registerApi(router, ctx) {
             if (!claims || response.writableEnded) return;
             try {
                 const body = await readJson(request);
-                const termsVersion = String(body.termsVersion ?? "").trim();
-                const privacyVersion = String(body.privacyVersion ?? "").trim();
+                const versions = body.versions;
                 if (
-                    !termsVersion ||
-                    !privacyVersion ||
+                    !versions ||
+                    typeof versions !== "object" ||
                     body.accepted !== true
                 ) {
                     sendJson(response, 400, {
@@ -180,15 +179,13 @@ export function registerApi(router, ctx) {
                 await ready;
                 const status = await store.recordConsent(
                     accountId(claims),
-                    termsVersion,
-                    privacyVersion,
+                    versions,
                 );
                 ctx.log?.("info", "Legal consent recorded.", {
                     component: "terms-of-service",
                     operation: "recordConsent",
                     accountId: accountId(claims),
-                    termsVersion,
-                    privacyVersion,
+                    documentSlugs: Object.keys(versions),
                 });
                 sendJson(response, 201, { data: status });
             } catch (error) {

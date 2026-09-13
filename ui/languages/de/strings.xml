@@ -30,6 +30,11 @@
   <string name="module.terms_of_service.tag.administration">Administration</string>
   <string name="module.terms_of_service.consent.title">Aktualisierte Bedingungen und Datenschutzerklärung</string>
   <string name="module.terms_of_service.consent.prompt">Sie müssen den neuesten Bedingungen und der Datenschutzerklärung zustimmen, um Cognis weiter zu verwenden.</string>
+  <string name="module.terms_of_service.consent.updated">Aktualisiert</string>
+  <string name="module.terms_of_service.consent.read_latest">Lesen Sie das neueste Dokument</string>
+  <string name="module.terms_of_service.consent.here">hier</string>
+  <string name="module.terms_of_service.consent.delete_account">Mein Konto löschen</string>
+  <string name="module.terms_of_service.consent.submit">Absenden</string>
   <string name="module.terms_of_service.consent.accept">Zustimmen und fortfahren</string>
   <string name="module.terms_of_service.consent.decline">Ablehnen und abmelden</string>
   <string name="module.terms_of_service.consent.signup.prefix">Ich stimme den</string>

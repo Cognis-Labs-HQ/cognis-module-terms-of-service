@@ -30,6 +30,10 @@ Renders legal document descriptors through the host collapsible-section composer
 
 Reads persisted Markdown from the version store’s actual response field, so refreshed editors never display `undefined`. Add/Remove state now depends only on whether a stored version exists. The Legal tooltip is grouped inside its heading, and neutral Compose/Preview actions share an equal-width row beneath the full-width, non-resizable editor.
 
+## Added per-document consent enforcement
+
+Tracks acknowledgements independently for every published Terms, Privacy, and EULA version. Persistent consent prompts now show checkbox cards only for new or updated documents, with exact-version submission, logout, and account-settings actions. The editor surface has a fixed mode height, full-width non-resizable input, and padded neutral controls below it.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -38,3 +42,4 @@ Reads persisted Markdown from the version store’s actual response field, so re
 - [cc4f1ba](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/cc4f1ba0582fd8d87b96c5e678e968467f86d988)
 - [5ffec53](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5ffec53354d1e93bf49b3850c64a56b3ccb1cef9)
 - [427af9d](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/427af9d50be3bde15cb3f2fe53f44e5a7b743965)
+- [b9c93cc](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b9c93cc2de5693f69cdf63bb0d1d9419ef5c7ceb)

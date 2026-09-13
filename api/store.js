@@ -36,8 +36,9 @@ export class LegalDocumentStore {
             name: "terms_of_service_consents",
             columns: [
                 { name: "account_id", type: "text", primaryKey: true },
-                { name: "terms_version", type: "text", notNull: true },
-                { name: "privacy_version", type: "text", notNull: true },
+                { name: "terms_version", type: "text" },
+                { name: "privacy_version", type: "text" },
+                { name: "eula_version", type: "text" },
                 {
                     name: "consented_at",
                     type: "timestamp",
@@ -73,36 +74,52 @@ export class LegalDocumentStore {
     }
 
     async consentStatus(accountId) {
-        const [terms, privacy, result] = await Promise.all([
-            this.getLatest("terms-of-service"),
-            this.getLatest("privacy-policy"),
+        const [documents, result] = await Promise.all([
+            this.listLatest(),
             this.database.executeCommand({
                 option: "SELECT",
                 table: "terms_of_service_consents",
-                columns: ["terms_version", "privacy_version", "consented_at"],
+                columns: [
+                    "terms_version",
+                    "privacy_version",
+                    "eula_version",
+                    "consented_at",
+                ],
                 where: [{ column: "account_id", value: accountId }],
             }),
         ]);
         const consent = result.rows?.[0];
-        const ready = Boolean(terms?.version && privacy?.version);
+        const versionColumns = {
+            "terms-of-service": "terms_version",
+            "privacy-policy": "privacy_version",
+            eula: "eula_version",
+        };
+        const publishedDocuments = documents
+            .filter((document) => document.version)
+            .map((document) => ({
+                ...document,
+                accepted:
+                    consent?.[versionColumns[document.slug]] ===
+                    document.version,
+            }));
+        const required = publishedDocuments.some(
+            (document) => !document.accepted,
+        );
         return {
-            required: ready,
-            accepted:
-                ready &&
-                consent?.terms_version === terms.version &&
-                consent?.privacy_version === privacy.version,
-            termsVersion: terms?.version ?? null,
-            privacyVersion: privacy?.version ?? null,
+            required,
+            accepted: publishedDocuments.length > 0 && !required,
+            documents: publishedDocuments,
             consentedAt: consent?.consented_at ?? null,
         };
     }
 
-    async recordConsent(accountId, termsVersion, privacyVersion) {
+    async recordConsent(accountId, versions) {
         const status = await this.consentStatus(accountId);
         if (
             !status.required ||
-            status.termsVersion !== termsVersion ||
-            status.privacyVersion !== privacyVersion
+            status.documents.some(
+                (document) => versions[document.slug] !== document.version,
+            )
         ) {
             throw new Error("stale_document_versions");
         }
@@ -113,11 +130,17 @@ export class LegalDocumentStore {
             conflictColumns: ["account_id"],
             values: {
                 account_id: accountId,
-                terms_version: termsVersion,
-                privacy_version: privacyVersion,
+                terms_version: versions["terms-of-service"] ?? null,
+                privacy_version: versions["privacy-policy"] ?? null,
+                eula_version: versions.eula ?? null,
                 consented_at: consentedAt,
             },
-            update: ["terms_version", "privacy_version", "consented_at"],
+            update: [
+                "terms_version",
+                "privacy_version",
+                "eula_version",
+                "consented_at",
+            ],
         });
         return { ...status, accepted: true, consentedAt };
     }

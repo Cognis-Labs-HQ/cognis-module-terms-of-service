@@ -12,7 +12,7 @@ Editor dokumen hukum memakai penyusun bagian yang dapat diciutkan milik host unt
 
 ## Persetujuan dan Siklus Hidup
 
-Modul mencatat versi Ketentuan dan Privasi persis yang disetujui setiap akun. Pendaftaran wajib meminta persetujuan tegas. Flow sesi terautentikasi dan pemeriksaan penyegaran latar depan setiap lima detik segera memblokir akun yang persetujuannya tidak mutakhir; penerimaan mencatat kedua versi dan penolakan mengeluarkan akun. Halaman hukum publik tetap tersedia selama penegakan.
+Modul mencatat versi Ketentuan dan Privasi persis yang disetujui setiap akun. Pendaftaran wajib meminta persetujuan tegas. Flow sesi terautentikasi dan pemeriksaan penyegaran latar depan setiap lima detik segera memblokir akun yang persetujuannya tidak mutakhir; penerimaan mencatat kedua versi dan penolakan mengeluarkan akun. Halaman hukum publik tetap tersedia selama penegakan. Status persetujuan dievaluasi secara terpisah untuk setiap versi Ketentuan, Privasi, dan EULA yang diterbitkan; popup persisten hanya mencantumkan dokumen yang belum diakui sebagai kartu kotak centang dan mengirimkan versi persisnya.
 
 Pendaftaran berskop dihapus saat modul dinonaktifkan. Jika hook browser yang sudah dimuat mendapati endpoint persetujuan modul telah dihapus selama pembaruan atau mulai ulang, hook tersebut mencatat endpoint yang tidak tersedia, menghentikan permintaan persetujuan berikutnya, dan melanjutkan tanpa memblokir navigasi. Dokumen dan persetujuan bertahan setelah penonaktifan dan mulai ulang; pencopotan hanya menghapusnya saat `deleteContent` bernilai benar. Sumber daya browser memakai `cognis.uiCtx` serta kontrak host untuk umpan balik, navigasi, API, popup, i18n, dan entri halaman.
 

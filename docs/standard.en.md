@@ -12,7 +12,7 @@ Legal editors use the host collapsible-section composer for one full-width group
 
 ## Consent and Lifecycle
 
-The module records the exact Terms and Privacy versions accepted by each account. Registration must require explicit consent. The authenticated-session flow and a five-second foreground refresh check promptly block accounts whose recorded versions are not current; acceptance records both versions and declining logs the account out. Public legal pages remain available during enforcement.
+The module records the exact Terms and Privacy versions accepted by each account. Registration must require explicit consent. The authenticated-session flow and a five-second foreground refresh check promptly block accounts whose recorded versions are not current; acceptance records both versions and declining logs the account out. Public legal pages remain available during enforcement. Consent status is evaluated independently for every published Terms, Privacy, and EULA version; the persistent popup lists only unacknowledged documents as checkbox cards and submits their exact versions.
 
 Scoped registrations are removed when the module is disabled. If an already-loaded browser hook observes that the module consent endpoint has been removed during an update or restart, it logs the unavailable endpoint, stops making subsequent consent requests, and yields without blocking navigation. Documents and consent survive disable and restart; uninstall removes them only when `deleteContent` is true. Browser resources use `cognis.uiCtx`, host feedback, navigation, API, popup, i18n, and page-entry contracts.
 

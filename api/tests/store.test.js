@@ -52,7 +52,7 @@ test("publishing delegates immutable versions to the core tracker", async () => 
     assert.equal(document.markdown, "# EULA");
 });
 
-test("consent is valid only for both latest document versions", async () => {
+test("consent identifies each unacknowledged published document", async () => {
     const tracker = versionTracker([
         { slug: "terms-of-service", version: "terms-v2", markdown: "terms" },
         {
@@ -79,7 +79,13 @@ test("consent is valid only for both latest document versions", async () => {
     ).consentStatus("account-1");
     assert.equal(status.required, true);
     assert.equal(status.accepted, false);
-    assert.equal(status.termsVersion, "terms-v2");
+    assert.deepEqual(
+        status.documents.map(({ slug, accepted }) => ({ slug, accepted })),
+        [
+            { slug: "terms-of-service", accepted: false },
+            { slug: "privacy-policy", accepted: true },
+        ],
+    );
 });
 
 test("recording consent rejects stale versions", async () => {
@@ -97,11 +103,10 @@ test("recording consent rejects stale versions", async () => {
         },
     };
     await assert.rejects(
-        new LegalDocumentStore(database, tracker).recordConsent(
-            "account-1",
-            "terms-old",
-            "privacy-current",
-        ),
+        new LegalDocumentStore(database, tracker).recordConsent("account-1", {
+            "terms-of-service": "terms-old",
+            "privacy-policy": "privacy-current",
+        }),
         /stale_document_versions/,
     );
 });

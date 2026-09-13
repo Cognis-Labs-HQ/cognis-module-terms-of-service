@@ -87,5 +87,26 @@
 
 .terms-of-service-mode-row {
     margin-block-start: 0.5rem;
+    padding-block-end: 1rem;
     width: 100%;
+}
+
+.terms-of-service-consent-cards {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.terms-of-service-consent-card {
+    align-items: start;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 1rem;
+}
+
+.terms-of-service-consent-card > span {
+    display: grid;
+    gap: 0.5rem;
 }

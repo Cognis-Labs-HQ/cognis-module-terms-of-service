@@ -5,11 +5,13 @@ const [
     { clearStoredAuthSession },
     { createI18n },
     { openPopup },
+    { escapeHtml },
 ] = await Promise.all([
     importReuseModule("api-client.js"),
     importReuseModule("auth-session.js"),
     importReuseModule("i18n.js"),
     importReuseModule("popup.js"),
+    importReuseModule("escape-html.js"),
 ]);
 
 const API_PATH = "/api/v1/modules/terms-of-service/consent";
@@ -73,41 +75,82 @@ async function logout() {
 
 async function requestConsent(status, i18n) {
     while (true) {
+        const pendingDocuments = status.documents.filter(
+            (document) => !document.accepted,
+        );
+        let acceptedVersions;
         const action = await openPopup({
             title: i18n.t("module.terms_of_service.consent.title"),
-            body: `<p>${i18n.t("module.terms_of_service.consent.prompt")}</p>
-                <p><a href="/terms-of-service" target="_blank" rel="noopener">${i18n.t("module.terms_of_service.document.terms")}</a><br>
-                <a href="/privacy-policy" target="_blank" rel="noopener">${i18n.t("module.terms_of_service.document.privacy")}</a></p>`,
+            body: `<p>${escapeHtml(i18n.t("module.terms_of_service.consent.prompt"))}</p>
+                <div class="terms-of-service-consent-cards">${pendingDocuments
+                    .map(
+                        (
+                            document,
+                        ) => `<label class="terms-of-service-consent-card">
+                            <input type="checkbox" data-consent-document="${escapeHtml(document.slug)}">
+                            <span><strong>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.slug === "terms-of-service" ? "terms" : document.slug === "privacy-policy" ? "privacy" : "eula"}`))}</strong>
+                            <span class="state-pill pill-active">${escapeHtml(i18n.t("module.terms_of_service.consent.updated"))}</span>
+                            <span>${escapeHtml(i18n.t("module.terms_of_service.consent.read_latest"))} <a href="${escapeHtml(document.path)}" target="_blank" rel="noopener">${escapeHtml(i18n.t("module.terms_of_service.consent.here"))}</a></span></span>
+                        </label>`,
+                    )
+                    .join("")}</div>`,
             variant: "warning",
+            closeOnBackdrop: false,
+            closeOnEscape: false,
+            onAction(actionId, overlay) {
+                if (actionId !== "submit") return true;
+                const checked = Array.from(
+                    overlay.querySelectorAll("[data-consent-document]"),
+                ).filter((checkbox) => checkbox.checked);
+                if (checked.length !== pendingDocuments.length) return false;
+                acceptedVersions = Object.fromEntries(
+                    pendingDocuments.map((document) => [
+                        document.slug,
+                        document.version,
+                    ]),
+                );
+                return true;
+            },
             actions: [
                 {
-                    id: "accept",
-                    label: i18n.t("module.terms_of_service.consent.accept"),
-                    variant: "confirm",
+                    id: "delete",
+                    label: i18n.t(
+                        "module.terms_of_service.consent.delete_account",
+                    ),
+                    variant: "cancel",
                 },
                 {
-                    id: "decline",
+                    id: "logout",
                     label: i18n.t("module.terms_of_service.consent.decline"),
-                    variant: "neutral",
+                    variant: "cancel",
+                },
+                {
+                    id: "submit",
+                    label: i18n.t("module.terms_of_service.consent.submit"),
+                    variant: "confirm",
                 },
             ],
         });
-        if (action === "accept") {
+        if (action === "submit") {
             const response = await apiFetch(API_PATH, {
                 method: "POST",
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify({
                     accepted: true,
-                    termsVersion: status.termsVersion,
-                    privacyVersion: status.privacyVersion,
+                    versions: acceptedVersions,
                 }),
             });
             if (response.ok) return true;
             status = await consentStatus();
             continue;
         }
-        if (action === "decline") {
+        if (action === "logout") {
             if (await logout()) return false;
+        }
+        if (action === "delete") {
+            const navigate = uiCtx.capabilities.get("ui:navigate");
+            await navigate?.("/settings#account");
+            return false;
         }
     }
 }
