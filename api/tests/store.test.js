@@ -157,3 +157,35 @@ test("recording consent persists every accepted document version", async () => {
     assert.equal(status.required, false);
     assert.equal(status.accepted, true);
 });
+
+test("consent reports expose the selected document version per account", async () => {
+    const database = {
+        async executeCommand(command) {
+            assert.deepEqual(command.columns, [
+                "account_id",
+                "privacy_version",
+                "consented_at",
+            ]);
+            return {
+                rows: [
+                    {
+                        account_id: "account-1",
+                        privacy_version: "privacy-v3",
+                        consented_at: "2026-09-13T00:00:00Z",
+                    },
+                ],
+            };
+        },
+    };
+    const report = await new LegalDocumentStore(
+        database,
+        versionTracker(),
+    ).listConsentForDocument("privacy-policy");
+    assert.deepEqual(report, [
+        {
+            accountId: "account-1",
+            version: "privacy-v3",
+            consentedAt: "2026-09-13T00:00:00Z",
+        },
+    ]);
+});

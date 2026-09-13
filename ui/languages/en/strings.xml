@@ -45,4 +45,13 @@
   <string name="module.terms_of_service.consent.signup.and">and</string>
   <string name="module.terms_of_service.consent.signup.privacy">Privacy Policy</string>
   <string name="module.terms_of_service.consent.required">You must agree to the Terms and Conditions and Privacy Policy.</string>
+  <string name="module.terms_of_service.report.search">Search users</string>
+  <string name="module.terms_of_service.report.all">All</string>
+  <string name="module.terms_of_service.report.accepted">Accepted</string>
+  <string name="module.terms_of_service.report.outstanding">Outstanding</string>
+  <string name="module.terms_of_service.report.user">User</string>
+  <string name="module.terms_of_service.report.status">Status</string>
+  <string name="module.terms_of_service.report.empty">No users found.</string>
+  <string name="module.terms_of_service.report.previous">Previous</string>
+  <string name="module.terms_of_service.report.next">Next</string>
 </resources>

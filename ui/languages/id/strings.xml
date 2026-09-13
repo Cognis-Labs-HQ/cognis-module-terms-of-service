@@ -45,4 +45,13 @@
   <string name="module.terms_of_service.consent.signup.and">serta</string>
   <string name="module.terms_of_service.consent.signup.privacy">Kebijakan Privasi</string>
   <string name="module.terms_of_service.consent.required">Anda harus menyetujui Syarat dan Ketentuan serta Kebijakan Privasi.</string>
+  <string name="module.terms_of_service.report.search">Cari pengguna</string>
+  <string name="module.terms_of_service.report.all">Semua</string>
+  <string name="module.terms_of_service.report.accepted">Diterima</string>
+  <string name="module.terms_of_service.report.outstanding">Belum diterima</string>
+  <string name="module.terms_of_service.report.user">Pengguna</string>
+  <string name="module.terms_of_service.report.status">Status</string>
+  <string name="module.terms_of_service.report.empty">Tidak ada pengguna ditemukan.</string>
+  <string name="module.terms_of_service.report.previous">Sebelumnya</string>
+  <string name="module.terms_of_service.report.next">Berikutnya</string>
 </resources>

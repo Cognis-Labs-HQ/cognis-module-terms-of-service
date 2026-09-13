@@ -152,6 +152,26 @@ export class LegalDocumentStore {
         return this.consentStatus(accountId);
     }
 
+    async listConsentForDocument(slug) {
+        const versionColumns = {
+            "terms-of-service": "terms_version",
+            "privacy-policy": "privacy_version",
+            eula: "eula_version",
+        };
+        const versionColumn = versionColumns[slug];
+        if (!versionColumn) throw new Error("invalid_document_slug");
+        const result = await this.database.executeCommand({
+            option: "SELECT",
+            table: "terms_of_service_consents",
+            columns: ["account_id", versionColumn, "consented_at"],
+        });
+        return (result.rows ?? []).map((row) => ({
+            accountId: String(row.account_id),
+            version: row[versionColumn] ? String(row[versionColumn]) : null,
+            consentedAt: row.consented_at ?? null,
+        }));
+    }
+
     async deleteAll() {
         await this.database.executeCommand({
             option: "DELETE",

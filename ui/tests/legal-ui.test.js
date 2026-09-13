@@ -150,10 +150,25 @@ test("UI supplies all three fixed legal documents", () => {
 test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /createPageComposer\(root, \{/);
     assert.match(source, /contentScrolling: false/);
-    assert.match(source, /requireAccountSession: false/);
+    assert.match(source, /requireAccountSession: authenticated/);
     assert.match(source, /toolbarScrollable: true/);
     assert.match(source, /querySelectorAll\("h2, h3"\)/);
     assert.match(source, /data-document-section/);
     assert.match(source, /publicPageComposers\.get\(root\)\?\.destroy/);
     assert.doesNotMatch(source, /openDocumentPopup/);
+    assert.match(source, /beginPageLoading\(root\)/);
+    assert.match(source, /ensureFullAccountSession\(\)/);
+    assert.match(source, /showNavbar: authenticated/);
+});
+
+test("administration renders filterable paginated consent reports", () => {
+    assert.match(source, /consent-report\/\$\{document\.slug\}/);
+    assert.match(source, /data-consent-filter="\$\{filter\}"/);
+    assert.match(source, /data-consent-search/);
+    assert.match(source, /REPORT_PAGE_SIZE = 10/);
+    assert.match(source, /data-report-previous/);
+    assert.match(source, /data-report-next/);
+    assert.match(source, /activateConsentReport/);
+    assert.match(legalStyles, /terms-of-service-report table/);
+    assert.match(legalStyles, /block-size: 20rem/);
 });

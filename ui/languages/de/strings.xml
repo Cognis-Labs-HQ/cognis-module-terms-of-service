@@ -45,4 +45,13 @@
   <string name="module.terms_of_service.consent.signup.and">und der</string>
   <string name="module.terms_of_service.consent.signup.privacy">Datenschutzerklärung zu</string>
   <string name="module.terms_of_service.consent.required">Sie müssen den Bedingungen und der Datenschutzerklärung zustimmen.</string>
+  <string name="module.terms_of_service.report.search">Benutzer suchen</string>
+  <string name="module.terms_of_service.report.all">Alle</string>
+  <string name="module.terms_of_service.report.accepted">Akzeptiert</string>
+  <string name="module.terms_of_service.report.outstanding">Ausstehend</string>
+  <string name="module.terms_of_service.report.user">Benutzer</string>
+  <string name="module.terms_of_service.report.status">Status</string>
+  <string name="module.terms_of_service.report.empty">Keine Benutzer gefunden.</string>
+  <string name="module.terms_of_service.report.previous">Zurück</string>
+  <string name="module.terms_of_service.report.next">Weiter</string>
 </resources>

@@ -60,6 +60,21 @@ export function registerApi(router, ctx) {
     );
 
     for (const slug of Object.keys(DOCUMENTS)) {
+        router.get(
+            `/api/v1/modules/terms-of-service/consent-report/${slug}`,
+            async (request, response) => {
+                const claims = await requireAuth(request, response, "admin");
+                if (!claims || response.writableEnded) return;
+                await ready;
+                sendJson(response, 200, {
+                    data: await store.listConsentForDocument(slug),
+                });
+            },
+            { access: { minRole: "admin" } },
+        );
+    }
+
+    for (const slug of Object.keys(DOCUMENTS)) {
         router.put(
             `/api/v1/modules/terms-of-service/documents/${slug}`,
             async (request, response) => {

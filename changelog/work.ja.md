@@ -50,6 +50,10 @@ Cognis の外部モジュールルーターはパスを完全一致で照合す�
 
 Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを使用し、文書リンクを必ず別行に配置し、同意を開く前にこれらのスタイルの読み込みを待機します。同意は構造化データベースの INSERT 競合更新契約を使用して保存結果を検証するため、承認済みバージョンがナビゲーション中に再要求されません。
 
+## 同意レポートと完全なページ Shell
+
+各法務文書に、すべて、承認済み、未承認のフィルターを備えた検索可能な10行単位のユーザー同意表を追加します。公開ページは読み込みと認証セッションについて Jitsi のページ初期化順序に従い、固定 Editor 面によりサイズ変更とレイアウトの跳ねを防ぎます。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -65,3 +69,5 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 - [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)
 
 - [f500db9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f500db9c46919a4e9bf2911751340eb515b3213e)
+
+- [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)

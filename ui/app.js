@@ -5,7 +5,8 @@ const [
     { createI18n },
     { renderMarkdown, initializeMarkdownCodeCopy },
     { escapeHtml },
-    { mountWhenDirect },
+    { beginPageLoading, mountWhenDirect },
+    { ensureFullAccountSession },
     { createUnsavedChangesBar },
     { renderInfoTooltip },
     { createCollapsibleSectionComposer },
@@ -16,6 +17,7 @@ const [
     importReuseModule("markdown-renderer.js"),
     importReuseModule("escape-html.js"),
     importReuseModule("page-entry.js"),
+    importReuseModule("auth-session.js"),
     importReuseModule("unsaved-changes.js"),
     importReuseModule("info-tooltip.js"),
     importReuseModule("collapsible-section-composer.js"),
@@ -29,6 +31,7 @@ const DOCUMENTS = [
     { slug: "eula", titleKey: "eula" },
 ];
 const publicPageComposers = new WeakMap();
+const REPORT_PAGE_SIZE = 10;
 
 function showError(message) {
     const openErrorPopup = uiCtx.capabilities.get("ui:openErrorPopup");
@@ -57,6 +60,80 @@ async function readPayload(response) {
     return payload.data;
 }
 
+function consentReportMarkup(i18n) {
+    return `<section class="terms-of-service-report" data-consent-report>
+        <div class="terms-of-service-report-toolbar">
+            <input type="search" class="form-builder-input" data-consent-search placeholder="${escapeHtml(i18n.t("module.terms_of_service.report.search"))}">
+            <div class="terms-of-service-report-filters">${[
+                "all",
+                "accepted",
+                "outstanding",
+            ]
+                .map(
+                    (filter) =>
+                        `<button type="button" class="state-pill${filter === "all" ? " pill-active" : ""}" data-consent-filter="${filter}">${escapeHtml(i18n.t(`module.terms_of_service.report.${filter}`))}</button>`,
+                )
+                .join("")}</div>
+        </div>
+        <div data-consent-report-table></div>
+    </section>`;
+}
+
+function activateConsentReport(panel, document, i18n) {
+    const report = panel.querySelector("[data-consent-report]");
+    if (!report) return;
+    let filter = "all";
+    let query = "";
+    let page = 0;
+    const render = () => {
+        const users = (document.consentUsers ?? []).filter(
+            (user) =>
+                (filter === "all" ||
+                    (filter === "accepted" ? user.accepted : !user.accepted)) &&
+                user.label.toLowerCase().includes(query.toLowerCase()),
+        );
+        const pageCount = Math.max(
+            1,
+            Math.ceil(users.length / REPORT_PAGE_SIZE),
+        );
+        page = Math.max(0, Math.min(page, pageCount - 1));
+        const rows = users
+            .slice(page * REPORT_PAGE_SIZE, (page + 1) * REPORT_PAGE_SIZE)
+            .map(
+                (user) =>
+                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-warning"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td></tr>`,
+            )
+            .join("");
+        report.querySelector("[data-consent-report-table]").innerHTML =
+            `<div class="terms-of-service-report-table-wrap"><table><thead><tr><th>${escapeHtml(i18n.t("module.terms_of_service.report.user"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.status"))}</th></tr></thead><tbody>${rows || `<tr><td colspan="2">${escapeHtml(i18n.t("module.terms_of_service.report.empty"))}</td></tr>`}</tbody></table></div><nav class="terms-of-service-report-pagination"><button type="button" class="btn-neutral" data-report-previous${page === 0 ? " disabled" : ""}>${escapeHtml(i18n.t("module.terms_of_service.report.previous"))}</button><span>${page + 1} / ${pageCount}</span><button type="button" class="btn-neutral" data-report-next${page + 1 >= pageCount ? " disabled" : ""}>${escapeHtml(i18n.t("module.terms_of_service.report.next"))}</button></nav>`;
+    };
+    report.addEventListener("input", (event) => {
+        if (!event.target.matches("[data-consent-search]")) return;
+        query = event.target.value;
+        page = 0;
+        render();
+    });
+    report.addEventListener("click", (event) => {
+        const filterButton = event.target.closest("[data-consent-filter]");
+        if (filterButton) {
+            filter = filterButton.dataset.consentFilter;
+            page = 0;
+            report
+                .querySelectorAll("[data-consent-filter]")
+                .forEach((button) =>
+                    button.classList.toggle(
+                        "pill-active",
+                        button === filterButton,
+                    ),
+                );
+        } else if (event.target.closest("[data-report-previous]")) page -= 1;
+        else if (event.target.closest("[data-report-next]")) page += 1;
+        else return;
+        render();
+    });
+    render();
+}
+
 function documentDescriptor(document, i18n) {
     const hasPublishedContent = Boolean(
         document.version && String(document.markdown ?? "").trim(),
@@ -80,6 +157,7 @@ function documentDescriptor(document, i18n) {
                 <button class="terms-of-service-mode-toggle btn-neutral" type="button" data-mode="compose" aria-pressed="true">${escapeHtml(i18n.t("module.terms_of_service.action.compose"))}</button>
                 <button class="terms-of-service-mode-toggle btn-neutral" type="button" data-mode="preview" aria-pressed="false">${escapeHtml(i18n.t("module.terms_of_service.action.preview"))}</button>
             </div>
+            ${consentReportMarkup(i18n)}
         </div>`,
     };
 }
@@ -240,14 +318,47 @@ function documentsMarkup(documents, i18n) {
 export function createAdminSection({ i18n, apiFetch, openPopup }) {
     let documents = DOCUMENTS;
     let dirtyBar;
-    const dataReady = apiFetch(`${API_PATH}/documents`)
-        .then(readPayload)
-        .then((storedDocuments) => {
+    const dataReady = Promise.all([
+        apiFetch(`${API_PATH}/documents`).then(readPayload),
+        apiFetch("/api/v1/users").then(readPayload),
+        ...DOCUMENTS.map((document) =>
+            apiFetch(`${API_PATH}/consent-report/${document.slug}`).then(
+                readPayload,
+            ),
+        ),
+    ])
+        .then(([storedDocuments, users, ...reports]) => {
             documents = DOCUMENTS.map((definition) => ({
                 ...definition,
                 ...storedDocuments.find(
                     (document) => document.slug === definition.slug,
                 ),
+                consentUsers: users.map((user) => {
+                    const accountId = String(
+                        user.accountId ??
+                            user.id ??
+                            user.username ??
+                            user.handle,
+                    );
+                    const consent = reports[DOCUMENTS.indexOf(definition)].find(
+                        (entry) => entry.accountId === accountId,
+                    );
+                    return {
+                        label: String(
+                            user.displayName ??
+                                user.username ??
+                                user.handle ??
+                                accountId,
+                        ),
+                        accepted:
+                            Boolean(consent?.version) &&
+                            consent.version ===
+                                storedDocuments.find(
+                                    (document) =>
+                                        document.slug === definition.slug,
+                                )?.version,
+                    };
+                }),
             }));
         })
         .catch(() => {
@@ -271,6 +382,7 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                         `[data-collapsible-section="${definition.slug}"]`,
                     );
                     if (panel) {
+                        activateConsentReport(panel, definition, i18n);
                         controllers.push(
                             activateEditor(panel, definition, {
                                 apiFetch,
@@ -300,6 +412,7 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
 }
 
 export async function mount(root, { signal } = {}) {
+    const finishLoading = beginPageLoading(root);
     const i18n = await createI18n({
         componentStringBaseUrls: ["/static/modules/terms-of-service/languages"],
     });
@@ -335,6 +448,8 @@ export async function mount(root, { signal } = {}) {
     }
 
     const navigationItems = [];
+    const authenticated = Boolean(localStorage.getItem("cognis_access_token"));
+    if (authenticated) await ensureFullAccountSession();
     const composer = createPageComposer(root, {
         allowCustomization: false,
         elements: [
@@ -360,7 +475,8 @@ export async function mount(root, { signal } = {}) {
         ],
         toolbarScrollable: true,
         contentScrolling: false,
-        requireAccountSession: false,
+        showNavbar: authenticated,
+        requireAccountSession: authenticated,
         onRender() {
             const article = root.querySelector(".terms-of-service-rendered");
             navigationItems.length = 0;
@@ -381,6 +497,7 @@ export async function mount(root, { signal } = {}) {
     publicPageComposers.get(root)?.destroy?.();
     publicPageComposers.set(root, composer);
     await composer.init();
+    finishLoading();
     root.addEventListener(
         "click",
         (event) => {

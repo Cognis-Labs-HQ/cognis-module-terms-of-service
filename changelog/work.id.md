@@ -50,6 +50,10 @@ Menghapus popup yang berlebihan dari rute hukum publik dan merender setiap dokum
 
 Menggunakan gaya choice-checkbox dan state-pill Cognis yang dapat dipakai ulang, menjamin baris tautan dokumen terpisah, dan menunggu gaya tersebut sebelum membuka persetujuan. Persetujuan kini memakai kontrak database terstruktur INSERT dengan pembaruan konflik dan memverifikasi hasil tersimpan agar versi yang sudah diterima tidak diminta lagi saat navigasi.
 
+## Laporan persetujuan dan shell halaman lengkap
+
+Menambahkan tabel persetujuan pengguna yang dapat dicari dan dipaginasi sepuluh baris pada setiap dokumen hukum dengan filter Semua, Diterima, dan Belum diterima. Halaman publik kini mengikuti urutan inisialisasi halaman Jitsi untuk pemuatan dan sesi terautentikasi, sementara permukaan editor tetap mencegah perubahan ukuran dan lompatan tata letak.
+
 ## Commit
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -65,3 +69,5 @@ Menggunakan gaya choice-checkbox dan state-pill Cognis yang dapat dipakai ulang,
 - [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)
 
 - [f500db9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f500db9c46919a4e9bf2911751340eb515b3213e)
+
+- [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)

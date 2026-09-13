@@ -50,6 +50,10 @@ Entfernt das redundante Popup aus öffentlichen Rechtsrouten und stellt jedes Do
 
 Verwendet die wiederverwendbaren Choice-Checkbox- und State-Pill-Stile von Cognis, garantiert eine separate Dokumentlinkzeile und wartet vor dem Öffnen der Zustimmung auf diese Stile. Die Zustimmung verwendet jetzt den strukturierten Datenbankvertrag für INSERT mit Konfliktaktualisierung und prüft das gespeicherte Ergebnis, damit akzeptierte Versionen bei der Navigation nicht erneut angefordert werden.
 
+## Zustimmungsberichte und vollständige Seiten-Shells
+
+Fügt jedem Rechtsdokument eine durchsuchbare, auf zehn Zeilen paginierte Benutzer-Zustimmungstabelle mit den Filtern Alle, Akzeptiert und Ausstehend hinzu. Öffentliche Seiten folgen nun der Jitsi-Initialisierungsreihenfolge für Laden und authentifizierte Sitzungen; feste Editorflächen verhindern Größenänderungen und Layoutsprünge.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -65,3 +69,5 @@ Verwendet die wiederverwendbaren Choice-Checkbox- und State-Pill-Stile von Cogni
 - [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)
 
 - [f500db9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f500db9c46919a4e9bf2911751340eb515b3213e)
+
+- [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)

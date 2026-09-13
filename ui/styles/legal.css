@@ -44,6 +44,7 @@
     min-width: 0;
     padding: 1rem;
     width: 100%;
+    min-inline-size: 100%;
 }
 
 .terms-of-service-compose-pane[hidden],
@@ -52,6 +53,7 @@
 }
 
 .terms-of-service-compose-pane {
+    block-size: 20rem;
     display: block;
     max-width: none;
     min-width: 0;
@@ -69,7 +71,9 @@
     inline-size: 100%;
     max-width: 100%;
     max-inline-size: none;
-    min-height: 16rem;
+    block-size: 100%;
+    height: 100%;
+    min-height: 100%;
     min-inline-size: 100%;
     padding: 1rem;
     resize: none !important;
@@ -77,11 +81,13 @@
 }
 
 .terms-of-service-preview-pane {
+    block-size: 20rem;
     border: 1px solid var(--color-border);
     border-radius: 0.25rem 0.25rem 0 0;
     box-sizing: border-box;
     padding: 0.75rem;
     width: 100%;
+    overflow: auto;
 }
 
 .terms-of-service-preview-pane,
@@ -129,4 +135,44 @@
 
 .terms-of-service-consent-read {
     display: block;
+}
+
+.terms-of-service-report {
+    border-top: 1px solid var(--color-border);
+    display: grid;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+.terms-of-service-report-toolbar,
+.terms-of-service-report-filters,
+.terms-of-service-report-pagination {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.terms-of-service-report-toolbar input {
+    flex: 1 1 14rem;
+}
+
+.terms-of-service-report-table-wrap {
+    overflow-x: auto;
+}
+
+.terms-of-service-report table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.terms-of-service-report th,
+.terms-of-service-report td {
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.terms-of-service-report-pagination {
+    justify-content: center;
 }

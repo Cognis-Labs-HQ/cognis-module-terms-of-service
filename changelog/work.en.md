@@ -50,6 +50,10 @@ Removes the redundant popup from public legal routes and renders each document t
 
 Uses Cognis's reusable choice-checkbox and state-pill styles, guarantees a separate document-link row, and waits for those styles before opening consent. Consent now uses the structured database INSERT conflict-update contract and verifies the stored result, preventing accepted versions from being requested again during navigation.
 
+## Administration consent reports and complete page shells
+
+Adds a searchable, ten-row paginated user consent table to every legal document with All, Accepted, and Outstanding filters. Public pages now follow the Jitsi page initialization sequence for loading and authenticated sessions, while fixed editor surfaces prevent resizing and layout jumps.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -65,3 +69,5 @@ Uses Cognis's reusable choice-checkbox and state-pill styles, guarantees a separ
 - [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)
 
 - [f500db9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f500db9c46919a4e9bf2911751340eb515b3213e)
+
+- [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)
