@@ -6,6 +6,7 @@ const source = readFileSync("ui/app.js", "utf8");
 const resources = readFileSync("ui/reuse/resources.js", "utf8");
 const enforcement = readFileSync("ui/consent-enforcement.js", "utf8");
 const registration = readFileSync("ui/registration-consent.js", "utf8");
+const legalStyles = readFileSync("ui/styles/legal.css", "utf8");
 
 test("browser code imports the core Markdown renderer through ui:reuse", () => {
     assert.match(resources, /Symbol\.for\("cognis\.uiCtx"\)/);
@@ -24,7 +25,10 @@ test("legal editors use Cognis utilities and standard action variants", () => {
     assert.match(source, /module\.terms_of_service\.action\.add/);
     assert.match(source, /classList\.add\("btn-cancel"\)/);
     assert.match(source, /await openPopup\(\{/);
-    assert.match(source, /terms-of-service-collapse-icon/);
+    assert.match(source, /<header class="terms-of-service-document-header">/);
+    assert.doesNotMatch(source, /<details|<summary|collapseIconMarkup/);
+    assert.match(source, /function documentsMarkup[\s\S]*renderInfoTooltip/);
+    assert.match(legalStyles, /terms-of-service-editor\[hidden\]/);
     assert.doesNotMatch(source, /data-action="publish"/);
 });
 

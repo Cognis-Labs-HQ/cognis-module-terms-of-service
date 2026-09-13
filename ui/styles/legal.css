@@ -7,6 +7,17 @@
     padding: 1.5rem;
 }
 
+.terms-of-service-heading {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    margin-block-end: 1rem;
+}
+
+.terms-of-service-heading h2 {
+    margin: 0;
+}
+
 .terms-of-service-documents {
     display: grid;
     gap: 0.75rem;
@@ -24,16 +35,10 @@
 
 .terms-of-service-document-header {
     align-items: center;
-    cursor: pointer;
-    display: grid;
+    display: flex;
     gap: 0.75rem;
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    list-style: none;
+    justify-content: space-between;
     padding: 0.875rem 1rem;
-}
-
-.terms-of-service-document-header::-webkit-details-marker {
-    display: none;
 }
 
 .terms-of-service-document-header h3 {
@@ -45,16 +50,6 @@
     min-width: 5rem;
 }
 
-.terms-of-service-collapse-icon {
-    transition: transform 0.2s ease;
-}
-
-.terms-of-service-document[open]
-    > .terms-of-service-document-header
-    .terms-of-service-collapse-icon {
-    transform: rotate(180deg);
-}
-
 .terms-of-service-editor {
     border-block-start: 1px solid var(--color-border);
     box-sizing: border-box;
@@ -63,6 +58,12 @@
     min-width: 0;
     padding: 1rem;
     width: 100%;
+}
+
+.terms-of-service-editor[hidden],
+.terms-of-service-compose-pane[hidden],
+.terms-of-service-preview-pane[hidden] {
+    display: none;
 }
 
 .terms-of-service-compose-pane {

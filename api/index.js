@@ -3,8 +3,8 @@ import { DOCUMENTS, LegalDocumentStore } from "./store.js";
 
 const MAX_MARKDOWN_BYTES = 1_000_000;
 
-function accountId(request) {
-    return String(request.auth?.accountId ?? request.auth?.sub ?? "").trim();
+function accountId(claims) {
+    return String(claims?.sub ?? "").trim();
 }
 
 function isKnownSlug(slug) {
@@ -55,8 +55,8 @@ export function registerApi(router, ctx) {
     router.get(
         "/api/v1/modules/terms-of-service/documents",
         async (request, response) => {
-            await requireAuth(request, response, "admin");
-            if (response.writableEnded) return;
+            const claims = await requireAuth(request, response, "admin");
+            if (!claims || response.writableEnded) return;
             await ready;
             sendJson(response, 200, { data: await store.listLatest() });
         },
@@ -66,8 +66,8 @@ export function registerApi(router, ctx) {
     router.put(
         "/api/v1/modules/terms-of-service/documents/:slug",
         async (request, response) => {
-            await requireAuth(request, response, "admin");
-            if (response.writableEnded) return;
+            const claims = await requireAuth(request, response, "admin");
+            if (!claims || response.writableEnded) return;
             const slug = String(request.params?.slug ?? "");
             if (!isKnownSlug(slug)) {
                 sendJson(response, 404, {
@@ -98,7 +98,7 @@ export function registerApi(router, ctx) {
                 const document = await store.publish(
                     slug,
                     body.markdown,
-                    accountId(request),
+                    accountId(claims),
                 );
                 ctx.log?.("info", "Legal document published.", {
                     component: "terms-of-service",
@@ -162,11 +162,11 @@ export function registerApi(router, ctx) {
     router.get(
         "/api/v1/modules/terms-of-service/consent",
         async (request, response) => {
-            await requireAuth(request, response, "user");
-            if (response.writableEnded) return;
+            const claims = await requireAuth(request, response, "user");
+            if (!claims || response.writableEnded) return;
             await ready;
             sendJson(response, 200, {
-                data: await store.consentStatus(accountId(request)),
+                data: await store.consentStatus(accountId(claims)),
             });
         },
         { access: { minRole: "user" } },
@@ -175,8 +175,8 @@ export function registerApi(router, ctx) {
     router.post(
         "/api/v1/modules/terms-of-service/consent",
         async (request, response) => {
-            await requireAuth(request, response, "user");
-            if (response.writableEnded) return;
+            const claims = await requireAuth(request, response, "user");
+            if (!claims || response.writableEnded) return;
             try {
                 const body = await readJson(request);
                 const termsVersion = String(body.termsVersion ?? "").trim();
@@ -197,14 +197,14 @@ export function registerApi(router, ctx) {
                 }
                 await ready;
                 const status = await store.recordConsent(
-                    accountId(request),
+                    accountId(claims),
                     termsVersion,
                     privacyVersion,
                 );
                 ctx.log?.("info", "Legal consent recorded.", {
                     component: "terms-of-service",
                     operation: "recordConsent",
-                    accountId: accountId(request),
+                    accountId: accountId(claims),
                     termsVersion,
                     privacyVersion,
                 });
@@ -214,7 +214,7 @@ export function registerApi(router, ctx) {
                 ctx.log?.("error", "Legal consent recording failed.", {
                     component: "terms-of-service",
                     operation: "recordConsent",
-                    accountId: accountId(request),
+                    accountId: accountId(claims),
                     error: error.message,
                 });
                 sendJson(response, failure.status, failure.payload);

@@ -10,6 +10,11 @@
 
 3つの文書をコンパクトな個別カードとして表示し、過剰だった入力欄の高さを抑え、全幅 Composer の既定グリッドサイズをより実用的にしました。
 
+## ホスト連携契約を修正
+
+`auth:requireAuth` が返す認証済みクレームを文書公開の実行者として使用し、保存時に空の実行者IDが送信されないようにしました。「法的情報」見出しでは Markdown ツールチップを内容と同時に描画し、文書操作を見出しのすぐ横に配置しました。重複した開閉矢印を削除し、明示的な非表示スタイルによってエディターの閉鎖と作成・プレビューペインの切り替えを確実にします。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
+- [e20d857](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/e20d857715e08f3656717ad55a5918fe236820ab)

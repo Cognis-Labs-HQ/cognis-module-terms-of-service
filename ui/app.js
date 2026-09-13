@@ -52,20 +52,13 @@ async function readPayload(response) {
     return payload.data;
 }
 
-function collapseIconMarkup() {
-    return `<svg class="terms-of-service-collapse-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
-        <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>`;
-}
-
 function editorMarkup(document, i18n) {
-    return `<details class="terms-of-service-document" data-document="${document.slug}">
-        <summary class="terms-of-service-document-header">
+    return `<section class="terms-of-service-document" data-document="${document.slug}">
+        <header class="terms-of-service-document-header">
             <h3>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.titleKey}`))}</h3>
             <button class="terms-of-service-document-action btn-confirm" type="button"
                 aria-label="${escapeHtml(i18n.t("module.terms_of_service.action.add"))}">${escapeHtml(i18n.t("module.terms_of_service.action.add"))}</button>
-            ${collapseIconMarkup()}
-        </summary>
+        </header>
         <div class="terms-of-service-editor" hidden>
             <div class="terms-of-service-compose-pane">
                 <textarea rows="16" aria-label="${escapeHtml(i18n.t("module.terms_of_service.editor.content"))}">${escapeHtml(document.markdown ?? "")}</textarea>
@@ -76,7 +69,7 @@ function editorMarkup(document, i18n) {
                 <button class="terms-of-service-mode-toggle" type="button" data-mode="preview" aria-pressed="false">${escapeHtml(i18n.t("module.terms_of_service.action.preview"))}</button>
             </div>
         </div>
-    </details>`;
+    </section>`;
 }
 
 function activateEditor(
@@ -133,7 +126,6 @@ function activateEditor(
     documentAction.addEventListener("click", async (event) => {
         event.preventDefault();
         if (editor.hidden) {
-            panel.open = true;
             editor.hidden = false;
             documentAction.textContent = i18n.t(
                 "module.terms_of_service.action.remove",
@@ -229,7 +221,15 @@ function mountFloatingDirtyTracker(root, i18n, controllers) {
 }
 
 function documentsMarkup(documents, i18n) {
-    return `<div class="terms-of-service-documents">
+    return `<div class="terms-of-service-heading">
+        <h2>${escapeHtml(i18n.t("module.terms_of_service.admin.title"))}</h2>
+        ${renderInfoTooltip(
+            i18n.t("module.terms_of_service.editor.markdown_hint"),
+            i18n.t("module.terms_of_service.editor.more_information"),
+            "terms-of-service-markdown",
+        )}
+    </div>
+    <div class="terms-of-service-documents">
         ${documents.map((document) => editorMarkup(document, i18n)).join("")}
     </div>`;
 }
@@ -257,26 +257,8 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
         subComposerOptions: {
             allowCustomization: false,
             preferenceKey: "terms-of-service-legal",
-            heading: i18n.t("module.terms_of_service.admin.title"),
+            heading: "",
             onRender(root) {
-                const section = root.querySelector("#terms-of-service-legal");
-                const heading = section?.querySelector(
-                    ":scope > .sub-composer-heading",
-                );
-                if (heading && !heading.querySelector(".info-tooltip")) {
-                    heading.insertAdjacentHTML(
-                        "beforeend",
-                        renderInfoTooltip(
-                            i18n.t(
-                                "module.terms_of_service.editor.markdown_hint",
-                            ),
-                            i18n.t(
-                                "module.terms_of_service.editor.more_information",
-                            ),
-                            "terms-of-service-markdown",
-                        ),
-                    );
-                }
                 const controllers = [];
                 const dirtyBar = mountFloatingDirtyTracker(
                     root,

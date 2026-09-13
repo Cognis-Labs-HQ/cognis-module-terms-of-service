@@ -8,7 +8,7 @@ Das Modul registriert die öffentlichen SPA-Routen `/terms-of-service`, `/privac
 
 Veröffentlichte Rechtsinhalte sind Markdown, das Cognis über `ui:reuse` darstellt. Jede Speicherung fügt über `docs:versionStore` eine unveränderliche Version hinzu. Das Modul importiert weder Cognis-Interna noch einen konkreten Datenbanktreiber.
 
-Die Editoren für Rechtsdokumente teilen sich eine kompakte Kartengruppe in voller Breite mit einklappbaren Dokumentüberschriften und integrierten Aktionen zum Hinzufügen oder Entfernen. Sie verwenden die Cognis-Utilities für Informations-Tooltips und die schwebende Änderungsverfolgung. Beim Hinzufügen eines Editors erscheint ein gepolstertes, nicht skalierbares Markdown-Eingabefeld mit Schaltflächen für Verfassen und Vorschau im Stil des Nachrichten-Composers; die Speichern-Aktion der Änderungsverfolgung veröffentlicht Aktualisierungen und meldet den Erfolg über den Host-Toast, während das Entfernen eines Editors bestätigt werden muss.
+Die Editoren für Rechtsdokumente teilen sich eine kompakte Kartengruppe in voller Breite mit kompakten Dokumentzeilen mit integrierten Aktionen zum Hinzufügen oder Entfernen und ohne überflüssige Aufklappsteuerung. Sie verwenden die Cognis-Utilities für Informations-Tooltips und die schwebende Änderungsverfolgung. Beim Hinzufügen eines Editors erscheint ein gepolstertes, nicht skalierbares Markdown-Eingabefeld mit Schaltflächen für Verfassen und Vorschau im Stil des Nachrichten-Composers; die Speichern-Aktion der Änderungsverfolgung veröffentlicht Aktualisierungen und meldet den Erfolg über den Host-Toast, während das Entfernen eines Editors bestätigt werden muss.
 
 ## Zustimmung und Lebenszyklus
 
