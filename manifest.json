@@ -2,7 +2,7 @@
     "id": "terms-of-service",
     "uuid": "e6f133ec-ccd9-4dbb-96bd-1ccf52a359de",
     "name": "module.terms_of_service.name",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [],
@@ -176,11 +176,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "b7f3690c0e5f174b89654c49bdcf724d50f0225a7eb86f79a45b5b9fb5facca7"
+            "sha256": "a85c5ce51f6140205922f8b8d119f7d6cf0fb16308fbf9356bca236d3ca78e48"
         },
         {
             "path": "package.json",
-            "sha256": "2abc1e9384d8bcabe2061e6bba9d0fa4d1dc53ae9fd6683b042aa07a476cb765"
+            "sha256": "561fdd9e6b5b6facc4ac069714460aeebd5cd29b13396cf02fc8110d7f65ad1d"
         },
         {
             "path": "routes.json",
