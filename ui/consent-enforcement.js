@@ -265,9 +265,6 @@ async function enforceConsent(stageCtx) {
 }
 
 async function enforceAuthenticatedConsent() {
-    if (LEGAL_DOCUMENT_PATHS.has(location.pathname)) {
-        return { requiresSetup: false };
-    }
     const status = await consentStatus();
     if (!status) return { requiresSetup: false };
     const i18n = await createI18n({
@@ -341,17 +338,13 @@ uiCtx.extendFlow(
     enforceConsent,
 );
 
-if (!LEGAL_DOCUMENT_PATHS.has(location.pathname)) {
-    await enforceAuthenticatedConsentOnce().then((result) => {
-        if (result.redirectTo) {
-            const navigate = uiCtx.capabilities.get("ui:navigate");
-            if (typeof navigate !== "function") {
-                throw new Error(
-                    "Required UI capability unavailable: ui:navigate",
-                );
-            }
-            return navigate(result.redirectTo);
+await enforceAuthenticatedConsentOnce().then((result) => {
+    if (result.redirectTo) {
+        const navigate = uiCtx.capabilities.get("ui:navigate");
+        if (typeof navigate !== "function") {
+            throw new Error("Required UI capability unavailable: ui:navigate");
         }
-    });
-}
+        return navigate(result.redirectTo);
+    }
+});
 scheduleConsentRefresh();

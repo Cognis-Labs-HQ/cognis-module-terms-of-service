@@ -86,6 +86,10 @@ Adds separate Consented Version and Latest Version columns to each consent repor
 
 Replaces the plain legal-document heading list with Cognis’s exported grouped, collapsible side-menu controller, including selected-section state and smooth scrolling. Public legal pages now contribute all three legal routes to the footer while mounted, allowing the core footer renderer to display them and apply its route-aware active state.
 
+## Stable published footer links and page titles
+
+Makes consent enforcement the sole footer-link owner again and loads publication status even on exempt legal routes, so only published links appear and remain registered across SPA navigation while the core controls their active state. Each public legal page now applies its localized browser title after authenticated shell setup on both hard refresh and SPA navigation.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -119,3 +123,5 @@ Replaces the plain legal-document heading list with Cognis’s exported grouped,
 - [51b169b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/51b169b61a9aba1c49b50d66a8444c16964b5348)
 
 - [232a8c0](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/232a8c08a256f5f5cef3dca2200b3436cde4a6ea)
+
+- [21e6522](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/21e652276d8b297ad9ddb617a78acad9f8157bc8)

@@ -6,7 +6,7 @@ import {
 
 const [
     { apiFetch },
-    { createI18n },
+    { applyDocumentTitle, createI18n },
     { renderMarkdown, initializeMarkdownCodeCopy },
     { escapeHtml },
     { beginPageLoading, mountWhenDirect },
@@ -39,7 +39,6 @@ const DOCUMENTS = [
     { slug: "eula", titleKey: "eula" },
 ];
 const publicPageComposers = new WeakMap();
-const publicFooterLinkDisposers = new WeakMap();
 const REPORT_PAGE_SIZE = 10;
 const paginationUi = uiCtx.capabilities.get("ui:pagination");
 
@@ -70,28 +69,6 @@ function showToast(message) {
         throw new Error("Required UI capability unavailable: ui:showToast");
     }
     toast(message, { variant: "success" });
-}
-
-function syncPublicFooterLinks(root, i18n) {
-    publicFooterLinkDisposers.get(root)?.forEach((dispose) => dispose());
-    const footerLinks = uiCtx.capabilities.get("ui:footerLinks");
-    if (typeof footerLinks?.add !== "function") return;
-    const disposers = [];
-    for (const document of DOCUMENTS) {
-        const id = `terms-of-service:${document.slug}`;
-        if (footerLinks.list?.().some((link) => link.id === id)) continue;
-        disposers.push(
-            footerLinks.add({
-                id,
-                side: "right",
-                href: `/${document.slug}`,
-                label: i18n.t(
-                    `module.terms_of_service.document.${document.titleKey}`,
-                ),
-            }),
-        );
-    }
-    publicFooterLinkDisposers.set(root, disposers);
 }
 
 async function readPayload(response) {
@@ -528,7 +505,10 @@ export async function mount(root, { signal } = {}) {
 
     const authenticated = Boolean(localStorage.getItem("cognis_access_token"));
     if (authenticated) await ensureFullAccountSession();
-    syncPublicFooterLinks(root, i18n);
+    applyDocumentTitle(
+        i18n,
+        `module.terms_of_service.public.page_title.${definition.titleKey}`,
+    );
     let navigationMenu = createSideMenu({
         groups: [],
         storageKeyPrefix: "terms-of-service-sections",
@@ -606,8 +586,6 @@ export async function mount(root, { signal } = {}) {
 export function unmount(root) {
     publicPageComposers.get(root)?.destroy?.();
     publicPageComposers.delete(root);
-    publicFooterLinkDisposers.get(root)?.forEach((dispose) => dispose());
-    publicFooterLinkDisposers.delete(root);
     root.replaceChildren();
 }
 

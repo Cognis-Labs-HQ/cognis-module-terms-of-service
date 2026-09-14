@@ -86,6 +86,10 @@ Fügt jedem Zustimmungsbericht getrennte Spalten für die akzeptierte und die ne
 
 Ersetzt die einfache Überschriftenliste der Rechtsdokumente durch Cognis’ exportierten Controller für gruppierte, einklappbare Seitenmenüs, einschließlich Zustand des ausgewählten Abschnitts und sanftem Scrollen. Öffentliche Rechtsseiten tragen während ihrer Einbindung alle drei Rechtsrouten zum Footer bei, sodass der Core-Footer sie anzeigen und seinen routenabhängigen Aktivzustand anwenden kann.
 
+## Stabile Footer-Links für veröffentlichte Dokumente und Seitentitel
+
+Macht die Zustimmungserzwingung wieder zur alleinigen Eigentümerin der Footer-Links und lädt den Veröffentlichungsstatus auch auf ausgenommenen Rechtsrouten. Dadurch erscheinen nur veröffentlichte Links und bleiben über SPA-Seitenwechsel hinweg registriert, während der Core ihren Aktivzustand steuert. Jede öffentliche Rechtsseite setzt ihren lokalisierten Browser-Titel nach dem Aufbau der authentifizierten Shell sowohl beim vollständigen Neuladen als auch bei der SPA-Navigation.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -119,3 +123,5 @@ Ersetzt die einfache Überschriftenliste der Rechtsdokumente durch Cognis’ exp
 - [51b169b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/51b169b61a9aba1c49b50d66a8444c16964b5348)
 
 - [232a8c0](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/232a8c08a256f5f5cef3dca2200b3436cde4a6ea)
+
+- [21e6522](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/21e652276d8b297ad9ddb617a78acad9f8157bc8)

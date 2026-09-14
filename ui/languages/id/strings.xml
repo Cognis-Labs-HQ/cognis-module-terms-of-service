@@ -23,6 +23,9 @@
   <string name="module.terms_of_service.error.load">Dokumen hukum tidak dapat dimuat.</string>
   <string name="module.terms_of_service.public.unavailable">Dokumen ini belum diterbitkan.</string>
   <string name="module.terms_of_service.public.navigation">Navigasi</string>
+  <string name="module.terms_of_service.public.page_title.terms">Cognis - Ketentuan Layanan</string>
+  <string name="module.terms_of_service.public.page_title.privacy">Cognis - Kebijakan Privasi</string>
+  <string name="module.terms_of_service.public.page_title.eula">Cognis - Perjanjian Lisensi Pengguna Akhir</string>
   <string name="module.terms_of_service.name">Ketentuan Layanan</string>
   <string name="module.terms_of_service.summary">Terbitkan halaman Ketentuan Layanan, Kebijakan Privasi, dan EULA.</string>
   <string name="module.terms_of_service.description">Menambahkan administrasi dokumen hukum dan halaman hukum publik yang dirender dengan Markdown.</string>

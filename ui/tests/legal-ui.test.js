@@ -100,7 +100,7 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /action: "delete"/);
     assert.match(enforcement, /ui:footerLinks/);
     assert.match(enforcement, /footerLinks\.list\?\.\(\)/);
-    assert.match(source, /capabilities\.get\("ui:footerLinks"\)/);
+    assert.doesNotMatch(source, /capabilities\.get\("ui:footerLinks"\)/);
     assert.match(enforcement, /response\.ok/);
     assert.match(enforcement, /validate-stored-token/);
     assert.match(enforcement, /apply-alternate-auth/);
@@ -180,18 +180,23 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /beginPageLoading\(root\)/);
     assert.match(source, /ensureFullAccountSession\(\)/);
     assert.match(source, /showNavbar: authenticated/);
+    assert.match(source, /applyDocumentTitle/);
+    assert.match(
+        source,
+        /module\.terms_of_service\.public\.page_title\.\$\{definition\.titleKey\}/,
+    );
     assert.match(source, /default: \[12, 1\]/);
-    assert.match(source, /function syncPublicFooterLinks/);
-    assert.match(source, /footerLinks\.add\(\{/);
-    assert.match(source, /href: `\/\$\{document\.slug\}`/);
-    assert.match(source, /publicFooterLinkDisposers/);
     assert.match(
         enforcement,
-        /LEGAL_DOCUMENT_PATHS\.has\(location\.pathname\)/,
+        /const status = await consentStatus\(\);[\s\S]*syncFooterLinks\(status\.documents, i18n\);[\s\S]*LEGAL_DOCUMENT_PATHS\.has\(location\.pathname\)/,
     );
     assert.match(
         enforcement,
-        /if \(!LEGAL_DOCUMENT_PATHS\.has\(location\.pathname\)\)/,
+        /await enforceAuthenticatedConsentOnce\(\)\.then/,
+    );
+    assert.match(
+        enforcement,
+        /LEGAL_DOCUMENT_PATHS\.has\(location\.pathname\)/,
     );
 });
 
