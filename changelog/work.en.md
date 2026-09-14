@@ -118,6 +118,10 @@ Consent reports now translate the internal unpublished database sentinel to no r
 
 Consent payload validation now uses the keyed legal-document definition contract, preventing the runtime error that returned HTTP 500. Confirmed Remove actions now close an existing editor, restore its Add action, and preserve the immutable published document for later editing.
 
+## Redraw footer links after legal page mount
+
+Legal pages now request a forced footer-link registry notification after their Cognis page composer finishes mounting. This closes the shell-transition timing gap that could leave an already-registered link set absent after navigating from a freshly loaded Dashboard.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -167,3 +171,5 @@ Consent payload validation now uses the keyed legal-document definition contract
 - [ab70147](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/ab70147c3a8f72f4d7f35b0ecefaaea2ea9f930e)
 
 - [b4701c9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b4701c9f9f3d31a9eaabb2db3563c49c7f163d9e)
+
+- [a008192](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a0081922d9a38bedb422ecb53fb32c2b28202ee0)

@@ -118,6 +118,10 @@ Zustimmungsberichte wandeln den internen Datenbankplatzhalter für unveröffentl
 
 Die Validierung der Zustimmungsdaten verwendet nun den schlüsselbasierten Vertrag der Rechtsdokumentdefinitionen und verhindert damit den Laufzeitfehler, der HTTP 500 zurückgab. Bestätigte Entfernen-Aktionen schließen nun einen vorhandenen Editor, stellen seine Hinzufügen-Aktion wieder her und bewahren das unveränderliche veröffentlichte Dokument für spätere Bearbeitung auf.
 
+## Footer-Links nach dem Einbinden einer Rechtsseite neu zeichnen
+
+Rechtsseiten fordern nun eine erzwungene Benachrichtigung der Footer-Link-Registry an, nachdem ihr Cognis-Seiten-Composer vollständig eingebunden wurde. Dadurch wird die zeitliche Lücke beim Shell-Wechsel geschlossen, durch die bereits registrierte Links nach der Navigation von einem frisch geladenen Dashboard fehlen konnten.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -167,3 +171,5 @@ Die Validierung der Zustimmungsdaten verwendet nun den schlüsselbasierten Vertr
 - [ab70147](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/ab70147c3a8f72f4d7f35b0ecefaaea2ea9f930e)
 
 - [b4701c9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b4701c9f9f3d31a9eaabb2db3563c49c7f163d9e)
+
+- [a008192](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a0081922d9a38bedb422ecb53fb32c2b28202ee0)

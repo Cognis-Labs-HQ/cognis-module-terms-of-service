@@ -74,6 +74,10 @@ Laporan persetujuan kini mengubah penanda basis data internal untuk dokumen yang
 
 Validasi payload persetujuan kini memakai kontrak definisi dokumen hukum berbasis kunci sehingga mencegah galat runtime yang mengembalikan HTTP 500. Tindakan Hapus yang dikonfirmasi kini menutup editor yang ada, mengembalikan tindakan Tambah, dan mempertahankan dokumen terbitan tetap untuk penyuntingan berikutnya.
 
+## Render ulang tautan footer setelah halaman hukum dipasang
+
+Halaman hukum kini meminta notifikasi paksa registri tautan footer setelah penyusun halaman Cognis selesai dipasang. Hal ini menutup celah waktu transisi shell yang dapat membuat kumpulan tautan yang sudah terdaftar menghilang setelah navigasi dari Dashboard yang baru dimuat.
+
 ## Commit
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -123,3 +127,5 @@ Validasi payload persetujuan kini memakai kontrak definisi dokumen hukum berbasi
 - [ab70147](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/ab70147c3a8f72f4d7f35b0ecefaaea2ea9f930e)
 
 - [b4701c9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b4701c9f9f3d31a9eaabb2db3563c49c7f163d9e)
+
+- [a008192](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a0081922d9a38bedb422ecb53fb32c2b28202ee0)

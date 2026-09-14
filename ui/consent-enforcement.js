@@ -59,14 +59,19 @@ let enforcementPromise;
 let footerRefreshPromise;
 const footerLinkDisposers = new Map();
 
-function syncFooterLinks(documents, i18n) {
+function syncFooterLinks(documents, i18n, { forceRender = false } = {}) {
     const footerLinks = uiCtx.capabilities.get("ui:footerLinks");
     if (typeof footerLinks?.add !== "function") return;
     for (const document of documents) {
         const linkId = `terms-of-service:${document.slug}`;
-        const registered = footerLinks
+        let registered = footerLinks
             .list?.()
             .some((link) => link.id === linkId);
+        if (forceRender && footerLinkDisposers.has(document.slug)) {
+            footerLinkDisposers.get(document.slug)?.();
+            footerLinkDisposers.delete(document.slug);
+            registered = false;
+        }
         if (footerLinkDisposers.has(document.slug) && registered) continue;
         if (footerLinkDisposers.has(document.slug) && !registered) {
             footerLinkDisposers.delete(document.slug);
@@ -112,7 +117,10 @@ async function consentStatus() {
     return (await response.json()).data;
 }
 
-function refreshFooterLinks() {
+async function refreshFooterLinks({ forceRender = false } = {}) {
+    if (forceRender && footerRefreshPromise) {
+        await footerRefreshPromise;
+    }
     if (!footerRefreshPromise) {
         footerRefreshPromise = (async () => {
             const status = await consentStatus();
@@ -122,13 +130,18 @@ function refreshFooterLinks() {
                     "/static/modules/terms-of-service/languages",
                 ],
             });
-            syncFooterLinks(status.documents, i18n);
+            syncFooterLinks(status.documents, i18n, { forceRender });
         })().finally(() => {
             footerRefreshPromise = undefined;
         });
     }
     return footerRefreshPromise;
 }
+
+const disposeFooterRefreshCapability = uiCtx.capabilities.contribute(
+    "terms-of-service:refreshFooterLinks",
+    refreshFooterLinks,
+);
 
 function refreshFooterLinksAfterNavigation() {
     void refreshFooterLinks().catch((error) => {
@@ -415,6 +428,7 @@ export function teardownConsentEnforcement() {
     );
     footerLinkDisposers.forEach((dispose) => dispose());
     footerLinkDisposers.clear();
+    disposeFooterRefreshCapability?.();
 }
 
 window.addEventListener("pagehide", teardownConsentEnforcement, { once: true });

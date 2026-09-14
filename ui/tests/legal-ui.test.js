@@ -109,6 +109,12 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /footerLinks[\s\S]*\.list\?\.\(\)/);
     assert.match(enforcement, /cognis:route-will-change/);
     assert.match(enforcement, /function refreshFooterLinks/);
+    assert.match(
+        enforcement,
+        /terms-of-service:refreshFooterLinks[\s\S]*refreshFooterLinks/,
+    );
+    assert.match(enforcement, /forceRender && footerRefreshPromise/);
+    assert.match(enforcement, /forceRender && footerLinkDisposers\.has/);
     assert.match(enforcement, /footerRefreshPromise/);
     assert.match(enforcement, /operation: "refreshFooterLinks"/);
     assert.match(
@@ -205,6 +211,8 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /navigationMenu\.setActive\(sectionId\)/);
     assert.match(source, /targetId: id/);
     assert.match(source, /scrollBehavior: "smooth"/);
+    assert.match(source, /terms-of-service:refreshFooterLinks/);
+    assert.match(source, /refreshFooterLinks\(\{ forceRender: true \}\)/);
     assert.match(
         legalStyles,
         /terms-of-service-rendered h2,[\s\S]*scroll-margin-block-start: 5rem/,

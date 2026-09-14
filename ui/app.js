@@ -585,6 +585,12 @@ export async function mount(root, { signal } = {}) {
     publicPageComposers.get(root)?.destroy?.();
     publicPageComposers.set(root, composer);
     await composer.init();
+    const refreshFooterLinks = uiCtx.capabilities.get(
+        "terms-of-service:refreshFooterLinks",
+    );
+    if (typeof refreshFooterLinks === "function") {
+        await refreshFooterLinks({ forceRender: true });
+    }
     finishLoading();
 }
 

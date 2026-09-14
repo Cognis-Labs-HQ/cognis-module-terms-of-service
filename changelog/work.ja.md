@@ -74,6 +74,10 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 
 同意 Payload の検証でキー形式の法務文書定義 Contract を使用するようにし、HTTP 500 を返していた Runtime Error を防止しました。削除を確定すると既存エディターを閉じて追加操作に戻し、後で再編集できるよう不変の公開済み文書は保持します。
 
+## 法務ページの Mount 後に Footer リンクを再描画
+
+法務ページは Cognis Page Composer の Mount 完了後に、Footer Link Registry の通知を強制するようになりました。これにより、再読み込み直後の Dashboard から移動した際に、登録済みリンクが表示されないことがある Shell 遷移のタイミング問題を解消します。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -123,3 +127,5 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 - [ab70147](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/ab70147c3a8f72f4d7f35b0ecefaaea2ea9f930e)
 
 - [b4701c9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b4701c9f9f3d31a9eaabb2db3563c49c7f163d9e)
+
+- [a008192](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a0081922d9a38bedb422ecb53fb32c2b28202ee0)
