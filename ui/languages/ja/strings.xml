@@ -51,6 +51,7 @@
   <string name="module.terms_of_service.report.outstanding">未承認</string>
   <string name="module.terms_of_service.report.user">ユーザー</string>
   <string name="module.terms_of_service.report.status">状態</string>
+  <string name="module.terms_of_service.report.latest_version">最新バージョン</string>
   <string name="module.terms_of_service.report.empty">ユーザーが見つかりません。</string>
   <string name="module.terms_of_service.report.previous">前へ</string>
   <string name="module.terms_of_service.report.next">次へ</string>

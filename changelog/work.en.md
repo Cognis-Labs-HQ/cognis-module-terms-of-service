@@ -74,6 +74,10 @@ Public Terms, Privacy, and EULA routes now remain exempt from consent enforcemen
 
 Unpublished legal-document sections no longer show an empty consent table. Published reports use the shared status-pill stylesheet and show outstanding accounts with a red pill, while Compose and Preview now visibly track the selected mode alongside their accessible pressed state.
 
+## Live version-aware consent reports
+
+Aligns each consent checkbox with its document title. Consent reports now include the latest published version identifier, calculate every user pill against that live version, and redraw immediately after either an existing document update or a document’s first publication.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -101,3 +105,5 @@ Unpublished legal-document sections no longer show an empty consent table. Publi
 - [c8b8fa2](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c8b8fa29f2a92ebf584669be39eb3c1ee76af0da)
 
 - [0f3c337](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0f3c3375d1376ec0deb5309f401be3070b1fe556)
+
+- [aca7aed](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/aca7aedb050d29fcafc1e1204d6cd0ec4649dda0)

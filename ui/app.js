@@ -96,7 +96,7 @@ function consentReportMarkup(i18n) {
 
 function activateConsentReport(panel, document, i18n) {
     const report = panel.querySelector("[data-consent-report]");
-    if (!report) return;
+    if (!report) return null;
     let filter = "all";
     let query = "";
     const pagination = paginationUi.createPagination({
@@ -104,21 +104,29 @@ function activateConsentReport(panel, document, i18n) {
         perPage: REPORT_PAGE_SIZE,
     });
     const render = () => {
-        const users = (document.consentUsers ?? []).filter(
-            (user) =>
-                (filter === "all" ||
-                    (filter === "accepted" ? user.accepted : !user.accepted)) &&
-                user.label.toLowerCase().includes(query.toLowerCase()),
-        );
+        const users = (document.consentUsers ?? [])
+            .map((user) => ({
+                ...user,
+                accepted:
+                    Boolean(user.version) && user.version === document.version,
+            }))
+            .filter(
+                (user) =>
+                    (filter === "all" ||
+                        (filter === "accepted"
+                            ? user.accepted
+                            : !user.accepted)) &&
+                    user.label.toLowerCase().includes(query.toLowerCase()),
+            );
         const page = pagination.updateData(users);
         const rows = page.items
             .map(
                 (user) =>
-                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-required"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td></tr>`,
+                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-required"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td><td><code>${escapeHtml(document.version)}</code></td></tr>`,
             )
             .join("");
         report.querySelector("[data-consent-report-table]").innerHTML =
-            `<div class="terms-of-service-report-table-wrap"><table><thead><tr><th>${escapeHtml(i18n.t("module.terms_of_service.report.user"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.status"))}</th></tr></thead><tbody>${rows || `<tr><td colspan="2">${escapeHtml(i18n.t("module.terms_of_service.report.empty"))}</td></tr>`}</tbody></table></div>${paginationUi.renderPaginationControls(
+            `<div class="terms-of-service-report-table-wrap"><table><thead><tr><th>${escapeHtml(i18n.t("module.terms_of_service.report.user"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.status"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.latest_version"))}</th></tr></thead><tbody>${rows || `<tr><td colspan="3">${escapeHtml(i18n.t("module.terms_of_service.report.empty"))}</td></tr>`}</tbody></table></div>${paginationUi.renderPaginationControls(
                 {
                     page,
                     labels: {
@@ -159,6 +167,7 @@ function activateConsentReport(panel, document, i18n) {
         render();
     });
     render();
+    return { render };
 }
 
 function documentDescriptor(document, i18n) {
@@ -192,8 +201,9 @@ function documentDescriptor(document, i18n) {
 function activateEditor(
     panel,
     document,
-    { apiFetch, dirtyBar, i18n, openPopup },
+    { apiFetch, consentReport, dirtyBar, i18n, openPopup },
 ) {
+    const editor = panel.querySelector(".terms-of-service-editor");
     const textarea = panel.querySelector("textarea");
     const composePane = panel.querySelector(".terms-of-service-compose-pane");
     const previewPane = panel.querySelector(".terms-of-service-preview-pane");
@@ -202,6 +212,7 @@ function activateEditor(
     );
     const composeButton = panel.querySelector('[data-mode="compose"]');
     const previewButton = panel.querySelector('[data-mode="preview"]');
+    let activeConsentReport = consentReport;
     let savedMarkdown = document.markdown ?? "";
     let hasStoredDocument = Boolean(document.version && savedMarkdown.trim());
 
@@ -215,10 +226,17 @@ function activateEditor(
                 body: JSON.stringify({ markdown: textarea.value }),
             },
         );
-        await readPayload(response);
+        const publishedDocument = await readPayload(response);
+        Object.assign(document, publishedDocument);
         savedMarkdown = textarea.value;
         hasStoredDocument = true;
         syncDocumentAction();
+        if (!activeConsentReport) {
+            editor.insertAdjacentHTML("beforeend", consentReportMarkup(i18n));
+            activeConsentReport = activateConsentReport(panel, document, i18n);
+        } else {
+            activeConsentReport.render();
+        }
     }
 
     function discard() {
@@ -379,18 +397,22 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                                 user.handle ??
                                 accountId,
                         ),
-                        accepted:
-                            Boolean(consent?.version) &&
-                            consent.version ===
-                                storedDocuments.find(
-                                    (document) =>
-                                        document.slug === definition.slug,
-                                )?.version,
+                        version: consent?.version ?? null,
                     };
                 }),
             }));
         })
-        .catch(() => {
+        .catch((error) => {
+            uiCtx.capabilities.get("ui:log")?.(
+                "error",
+                "Legal administration data loading failed.",
+                {
+                    component: "terms-of-service",
+                    operation: "loadAdministrationData",
+                    error:
+                        error instanceof Error ? error.message : String(error),
+                },
+            );
             showError(i18n.t("module.terms_of_service.error.load"));
         });
 
@@ -411,10 +433,15 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                         `[data-collapsible-section="${definition.slug}"]`,
                     );
                     if (panel) {
-                        activateConsentReport(panel, definition, i18n);
+                        const consentReport = activateConsentReport(
+                            panel,
+                            definition,
+                            i18n,
+                        );
                         controllers.push(
                             activateEditor(panel, definition, {
                                 apiFetch,
+                                consentReport,
                                 dirtyBar,
                                 i18n,
                                 openPopup,

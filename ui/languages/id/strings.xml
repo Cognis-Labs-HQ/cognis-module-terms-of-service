@@ -51,6 +51,7 @@
   <string name="module.terms_of_service.report.outstanding">Belum diterima</string>
   <string name="module.terms_of_service.report.user">Pengguna</string>
   <string name="module.terms_of_service.report.status">Status</string>
+  <string name="module.terms_of_service.report.latest_version">Versi terbaru</string>
   <string name="module.terms_of_service.report.empty">Tidak ada pengguna ditemukan.</string>
   <string name="module.terms_of_service.report.previous">Sebelumnya</string>
   <string name="module.terms_of_service.report.next">Berikutnya</string>

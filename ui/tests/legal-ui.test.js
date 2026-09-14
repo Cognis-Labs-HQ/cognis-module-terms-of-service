@@ -198,6 +198,13 @@ test("administration renders filterable paginated consent reports", () => {
     assert.doesNotMatch(source, /data-report-previous/);
     assert.doesNotMatch(source, /data-report-next/);
     assert.match(source, /activateConsentReport/);
+    assert.match(source, /activeConsentReport\.render\(\)/);
+    assert.match(
+        source,
+        /insertAdjacentHTML\("beforeend", consentReportMarkup\(i18n\)\)/,
+    );
+    assert.match(source, /Object\.assign\(document, publishedDocument\)/);
+    assert.match(source, /user\.version === document\.version/);
     assert.match(
         source,
         /hasPublishedContent \? consentReportMarkup\(i18n\) : ""/,
@@ -206,5 +213,11 @@ test("administration renders filterable paginated consent reports", () => {
     assert.match(source, /loadReuseStylesheet\("state-pill\.css"\)/);
     assert.match(legalStyles, /terms-of-service-report table/);
     assert.match(legalStyles, /terms-of-service-mode-toggle\.is-active/);
+    assert.match(source, /module\.terms_of_service\.report\.latest_version/);
+    assert.match(source, /<code>\$\{escapeHtml\(document\.version\)\}<\/code>/);
+    assert.match(
+        legalStyles,
+        /terms-of-service-consent-card > \.choice-checkbox/,
+    );
     assert.match(legalStyles, /block-size: 20rem/);
 });

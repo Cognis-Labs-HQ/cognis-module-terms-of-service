@@ -51,6 +51,7 @@
   <string name="module.terms_of_service.report.outstanding">Outstanding</string>
   <string name="module.terms_of_service.report.user">User</string>
   <string name="module.terms_of_service.report.status">Status</string>
+  <string name="module.terms_of_service.report.latest_version">Latest version</string>
   <string name="module.terms_of_service.report.empty">No users found.</string>
   <string name="module.terms_of_service.report.previous">Previous</string>
   <string name="module.terms_of_service.report.next">Next</string>

@@ -124,6 +124,10 @@
     padding: 1rem;
 }
 
+.terms-of-service-consent-card > .choice-checkbox {
+    margin-block-start: 0.25rem;
+}
+
 .terms-of-service-consent-content {
     display: grid;
     gap: 0.5rem;

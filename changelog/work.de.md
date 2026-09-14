@@ -74,6 +74,10 @@ Die öffentlichen Routen für Nutzungsbedingungen, Datenschutz und EULA bleiben 
 
 Abschnitte unveröffentlichter Rechtsdokumente zeigen keine leere Zustimmungstabelle mehr. Berichte veröffentlichter Dokumente verwenden das gemeinsame Status-Pill-Stylesheet und kennzeichnen ausstehende Konten mit einer roten Pill; Verfassen und Vorschau zeigen nun zusätzlich zu ihrem barrierefreien gedrückten Zustand sichtbar den ausgewählten Modus.
 
+## Live aktualisierte, versionsbezogene Zustimmungsberichte
+
+Richtet jedes Zustimmungskontrollkästchen am Dokumenttitel aus. Zustimmungsberichte enthalten nun die Kennung der neuesten veröffentlichten Version, berechnen jede Benutzer-Pill anhand dieser aktuellen Version und werden unmittelbar nach der Aktualisierung eines bestehenden Dokuments oder der ersten Veröffentlichung eines Dokuments neu dargestellt.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -101,3 +105,5 @@ Abschnitte unveröffentlichter Rechtsdokumente zeigen keine leere Zustimmungstab
 - [c8b8fa2](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c8b8fa29f2a92ebf584669be39eb3c1ee76af0da)
 
 - [0f3c337](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0f3c3375d1376ec0deb5309f401be3070b1fe556)
+
+- [aca7aed](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/aca7aedb050d29fcafc1e1204d6cd0ec4649dda0)
