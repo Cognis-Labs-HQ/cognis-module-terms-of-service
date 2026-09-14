@@ -209,6 +209,23 @@ async function requestConsent(status, i18n) {
             variant: "warning",
             mandatory: true,
             onOpen(overlay) {
+                const consentCheckboxes = Array.from(
+                    overlay.querySelectorAll("[data-consent-document]"),
+                );
+                const submitButton = overlay.querySelector(
+                    '[data-popup-action="submit"]',
+                );
+                const updateSubmitState = () => {
+                    if (submitButton) {
+                        submitButton.disabled = !consentCheckboxes.every(
+                            (checkbox) => checkbox.checked,
+                        );
+                    }
+                };
+                consentCheckboxes.forEach((checkbox) => {
+                    checkbox.addEventListener("change", updateSubmitState);
+                });
+                updateSubmitState();
                 overlay
                     .querySelectorAll(
                         '.terms-of-service-consent-read a[target="_blank"]',
@@ -286,6 +303,20 @@ async function requestConsent(status, i18n) {
                 status = (await response.json()).data;
                 if (status.accepted && !status.required) return true;
             } else {
+                if (response.status === 400) {
+                    const showToast = uiCtx.capabilities.get("ui:showToast");
+                    if (typeof showToast !== "function") {
+                        throw new Error(
+                            "Required UI capability unavailable: ui:showToast",
+                        );
+                    }
+                    showToast(
+                        i18n.t(
+                            "module.terms_of_service.consent.select_all_error",
+                        ),
+                        { variant: "error" },
+                    );
+                }
                 status = await consentStatus();
             }
             continue;

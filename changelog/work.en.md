@@ -106,6 +106,10 @@ Changes the neutral action in the account deletion confirmation from “Keep edi
 
 Legal section links now leave the selected heading visible beneath the fixed shell header. Published legal footer links are reconciled on every SPA route transition and recover if the host registry is remounted, so they remain visible when entering or switching between legal pages.
 
+## Guarded consent submission
+
+The consent popup now enables Submit only after every required document is selected. The API validates the submitted version map, returns HTTP 400 for malformed or incomplete published-document consent, and the popup displays a localized error toast when the server rejects such a request.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -149,3 +153,5 @@ Legal section links now leave the selected heading visible beneath the fixed she
 - [a3621a1](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a3621a16e00739912d95772fbd73937a449fcd4e)
 
 - [86a9d66](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/86a9d66bed8866d0f92caae634762c6534a89e3d)
+
+- [3012d12](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3012d12222273a77467f224af6b1a3be9fe809aa)

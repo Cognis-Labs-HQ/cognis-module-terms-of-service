@@ -135,6 +135,9 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /loadReuseStylesheet\("state-pill\.css"\)/);
     assert.match(enforcement, /loadModuleStylesheet\(\)/);
     assert.match(enforcement, /data-consent-document/);
+    assert.match(enforcement, /submitButton\.disabled/);
+    assert.match(enforcement, /checkbox\.addEventListener\("change"/);
+    assert.match(enforcement, /consentCheckboxes\.every/);
     assert.match(enforcement, /acceptedVersions/);
     assert.match(enforcement, /capabilities\.get\("ui:showToast"\)/);
     assert.match(
@@ -142,6 +145,7 @@ test("consent is enforced during registration and authenticated sessions", () =>
         /module\.terms_of_service\.consent\.select_all_error/,
     );
     assert.match(enforcement, /\{ variant: "error" \}/);
+    assert.match(enforcement, /response\.status === 400/);
     assert.match(
         enforcement,
         /showToast\([\s\S]*select_all_error[\s\S]*return false/,

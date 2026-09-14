@@ -141,6 +141,32 @@ test("recording consent rejects stale versions", async () => {
     );
 });
 
+test("recording consent rejects an incomplete published version set", async () => {
+    const tracker = versionTracker([
+        {
+            slug: "terms-of-service",
+            version: "terms-current",
+            markdown: "t",
+        },
+        {
+            slug: "privacy-policy",
+            version: "privacy-current",
+            markdown: "p",
+        },
+    ]);
+    const database = {
+        async executeCommand() {
+            return { rows: [] };
+        },
+    };
+    await assert.rejects(
+        new LegalDocumentStore(database, tracker).recordConsent("account-1", {
+            "terms-of-service": "terms-current",
+        }),
+        /incomplete_consent_versions/,
+    );
+});
+
 test("recording consent persists every accepted document version", async () => {
     const documents = [
         { slug: "terms-of-service", version: "terms-v2", markdown: "terms" },

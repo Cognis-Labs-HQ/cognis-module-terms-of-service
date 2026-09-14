@@ -136,6 +136,13 @@ export class LegalDocumentStore {
     async recordConsent(accountId, versions) {
         const status = await this.consentStatus(accountId);
         if (
+            status.documents.some(
+                (document) => !Object.hasOwn(versions, document.slug),
+            )
+        ) {
+            throw new Error("incomplete_consent_versions");
+        }
+        if (
             !status.required ||
             status.documents.some(
                 (document) => versions[document.slug] !== document.version,

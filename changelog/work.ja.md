@@ -62,6 +62,10 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 
 公開ページから Footer 登録を削除し、同意強制だけが法務 Link を所有するようにします。追加前に Host Registry も確認し、ページ読み込み時や古い Script からの切り替え時に ID が重複することを防ぎます。
 
+## 保護された同意送信
+
+同意ポップアップは、必須文書がすべて選択された後にのみ送信を有効にします。API は送信されたバージョンマップを検証し、公開済み文書への同意が不正または不完全な場合は HTTP 400 を返し、サーバーがそのリクエストを拒否するとポップアップにローカライズされたエラー Toast を表示します。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -105,3 +109,5 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 - [a3621a1](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a3621a16e00739912d95772fbd73937a449fcd4e)
 
 - [86a9d66](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/86a9d66bed8866d0f92caae634762c6534a89e3d)
+
+- [3012d12](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3012d12222273a77467f224af6b1a3be9fe809aa)

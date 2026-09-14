@@ -9,7 +9,9 @@ function accountId(claims) {
 
 export function consentFailure(error) {
     const status =
-        error.message === "invalid_json"
+        error.message === "invalid_json" ||
+        error.message === "invalid_consent_versions" ||
+        error.message === "incomplete_consent_versions"
             ? 400
             : error.message === "request_too_large"
               ? 413
@@ -179,16 +181,16 @@ export function registerApi(router, ctx) {
                 if (
                     !versions ||
                     typeof versions !== "object" ||
+                    Array.isArray(versions) ||
+                    Object.keys(versions).some(
+                        (slug) =>
+                            !DOCUMENTS.some(
+                                (document) => document.slug === slug,
+                            ) || typeof versions[slug] !== "string",
+                    ) ||
                     body.accepted !== true
                 ) {
-                    sendJson(response, 400, {
-                        error: {
-                            code: "consent_required",
-                            message:
-                                "Current legal documents must be accepted.",
-                        },
-                    });
-                    return;
+                    throw new Error("invalid_consent_versions");
                 }
                 await ready;
                 const status = await store.recordConsent(

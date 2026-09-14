@@ -106,6 +106,10 @@ Verwendet den neuesten Cognis-Side-Menu-Vertrag, indem jede dargestellte Rechts�
 
 Links zu Abschnitten von Rechtsdokumenten lassen die ausgewählte Überschrift nun unterhalb der festen Kopfzeile sichtbar. Veröffentlichte Links im Footer werden bei jedem SPA-Routenwechsel abgeglichen und nach einer erneuten Einbindung der Host-Registrierung wiederhergestellt, sodass sie beim Öffnen und Wechseln von Rechtsseiten sichtbar bleiben.
 
+## Abgesichertes Absenden der Zustimmung
+
+Das Zustimmungs-Popup aktiviert Absenden erst, nachdem alle erforderlichen Dokumente ausgewählt wurden. Die API validiert die übermittelte Versionszuordnung, antwortet bei fehlerhafter oder unvollständiger Zustimmung zu veröffentlichten Dokumenten mit HTTP 400 und das Popup zeigt bei einer solchen Ablehnung einen lokalisierten Fehler-Toast.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -149,3 +153,5 @@ Links zu Abschnitten von Rechtsdokumenten lassen die ausgewählte Überschrift n
 - [a3621a1](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a3621a16e00739912d95772fbd73937a449fcd4e)
 
 - [86a9d66](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/86a9d66bed8866d0f92caae634762c6534a89e3d)
+
+- [3012d12](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3012d12222273a77467f224af6b1a3be9fe809aa)

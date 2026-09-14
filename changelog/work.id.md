@@ -62,6 +62,10 @@ Mengganti paginator laporan buatan modul dengan kapabilitas bersama `ui:paginati
 
 Menghapus pendaftaran footer dari halaman publik agar penegakan persetujuan menjadi satu-satunya pemilik tautan hukum. Registri host juga diperiksa sebelum menambah tautan sehingga ID ganda saat pemuatan halaman atau peralihan skrip lama dapat dicegah.
 
+## Pengiriman persetujuan yang terlindungi
+
+Popup persetujuan kini hanya mengaktifkan Kirim setelah semua dokumen wajib dipilih. API memvalidasi pemetaan versi yang dikirim, mengembalikan HTTP 400 untuk persetujuan dokumen terbitan yang tidak valid atau tidak lengkap, dan popup menampilkan toast kesalahan terlokalisasi saat server menolak permintaan tersebut.
+
 ## Commit
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -105,3 +109,5 @@ Menghapus pendaftaran footer dari halaman publik agar penegakan persetujuan menj
 - [a3621a1](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a3621a16e00739912d95772fbd73937a449fcd4e)
 
 - [86a9d66](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/86a9d66bed8866d0f92caae634762c6534a89e3d)
+
+- [3012d12](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3012d12222273a77467f224af6b1a3be9fe809aa)
