@@ -92,7 +92,7 @@ test("consent identifies each unacknowledged published document", async () => {
             return {
                 rows: [
                     {
-                        terms_version: "terms-v1",
+                        terms_version: "unpublished",
                         privacy_version: "privacy-v3",
                     },
                 ],
@@ -106,10 +106,14 @@ test("consent identifies each unacknowledged published document", async () => {
     assert.equal(status.required, true);
     assert.equal(status.accepted, false);
     assert.deepEqual(
-        status.documents.map(({ slug, accepted }) => ({ slug, accepted })),
+        status.documents.map(({ slug, state, accepted }) => ({
+            slug,
+            state,
+            accepted,
+        })),
         [
-            { slug: "terms-of-service", accepted: false },
-            { slug: "privacy-policy", accepted: true },
+            { slug: "terms-of-service", state: "new", accepted: false },
+            { slug: "privacy-policy", state: "updated", accepted: true },
         ],
     );
 });

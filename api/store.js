@@ -113,15 +113,17 @@ export class LegalDocumentStore {
         };
         const publishedDocuments = documents
             .filter((document) => document.version)
-            .map((document) => ({
-                ...document,
-                state: consent?.[versionColumns[document.slug]]
-                    ? "updated"
-                    : "new",
-                accepted:
-                    consent?.[versionColumns[document.slug]] ===
-                    document.version,
-            }));
+            .map((document) => {
+                const consentVersion = consent?.[versionColumns[document.slug]];
+                return {
+                    ...document,
+                    state:
+                        consentVersion && consentVersion !== UNPUBLISHED_VERSION
+                            ? "updated"
+                            : "new",
+                    accepted: consentVersion === document.version,
+                };
+            });
         const required = publishedDocuments.some(
             (document) => !document.accepted,
         );

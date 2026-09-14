@@ -177,6 +177,11 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /CONSENT_REFRESH_INTERVAL_MS = 5_000/);
     assert.match(enforcement, /enforceAuthenticatedConsentOnce/);
     assert.match(enforcement, /scheduleConsentRefresh/);
+    assert.match(enforcement, /consentEnforcementDisposed = true/);
+    assert.match(
+        enforcement,
+        /if \(!consentEnforcementDisposed\) scheduleConsentRefresh\(\)/,
+    );
     assert.match(enforcement, /export function teardownConsentEnforcement/);
     assert.match(enforcement, /operation: "refreshConsentStatus"/);
 });
@@ -265,6 +270,8 @@ test("administration renders filterable paginated consent reports", () => {
     assert.match(source, /CONSENT_REPORT_REFRESH_INTERVAL_MS = 5_000/);
     assert.match(source, /async refresh\(\)/);
     assert.match(source, /consentByAccount/);
+    assert.match(source, /onConsentReportCreated\?\.\(activeConsentReport\)/);
+    assert.match(source, /consentReports\.push\(report\)/);
     assert.match(source, /terms-of-service:consent-recorded/);
     assert.match(source, /operation: "refreshConsentReports"/);
     assert.match(source, /clearInterval\(refreshTimer\)/);

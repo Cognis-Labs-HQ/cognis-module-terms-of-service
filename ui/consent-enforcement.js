@@ -57,6 +57,7 @@ let consentEndpointAvailable = true;
 let consentRefreshTimer;
 let enforcementPromise;
 let footerRefreshPromise;
+let consentEnforcementDisposed = false;
 const footerLinkDisposers = new Map();
 
 function syncFooterLinks(documents, i18n, { forceRender = false } = {}) {
@@ -395,7 +396,7 @@ function enforceAuthenticatedConsentOnce() {
 
 function scheduleConsentRefresh() {
     clearTimeout(consentRefreshTimer);
-    if (!consentEndpointAvailable) return;
+    if (consentEnforcementDisposed || !consentEndpointAvailable) return;
     consentRefreshTimer = setTimeout(async () => {
         try {
             if (
@@ -417,12 +418,13 @@ function scheduleConsentRefresh() {
                 },
             );
         } finally {
-            scheduleConsentRefresh();
+            if (!consentEnforcementDisposed) scheduleConsentRefresh();
         }
     }, CONSENT_REFRESH_INTERVAL_MS);
 }
 
 export function teardownConsentEnforcement() {
+    consentEnforcementDisposed = true;
     clearTimeout(consentRefreshTimer);
     consentRefreshTimer = undefined;
     window.removeEventListener(

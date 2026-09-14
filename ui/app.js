@@ -221,7 +221,14 @@ function documentDescriptor(document, i18n) {
 function activateEditor(
     panel,
     document,
-    { apiFetch, consentReport, dirtyBar, i18n, openPopup },
+    {
+        apiFetch,
+        consentReport,
+        dirtyBar,
+        i18n,
+        onConsentReportCreated,
+        openPopup,
+    },
 ) {
     const editor = panel.querySelector(".terms-of-service-editor");
     const textarea = panel.querySelector("textarea");
@@ -253,7 +260,13 @@ function activateEditor(
         syncDocumentAction();
         if (!activeConsentReport) {
             editor.insertAdjacentHTML("beforeend", consentReportMarkup(i18n));
-            activeConsentReport = activateConsentReport(panel, document, i18n);
+            activeConsentReport = activateConsentReport(
+                panel,
+                document,
+                i18n,
+                apiFetch,
+            );
+            onConsentReportCreated?.(activeConsentReport);
         } else {
             activeConsentReport.render();
         }
@@ -474,6 +487,9 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                                 consentReport,
                                 dirtyBar,
                                 i18n,
+                                onConsentReportCreated: (report) => {
+                                    if (report) consentReports.push(report);
+                                },
                                 openPopup,
                             }),
                         );
