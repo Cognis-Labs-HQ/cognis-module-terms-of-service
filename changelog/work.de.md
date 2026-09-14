@@ -70,6 +70,10 @@ Definiert jede Zustimmungsversion über den Schemakontrakt von `db:executor` als
 
 Die öffentlichen Routen für Nutzungsbedingungen, Datenschutz und EULA bleiben nun sowohl beim ersten Laden als auch während asynchroner Statusprüfungen von der Zustimmungserzwingung ausgenommen. Ihr Seiten-Composer liest das Markdown-Antwortfeld des Versionsspeichers und passt das Dokumentelement an seinen Inhalt an; dadurch entfallen die Ausgabe `undefined` und die übergroße leere Fläche.
 
+## Klarere Zustände für Editor und Zustimmungsbericht
+
+Abschnitte unveröffentlichter Rechtsdokumente zeigen keine leere Zustimmungstabelle mehr. Berichte veröffentlichter Dokumente verwenden das gemeinsame Status-Pill-Stylesheet und kennzeichnen ausstehende Konten mit einer roten Pill; Verfassen und Vorschau zeigen nun zusätzlich zu ihrem barrierefreien gedrückten Zustand sichtbar den ausgewählten Modus.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -95,3 +99,5 @@ Die öffentlichen Routen für Nutzungsbedingungen, Datenschutz und EULA bleiben 
 - [bd907c3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/bd907c37acc039a80e9128712d3ae89ec0f92fb4)
 
 - [c8b8fa2](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c8b8fa29f2a92ebf584669be39eb3c1ee76af0da)
+
+- [0f3c337](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0f3c3375d1376ec0deb5309f401be3070b1fe556)

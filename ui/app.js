@@ -1,4 +1,8 @@
-import { importReuseModule, uiCtx } from "./reuse/resources.js";
+import {
+    importReuseModule,
+    loadReuseStylesheet,
+    uiCtx,
+} from "./reuse/resources.js";
 
 const [
     { apiFetch },
@@ -23,6 +27,8 @@ const [
     importReuseModule("collapsible-section-composer.js"),
     importReuseModule("page-composer/index.js"),
 ]);
+
+await loadReuseStylesheet("state-pill.css");
 
 const API_PATH = "/api/v1/modules/terms-of-service";
 const DOCUMENTS = [
@@ -108,7 +114,7 @@ function activateConsentReport(panel, document, i18n) {
         const rows = page.items
             .map(
                 (user) =>
-                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-warning"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td></tr>`,
+                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-required"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td></tr>`,
             )
             .join("");
         report.querySelector("[data-consent-report-table]").innerHTML =
@@ -175,10 +181,10 @@ function documentDescriptor(document, i18n) {
             </div>
             <div class="terms-of-service-preview-pane" hidden></div>
             <div class="collapsible-section-action-row terms-of-service-mode-row">
-                <button class="terms-of-service-mode-toggle btn-neutral" type="button" data-mode="compose" aria-pressed="true">${escapeHtml(i18n.t("module.terms_of_service.action.compose"))}</button>
+                <button class="terms-of-service-mode-toggle btn-neutral is-active" type="button" data-mode="compose" aria-pressed="true">${escapeHtml(i18n.t("module.terms_of_service.action.compose"))}</button>
                 <button class="terms-of-service-mode-toggle btn-neutral" type="button" data-mode="preview" aria-pressed="false">${escapeHtml(i18n.t("module.terms_of_service.action.preview"))}</button>
             </div>
-            ${consentReportMarkup(i18n)}
+            ${hasPublishedContent ? consentReportMarkup(i18n) : ""}
         </div>`,
     };
 }
@@ -244,6 +250,8 @@ function activateEditor(
         previewPane.hidden = !previewSelected;
         composeButton.setAttribute("aria-pressed", String(!previewSelected));
         previewButton.setAttribute("aria-pressed", String(previewSelected));
+        composeButton.classList.toggle("is-active", !previewSelected);
+        previewButton.classList.toggle("is-active", previewSelected);
         if (previewSelected) {
             previewPane.innerHTML = renderMarkdown(textarea.value);
             initializeMarkdownCodeCopy();

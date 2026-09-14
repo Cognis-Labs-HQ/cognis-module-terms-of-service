@@ -67,6 +67,18 @@ test("dirty tracker save publishes updates and sends a success toast", () => {
     assert.match(source, /terms-of-service-mode-toggle btn-neutral/);
     assert.match(
         source,
+        /terms-of-service-mode-toggle btn-neutral is-active[^>]+data-mode="compose"/,
+    );
+    assert.match(
+        source,
+        /composeButton\.classList\.toggle\("is-active", !previewSelected\)/,
+    );
+    assert.match(
+        source,
+        /previewButton\.classList\.toggle\("is-active", previewSelected\)/,
+    );
+    assert.match(
+        source,
         /collapsible-section-action-row terms-of-service-mode-row/,
     );
     assert.match(legalStyles, /resize: none !important/);
@@ -186,6 +198,13 @@ test("administration renders filterable paginated consent reports", () => {
     assert.doesNotMatch(source, /data-report-previous/);
     assert.doesNotMatch(source, /data-report-next/);
     assert.match(source, /activateConsentReport/);
+    assert.match(
+        source,
+        /hasPublishedContent \? consentReportMarkup\(i18n\) : ""/,
+    );
+    assert.match(source, /user\.accepted \? "pill-active" : "pill-required"/);
+    assert.match(source, /loadReuseStylesheet\("state-pill\.css"\)/);
     assert.match(legalStyles, /terms-of-service-report table/);
+    assert.match(legalStyles, /terms-of-service-mode-toggle\.is-active/);
     assert.match(legalStyles, /block-size: 20rem/);
 });

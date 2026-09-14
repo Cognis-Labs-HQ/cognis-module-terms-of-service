@@ -70,6 +70,10 @@ Defines every consent version column through the `db:executor` schema contract a
 
 Public Terms, Privacy, and EULA routes now remain exempt from consent enforcement throughout initial loading and asynchronous status checks. Their page composer reads the version store’s Markdown response field and sizes the document element to its content, eliminating the `undefined` output and oversized empty panel.
 
+## Clearer editor and consent report states
+
+Unpublished legal-document sections no longer show an empty consent table. Published reports use the shared status-pill stylesheet and show outstanding accounts with a red pill, while Compose and Preview now visibly track the selected mode alongside their accessible pressed state.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -95,3 +99,5 @@ Public Terms, Privacy, and EULA routes now remain exempt from consent enforcemen
 - [bd907c3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/bd907c37acc039a80e9128712d3ae89ec0f92fb4)
 
 - [c8b8fa2](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c8b8fa29f2a92ebf584669be39eb3c1ee76af0da)
+
+- [0f3c337](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0f3c3375d1376ec0deb5309f401be3070b1fe556)
