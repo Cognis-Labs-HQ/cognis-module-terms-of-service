@@ -122,6 +122,10 @@ Die Validierung der Zustimmungsdaten verwendet nun den schlüsselbasierten Vertr
 
 Rechtsseiten fordern nun eine erzwungene Benachrichtigung der Footer-Link-Registry an, nachdem ihr Cognis-Seiten-Composer vollständig eingebunden wurde. Dadurch wird die zeitliche Lücke beim Shell-Wechsel geschlossen, durch die bereits registrierte Links nach der Navigation von einem frisch geladenen Dashboard fehlen konnten.
 
+## Live-Aktualisierung der Zustimmungsberichte
+
+Eine erfolgreiche Zustimmung löst nun sofort ein Browser-Ereignis aus, das alle eingebundenen Administrationsberichte über die API aktualisiert. Sichtbare Berichte fragen außerdem alle fünf Sekunden Zustimmungen aus anderen Sitzungen ab; beim Entfernen des Administrationsbereichs werden sämtliche Listener und Timer bereinigt. Commit-Listen enthalten keine Leerzeilen mehr zwischen den Einträgen.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -133,43 +137,24 @@ Rechtsseiten fordern nun eine erzwungene Benachrichtigung der Footer-Link-Regist
 - [b9c93cc](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b9c93cc2de5693f69cdf63bb0d1d9419ef5c7ceb)
 - [1adbdf7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1adbdf77939aa53f70f2fef75b93bce9841bd746)
 - [0c9207e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0c9207e9a3c872266558207cc5a8d61f4c63ca12)
-
 - [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)
-
 - [f500db9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f500db9c46919a4e9bf2911751340eb515b3213e)
-
 - [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)
-
 - [1c0203a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1c0203adde325888d4c31a628453f941b9a1ddab)
-
 - [97517b6](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/97517b67ae09218a9179879151547a582008e83c)
-
 - [bd907c3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/bd907c37acc039a80e9128712d3ae89ec0f92fb4)
-
 - [c8b8fa2](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c8b8fa29f2a92ebf584669be39eb3c1ee76af0da)
-
 - [0f3c337](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0f3c3375d1376ec0deb5309f401be3070b1fe556)
-
 - [aca7aed](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/aca7aedb050d29fcafc1e1204d6cd0ec4649dda0)
-
 - [51b169b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/51b169b61a9aba1c49b50d66a8444c16964b5348)
-
 - [232a8c0](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/232a8c08a256f5f5cef3dca2200b3436cde4a6ea)
-
 - [21e6522](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/21e652276d8b297ad9ddb617a78acad9f8157bc8)
-
 - [4fd26a8](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/4fd26a801ce84802d77fd20e7ebdcffe13666e3d)
-
 - [b65f77e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b65f77e1261e7785a2d04b60ae43d4a87c886529)
-
 - [a3621a1](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a3621a16e00739912d95772fbd73937a449fcd4e)
-
 - [86a9d66](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/86a9d66bed8866d0f92caae634762c6534a89e3d)
-
 - [3012d12](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3012d12222273a77467f224af6b1a3be9fe809aa)
-
 - [ab70147](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/ab70147c3a8f72f4d7f35b0ecefaaea2ea9f930e)
-
 - [b4701c9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b4701c9f9f3d31a9eaabb2db3563c49c7f163d9e)
-
 - [a008192](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a0081922d9a38bedb422ecb53fb32c2b28202ee0)
+- [611f637](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/611f637d7272196cbdb2c20276588412de5fe558)

@@ -160,6 +160,8 @@ test("consent is enforced during registration and authenticated sessions", () =>
         /showToast\([\s\S]*select_all_error[\s\S]*return false/,
     );
     assert.match(enforcement, /status\.documents\.map/);
+    assert.match(enforcement, /terms-of-service:consent-recorded/);
+    assert.match(enforcement, /new CustomEvent/);
     assert.match(enforcement, /terms-of-service-consent-read/);
     assert.match(enforcement, /target="_blank" rel="noopener noreferrer"/);
     assert.match(enforcement, /event\.stopPropagation\(\)/);
@@ -260,6 +262,12 @@ test("administration renders filterable paginated consent reports", () => {
     assert.doesNotMatch(source, /data-report-next/);
     assert.match(source, /activateConsentReport/);
     assert.match(source, /activeConsentReport\.render\(\)/);
+    assert.match(source, /CONSENT_REPORT_REFRESH_INTERVAL_MS = 5_000/);
+    assert.match(source, /async refresh\(\)/);
+    assert.match(source, /consentByAccount/);
+    assert.match(source, /terms-of-service:consent-recorded/);
+    assert.match(source, /operation: "refreshConsentReports"/);
+    assert.match(source, /clearInterval\(refreshTimer\)/);
     assert.match(
         source,
         /insertAdjacentHTML\("beforeend", consentReportMarkup\(i18n\)\)/,

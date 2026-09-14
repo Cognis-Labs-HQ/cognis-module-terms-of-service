@@ -314,6 +314,9 @@ async function requestConsent(status, i18n) {
             });
             if (response.ok) {
                 status = (await response.json()).data;
+                window.dispatchEvent(
+                    new CustomEvent("terms-of-service:consent-recorded"),
+                );
                 if (status.accepted && !status.required) return true;
             } else {
                 if (response.status === 400) {

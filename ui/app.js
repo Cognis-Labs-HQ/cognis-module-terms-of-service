@@ -40,6 +40,7 @@ const DOCUMENTS = [
 ];
 const publicPageComposers = new WeakMap();
 const REPORT_PAGE_SIZE = 10;
+const CONSENT_REPORT_REFRESH_INTERVAL_MS = 5_000;
 const paginationUi = uiCtx.capabilities.get("ui:pagination");
 
 if (
@@ -96,7 +97,7 @@ function consentReportMarkup(i18n) {
     </section>`;
 }
 
-function activateConsentReport(panel, document, i18n) {
+function activateConsentReport(panel, document, i18n, apiFetch) {
     const report = panel.querySelector("[data-consent-report]");
     if (!report) return null;
     let filter = "all";
@@ -169,7 +170,24 @@ function activateConsentReport(panel, document, i18n) {
         render();
     });
     render();
-    return { render };
+    return {
+        render,
+        async refresh() {
+            const consentEntries = await apiFetch(
+                `${API_PATH}/consent-report/${document.slug}`,
+            ).then(readPayload);
+            const consentByAccount = new Map(
+                consentEntries.map((entry) => [entry.accountId, entry.version]),
+            );
+            document.consentUsers = (document.consentUsers ?? []).map(
+                (user) => ({
+                    ...user,
+                    version: consentByAccount.get(user.accountId) ?? null,
+                }),
+            );
+            render();
+        },
+    };
 }
 
 function documentDescriptor(document, i18n) {
@@ -371,6 +389,7 @@ function documentsMarkup(documents, i18n) {
 export function createAdminSection({ i18n, apiFetch, openPopup }) {
     let documents = DOCUMENTS;
     let dirtyBar;
+    let stopConsentReportUpdates;
     const dataReady = Promise.all([
         apiFetch(`${API_PATH}/documents`).then(readPayload),
         apiFetch("/api/v1/users").then(readPayload),
@@ -397,6 +416,7 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                         (entry) => entry.accountId === accountId,
                     );
                     return {
+                        accountId,
                         label: String(
                             user.displayName ??
                                 user.username ??
@@ -432,7 +452,9 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
             heading: "",
             onRender(root) {
                 const controllers = [];
+                const consentReports = [];
                 dirtyBar?.destroy?.();
+                stopConsentReportUpdates?.();
                 dirtyBar = mountFloatingDirtyTracker(root, i18n, controllers);
                 for (const definition of documents) {
                     const panel = root.querySelector(
@@ -443,7 +465,9 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                             panel,
                             definition,
                             i18n,
+                            apiFetch,
                         );
+                        if (consentReport) consentReports.push(consentReport);
                         controllers.push(
                             activateEditor(panel, definition, {
                                 apiFetch,
@@ -455,10 +479,46 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                         );
                     }
                 }
+                const refreshConsentReports = () => {
+                    void Promise.all(
+                        consentReports.map((report) => report.refresh()),
+                    ).catch((error) => {
+                        uiCtx.capabilities.get("ui:log")?.(
+                            "error",
+                            "Consent report refresh failed.",
+                            {
+                                component: "terms-of-service",
+                                operation: "refreshConsentReports",
+                                error:
+                                    error instanceof Error
+                                        ? error.message
+                                        : String(error),
+                            },
+                        );
+                    });
+                };
+                const refreshTimer = setInterval(() => {
+                    if (document.visibilityState === "visible") {
+                        refreshConsentReports();
+                    }
+                }, CONSENT_REPORT_REFRESH_INTERVAL_MS);
+                window.addEventListener(
+                    "terms-of-service:consent-recorded",
+                    refreshConsentReports,
+                );
+                stopConsentReportUpdates = () => {
+                    clearInterval(refreshTimer);
+                    window.removeEventListener(
+                        "terms-of-service:consent-recorded",
+                        refreshConsentReports,
+                    );
+                };
             },
             onUnmount() {
                 dirtyBar?.destroy?.();
                 dirtyBar = undefined;
+                stopConsentReportUpdates?.();
+                stopConsentReportUpdates = undefined;
             },
             elements: [
                 {
