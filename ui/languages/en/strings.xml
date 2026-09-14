@@ -41,6 +41,7 @@
   <string name="module.terms_of_service.consent.updated">Update</string>
   <string name="module.terms_of_service.consent.read_latest">Read the latest document</string>
   <string name="module.terms_of_service.consent.here">here</string>
+  <string name="module.terms_of_service.consent.changes">Changes since your consent</string>
   <string name="module.terms_of_service.consent.delete_account">Delete my account</string>
   <string name="module.terms_of_service.consent.submit">Submit</string>
   <string name="module.terms_of_service.consent.select_all_error">Select all required documents before submitting.</string>

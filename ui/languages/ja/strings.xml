@@ -41,6 +41,7 @@
   <string name="module.terms_of_service.consent.updated">更新版</string>
   <string name="module.terms_of_service.consent.read_latest">最新の文書を読む</string>
   <string name="module.terms_of_service.consent.here">こちら</string>
+  <string name="module.terms_of_service.consent.changes">前回の同意以降の変更</string>
   <string name="module.terms_of_service.consent.delete_account">アカウントを削除</string>
   <string name="module.terms_of_service.consent.submit">送信</string>
   <string name="module.terms_of_service.consent.select_all_error">送信する前に必須文書をすべて選択してください。</string>

@@ -154,6 +154,10 @@ Successful consent now emits an immediate browser event that refreshes every mou
 
 Treats the unpublished sentinel as no prior consent, prevents the refresh timer from restarting after teardown, and registers reports created by first publication for live updates. The obsolete registration-card TODO was removed after confirming the current registration flow already records the complete published version set. All work changelog content and commits now live in this feature changelog only.
 
+## Show policy changes before renewed consent
+
+Returning users now see a structured line-by-line comparison between the version they previously consented to and the latest published policy. The authenticated module route delegates comparison to `docs:versionStore`, while the consent popup renders additions, removals, and replacements through the host `ui:documentDiff` capability.
+
 ## Commits
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
@@ -193,3 +197,4 @@ Treats the unpublished sentinel as no prior consent, prevents the refresh timer 
 - [a008192](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a0081922d9a38bedb422ecb53fb32c2b28202ee0)
 - [611f637](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/611f637d7272196cbdb2c20276588412de5fe558)
 - [c26254a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c26254a2483d2e4fd05d8ffd2a5545a44c49b90c)
+- [5628abb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5628abb5aee3e080e5046835d094b40d67380a41)

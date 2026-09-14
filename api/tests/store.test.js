@@ -24,6 +24,14 @@ function versionTracker(latestDocuments = []) {
                         published_at: "2026-09-12",
                     };
                 },
+                async diff(fromVersion, toVersion) {
+                    calls.push(["diff", fromVersion, toVersion]);
+                    return {
+                        fromVersion,
+                        toVersion,
+                        lines: [],
+                    };
+                },
                 async deleteAll() {
                     calls.push(["deleteAll"]);
                 },
@@ -143,6 +151,32 @@ test("recording consent rejects stale versions", async () => {
         }),
         /stale_document_versions/,
     );
+});
+
+test("consent diffs compare the accepted and latest document versions", async () => {
+    const tracker = versionTracker([
+        {
+            slug: "terms-of-service",
+            version: "terms-current",
+            markdown: "current",
+        },
+    ]);
+    const database = {
+        async executeCommand() {
+            return { rows: [{ terms_version: "terms-accepted" }] };
+        },
+    };
+    const diff = await new LegalDocumentStore(database, tracker).consentDiff(
+        "account-1",
+        "terms-of-service",
+    );
+    assert.equal(diff.fromVersion, "terms-accepted");
+    assert.equal(diff.toVersion, "terms-current");
+    assert.deepEqual(tracker.calls.at(-1), [
+        "diff",
+        "terms-accepted",
+        "terms-current",
+    ]);
 });
 
 test("recording consent rejects an incomplete published version set", async () => {

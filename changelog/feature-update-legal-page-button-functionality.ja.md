@@ -110,6 +110,10 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 
 未公開 Sentinel を過去の同意なしとして扱い、Teardown 後に更新 Timer が再開しないようにし、初回公開時に作成されたレポートもライブ更新へ登録します。現在の登録 Flow が公開済みバージョンセット全体をすでに記録することを確認し、不要になった登録カードの TODO を削除しました。作業 Changelog の内容と Commit はすべて、この Feature Changelog のみに統合されています。
 
+## 再同意前にポリシー変更を表示
+
+再訪ユーザーは、以前同意したバージョンと最新の公開ポリシーを構造化された行単位の比較で確認できます。認証済みモジュール Route は比較を `docs:versionStore` に委譲し、同意 Popup は追加、削除、置換を Host Capability `ui:documentDiff` で描画します。
+
 ## コミット
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
@@ -149,3 +153,4 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 - [a008192](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a0081922d9a38bedb422ecb53fb32c2b28202ee0)
 - [611f637](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/611f637d7272196cbdb2c20276588412de5fe558)
 - [c26254a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c26254a2483d2e4fd05d8ffd2a5545a44c49b90c)
+- [5628abb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5628abb5aee3e080e5046835d094b40d67380a41)

@@ -110,6 +110,10 @@ Persetujuan yang berhasil kini langsung memicu peristiwa browser yang menyegarka
 
 Memperlakukan penanda belum diterbitkan sebagai tidak ada persetujuan sebelumnya, mencegah timer penyegaran dimulai kembali setelah teardown, dan mendaftarkan laporan yang dibuat saat penerbitan pertama untuk pembaruan langsung. TODO kartu pendaftaran yang sudah tidak relevan dihapus setelah memastikan alur pendaftaran saat ini telah mencatat seluruh set versi terbitan. Seluruh konten dan commit changelog kerja kini hanya berada dalam changelog fitur ini.
 
+## Tampilkan perubahan kebijakan sebelum persetujuan ulang
+
+Pengguna yang kembali kini melihat perbandingan terstruktur baris demi baris antara versi yang sebelumnya disetujui dan kebijakan terbaru yang diterbitkan. Rute modul terautentikasi mendelegasikan perbandingan ke `docs:versionStore`, sementara popup persetujuan merender penambahan, penghapusan, dan penggantian melalui kapabilitas host `ui:documentDiff`.
+
 ## Commit
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
@@ -149,3 +153,4 @@ Memperlakukan penanda belum diterbitkan sebagai tidak ada persetujuan sebelumnya
 - [a008192](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a0081922d9a38bedb422ecb53fb32c2b28202ee0)
 - [611f637](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/611f637d7272196cbdb2c20276588412de5fe558)
 - [c26254a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c26254a2483d2e4fd05d8ffd2a5545a44c49b90c)
+- [5628abb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5628abb5aee3e080e5046835d094b40d67380a41)

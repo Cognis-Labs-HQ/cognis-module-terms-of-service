@@ -154,6 +154,10 @@ Eine erfolgreiche Zustimmung löst nun sofort ein Browser-Ereignis aus, das alle
 
 Behandelt den Platzhalter für unveröffentlichte Dokumente als fehlende vorherige Zustimmung, verhindert einen Neustart des Aktualisierungs-Timers nach dem Abbau und registriert bei der Erstveröffentlichung erstellte Berichte für Live-Aktualisierungen. Das überholte TODO zu Registrierungskarten wurde entfernt, nachdem bestätigt wurde, dass der aktuelle Registrierungsablauf bereits den vollständigen veröffentlichten Versionssatz speichert. Sämtliche Inhalte und Commits des Arbeits-Changelogs befinden sich nun ausschließlich in diesem Feature-Changelog.
 
+## Richtlinienänderungen vor erneuter Zustimmung anzeigen
+
+Wiederkehrende Benutzer sehen nun einen strukturierten Zeilenvergleich zwischen der zuvor akzeptierten Version und der neuesten veröffentlichten Richtlinie. Die authentifizierte Modulroute delegiert den Vergleich an `docs:versionStore`, während das Zustimmungs-Popup Ergänzungen, Entfernungen und Ersetzungen über die Host-Capability `ui:documentDiff` darstellt.
+
 ## Commits
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
@@ -193,3 +197,4 @@ Behandelt den Platzhalter für unveröffentlichte Dokumente als fehlende vorheri
 - [a008192](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a0081922d9a38bedb422ecb53fb32c2b28202ee0)
 - [611f637](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/611f637d7272196cbdb2c20276588412de5fe558)
 - [c26254a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c26254a2483d2e4fd05d8ffd2a5545a44c49b90c)
+- [5628abb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5628abb5aee3e080e5046835d094b40d67380a41)

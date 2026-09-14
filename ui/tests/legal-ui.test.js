@@ -139,6 +139,10 @@ test("consent is enforced during registration and authenticated sessions", () =>
     );
     assert.match(enforcement, /while \(true\)/);
     assert.match(enforcement, /terms-of-service-consent-card/);
+    assert.match(enforcement, /capabilities\.get\("ui:documentDiff"\)/);
+    assert.match(enforcement, /renderDocumentDiff\(document\.diff\)/);
+    assert.match(enforcement, /consent-diff\/\$\{document\.slug\}/);
+    assert.match(enforcement, /module\.terms_of_service\.consent\.changes/);
     assert.match(enforcement, /class="choice-checkbox"/);
     assert.match(enforcement, /loadReuseStylesheet\("choice-checkbox\.css"\)/);
     assert.match(enforcement, /loadReuseStylesheet\("state-pill\.css"\)/);

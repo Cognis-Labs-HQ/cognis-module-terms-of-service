@@ -63,6 +63,43 @@ export function registerApi(router, ctx) {
 
     for (const slug of Object.keys(DOCUMENTS)) {
         router.get(
+            `/api/v1/modules/terms-of-service/consent-diff/${slug}`,
+            async (request, response) => {
+                const claims = await requireAuth(request, response, "user");
+                if (!claims || response.writableEnded) return;
+                try {
+                    await ready;
+                    sendJson(response, 200, {
+                        data: await store.consentDiff(accountId(claims), slug),
+                    });
+                } catch (error) {
+                    const unavailable =
+                        error.message === "document_diff_unavailable";
+                    ctx.log?.("error", "Legal document diff loading failed.", {
+                        component: "terms-of-service",
+                        operation: "loadConsentDiff",
+                        accountId: accountId(claims),
+                        slug,
+                        error: error.message,
+                    });
+                    sendJson(response, unavailable ? 404 : 500, {
+                        error: {
+                            code: unavailable
+                                ? error.message
+                                : "internal_error",
+                            message: unavailable
+                                ? "No prior consented version is available."
+                                : "The legal document changes could not be loaded.",
+                        },
+                    });
+                }
+            },
+            { access: { minRole: "user" } },
+        );
+    }
+
+    for (const slug of Object.keys(DOCUMENTS)) {
+        router.get(
             `/api/v1/modules/terms-of-service/consent-report/${slug}`,
             async (request, response) => {
                 const claims = await requireAuth(request, response, "admin");

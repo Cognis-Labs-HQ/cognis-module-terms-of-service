@@ -84,6 +84,11 @@ test("registers the Legal administration section and public pages", () => {
             "/api/v1/modules/terms-of-service/public/privacy-policy",
         ),
     );
+    assert.ok(
+        registrations.api.includes(
+            "/api/v1/modules/terms-of-service/consent-diff/terms-of-service",
+        ),
+    );
     assert.equal(
         registrations.api.some((path) => path.includes(":")),
         false,

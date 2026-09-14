@@ -115,12 +115,14 @@ export class LegalDocumentStore {
             .filter((document) => document.version)
             .map((document) => {
                 const consentVersion = consent?.[versionColumns[document.slug]];
+                const consentedVersion =
+                    consentVersion && consentVersion !== UNPUBLISHED_VERSION
+                        ? String(consentVersion)
+                        : null;
                 return {
                     ...document,
-                    state:
-                        consentVersion && consentVersion !== UNPUBLISHED_VERSION
-                            ? "updated"
-                            : "new",
+                    consentedVersion,
+                    state: consentedVersion ? "updated" : "new",
                     accepted: consentVersion === document.version,
                 };
             });
@@ -176,6 +178,15 @@ export class LegalDocumentStore {
             },
         });
         return this.consentStatus(accountId);
+    }
+
+    async consentDiff(accountId, slug) {
+        const status = await this.consentStatus(accountId);
+        const document = status.documents.find((entry) => entry.slug === slug);
+        if (!document?.consentedVersion || document.accepted) {
+            throw new Error("document_diff_unavailable");
+        }
+        return this.versions.diff(document.consentedVersion, document.version);
     }
 
     async listConsentForDocument(slug) {

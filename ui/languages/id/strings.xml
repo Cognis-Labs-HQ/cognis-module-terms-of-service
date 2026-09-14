@@ -41,6 +41,7 @@
   <string name="module.terms_of_service.consent.updated">Pembaruan</string>
   <string name="module.terms_of_service.consent.read_latest">Baca dokumen terbaru</string>
   <string name="module.terms_of_service.consent.here">di sini</string>
+  <string name="module.terms_of_service.consent.changes">Perubahan sejak persetujuan Anda</string>
   <string name="module.terms_of_service.consent.delete_account">Hapus akun saya</string>
   <string name="module.terms_of_service.consent.submit">Kirim</string>
   <string name="module.terms_of_service.consent.select_all_error">Pilih semua dokumen wajib sebelum mengirim.</string>
