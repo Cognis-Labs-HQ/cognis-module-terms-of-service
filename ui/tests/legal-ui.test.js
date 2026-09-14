@@ -39,10 +39,13 @@ test("legal editors use Cognis utilities and standard action variants", () => {
     assert.match(source, /hasPublishedContent/);
     assert.match(source, /actionVariant/);
     assert.match(source, /actionKey = hasPublishedContent \? "remove" : "add"/);
+    assert.match(source, /let editorActive = panel\.open/);
+    assert.match(source, /actionKey = editorActive \? "remove" : "add"/);
     assert.match(
         source,
-        /classList\.toggle\("btn-cancel", hasStoredDocument\)/,
+        /editorActive = false;[\s\S]*closeEditor\(\);[\s\S]*syncDocumentAction\(\)/,
     );
+    assert.match(source, /classList\.toggle\("btn-cancel", editorActive\)/);
     assert.match(source, /await openPopup\(\{/);
     assert.match(source, /controlsHtml:/);
     assert.match(source, /contentHtml:/);
@@ -62,7 +65,7 @@ test("dirty tracker save publishes updates and sends a success toast", () => {
     assert.match(source, /if \(!savedMarkdown\) closeEditor\(\)/);
     assert.match(source, /function closeEditor\(\)[\s\S]*panel\.open = false/);
     assert.match(source, /confirmMessage:/);
-    assert.match(source, /hasStoredDocument/);
+    assert.match(source, /editorActive/);
     assert.match(source, /syncDocumentAction/);
     assert.doesNotMatch(source, /panel\.addEventListener\("toggle"/);
     assert.match(source, /terms-of-service-mode-toggle btn-neutral/);

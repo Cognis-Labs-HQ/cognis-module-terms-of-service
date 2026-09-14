@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { consentFailure } from "../index.js";
+import { DOCUMENTS } from "../store.js";
 
 test("consent failures distinguish malformed, oversized, and stale input", () => {
     assert.equal(consentFailure(new Error("invalid_json")).status, 400);
@@ -18,4 +19,9 @@ test("consent failures distinguish malformed, oversized, and stale input", () =>
         409,
     );
     assert.equal(consentFailure(new Error("database_failed")).status, 500);
+});
+
+test("document definitions support keyed consent validation", () => {
+    assert.equal(Object.hasOwn(DOCUMENTS, "terms-of-service"), true);
+    assert.equal(Object.hasOwn(DOCUMENTS, "unknown"), false);
 });

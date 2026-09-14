@@ -216,7 +216,7 @@ function activateEditor(
     const previewButton = panel.querySelector('[data-mode="preview"]');
     let activeConsentReport = consentReport;
     let savedMarkdown = document.markdown ?? "";
-    let hasStoredDocument = Boolean(document.version && savedMarkdown.trim());
+    let editorActive = panel.open;
 
     async function save() {
         if (textarea.value === savedMarkdown) return;
@@ -231,7 +231,7 @@ function activateEditor(
         const publishedDocument = await readPayload(response);
         Object.assign(document, publishedDocument);
         savedMarkdown = textarea.value;
-        hasStoredDocument = true;
+        editorActive = true;
         syncDocumentAction();
         if (!activeConsentReport) {
             editor.insertAdjacentHTML("beforeend", consentReportMarkup(i18n));
@@ -252,7 +252,7 @@ function activateEditor(
     }
 
     function syncDocumentAction() {
-        const actionKey = hasStoredDocument ? "remove" : "add";
+        const actionKey = editorActive ? "remove" : "add";
         documentAction.textContent = i18n.t(
             `module.terms_of_service.action.${actionKey}`,
         );
@@ -260,8 +260,8 @@ function activateEditor(
             "aria-label",
             i18n.t(`module.terms_of_service.action.${actionKey}`),
         );
-        documentAction.classList.toggle("btn-cancel", hasStoredDocument);
-        documentAction.classList.toggle("btn-confirm", !hasStoredDocument);
+        documentAction.classList.toggle("btn-cancel", editorActive);
+        documentAction.classList.toggle("btn-confirm", !editorActive);
     }
 
     function selectMode(mode) {
@@ -285,8 +285,10 @@ function activateEditor(
     });
     documentAction.addEventListener("click", async (event) => {
         event.preventDefault();
-        if (!hasStoredDocument) {
+        if (!editorActive) {
+            editorActive = true;
             panel.open = true;
+            syncDocumentAction();
             textarea.focus();
             return;
         }
@@ -310,7 +312,9 @@ function activateEditor(
         if (result !== "remove") return;
         textarea.value = savedMarkdown;
         dirtyBar?.markDirty(document.slug, false);
+        editorActive = false;
         closeEditor();
+        syncDocumentAction();
     });
     composeButton.addEventListener("click", (event) => {
         event.preventDefault();

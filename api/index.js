@@ -184,9 +184,8 @@ export function registerApi(router, ctx) {
                     Array.isArray(versions) ||
                     Object.keys(versions).some(
                         (slug) =>
-                            !DOCUMENTS.some(
-                                (document) => document.slug === slug,
-                            ) || typeof versions[slug] !== "string",
+                            !Object.hasOwn(DOCUMENTS, slug) ||
+                            typeof versions[slug] !== "string",
                     ) ||
                     body.accepted !== true
                 ) {
