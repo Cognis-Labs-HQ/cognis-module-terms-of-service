@@ -78,6 +78,10 @@ Unpublished legal-document sections no longer show an empty consent table. Publi
 
 Aligns each consent checkbox with its document title. Consent reports now include the latest published version identifier, calculate every user pill against that live version, and redraw immediately after either an existing document update or a document’s first publication.
 
+## Compared consented and latest versions
+
+Adds separate Consented Version and Latest Version columns to each consent report. Each row shows the version accepted by that account alongside the current published version, with a localized Not consented value when no accepted version exists.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -107,3 +111,5 @@ Aligns each consent checkbox with its document title. Consent reports now includ
 - [0f3c337](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0f3c3375d1376ec0deb5309f401be3070b1fe556)
 
 - [aca7aed](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/aca7aedb050d29fcafc1e1204d6cd0ec4649dda0)
+
+- [51b169b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/51b169b61a9aba1c49b50d66a8444c16964b5348)

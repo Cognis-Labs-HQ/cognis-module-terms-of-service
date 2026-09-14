@@ -51,7 +51,9 @@
   <string name="module.terms_of_service.report.outstanding">Ausstehend</string>
   <string name="module.terms_of_service.report.user">Benutzer</string>
   <string name="module.terms_of_service.report.status">Status</string>
+  <string name="module.terms_of_service.report.consented_version">Akzeptierte Version</string>
   <string name="module.terms_of_service.report.latest_version">Neueste Version</string>
+  <string name="module.terms_of_service.report.not_consented">Nicht akzeptiert</string>
   <string name="module.terms_of_service.report.empty">Keine Benutzer gefunden.</string>
   <string name="module.terms_of_service.report.previous">Zurück</string>
   <string name="module.terms_of_service.report.next">Weiter</string>

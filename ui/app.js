@@ -122,11 +122,11 @@ function activateConsentReport(panel, document, i18n) {
         const rows = page.items
             .map(
                 (user) =>
-                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-required"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td><td><code>${escapeHtml(document.version)}</code></td></tr>`,
+                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-required"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td><td>${user.version ? `<code>${escapeHtml(user.version)}</code>` : escapeHtml(i18n.t("module.terms_of_service.report.not_consented"))}</td><td><code>${escapeHtml(document.version)}</code></td></tr>`,
             )
             .join("");
         report.querySelector("[data-consent-report-table]").innerHTML =
-            `<div class="terms-of-service-report-table-wrap"><table><thead><tr><th>${escapeHtml(i18n.t("module.terms_of_service.report.user"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.status"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.latest_version"))}</th></tr></thead><tbody>${rows || `<tr><td colspan="3">${escapeHtml(i18n.t("module.terms_of_service.report.empty"))}</td></tr>`}</tbody></table></div>${paginationUi.renderPaginationControls(
+            `<div class="terms-of-service-report-table-wrap"><table><thead><tr><th>${escapeHtml(i18n.t("module.terms_of_service.report.user"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.status"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.consented_version"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.latest_version"))}</th></tr></thead><tbody>${rows || `<tr><td colspan="4">${escapeHtml(i18n.t("module.terms_of_service.report.empty"))}</td></tr>`}</tbody></table></div>${paginationUi.renderPaginationControls(
                 {
                     page,
                     labels: {

@@ -214,6 +214,9 @@ test("administration renders filterable paginated consent reports", () => {
     assert.match(legalStyles, /terms-of-service-report table/);
     assert.match(legalStyles, /terms-of-service-mode-toggle\.is-active/);
     assert.match(source, /module\.terms_of_service\.report\.latest_version/);
+    assert.match(source, /module\.terms_of_service\.report\.consented_version/);
+    assert.match(source, /module\.terms_of_service\.report\.not_consented/);
+    assert.match(source, /<code>\$\{escapeHtml\(user\.version\)\}<\/code>/);
     assert.match(source, /<code>\$\{escapeHtml\(document\.version\)\}<\/code>/);
     assert.match(
         legalStyles,

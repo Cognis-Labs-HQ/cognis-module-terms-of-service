@@ -78,6 +78,10 @@ Abschnitte unveröffentlichter Rechtsdokumente zeigen keine leere Zustimmungstab
 
 Richtet jedes Zustimmungskontrollkästchen am Dokumenttitel aus. Zustimmungsberichte enthalten nun die Kennung der neuesten veröffentlichten Version, berechnen jede Benutzer-Pill anhand dieser aktuellen Version und werden unmittelbar nach der Aktualisierung eines bestehenden Dokuments oder der ersten Veröffentlichung eines Dokuments neu dargestellt.
 
+## Akzeptierte und neueste Version verglichen
+
+Fügt jedem Zustimmungsbericht getrennte Spalten für die akzeptierte und die neueste Version hinzu. Jede Zeile zeigt die vom Konto akzeptierte Version neben der aktuell veröffentlichten Version; ohne akzeptierte Version erscheint ein lokalisierter Wert „Nicht akzeptiert“.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -107,3 +111,5 @@ Richtet jedes Zustimmungskontrollkästchen am Dokumenttitel aus. Zustimmungsberi
 - [0f3c337](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0f3c3375d1376ec0deb5309f401be3070b1fe556)
 
 - [aca7aed](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/aca7aedb050d29fcafc1e1204d6cd0ec4649dda0)
+
+- [51b169b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/51b169b61a9aba1c49b50d66a8444c16964b5348)
