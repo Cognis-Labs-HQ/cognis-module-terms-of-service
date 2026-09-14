@@ -53,7 +53,6 @@ const LEGAL_DOCUMENT_PATHS = new Set([
     "/eula",
 ]);
 const CONSENT_REFRESH_INTERVAL_MS = 5_000;
-let consentEndpointAvailable = true;
 let consentRefreshTimer;
 let enforcementPromise;
 let footerRefreshPromise;
@@ -97,12 +96,10 @@ function syncFooterLinks(documents, i18n, { forceRender = false } = {}) {
 }
 
 async function consentStatus() {
-    if (!consentEndpointAvailable) return null;
     const response = await apiFetch(API_PATH, {
         suppressAccessDeniedEvent: true,
     });
     if (response.status === 404) {
-        consentEndpointAvailable = false;
         uiCtx.capabilities.get("ui:log")?.(
             "info",
             "Consent enforcement skipped because the module endpoint is unavailable.",
@@ -396,7 +393,7 @@ function enforceAuthenticatedConsentOnce() {
 
 function scheduleConsentRefresh() {
     clearTimeout(consentRefreshTimer);
-    if (consentEnforcementDisposed || !consentEndpointAvailable) return;
+    if (consentEnforcementDisposed) return;
     consentRefreshTimer = setTimeout(async () => {
         try {
             if (
@@ -436,7 +433,9 @@ export function teardownConsentEnforcement() {
     disposeFooterRefreshCapability?.();
 }
 
-window.addEventListener("pagehide", teardownConsentEnforcement, { once: true });
+window.addEventListener("pagehide", (event) => {
+    if (!event.persisted) teardownConsentEnforcement();
+});
 window.addEventListener(
     "cognis:route-will-change",
     refreshFooterLinksAfterNavigation,

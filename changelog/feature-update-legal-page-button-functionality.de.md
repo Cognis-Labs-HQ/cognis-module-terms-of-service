@@ -162,6 +162,10 @@ Wiederkehrende Benutzer sehen nun einen strukturierten Zeilenvergleich zwischen 
 
 Deklariert `ui:documentDiff` als erforderliche Host-Capability und öffnet Links zu aktualisierten Richtlinien über die normale Rechtsroute mit `?view=changes`, während Footer-Links unveränderte Routen behalten. Die vollständige Seite stellt Markdown-bewusste Vergleiche mit dem dedizierten Host-Stylesheet dar und zeigt eine lokalisierte Erklärung, wenn historische Inhalte vor der Migration nicht verglichen werden können.
 
+## Zustimmungslebenszyklus wiederhergestellt
+
+404-Antworten des Zustimmungsendpunkts werden nun regelmäßig erneut versucht, sodass die Durchsetzung nach der Wiederherstellung des Moduls fortgesetzt wird. Wiederherstellungen aus dem Vor-/Zurück-Cache erhalten den aktiven Hook, und Rechtsdokumente werden vor zusätzlichen Berichtsanfragen geladen. Berichtsfehler können veröffentlichte Editorinhalte nicht mehr durch leere Definitionen ersetzen.
+
 ## Commits
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
@@ -203,3 +207,4 @@ Deklariert `ui:documentDiff` als erforderliche Host-Capability und öffnet Links
 - [c26254a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c26254a2483d2e4fd05d8ffd2a5545a44c49b90c)
 - [5628abb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5628abb5aee3e080e5046835d094b40d67380a41)
 - [43ee0a3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/43ee0a3ccd9d6cc51f4eb28ece4c9d76aaedc465)
+- [a40166e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a40166ec47aac44d7b755af8e98e48e1df7142a6)

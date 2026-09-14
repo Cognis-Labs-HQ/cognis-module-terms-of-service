@@ -118,6 +118,10 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 
 `ui:documentDiff` を必須 Host Capability として宣言し、更新ポリシーのリンクは通常の法務 Route を `?view=changes` 付きで開く一方、Footer リンクは通常 Route のままにします。全画面ページは専用 Host Stylesheet を使用して Markdown 対応の比較を描画し、移行前の履歴内容を比較できない場合はローカライズされた利用不可の説明を表示します。
 
+## 同意ライフサイクル状態を復旧
+
+同意 Endpoint の 404 応答を定期的に再試行してモジュール復旧後に強制を再開し、Back-Forward Cache からの復元時は有効な Hook を保持し、法務文書を付随するレポート要求より先に読み込みます。レポートの失敗によって公開済みエディター内容が空の定義に置き換わることはありません。
+
 ## コミット
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
@@ -159,3 +163,4 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 - [c26254a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c26254a2483d2e4fd05d8ffd2a5545a44c49b90c)
 - [5628abb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5628abb5aee3e080e5046835d094b40d67380a41)
 - [43ee0a3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/43ee0a3ccd9d6cc51f4eb28ece4c9d76aaedc465)
+- [a40166e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a40166ec47aac44d7b755af8e98e48e1df7142a6)

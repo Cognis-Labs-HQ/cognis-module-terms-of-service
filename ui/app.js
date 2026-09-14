@@ -406,43 +406,62 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
     let documents = DOCUMENTS;
     let dirtyBar;
     let stopConsentReportUpdates;
-    const dataReady = Promise.all([
-        apiFetch(`${API_PATH}/documents`).then(readPayload),
-        apiFetch("/api/v1/users").then(readPayload),
-        ...DOCUMENTS.map((document) =>
-            apiFetch(`${API_PATH}/consent-report/${document.slug}`).then(
-                readPayload,
-            ),
-        ),
-    ])
-        .then(([storedDocuments, users, ...reports]) => {
+    const dataReady = apiFetch(`${API_PATH}/documents`)
+        .then(readPayload)
+        .then(async (storedDocuments) => {
             documents = DOCUMENTS.map((definition) => ({
                 ...definition,
                 ...storedDocuments.find(
                     (document) => document.slug === definition.slug,
                 ),
-                consentUsers: users.map((user) => {
-                    const accountId = String(
-                        user.accountId ??
-                            user.id ??
-                            user.username ??
-                            user.handle,
-                    );
-                    const consent = reports[DOCUMENTS.indexOf(definition)].find(
-                        (entry) => entry.accountId === accountId,
-                    );
-                    return {
-                        accountId,
-                        label: String(
-                            user.displayName ??
-                                user.username ??
-                                user.handle ??
-                                accountId,
-                        ),
-                        version: consent?.version ?? null,
-                    };
-                }),
+                consentUsers: [],
             }));
+            try {
+                const [users, ...reports] = await Promise.all([
+                    apiFetch("/api/v1/users").then(readPayload),
+                    ...DOCUMENTS.map((document) =>
+                        apiFetch(
+                            `${API_PATH}/consent-report/${document.slug}`,
+                        ).then(readPayload),
+                    ),
+                ]);
+                documents.forEach((document, documentIndex) => {
+                    document.consentUsers = users.map((user) => {
+                        const accountId = String(
+                            user.accountId ??
+                                user.id ??
+                                user.username ??
+                                user.handle,
+                        );
+                        const consent = reports[documentIndex].find(
+                            (entry) => entry.accountId === accountId,
+                        );
+                        return {
+                            accountId,
+                            label: String(
+                                user.displayName ??
+                                    user.username ??
+                                    user.handle ??
+                                    accountId,
+                            ),
+                            version: consent?.version ?? null,
+                        };
+                    });
+                });
+            } catch (error) {
+                uiCtx.capabilities.get("ui:log")?.(
+                    "error",
+                    "Legal consent reporting data loading failed.",
+                    {
+                        component: "terms-of-service",
+                        operation: "loadConsentReportingData",
+                        error:
+                            error instanceof Error
+                                ? error.message
+                                : String(error),
+                    },
+                );
+            }
         })
         .catch((error) => {
             uiCtx.capabilities.get("ui:log")?.(

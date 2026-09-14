@@ -131,8 +131,7 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /validate-stored-token/);
     assert.match(enforcement, /apply-alternate-auth/);
     assert.match(enforcement, /response\.status === 404/);
-    assert.match(enforcement, /if \(!consentEndpointAvailable\) return null/);
-    assert.match(enforcement, /consentEndpointAvailable = false/);
+    assert.doesNotMatch(enforcement, /consentEndpointAvailable/);
     assert.match(enforcement, /operation: "loadConsentStatus"/);
     assert.match(
         enforcement,
@@ -189,6 +188,10 @@ test("consent is enforced during registration and authenticated sessions", () =>
         /if \(!consentEnforcementDisposed\) scheduleConsentRefresh\(\)/,
     );
     assert.match(enforcement, /export function teardownConsentEnforcement/);
+    assert.match(
+        enforcement,
+        /if \(!event\.persisted\) teardownConsentEnforcement/,
+    );
     assert.match(enforcement, /operation: "refreshConsentStatus"/);
 });
 
@@ -285,6 +288,8 @@ test("administration renders filterable paginated consent reports", () => {
     assert.match(source, /CONSENT_REPORT_REFRESH_INTERVAL_MS = 5_000/);
     assert.match(source, /async refresh\(\)/);
     assert.match(source, /consentByAccount/);
+    assert.match(source, /consentUsers: \[\]/);
+    assert.match(source, /operation: "loadConsentReportingData"/);
     assert.match(source, /onConsentReportCreated\?\.\(activeConsentReport\)/);
     assert.match(source, /consentReports\.push\(report\)/);
     assert.match(source, /terms-of-service:consent-recorded/);

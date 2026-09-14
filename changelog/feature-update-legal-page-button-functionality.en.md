@@ -162,6 +162,10 @@ Returning users now see a structured line-by-line comparison between the version
 
 Declares `ui:documentDiff` as a required host capability and changes updated-policy links to open the normal legal route with `?view=changes`, while footer links retain plain routes. The full-size page renders Markdown-aware comparisons with the dedicated host stylesheet and shows a localized unavailable explanation when historical pre-migration content cannot be compared.
 
+## Recovered consent lifecycle state
+
+Consent endpoint 404 responses are now retried periodically so enforcement resumes after module recovery, back-forward cache restores preserve the active hook, and legal document loading completes before ancillary reporting requests. Reporting failures can no longer replace published editor content with blank definitions.
+
 ## Commits
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
@@ -203,3 +207,4 @@ Declares `ui:documentDiff` as a required host capability and changes updated-pol
 - [c26254a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c26254a2483d2e4fd05d8ffd2a5545a44c49b90c)
 - [5628abb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5628abb5aee3e080e5046835d094b40d67380a41)
 - [43ee0a3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/43ee0a3ccd9d6cc51f4eb28ece4c9d76aaedc465)
+- [a40166e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a40166ec47aac44d7b755af8e98e48e1df7142a6)

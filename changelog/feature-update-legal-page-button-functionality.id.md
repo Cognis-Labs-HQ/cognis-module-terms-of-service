@@ -118,6 +118,10 @@ Pengguna yang kembali kini melihat perbandingan terstruktur baris demi baris ant
 
 Mendeklarasikan `ui:documentDiff` sebagai kapabilitas host wajib dan mengubah tautan kebijakan yang diperbarui agar membuka rute hukum biasa dengan `?view=changes`, sementara tautan footer tetap memakai rute polos. Halaman berukuran penuh merender perbandingan sadar Markdown dengan stylesheet host khusus dan menampilkan penjelasan tidak tersedia yang dilokalkan ketika konten historis sebelum migrasi tidak dapat dibandingkan.
 
+## Status siklus hidup persetujuan dipulihkan
+
+Respons 404 endpoint persetujuan kini dicoba kembali secara berkala agar penegakan berlanjut setelah modul pulih, pemulihan cache maju-mundur mempertahankan hook aktif, dan pemuatan dokumen hukum selesai sebelum permintaan pelaporan tambahan. Kegagalan pelaporan tidak lagi dapat mengganti konten editor terbitan dengan definisi kosong.
+
 ## Commit
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
@@ -159,3 +163,4 @@ Mendeklarasikan `ui:documentDiff` sebagai kapabilitas host wajib dan mengubah ta
 - [c26254a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c26254a2483d2e4fd05d8ffd2a5545a44c49b90c)
 - [5628abb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5628abb5aee3e080e5046835d094b40d67380a41)
 - [43ee0a3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/43ee0a3ccd9d6cc51f4eb28ece4c9d76aaedc465)
+- [a40166e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a40166ec47aac44d7b755af8e98e48e1df7142a6)
