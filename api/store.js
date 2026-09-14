@@ -4,12 +4,14 @@ export const DOCUMENTS = Object.freeze({
     eula: "/eula",
 });
 
+const UNPUBLISHED_VERSION = "unpublished";
+
 function documentFromRow(row) {
     if (!row) return null;
     return {
         slug: String(row.slug),
         version: String(row.version),
-        markdown: String(row.markdown),
+        markdown: String(row.markdown ?? ""),
         publishedAt: row.published_at,
         path: DOCUMENTS[row.slug],
     };
@@ -36,8 +38,24 @@ export class LegalDocumentStore {
             name: "terms_of_service_consents",
             columns: [
                 { name: "account_id", type: "text", primaryKey: true },
-                { name: "terms_version", type: "text", notNull: true },
-                { name: "privacy_version", type: "text", notNull: true },
+                {
+                    name: "terms_version",
+                    type: "text",
+                    notNull: true,
+                    default: UNPUBLISHED_VERSION,
+                },
+                {
+                    name: "privacy_version",
+                    type: "text",
+                    notNull: true,
+                    default: UNPUBLISHED_VERSION,
+                },
+                {
+                    name: "eula_version",
+                    type: "text",
+                    notNull: true,
+                    default: UNPUBLISHED_VERSION,
+                },
                 {
                     name: "consented_at",
                     type: "timestamp",
@@ -73,53 +91,125 @@ export class LegalDocumentStore {
     }
 
     async consentStatus(accountId) {
-        const [terms, privacy, result] = await Promise.all([
-            this.getLatest("terms-of-service"),
-            this.getLatest("privacy-policy"),
+        const [documents, result] = await Promise.all([
+            this.listLatest(),
             this.database.executeCommand({
                 option: "SELECT",
                 table: "terms_of_service_consents",
-                columns: ["terms_version", "privacy_version", "consented_at"],
+                columns: [
+                    "terms_version",
+                    "privacy_version",
+                    "eula_version",
+                    "consented_at",
+                ],
                 where: [{ column: "account_id", value: accountId }],
             }),
         ]);
         const consent = result.rows?.[0];
-        const ready = Boolean(terms?.version && privacy?.version);
+        const versionColumns = {
+            "terms-of-service": "terms_version",
+            "privacy-policy": "privacy_version",
+            eula: "eula_version",
+        };
+        const publishedDocuments = documents
+            .filter((document) => document.version)
+            .map((document) => {
+                const consentVersion = consent?.[versionColumns[document.slug]];
+                const consentedVersion =
+                    consentVersion && consentVersion !== UNPUBLISHED_VERSION
+                        ? String(consentVersion)
+                        : null;
+                return {
+                    ...document,
+                    consentedVersion,
+                    state: consentedVersion ? "updated" : "new",
+                    accepted: consentVersion === document.version,
+                };
+            });
+        const required = publishedDocuments.some(
+            (document) => !document.accepted,
+        );
         return {
-            required: ready,
-            accepted:
-                ready &&
-                consent?.terms_version === terms.version &&
-                consent?.privacy_version === privacy.version,
-            termsVersion: terms?.version ?? null,
-            privacyVersion: privacy?.version ?? null,
+            required,
+            accepted: publishedDocuments.length > 0 && !required,
+            documents: publishedDocuments,
             consentedAt: consent?.consented_at ?? null,
         };
     }
 
-    async recordConsent(accountId, termsVersion, privacyVersion) {
+    async recordConsent(accountId, versions) {
         const status = await this.consentStatus(accountId);
         if (
+            status.documents.some(
+                (document) => !Object.hasOwn(versions, document.slug),
+            )
+        ) {
+            throw new Error("incomplete_consent_versions");
+        }
+        if (
             !status.required ||
-            status.termsVersion !== termsVersion ||
-            status.privacyVersion !== privacyVersion
+            status.documents.some(
+                (document) => versions[document.slug] !== document.version,
+            )
         ) {
             throw new Error("stale_document_versions");
         }
         const consentedAt = new Date().toISOString();
+        const values = {
+            account_id: accountId,
+            terms_version: versions["terms-of-service"] ?? UNPUBLISHED_VERSION,
+            privacy_version: versions["privacy-policy"] ?? UNPUBLISHED_VERSION,
+            eula_version: versions.eula ?? UNPUBLISHED_VERSION,
+            consented_at: consentedAt,
+        };
         await this.database.executeCommand({
-            option: "UPSERT",
+            option: "INSERT",
             table: "terms_of_service_consents",
-            conflictColumns: ["account_id"],
-            values: {
-                account_id: accountId,
-                terms_version: termsVersion,
-                privacy_version: privacyVersion,
-                consented_at: consentedAt,
+            values,
+            conflict: {
+                action: "update",
+                target: ["account_id"],
+                update: {
+                    terms_version: values.terms_version,
+                    privacy_version: values.privacy_version,
+                    eula_version: values.eula_version,
+                    consented_at: values.consented_at,
+                },
             },
-            update: ["terms_version", "privacy_version", "consented_at"],
         });
-        return { ...status, accepted: true, consentedAt };
+        return this.consentStatus(accountId);
+    }
+
+    async consentDiff(accountId, slug) {
+        const status = await this.consentStatus(accountId);
+        const document = status.documents.find((entry) => entry.slug === slug);
+        if (!document?.consentedVersion || document.accepted) {
+            throw new Error("document_diff_unavailable");
+        }
+        return this.versions.diff(document.consentedVersion, document.version);
+    }
+
+    async listConsentForDocument(slug) {
+        const versionColumns = {
+            "terms-of-service": "terms_version",
+            "privacy-policy": "privacy_version",
+            eula: "eula_version",
+        };
+        const versionColumn = versionColumns[slug];
+        if (!versionColumn) throw new Error("invalid_document_slug");
+        const result = await this.database.executeCommand({
+            option: "SELECT",
+            table: "terms_of_service_consents",
+            columns: ["account_id", versionColumn, "consented_at"],
+        });
+        return (result.rows ?? []).map((row) => ({
+            accountId: String(row.account_id),
+            version:
+                row[versionColumn] && row[versionColumn] !== UNPUBLISHED_VERSION
+                    ? String(row[versionColumn])
+                    : null,
+            consentedAt: row.consented_at ?? null,
+        }));
     }
 
     async deleteAll() {

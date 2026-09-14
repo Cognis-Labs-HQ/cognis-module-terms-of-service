@@ -1,5 +1,4 @@
-.terms-of-service-admin,
-.terms-of-service-public {
+.terms-of-service-admin {
     display: grid;
     gap: 1rem;
     margin: 2rem auto;
@@ -7,44 +6,83 @@
     padding: 1.5rem;
 }
 
-.terms-of-service-documents {
-    display: grid;
-    gap: 1rem;
-}
-
-.terms-of-service-document {
-    padding: 1rem;
-}
-
-.terms-of-service-document-header,
-.terms-of-service-tabs {
+.terms-of-service-heading {
     align-items: center;
     display: flex;
-    gap: 0.75rem;
-    justify-content: space-between;
+    gap: 0.5rem;
+    margin-block-end: 1rem;
 }
 
-.terms-of-service-document-header h2 {
+.terms-of-service-heading h2 {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.5rem;
     margin: 0;
 }
 
-.terms-of-service-add {
-    font-size: 1.5rem;
-    min-height: 2.5rem;
-    min-width: 2.5rem;
+.terms-of-service-documents {
+    width: 100%;
 }
 
-.terms-of-service-editor,
-.terms-of-service-compose-pane label {
+.terms-of-service-document {
+    margin-inline: 0;
+}
+
+.terms-of-service-document-action {
+    min-width: 5rem;
+}
+
+.terms-of-service-editor {
+    box-sizing: border-box;
     display: grid;
-    gap: 0.75rem;
+    gap: 0;
+    min-width: 0;
+    padding: 1rem;
+    width: 100%;
+    min-inline-size: 100%;
+}
+
+.terms-of-service-compose-pane[hidden],
+.terms-of-service-preview-pane[hidden] {
+    display: none;
+}
+
+.terms-of-service-compose-pane {
+    block-size: 20rem;
+    display: block;
+    max-width: none;
+    min-width: 0;
+    width: 100%;
 }
 
 .terms-of-service-editor textarea {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
     box-sizing: border-box;
+    color: var(--color-text);
     font: inherit;
-    resize: vertical;
+    border-radius: 0.25rem;
+    display: block;
+    inline-size: 100%;
+    max-width: 100%;
+    max-inline-size: none;
+    block-size: 100%;
+    height: 100%;
+    min-height: 100%;
+    min-inline-size: 100%;
+    padding: 1rem;
+    resize: none !important;
     width: 100%;
+}
+
+.terms-of-service-preview-pane {
+    block-size: 20rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem 0.25rem 0 0;
+    box-sizing: border-box;
+    padding: 0.75rem;
+    width: 100%;
+    overflow: auto;
 }
 
 .terms-of-service-preview-pane,
@@ -52,10 +90,101 @@
     min-height: 12rem;
 }
 
-.terms-of-service-tabs {
-    justify-content: flex-start;
+.terms-of-service-rendered h2,
+.terms-of-service-rendered h3 {
+    scroll-margin-block-start: 5rem;
 }
 
-.terms-of-service-tabs [data-action="publish"] {
-    margin-inline-start: auto;
+.terms-of-service-mode-row {
+    margin-block-start: 0.5rem;
+    padding-block-end: 1rem;
+    width: 100%;
+}
+
+.terms-of-service-mode-toggle.is-active {
+    background: var(--surface-soft);
+    border-color: var(--accent-color);
+    box-shadow: inset 0 -0.2rem 0 var(--accent-color);
+    color: var(--text-color, var(--text));
+    font-weight: 700;
+}
+
+.terms-of-service-consent-cards {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.terms-of-service-consent-card {
+    align-items: start;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 1rem;
+}
+
+.terms-of-service-consent-card > .choice-checkbox {
+    margin-block-start: 0.25rem;
+}
+
+.terms-of-service-consent-content {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.terms-of-service-consent-title {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.terms-of-service-consent-title .state-pill {
+    flex: none;
+    width: fit-content;
+}
+
+.terms-of-service-consent-read {
+    display: block;
+}
+
+.terms-of-service-report {
+    border-top: 1px solid var(--color-border);
+    display: grid;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+.terms-of-service-report-toolbar,
+.terms-of-service-report-filters,
+.terms-of-service-report-pagination {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.terms-of-service-report-toolbar input {
+    flex: 1 1 14rem;
+}
+
+.terms-of-service-report-table-wrap {
+    overflow-x: auto;
+}
+
+.terms-of-service-report table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.terms-of-service-report th,
+.terms-of-service-report td {
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.terms-of-service-report .pagination-controls {
+    justify-content: center;
 }

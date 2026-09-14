@@ -12,3 +12,4 @@ if (!reuse || typeof reuse.importModule !== "function") {
 
 export { uiCtx };
 export const importReuseModule = (path) => reuse.importModule(path);
+export const loadReuseStylesheet = (path) => reuse.loadStylesheet(path);

@@ -1,0 +1,166 @@
+# Modernisasi pengeditan dokumen hukum
+
+**Cabang Fitur:** feature-update-legal-page-button-functionality
+
+## Kontrol dokumen yang lebih ringkas
+
+Memindahkan setiap tindakan buat ke samping judul dokumennya dan mengubahnya menjadi tindakan Hapus yang bersifat destruktif saat editor terbuka. Penghapusan editor kini memerlukan konfirmasi eksplisit.
+
+## Utilitas pengeditan Cognis terintegrasi
+
+Menggunakan pelacak perubahan Cognis untuk tindakan Simpan dan Buang, menerbitkan perubahan dari Simpan disertai toast keberhasilan, serta menjelaskan dukungan Markdown melalui tooltip informasi di samping judul Legal.
+
+## Tata letak penulisan yang ditingkatkan
+
+Menyediakan editor selebar penuh yang tidak dapat diubah ukurannya dengan kontrol Tulis dan Pratinjau berukuran sama yang tersambung di bawah area pengeditan.
+
+## Galat pemasangan rute Administrasi dicegah
+
+Membatasi pemasangan halaman langsung pada tiga rute dokumen hukum publik agar pemuatan kontribusi di `/administration` tidak memicu galat rute yang tidak didukung.
+
+## Navigasi tetap tersedia selama modul dimulai ulang
+
+Saat hook persetujuan yang telah dimuat menerima respons endpoint yang tidak ditemukan ketika modul diperbarui atau dimulai ulang, hook kini mencatat fallback siklus hidup, menghentikan pemeriksaan berikutnya, dan melanjutkan alih-alih menolak flow autentikasi serta memblokir navigasi.
+
+## Pengeditan diselaraskan dengan Administrasi
+
+Menggabungkan semua dokumen hukum dalam satu bagian berkelanjutan selebar penuh dengan judul SVG yang dapat diciutkan serta tombol Tambah atau Hapus sebaris. Tooltip Markdown kini terpasang langsung pada judul Legal, pengeditan memakai pelacak perubahan mengambang host, Tulis dan Pratinjau menyerupai kontrol Pesan, dan kegagalan penyimpanan menampilkan galat lokal yang bermakna.
+
+## Konten dokumen tersimpan dipulihkan
+
+Memetakan bidang `markdown` yang dikembalikan penyimpanan versi inti ke respons dokumen modul agar dokumen yang baru diterbitkan dikembalikan dengan benar dan tindakan Simpan pada pelacak perubahan dapat diselesaikan dengan sukses.
+
+## Tata letak editor Hukum disempurnakan
+
+Menampilkan ketiga dokumen sebagai kartu ringkas yang terpisah, mengurangi tinggi penyusun yang berlebihan, dan memberi penyusun selebar penuh ukuran kisi bawaan yang lebih praktis.
+
+## Kontrak integrasi host diperbaiki
+
+Menggunakan klaim terautentikasi yang dikembalikan oleh `auth:requireAuth` untuk mengatribusikan penerbitan dokumen sehingga Simpan tidak lagi mengirim pengenal pelaku kosong. Judul Hukum kini merender tooltip Markdown bersama kontennya, tindakan dokumen berada tepat di sebelah judulnya, panah pengungkapan yang berlebihan dihapus, dan gaya status tersembunyi secara andal menutup editor serta mengganti panel Tulis atau Pratinjau.
+
+## Rute dokumen konkret didaftarkan
+
+Mendaftarkan satu rute PUT dan GET publik yang persis untuk setiap dokumen hukum tetap karena router modul eksternal Cognis mencocokkan jalur secara persis. Buang kini menutup editor yang belum diterbitkan dan mengembalikan tindakannya ke Tambah, sedangkan editor dan panel mode secara tegas memakai seluruh lebar yang tersedia tanpa pengubahan ukuran oleh peramban.
+
+## Editor terbitan dan penyegaran persetujuan dipulihkan
+
+Dokumen tersimpan kini dirender terbuka dengan Markdown yang dipertahankan dan tindakan Hapus saat Administrasi disegarkan. Sesi terautentikasi yang terlihat memeriksa ulang persetujuan setiap lima detik, menjalankan pemeriksaan secara berurutan untuk mencegah popup ganda, dan menghentikan timer penyegaran ketika halaman dibongkar atau endpoint modul menghilang.
+
+## Bagian host yang dapat diciutkan diterapkan
+
+Merender deskriptor dokumen hukum melalui penyusun bagian host yang dapat diciutkan dengan judul terlokalisasi yang disanitasi, kontrol Tambah/Hapus dan Tulis/Pratinjau sebaris, serta konten editor. Modul kini terhubung ke slot mengambang Administrasi host tanpa gagal saat bagian terlepas, menyediakan peringatan navigasi yang dilokalkan, dan menghancurkan pelacak perubahan saat dilepas.
+
+## Status editor tersimpan dan tata letak penulisan diperbaiki
+
+Membaca Markdown tersimpan dari bidang respons aktual penyimpanan versi sehingga editor yang disegarkan tidak pernah menampilkan `undefined`. Status Tambah/Hapus kini hanya bergantung pada keberadaan versi tersimpan. Tooltip Hukum dikelompokkan di dalam judulnya, dan tindakan netral Tulis/Pratinjau berbagi baris dengan lebar sama di bawah editor selebar penuh yang tidak dapat diubah ukurannya.
+
+## Penegakan persetujuan per dokumen ditambahkan
+
+Melacak pengakuan secara terpisah untuk setiap versi Ketentuan, Privasi, dan EULA yang diterbitkan. Permintaan persetujuan persisten kini hanya menampilkan kartu kotak centang untuk dokumen baru atau diperbarui, dengan pengiriman versi persis serta tindakan keluar dan pengaturan akun. Permukaan editor memiliki tinggi mode tetap, input selebar penuh yang tidak dapat diubah ukurannya, dan kontrol netral berpadding di bawahnya.
+
+## Persetujuan wajib dan navigasi hukum diintegrasikan
+
+Menggunakan satu popup persetujuan wajib, kotak centang bergaya inti, pil Baru/Pembaruan sebaris, tooltip penolakan dan flow keluar host, serta endpoint penghapusan siklus hidup akun terautentikasi. Rute dokumen publik benar-benar publik, merender Markdown dalam popup ukuran penuh, dan dokumen terbitan menyumbangkan tautan footer rata kanan melalui `ui:footerLinks`.
+
+## Tampilan dan penyimpanan persetujuan distabilkan
+
+Memuat stylesheet persetujuan bersama integrasi navbar terautentikasi agar penyegaran dan navigasi SPA dirender sama. Menjaga pil inti tetap ringkas, menempatkan tautan dokumen pada baris tersendiri, menyimpan set versi terbitan lengkap, dan memverifikasi status tersimpan sebelum menutup persetujuan.
+
+## Halaman dokumen hukum publik disatukan
+
+Menghapus popup yang berlebihan dari rute hukum publik dan merender setiap dokumen melalui penyusun halaman host. Halaman dengan shell penuh yang dihasilkan memakai pengguliran dokumen alami dan membangun navigasi samping dari judul bagian Markdown yang dirender.
+
+## Kontrol dan penyimpanan persetujuan diperbaiki
+
+Menggunakan gaya choice-checkbox dan state-pill Cognis yang dapat dipakai ulang, menjamin baris tautan dokumen terpisah, dan menunggu gaya tersebut sebelum membuka persetujuan. Persetujuan kini memakai kontrak database terstruktur INSERT dengan pembaruan konflik dan memverifikasi hasil tersimpan agar versi yang sudah diterima tidak diminta lagi saat navigasi.
+
+## Laporan persetujuan dan shell halaman lengkap
+
+Menambahkan tabel persetujuan pengguna yang dapat dicari dan dipaginasi sepuluh baris pada setiap dokumen hukum dengan filter Semua, Diterima, dan Belum diterima. Halaman publik kini mengikuti urutan inisialisasi halaman Jitsi untuk pemuatan dan sesi terautentikasi, sementara permukaan editor tetap mencegah perubahan ukuran dan lompatan tata letak.
+
+## Paginasi host dan persetujuan mandiri diterapkan
+
+Mengganti paginator laporan buatan modul dengan kapabilitas bersama `ui:pagination`. Menerima satu dokumen terbitan tidak lagi menulis nilai null untuk dokumen Privasi atau EULA yang belum diterbitkan, sehingga pemeriksaan persetujuan tetap mandiri dan kompatibel dengan kolom database non-null yang ada.
+
+## Kepemilikan tautan footer dibuat idempoten
+
+Menghapus pendaftaran footer dari halaman publik agar penegakan persetujuan menjadi satu-satunya pemilik tautan hukum. Registri host juga diperiksa sebelum menambah tautan sehingga ID ganda saat pemuatan halaman atau peralihan skrip lama dapat dicegah.
+
+## Pengiriman persetujuan yang terlindungi
+
+Popup persetujuan kini hanya mengaktifkan Kirim setelah semua dokumen wajib dipilih. API memvalidasi pemetaan versi yang dikirim, mengembalikan HTTP 400 untuk persetujuan dokumen terbitan yang tidak valid atau tidak lengkap, dan popup menampilkan toast kesalahan terlokalisasi saat server menolak permintaan tersebut.
+
+## Jangan pernah tampilkan penanda belum diterbitkan
+
+Laporan persetujuan kini mengubah penanda basis data internal untuk dokumen yang belum diterbitkan menjadi versi yang tidak tercatat, sehingga antarmuka menampilkan nilai Belum Pernah Menyetujui yang terlokalisasi atau ID versi dokumen terbitan yang sebenarnya.
+
+## Tindakan persetujuan dan editor dipulihkan
+
+Validasi payload persetujuan kini memakai kontrak definisi dokumen hukum berbasis kunci sehingga mencegah galat runtime yang mengembalikan HTTP 500. Tindakan Hapus yang dikonfirmasi kini menutup editor yang ada, mengembalikan tindakan Tambah, dan mempertahankan dokumen terbitan tetap untuk penyuntingan berikutnya.
+
+## Render ulang tautan footer setelah halaman hukum dipasang
+
+Halaman hukum kini meminta notifikasi paksa registri tautan footer setelah penyusun halaman Cognis selesai dipasang. Hal ini menutup celah waktu transisi shell yang dapat membuat kumpulan tautan yang sudah terdaftar menghilang setelah navigasi dari Dashboard yang baru dimuat.
+
+## Pembaruan laporan persetujuan langsung
+
+Persetujuan yang berhasil kini langsung memicu peristiwa browser yang menyegarkan semua laporan administrasi terpasang dari API. Laporan yang terlihat juga melakukan polling setiap lima detik untuk persetujuan dari sesi lain, dan semua listener serta timer dibersihkan saat bagian administrasi dilepas. Daftar commit kini tidak memiliki baris kosong di antara entri.
+
+## Tinjauan siklus hidup persetujuan diselesaikan
+
+Memperlakukan penanda belum diterbitkan sebagai tidak ada persetujuan sebelumnya, mencegah timer penyegaran dimulai kembali setelah teardown, dan mendaftarkan laporan yang dibuat saat penerbitan pertama untuk pembaruan langsung. TODO kartu pendaftaran yang sudah tidak relevan dihapus setelah memastikan alur pendaftaran saat ini telah mencatat seluruh set versi terbitan. Seluruh konten dan commit changelog kerja kini hanya berada dalam changelog fitur ini.
+
+## Tampilkan perubahan kebijakan sebelum persetujuan ulang
+
+Pengguna yang kembali kini melihat perbandingan terstruktur baris demi baris antara versi yang sebelumnya disetujui dan kebijakan terbaru yang diterbitkan. Rute modul terautentikasi mendelegasikan perbandingan ke `docs:versionStore`, sementara popup persetujuan merender penambahan, penghapusan, dan penggantian melalui kapabilitas host `ui:documentDiff`.
+
+## Perbandingan dipindahkan ke halaman hukum penuh
+
+Mendeklarasikan `ui:documentDiff` sebagai kapabilitas host wajib dan mengubah tautan kebijakan yang diperbarui agar membuka rute hukum biasa dengan `?view=changes`, sementara tautan footer tetap memakai rute polos. Halaman berukuran penuh merender perbandingan sadar Markdown dengan stylesheet host khusus dan menampilkan penjelasan tidak tersedia yang dilokalkan ketika konten historis sebelum migrasi tidak dapat dibandingkan.
+
+## Status siklus hidup persetujuan dipulihkan
+
+Respons 404 endpoint persetujuan kini dicoba kembali secara berkala agar penegakan berlanjut setelah modul pulih, pemulihan cache maju-mundur mempertahankan hook aktif, dan pemuatan dokumen hukum selesai sebelum permintaan pelaporan tambahan. Kegagalan pelaporan tidak lagi dapat mengganti konten editor terbitan dengan definisi kosong.
+
+## Commit
+
+- [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
+- [877d0ab](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/877d0abd97b345c5a95dbbff3c5ed12f90ee03f7)
+- [2d2b595](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2d2b59547b04d5f9a1f34483f3ef264749b31c81)
+- [4432dc8](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/4432dc8ee1a2d7887b99b0eeee70c8c030d40926)
+- [a3ea3cd](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a3ea3cd458906443f8316daa0304e48a0da5eb27)
+- [1f11f9b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1f11f9b4e568e0f53dfeaa5900b333cc354a2e62)
+- [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
+- [e20d857](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/e20d857715e08f3656717ad55a5918fe236820ab)
+- [3fcbc91](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3fcbc91f42e61309ef7bd56491ddcf4311f605fd)
+- [cc4f1ba](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/cc4f1ba0582fd8d87b96c5e678e968467f86d988)
+- [5ffec53](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5ffec53354d1e93bf49b3850c64a56b3ccb1cef9)
+- [427af9d](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/427af9d50be3bde15cb3f2fe53f44e5a7b743965)
+- [b9c93cc](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b9c93cc2de5693f69cdf63bb0d1d9419ef5c7ceb)
+- [1adbdf7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1adbdf77939aa53f70f2fef75b93bce9841bd746)
+- [0c9207e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0c9207e9a3c872266558207cc5a8d61f4c63ca12)
+- [f193e16](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f193e1610daf5abc76d07510115605d396edf5f2)
+- [f500db9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f500db9c46919a4e9bf2911751340eb515b3213e)
+- [2c96447](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2c9644756b1f693cd711695eb9cf1083fe5c36d9)
+- [1c0203a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1c0203adde325888d4c31a628453f941b9a1ddab)
+- [97517b6](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/97517b67ae09218a9179879151547a582008e83c)
+- [bd907c3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/bd907c37acc039a80e9128712d3ae89ec0f92fb4)
+- [c8b8fa2](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c8b8fa29f2a92ebf584669be39eb3c1ee76af0da)
+- [0f3c337](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0f3c3375d1376ec0deb5309f401be3070b1fe556)
+- [aca7aed](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/aca7aedb050d29fcafc1e1204d6cd0ec4649dda0)
+- [51b169b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/51b169b61a9aba1c49b50d66a8444c16964b5348)
+- [232a8c0](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/232a8c08a256f5f5cef3dca2200b3436cde4a6ea)
+- [21e6522](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/21e652276d8b297ad9ddb617a78acad9f8157bc8)
+- [4fd26a8](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/4fd26a801ce84802d77fd20e7ebdcffe13666e3d)
+- [b65f77e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b65f77e1261e7785a2d04b60ae43d4a87c886529)
+- [a3621a1](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a3621a16e00739912d95772fbd73937a449fcd4e)
+- [86a9d66](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/86a9d66bed8866d0f92caae634762c6534a89e3d)
+- [3012d12](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3012d12222273a77467f224af6b1a3be9fe809aa)
+- [ab70147](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/ab70147c3a8f72f4d7f35b0ecefaaea2ea9f930e)
+- [b4701c9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b4701c9f9f3d31a9eaabb2db3563c49c7f163d9e)
+- [a008192](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a0081922d9a38bedb422ecb53fb32c2b28202ee0)
+- [611f637](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/611f637d7272196cbdb2c20276588412de5fe558)
+- [c26254a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c26254a2483d2e4fd05d8ffd2a5545a44c49b90c)
+- [5628abb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5628abb5aee3e080e5046835d094b40d67380a41)
+- [43ee0a3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/43ee0a3ccd9d6cc51f4eb28ece4c9d76aaedc465)
+- [a40166e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a40166ec47aac44d7b755af8e98e48e1df7142a6)

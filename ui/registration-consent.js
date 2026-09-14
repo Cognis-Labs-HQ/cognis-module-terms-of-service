@@ -6,7 +6,7 @@ export function createRegistrationField({ i18n }) {
         name: FIELD_NAME,
         type: "checkbox",
         required: true,
-        labelHtml: `${i18n.t("module.terms_of_service.consent.signup.prefix")} <a href="/terms-of-service" target="_blank" rel="noopener">${i18n.t("module.terms_of_service.consent.signup.terms")}</a> ${i18n.t("module.terms_of_service.consent.signup.and")} <a href="/privacy-policy" target="_blank" rel="noopener">${i18n.t("module.terms_of_service.consent.signup.privacy")}</a>`,
+        label: `${i18n.t("module.terms_of_service.consent.signup.prefix")} ${i18n.t("module.terms_of_service.consent.signup.terms")}, ${i18n.t("module.terms_of_service.consent.signup.privacy")} ${i18n.t("module.terms_of_service.consent.signup.and")} ${i18n.t("module.terms_of_service.document.eula")}`,
     };
 }
 
@@ -23,6 +23,9 @@ export async function completeRegistration({ apiFetch }) {
     if (!statusResponse.ok) throw new Error("consent_status_unavailable");
     const status = (await statusResponse.json()).data;
     if (!status.required) return;
+    const versions = Object.fromEntries(
+        status.documents.map((document) => [document.slug, document.version]),
+    );
     const response = await apiFetch(
         "/api/v1/modules/terms-of-service/consent",
         {
@@ -30,8 +33,7 @@ export async function completeRegistration({ apiFetch }) {
             headers: { "content-type": "application/json" },
             body: JSON.stringify({
                 accepted: true,
-                termsVersion: status.termsVersion,
-                privacyVersion: status.privacyVersion,
+                versions,
             }),
         },
     );

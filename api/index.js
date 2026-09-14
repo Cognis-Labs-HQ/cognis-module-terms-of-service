@@ -3,17 +3,15 @@ import { DOCUMENTS, LegalDocumentStore } from "./store.js";
 
 const MAX_MARKDOWN_BYTES = 1_000_000;
 
-function accountId(request) {
-    return String(request.auth?.accountId ?? request.auth?.sub ?? "").trim();
-}
-
-function isKnownSlug(slug) {
-    return Object.hasOwn(DOCUMENTS, slug);
+function accountId(claims) {
+    return String(claims?.sub ?? "").trim();
 }
 
 export function consentFailure(error) {
     const status =
-        error.message === "invalid_json"
+        error.message === "invalid_json" ||
+        error.message === "invalid_consent_versions" ||
+        error.message === "incomplete_consent_versions"
             ? 400
             : error.message === "request_too_large"
               ? 413
@@ -55,118 +53,165 @@ export function registerApi(router, ctx) {
     router.get(
         "/api/v1/modules/terms-of-service/documents",
         async (request, response) => {
-            await requireAuth(request, response, "admin");
-            if (response.writableEnded) return;
+            const claims = await requireAuth(request, response, "admin");
+            if (!claims || response.writableEnded) return;
             await ready;
             sendJson(response, 200, { data: await store.listLatest() });
         },
         { access: { minRole: "admin" } },
     );
 
-    router.put(
-        "/api/v1/modules/terms-of-service/documents/:slug",
-        async (request, response) => {
-            await requireAuth(request, response, "admin");
-            if (response.writableEnded) return;
-            const slug = String(request.params?.slug ?? "");
-            if (!isKnownSlug(slug)) {
-                sendJson(response, 404, {
-                    error: {
-                        code: "unknown_document",
-                        message: "Unknown legal document.",
-                    },
+    for (const slug of Object.keys(DOCUMENTS)) {
+        router.get(
+            `/api/v1/modules/terms-of-service/consent-diff/${slug}`,
+            async (request, response) => {
+                const claims = await requireAuth(request, response, "user");
+                if (!claims || response.writableEnded) return;
+                try {
+                    await ready;
+                    sendJson(response, 200, {
+                        data: await store.consentDiff(accountId(claims), slug),
+                    });
+                } catch (error) {
+                    const unavailable =
+                        error.message === "document_diff_unavailable";
+                    const historicalVersionUnavailable =
+                        error.message === "document_version_not_found";
+                    ctx.log?.("error", "Legal document diff loading failed.", {
+                        component: "terms-of-service",
+                        operation: "loadConsentDiff",
+                        accountId: accountId(claims),
+                        slug,
+                        error: error.message,
+                    });
+                    sendJson(
+                        response,
+                        unavailable || historicalVersionUnavailable ? 404 : 500,
+                        {
+                            error: {
+                                code: historicalVersionUnavailable
+                                    ? "historical_version_unavailable"
+                                    : unavailable
+                                      ? error.message
+                                      : "internal_error",
+                                message: historicalVersionUnavailable
+                                    ? "The previously consented document version is unavailable."
+                                    : unavailable
+                                      ? "No prior consented version is available."
+                                      : "The legal document changes could not be loaded.",
+                            },
+                        },
+                    );
+                }
+            },
+            { access: { minRole: "user" } },
+        );
+    }
+
+    for (const slug of Object.keys(DOCUMENTS)) {
+        router.get(
+            `/api/v1/modules/terms-of-service/consent-report/${slug}`,
+            async (request, response) => {
+                const claims = await requireAuth(request, response, "admin");
+                if (!claims || response.writableEnded) return;
+                await ready;
+                sendJson(response, 200, {
+                    data: await store.listConsentForDocument(slug),
                 });
-                return;
-            }
-            try {
-                const body = await readJson(request, {
-                    maxBytes: MAX_MARKDOWN_BYTES,
-                });
-                if (
-                    typeof body.markdown !== "string" ||
-                    !body.markdown.trim()
-                ) {
-                    sendJson(response, 400, {
+            },
+            { access: { minRole: "admin" } },
+        );
+    }
+
+    for (const slug of Object.keys(DOCUMENTS)) {
+        router.put(
+            `/api/v1/modules/terms-of-service/documents/${slug}`,
+            async (request, response) => {
+                const claims = await requireAuth(request, response, "admin");
+                if (!claims || response.writableEnded) return;
+                try {
+                    const body = await readJson(request, {
+                        maxBytes: MAX_MARKDOWN_BYTES,
+                    });
+                    if (
+                        typeof body.markdown !== "string" ||
+                        !body.markdown.trim()
+                    ) {
+                        sendJson(response, 400, {
+                            error: {
+                                code: "invalid_markdown",
+                                message: "Markdown content is required.",
+                            },
+                        });
+                        return;
+                    }
+                    await ready;
+                    const document = await store.publish(
+                        slug,
+                        body.markdown,
+                        accountId(claims),
+                    );
+                    ctx.log?.("info", "Legal document published.", {
+                        component: "terms-of-service",
+                        operation: "publishDocument",
+                        slug,
+                    });
+                    sendJson(response, 200, { data: document });
+                } catch (error) {
+                    const invalidRequest = [
+                        "invalid_json",
+                        "request_too_large",
+                    ].includes(error.message);
+                    ctx.log?.("error", "Legal document publication failed.", {
+                        component: "terms-of-service",
+                        operation: "publishDocument",
+                        slug,
+                        error: error.message,
+                    });
+                    sendJson(response, invalidRequest ? 400 : 500, {
                         error: {
-                            code: "invalid_markdown",
-                            message: "Markdown content is required.",
+                            code: invalidRequest
+                                ? error.message
+                                : "internal_error",
+                            message: invalidRequest
+                                ? "The request body is invalid."
+                                : "The legal document could not be published.",
+                        },
+                    });
+                }
+            },
+            { access: { minRole: "admin" } },
+        );
+    }
+
+    for (const slug of Object.keys(DOCUMENTS)) {
+        router.get(
+            `/api/v1/modules/terms-of-service/public/${slug}`,
+            async (_request, response) => {
+                await ready;
+                const document = await store.getLatest(slug);
+                if (!document) {
+                    sendJson(response, 404, {
+                        error: {
+                            code: "not_published",
+                            message: "This document is not published.",
                         },
                     });
                     return;
                 }
-                await ready;
-                const document = await store.publish(
-                    slug,
-                    body.markdown,
-                    accountId(request),
-                );
-                ctx.log?.("info", "Legal document published.", {
-                    component: "terms-of-service",
-                    operation: "publishDocument",
-                    slug,
-                });
                 sendJson(response, 200, { data: document });
-            } catch (error) {
-                const invalidRequest = [
-                    "invalid_json",
-                    "request_too_large",
-                ].includes(error.message);
-                ctx.log?.("error", "Legal document publication failed.", {
-                    component: "terms-of-service",
-                    operation: "publishDocument",
-                    slug,
-                    error: error.message,
-                });
-                sendJson(response, invalidRequest ? 400 : 500, {
-                    error: {
-                        code: invalidRequest ? error.message : "internal_error",
-                        message: invalidRequest
-                            ? "The request body is invalid."
-                            : "The legal document could not be published.",
-                    },
-                });
-            }
-        },
-        { access: { minRole: "admin" } },
-    );
-
-    router.get(
-        "/api/v1/modules/terms-of-service/public/:slug",
-        async (request, response) => {
-            const slug = String(request.params?.slug ?? "");
-            if (!isKnownSlug(slug)) {
-                sendJson(response, 404, {
-                    error: {
-                        code: "unknown_document",
-                        message: "Unknown legal document.",
-                    },
-                });
-                return;
-            }
-            await ready;
-            const document = await store.getLatest(slug);
-            if (!document) {
-                sendJson(response, 404, {
-                    error: {
-                        code: "not_published",
-                        message: "This document is not published.",
-                    },
-                });
-                return;
-            }
-            sendJson(response, 200, { data: document });
-        },
-        { access: { public: true } },
-    );
+            },
+        );
+    }
 
     router.get(
         "/api/v1/modules/terms-of-service/consent",
         async (request, response) => {
-            await requireAuth(request, response, "user");
-            if (response.writableEnded) return;
+            const claims = await requireAuth(request, response, "user");
+            if (!claims || response.writableEnded) return;
             await ready;
             sendJson(response, 200, {
-                data: await store.consentStatus(accountId(request)),
+                data: await store.consentStatus(accountId(claims)),
             });
         },
         { access: { minRole: "user" } },
@@ -175,38 +220,34 @@ export function registerApi(router, ctx) {
     router.post(
         "/api/v1/modules/terms-of-service/consent",
         async (request, response) => {
-            await requireAuth(request, response, "user");
-            if (response.writableEnded) return;
+            const claims = await requireAuth(request, response, "user");
+            if (!claims || response.writableEnded) return;
             try {
                 const body = await readJson(request);
-                const termsVersion = String(body.termsVersion ?? "").trim();
-                const privacyVersion = String(body.privacyVersion ?? "").trim();
+                const versions = body.versions;
                 if (
-                    !termsVersion ||
-                    !privacyVersion ||
+                    !versions ||
+                    typeof versions !== "object" ||
+                    Array.isArray(versions) ||
+                    Object.keys(versions).some(
+                        (slug) =>
+                            !Object.hasOwn(DOCUMENTS, slug) ||
+                            typeof versions[slug] !== "string",
+                    ) ||
                     body.accepted !== true
                 ) {
-                    sendJson(response, 400, {
-                        error: {
-                            code: "consent_required",
-                            message:
-                                "Current legal documents must be accepted.",
-                        },
-                    });
-                    return;
+                    throw new Error("invalid_consent_versions");
                 }
                 await ready;
                 const status = await store.recordConsent(
-                    accountId(request),
-                    termsVersion,
-                    privacyVersion,
+                    accountId(claims),
+                    versions,
                 );
                 ctx.log?.("info", "Legal consent recorded.", {
                     component: "terms-of-service",
                     operation: "recordConsent",
-                    accountId: accountId(request),
-                    termsVersion,
-                    privacyVersion,
+                    accountId: accountId(claims),
+                    documentSlugs: Object.keys(versions),
                 });
                 sendJson(response, 201, { data: status });
             } catch (error) {
@@ -214,7 +255,7 @@ export function registerApi(router, ctx) {
                 ctx.log?.("error", "Legal consent recording failed.", {
                     component: "terms-of-service",
                     operation: "recordConsent",
-                    accountId: accountId(request),
+                    accountId: accountId(claims),
                     error: error.message,
                 });
                 sendJson(response, failure.status, failure.payload);

@@ -14,6 +14,7 @@ export function registerUi(ctx) {
     });
     ctx.registerNavbarPlugin({
         scriptUrl: "/static/modules/terms-of-service/consent-enforcement.js",
+        stylesheets: ["/static/modules/terms-of-service/styles/legal.css"],
         access: { minRole: "user" },
     });
     for (const slug of PUBLIC_ROUTES) {

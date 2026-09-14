@@ -41,7 +41,7 @@ function context(registrations) {
         },
         registerStaticDir() {},
         registerSpaRoute(route) {
-            registrations.pages.push(route.base);
+            registrations.pages.push(route);
         },
         registerAdminSection(section) {
             registrations.admin.push(section);
@@ -67,15 +67,31 @@ test("registers the Legal administration section and public pages", () => {
         "module.terms_of_service.admin.title",
     );
     assert.equal(registrations.admin[0].access.minRole, "admin");
-    assert.deepEqual(registrations.pages, [
-        "/terms-of-service",
-        "/privacy-policy",
-        "/eula",
-    ]);
+    assert.deepEqual(
+        registrations.pages.map((route) => route.base),
+        ["/terms-of-service", "/privacy-policy", "/eula"],
+    );
+    assert.ok(
+        registrations.pages.every((route) => route.access.public === true),
+    );
     assert.ok(
         registrations.api.includes(
-            "/api/v1/modules/terms-of-service/documents/:slug",
+            "/api/v1/modules/terms-of-service/documents/terms-of-service",
         ),
+    );
+    assert.ok(
+        registrations.api.includes(
+            "/api/v1/modules/terms-of-service/public/privacy-policy",
+        ),
+    );
+    assert.ok(
+        registrations.api.includes(
+            "/api/v1/modules/terms-of-service/consent-diff/terms-of-service",
+        ),
+    );
+    assert.equal(
+        registrations.api.some((path) => path.includes(":")),
+        false,
     );
     assert.match(registrations.plugins[0].scriptUrl, /consent-enforcement/);
 });
