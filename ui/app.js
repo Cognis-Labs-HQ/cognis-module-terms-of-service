@@ -450,7 +450,17 @@ export async function mount(root, { signal } = {}) {
         });
         const document = await readPayload(response);
         renderedMarkdown = renderMarkdown(document.markdown);
-    } catch {
+    } catch (error) {
+        uiCtx.capabilities.get("ui:log")?.(
+            "error",
+            "Public legal document rendering failed.",
+            {
+                component: "terms-of-service",
+                operation: "renderPublicDocument",
+                slug,
+                error: error instanceof Error ? error.message : String(error),
+            },
+        );
         renderedMarkdown = `<p>${escapeHtml(
             i18n.t("module.terms_of_service.public.unavailable"),
         )}</p>`;
@@ -466,7 +476,7 @@ export async function mount(root, { signal } = {}) {
                 id: `${slug}-document`,
                 label: title,
                 pinned: true,
-                gridSize: { default: [12, 8], min: [6, 4], max: "full" },
+                gridSize: { default: [12, 1], min: [6, 1], max: "full" },
                 render: () =>
                     `<article class="terms-of-service-rendered content-panel">${renderedMarkdown}</article>`,
             },

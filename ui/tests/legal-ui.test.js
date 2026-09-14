@@ -163,6 +163,15 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /beginPageLoading\(root\)/);
     assert.match(source, /ensureFullAccountSession\(\)/);
     assert.match(source, /showNavbar: authenticated/);
+    assert.match(source, /default: \[12, 1\]/);
+    assert.match(
+        enforcement,
+        /LEGAL_DOCUMENT_PATHS\.has\(location\.pathname\)/,
+    );
+    assert.match(
+        enforcement,
+        /if \(!LEGAL_DOCUMENT_PATHS\.has\(location\.pathname\)\)/,
+    );
 });
 
 test("administration renders filterable paginated consent reports", () => {

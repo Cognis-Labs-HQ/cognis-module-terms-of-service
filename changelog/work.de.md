@@ -66,6 +66,10 @@ Entfernt die Footer-Registrierung von öffentlichen Seiten, sodass die Zustimmun
 
 Definiert jede Zustimmungsversion über den Schemakontrakt von `db:executor` als nicht null mit einem ausdrücklichen Platzhalter für unveröffentlichte Dokumente und übergibt diesen Platzhalter bei strukturierten Einfügungen, wenn ein Rechtsdokument nicht veröffentlicht ist. Links zu Zustimmungsdokumenten umgehen nun den SPA-Router des Hosts, sodass ihr `_blank`-Ziel zuverlässig einen neuen Tab öffnet; der Popup-Titel lautet kürzer „Zustimmung erforderlich“.
 
+## Öffentliche Seiten für Rechtsdokumente korrigiert
+
+Die öffentlichen Routen für Nutzungsbedingungen, Datenschutz und EULA bleiben nun sowohl beim ersten Laden als auch während asynchroner Statusprüfungen von der Zustimmungserzwingung ausgenommen. Ihr Seiten-Composer liest das Markdown-Antwortfeld des Versionsspeichers und passt das Dokumentelement an seinen Inhalt an; dadurch entfallen die Ausgabe `undefined` und die übergroße leere Fläche.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -89,3 +93,5 @@ Definiert jede Zustimmungsversion über den Schemakontrakt von `db:executor` als
 - [97517b6](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/97517b67ae09218a9179879151547a582008e83c)
 
 - [bd907c3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/bd907c37acc039a80e9128712d3ae89ec0f92fb4)
+
+- [c8b8fa2](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c8b8fa29f2a92ebf584669be39eb3c1ee76af0da)

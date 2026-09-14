@@ -66,6 +66,10 @@ Removes public-page footer registration so consent enforcement is the only owner
 
 Defines every consent version column through the `db:executor` schema contract as non-null with an explicit unpublished sentinel, and supplies that sentinel in structured inserts when a legal document is not published. Consent document links now bypass the host SPA router so their `_blank` target reliably opens a new tab, and the popup title is shortened to “Consent Required.”
 
+## Corrected public legal document pages
+
+Public Terms, Privacy, and EULA routes now remain exempt from consent enforcement throughout initial loading and asynchronous status checks. Their page composer reads the version store’s Markdown response field and sizes the document element to its content, eliminating the `undefined` output and oversized empty panel.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -89,3 +93,5 @@ Defines every consent version column through the `db:executor` schema contract a
 - [97517b6](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/97517b67ae09218a9179879151547a582008e83c)
 
 - [bd907c3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/bd907c37acc039a80e9128712d3ae89ec0f92fb4)
+
+- [c8b8fa2](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c8b8fa29f2a92ebf584669be39eb3c1ee76af0da)

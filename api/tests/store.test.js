@@ -20,7 +20,7 @@ function versionTracker(latestDocuments = []) {
                     return {
                         slug: document.slug,
                         version: "immutable-v1",
-                        content: document.content,
+                        markdown: document.content,
                         published_at: "2026-09-12",
                     };
                 },
@@ -80,11 +80,11 @@ test("publishing delegates immutable versions to the core tracker", async () => 
 
 test("consent identifies each unacknowledged published document", async () => {
     const tracker = versionTracker([
-        { slug: "terms-of-service", version: "terms-v2", content: "terms" },
+        { slug: "terms-of-service", version: "terms-v2", markdown: "terms" },
         {
             slug: "privacy-policy",
             version: "privacy-v3",
-            content: "privacy",
+            markdown: "privacy",
         },
     ]);
     const database = {
@@ -116,11 +116,15 @@ test("consent identifies each unacknowledged published document", async () => {
 
 test("recording consent rejects stale versions", async () => {
     const tracker = versionTracker([
-        { slug: "terms-of-service", version: "terms-current", content: "t" },
+        {
+            slug: "terms-of-service",
+            version: "terms-current",
+            markdown: "t",
+        },
         {
             slug: "privacy-policy",
             version: "privacy-current",
-            content: "p",
+            markdown: "p",
         },
     ]);
     const database = {
@@ -139,8 +143,12 @@ test("recording consent rejects stale versions", async () => {
 
 test("recording consent persists every accepted document version", async () => {
     const documents = [
-        { slug: "terms-of-service", version: "terms-v2", content: "terms" },
-        { slug: "privacy-policy", version: "privacy-v3", content: "privacy" },
+        { slug: "terms-of-service", version: "terms-v2", markdown: "terms" },
+        {
+            slug: "privacy-policy",
+            version: "privacy-v3",
+            markdown: "privacy",
+        },
     ];
     const tracker = {
         createStore() {
@@ -220,7 +228,7 @@ test("recording one published document supplies every non-null version column", 
     const document = {
         slug: "terms-of-service",
         version: "terms-v1",
-        content: "terms",
+        markdown: "terms",
     };
     const tracker = {
         createStore() {

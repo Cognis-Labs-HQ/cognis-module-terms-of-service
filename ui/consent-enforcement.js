@@ -47,6 +47,11 @@ const PUBLIC_PATHS = new Set([
     "/privacy-policy",
     "/eula",
 ]);
+const LEGAL_DOCUMENT_PATHS = new Set([
+    "/terms-of-service",
+    "/privacy-policy",
+    "/eula",
+]);
 const CONSENT_REFRESH_INTERVAL_MS = 5_000;
 let consentEndpointAvailable = true;
 let consentRefreshTimer;
@@ -260,13 +265,22 @@ async function enforceConsent(stageCtx) {
 }
 
 async function enforceAuthenticatedConsent() {
+    if (LEGAL_DOCUMENT_PATHS.has(location.pathname)) {
+        return { requiresSetup: false };
+    }
     const status = await consentStatus();
     if (!status) return { requiresSetup: false };
     const i18n = await createI18n({
         componentStringBaseUrls: ["/static/modules/terms-of-service/languages"],
     });
     syncFooterLinks(status.documents, i18n);
-    if (!status.required || status.accepted) return { requiresSetup: false };
+    if (
+        LEGAL_DOCUMENT_PATHS.has(location.pathname) ||
+        !status.required ||
+        status.accepted
+    ) {
+        return { requiresSetup: false };
+    }
     const accepted = await requestConsent(status, i18n);
     return accepted
         ? { requiresSetup: false }
@@ -327,13 +341,17 @@ uiCtx.extendFlow(
     enforceConsent,
 );
 
-await enforceAuthenticatedConsentOnce().then((result) => {
-    if (result.redirectTo) {
-        const navigate = uiCtx.capabilities.get("ui:navigate");
-        if (typeof navigate !== "function") {
-            throw new Error("Required UI capability unavailable: ui:navigate");
+if (!LEGAL_DOCUMENT_PATHS.has(location.pathname)) {
+    await enforceAuthenticatedConsentOnce().then((result) => {
+        if (result.redirectTo) {
+            const navigate = uiCtx.capabilities.get("ui:navigate");
+            if (typeof navigate !== "function") {
+                throw new Error(
+                    "Required UI capability unavailable: ui:navigate",
+                );
+            }
+            return navigate(result.redirectTo);
         }
-        return navigate(result.redirectTo);
-    }
-});
+    });
+}
 scheduleConsentRefresh();
