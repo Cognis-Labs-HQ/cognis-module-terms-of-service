@@ -250,9 +250,7 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /publicPageComposers\.get\(root\)\?\.destroy/);
     assert.doesNotMatch(source, /openDocumentPopup/);
     assert.match(source, /beginPageLoading\(root\)/);
-    assert.match(source, /ensureHostUiProviders\(\)/);
-    assert.match(source, /checkIsAuthenticated\(\)/);
-    assert.doesNotMatch(source, /mountWhenDirect/);
+    assert.match(source, /mountWhenDirect/);
     assert.match(source, /ensureFullAccountSession\(\)/);
     assert.match(source, /showNavbar: authenticated/);
     assert.match(source, /applyDocumentTitle/);

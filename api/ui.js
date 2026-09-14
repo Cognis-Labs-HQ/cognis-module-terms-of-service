@@ -24,7 +24,7 @@ export function registerUi(ctx) {
             base: `/${slug}`,
             scriptUrl: "/static/modules/terms-of-service/app.js",
             stylesheets: ["/static/modules/terms-of-service/styles/legal.css"],
-            access: { public: true },
+            public: true,
         });
     }
 }

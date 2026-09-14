@@ -72,7 +72,9 @@ test("registers the Legal administration section and public pages", () => {
         ["/terms-of-service", "/privacy-policy", "/eula"],
     );
     assert.ok(
-        registrations.pages.every((route) => route.access.public === true),
+        registrations.pages.every(
+            (route) => route.public === true && route.access === undefined,
+        ),
     );
     assert.ok(
         registrations.api.includes(
