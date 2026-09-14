@@ -6,6 +6,7 @@
   <string name="module.terms_of_service.document.eula">エンドユーザー使用許諾契約</string>
   <string name="module.terms_of_service.action.create">文書を作成</string>
   <string name="module.terms_of_service.action.add">追加</string>
+  <string name="module.terms_of_service.action.details">詳細</string>
   <string name="module.terms_of_service.editor.content">法的文書の内容</string>
   <string name="module.terms_of_service.editor.markdown_hint">Markdown を使用できます。</string>
   <string name="module.terms_of_service.editor.more_information">詳細情報</string>

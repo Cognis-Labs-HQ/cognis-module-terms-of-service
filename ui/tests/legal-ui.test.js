@@ -34,7 +34,7 @@ test("legal editors use Cognis utilities and standard action variants", () => {
     assert.match(source, /createUnsavedChangesBar/);
     assert.match(
         source,
-        /createCollapsibleSectionComposer\(\{ escapeHtml \}\)/,
+        /createCollapsibleSectionComposer\(\{[\s\S]*detailsLabel: i18n\.t\("module\.terms_of_service\.action\.details"\)/,
     );
     assert.match(source, /renderInfoTooltip/);
     assert.match(
