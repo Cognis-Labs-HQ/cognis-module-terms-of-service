@@ -14,6 +14,7 @@
   <string name="module.terms_of_service.action.discard">破棄</string>
   <string name="module.terms_of_service.action.remove">削除</string>
   <string name="module.terms_of_service.action.keep">編集を続ける</string>
+  <string name="module.terms_of_service.action.cancel">キャンセル</string>
   <string name="module.terms_of_service.remove.title">エディターを削除しますか？</string>
   <string name="module.terms_of_service.remove.prompt">このエディターを削除し、未保存の変更をすべて破棄しますか？</string>
   <string name="module.terms_of_service.message.updated">法的文書を更新しました。</string>

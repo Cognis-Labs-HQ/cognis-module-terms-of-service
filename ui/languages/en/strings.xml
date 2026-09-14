@@ -14,6 +14,7 @@
   <string name="module.terms_of_service.action.discard">Discard</string>
   <string name="module.terms_of_service.action.remove">Remove</string>
   <string name="module.terms_of_service.action.keep">Keep editing</string>
+  <string name="module.terms_of_service.action.cancel">Cancel</string>
   <string name="module.terms_of_service.remove.title">Remove Editor?</string>
   <string name="module.terms_of_service.remove.prompt">Remove this editor and discard any unsaved changes?</string>
   <string name="module.terms_of_service.message.updated">Legal document updated.</string>

@@ -98,6 +98,10 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /mandatory: true/);
     assert.match(enforcement, /\/api\/v1\/auth\/account-lifecycle/);
     assert.match(enforcement, /action: "delete"/);
+    assert.match(
+        enforcement,
+        /id: "cancel",[\s\S]*module\.terms_of_service\.action\.cancel/,
+    );
     assert.match(enforcement, /ui:footerLinks/);
     assert.match(enforcement, /footerLinks\.list\?\.\(\)/);
     assert.doesNotMatch(source, /capabilities\.get\("ui:footerLinks"\)/);

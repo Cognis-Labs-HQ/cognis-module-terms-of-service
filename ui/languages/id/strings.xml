@@ -14,6 +14,7 @@
   <string name="module.terms_of_service.action.discard">Buang</string>
   <string name="module.terms_of_service.action.remove">Hapus</string>
   <string name="module.terms_of_service.action.keep">Lanjutkan mengedit</string>
+  <string name="module.terms_of_service.action.cancel">Batal</string>
   <string name="module.terms_of_service.remove.title">Hapus editor?</string>
   <string name="module.terms_of_service.remove.prompt">Hapus editor ini dan buang semua perubahan yang belum disimpan?</string>
   <string name="module.terms_of_service.message.updated">Dokumen hukum telah diperbarui.</string>

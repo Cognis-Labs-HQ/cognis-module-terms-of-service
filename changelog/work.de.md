@@ -98,6 +98,10 @@ Wird das obligatorische Zustimmungs-Popup abgesendet, ohne jedes erforderliche D
 
 Verwendet den neuesten Cognis-Side-Menu-Vertrag, indem jede dargestellte Rechtsüberschrift als `targetId` eines Eintrags übergeben und sanftes Scrollen am Controller konfiguriert wird. Der Core übernimmt nun Zielsuche und am Anfang ausgerichtetes Scrollen; das Modul synchronisiert nur noch den ausgewählten Abschnitt.
 
+## Eindeutiges Abbrechen der Kontolöschung
+
+Ändert die neutrale Aktion in der Bestätigung zur Kontolöschung von „Weiter bearbeiten“ in das eindeutige „Abbrechen“, ohne die separate Bestätigung zum Entfernen des Editors zu verändern.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -137,3 +141,5 @@ Verwendet den neuesten Cognis-Side-Menu-Vertrag, indem jede dargestellte Rechts�
 - [4fd26a8](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/4fd26a801ce84802d77fd20e7ebdcffe13666e3d)
 
 - [b65f77e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b65f77e1261e7785a2d04b60ae43d4a87c886529)
+
+- [a3621a1](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a3621a16e00739912d95772fbd73937a449fcd4e)

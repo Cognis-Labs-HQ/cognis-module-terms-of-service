@@ -14,6 +14,7 @@
   <string name="module.terms_of_service.action.discard">Verwerfen</string>
   <string name="module.terms_of_service.action.remove">Entfernen</string>
   <string name="module.terms_of_service.action.keep">Weiter bearbeiten</string>
+  <string name="module.terms_of_service.action.cancel">Abbrechen</string>
   <string name="module.terms_of_service.remove.title">Editor entfernen?</string>
   <string name="module.terms_of_service.remove.prompt">Diesen Editor entfernen und alle ungespeicherten Änderungen verwerfen?</string>
   <string name="module.terms_of_service.message.updated">Rechtsdokument aktualisiert.</string>

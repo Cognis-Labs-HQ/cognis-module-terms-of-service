@@ -116,7 +116,7 @@ async function deleteCurrentAccount(i18n) {
         actions: [
             {
                 id: "cancel",
-                label: i18n.t("module.terms_of_service.action.keep"),
+                label: i18n.t("module.terms_of_service.action.cancel"),
                 variant: "neutral",
             },
             {

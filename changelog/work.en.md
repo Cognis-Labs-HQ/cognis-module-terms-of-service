@@ -98,6 +98,10 @@ Submitting the mandatory consent popup without selecting every required document
 
 Uses the latest Cognis side-menu contract by supplying each rendered legal heading as an item `targetId` and configuring smooth scrolling on the controller. Core now owns target lookup and start-aligned scrolling, while the module only synchronizes selected-section state.
 
+## Clear account deletion cancellation
+
+Changes the neutral action in the account deletion confirmation from “Keep editing” to the direct “Cancel” label, without changing the separate editor-removal confirmation.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -137,3 +141,5 @@ Uses the latest Cognis side-menu contract by supplying each rendered legal headi
 - [4fd26a8](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/4fd26a801ce84802d77fd20e7ebdcffe13666e3d)
 
 - [b65f77e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b65f77e1261e7785a2d04b60ae43d4a87c886529)
+
+- [a3621a1](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a3621a16e00739912d95772fbd73937a449fcd4e)
