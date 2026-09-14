@@ -1,6 +1,6 @@
 # 法務管理コンテンツを復元
 
-**機能ブランチ:** work
+**機能ブランチ:** feature-investigate-empty-administration-legal-section
 
 ## 法的文書エディターを描画
 

@@ -1,6 +1,6 @@
 # Inhalte der Rechtsverwaltung wiederherstellen
 
-**Feature-Branch:** work
+**Feature-Branch:** feature-investigate-empty-administration-legal-section
 
 ## Editoren für Rechtsdokumente darstellen
 
