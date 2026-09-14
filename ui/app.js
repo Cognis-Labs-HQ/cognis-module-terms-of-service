@@ -387,7 +387,10 @@ function mountFloatingDirtyTracker(root, i18n, controllers) {
 }
 
 function documentsMarkup(documents, i18n) {
-    const sectionComposer = createCollapsibleSectionComposer({ escapeHtml });
+    const sectionComposer = createCollapsibleSectionComposer({
+        escapeHtml,
+        detailsLabel: i18n.t("module.terms_of_service.action.details"),
+    });
     return `<div class="terms-of-service-heading">
         <h2>${escapeHtml(i18n.t("module.terms_of_service.admin.title"))}
             ${renderInfoTooltip(
