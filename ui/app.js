@@ -9,8 +9,8 @@ const [
     { applyDocumentTitle, createI18n },
     { renderMarkdown, initializeMarkdownCodeCopy },
     { escapeHtml },
-    { beginPageLoading, mountWhenDirect },
-    { ensureFullAccountSession },
+    { beginPageLoading, ensureHostUiProviders },
+    { checkIsAuthenticated, ensureFullAccountSession },
     { createUnsavedChangesBar },
     { renderInfoTooltip },
     { createCollapsibleSectionComposer },
@@ -585,7 +585,7 @@ export async function mount(root, { signal } = {}) {
     const title = i18n.t(
         `module.terms_of_service.document.${definition.titleKey}`,
     );
-    const authenticated = Boolean(localStorage.getItem("cognis_access_token"));
+    const authenticated = await checkIsAuthenticated();
     const comparisonMode =
         authenticated &&
         new URLSearchParams(window.location.search).get("view") === "changes";
@@ -741,11 +741,16 @@ export function unmount(root) {
 }
 
 const directRouteSlug = location.pathname.slice(1);
-if (DOCUMENTS.some((document) => document.slug === directRouteSlug)) {
-    await mountWhenDirect((root) => {
+if (
+    !globalThis.__spaRouter &&
+    DOCUMENTS.some((document) => document.slug === directRouteSlug)
+) {
+    await (async () => {
+        await ensureHostUiProviders();
+        const root = document.querySelector("#app");
         const mountController = new AbortController();
         return mount(root, { signal: mountController.signal });
-    }).catch((error) => {
+    })().catch((error) => {
         showError(error instanceof Error ? error.message : String(error));
     });
 }
