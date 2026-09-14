@@ -191,7 +191,21 @@ async function requestConsent(status, i18n) {
                 const checked = Array.from(
                     overlay.querySelectorAll("[data-consent-document]"),
                 ).filter((checkbox) => checkbox.checked);
-                if (checked.length !== pendingDocuments.length) return false;
+                if (checked.length !== pendingDocuments.length) {
+                    const showToast = uiCtx.capabilities.get("ui:showToast");
+                    if (typeof showToast !== "function") {
+                        throw new Error(
+                            "Required UI capability unavailable: ui:showToast",
+                        );
+                    }
+                    showToast(
+                        i18n.t(
+                            "module.terms_of_service.consent.select_all_error",
+                        ),
+                        { variant: "error" },
+                    );
+                    return false;
+                }
                 acceptedVersions = Object.fromEntries(
                     status.documents.map((document) => [
                         document.slug,

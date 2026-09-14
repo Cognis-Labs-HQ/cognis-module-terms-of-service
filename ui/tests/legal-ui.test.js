@@ -124,6 +124,16 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /loadModuleStylesheet\(\)/);
     assert.match(enforcement, /data-consent-document/);
     assert.match(enforcement, /acceptedVersions/);
+    assert.match(enforcement, /capabilities\.get\("ui:showToast"\)/);
+    assert.match(
+        enforcement,
+        /module\.terms_of_service\.consent\.select_all_error/,
+    );
+    assert.match(enforcement, /\{ variant: "error" \}/);
+    assert.match(
+        enforcement,
+        /showToast\([\s\S]*select_all_error[\s\S]*return false/,
+    );
     assert.match(enforcement, /status\.documents\.map/);
     assert.match(enforcement, /terms-of-service-consent-read/);
     assert.match(enforcement, /target="_blank" rel="noopener noreferrer"/);

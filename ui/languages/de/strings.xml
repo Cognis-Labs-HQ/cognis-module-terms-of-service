@@ -42,6 +42,7 @@
   <string name="module.terms_of_service.consent.here">hier</string>
   <string name="module.terms_of_service.consent.delete_account">Mein Konto löschen</string>
   <string name="module.terms_of_service.consent.submit">Absenden</string>
+  <string name="module.terms_of_service.consent.select_all_error">Wählen Sie vor dem Absenden alle erforderlichen Dokumente aus.</string>
   <string name="module.terms_of_service.consent.accept">Zustimmen und fortfahren</string>
   <string name="module.terms_of_service.consent.decline">Ablehnen</string>
   <string name="module.terms_of_service.consent.signup.prefix">Ich stimme den</string>

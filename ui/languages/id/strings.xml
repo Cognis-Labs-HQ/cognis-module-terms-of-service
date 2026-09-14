@@ -42,6 +42,7 @@
   <string name="module.terms_of_service.consent.here">di sini</string>
   <string name="module.terms_of_service.consent.delete_account">Hapus akun saya</string>
   <string name="module.terms_of_service.consent.submit">Kirim</string>
+  <string name="module.terms_of_service.consent.select_all_error">Pilih semua dokumen wajib sebelum mengirim.</string>
   <string name="module.terms_of_service.consent.accept">Terima dan lanjutkan</string>
   <string name="module.terms_of_service.consent.decline">Tolak</string>
   <string name="module.terms_of_service.consent.signup.prefix">Saya menyetujui</string>

@@ -42,6 +42,7 @@
   <string name="module.terms_of_service.consent.here">here</string>
   <string name="module.terms_of_service.consent.delete_account">Delete my account</string>
   <string name="module.terms_of_service.consent.submit">Submit</string>
+  <string name="module.terms_of_service.consent.select_all_error">Select all required documents before submitting.</string>
   <string name="module.terms_of_service.consent.accept">Accept and continue</string>
   <string name="module.terms_of_service.consent.decline">Decline</string>
   <string name="module.terms_of_service.consent.signup.prefix">I agree to the</string>

@@ -90,6 +90,10 @@ Replaces the plain legal-document heading list with Cognis’s exported grouped,
 
 Makes consent enforcement the sole footer-link owner again and loads publication status even on exempt legal routes, so only published links appear and remain registered across SPA navigation while the core controls their active state. Each public legal page now applies its localized browser title after authenticated shell setup on both hard refresh and SPA navigation.
 
+## Error feedback for incomplete consent
+
+Submitting the mandatory consent popup without selecting every required document now keeps the popup open and displays a localized error through the host toast capability, clearly explaining how to continue.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -125,3 +129,5 @@ Makes consent enforcement the sole footer-link owner again and loads publication
 - [232a8c0](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/232a8c08a256f5f5cef3dca2200b3436cde4a6ea)
 
 - [21e6522](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/21e652276d8b297ad9ddb617a78acad9f8157bc8)
+
+- [4fd26a8](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/4fd26a801ce84802d77fd20e7ebdcffe13666e3d)
