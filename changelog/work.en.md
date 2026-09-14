@@ -94,6 +94,10 @@ Makes consent enforcement the sole footer-link owner again and loads publication
 
 Submitting the mandatory consent popup without selecting every required document now keeps the popup open and displays a localized error through the host toast capability, clearly explaining how to continue.
 
+## Aligned with core side-menu scrolling
+
+Uses the latest Cognis side-menu contract by supplying each rendered legal heading as an item `targetId` and configuring smooth scrolling on the controller. Core now owns target lookup and start-aligned scrolling, while the module only synchronizes selected-section state.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -131,3 +135,5 @@ Submitting the mandatory consent popup without selecting every required document
 - [21e6522](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/21e652276d8b297ad9ddb617a78acad9f8157bc8)
 
 - [4fd26a8](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/4fd26a801ce84802d77fd20e7ebdcffe13666e3d)
+
+- [b65f77e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b65f77e1261e7785a2d04b60ae43d4a87c886529)

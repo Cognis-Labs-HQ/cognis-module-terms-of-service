@@ -515,10 +515,6 @@ export async function mount(root, { signal } = {}) {
     });
     const selectDocumentSection = (sectionId) => {
         navigationMenu.setActive(sectionId);
-        root.querySelector(`#${sectionId}`)?.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-        });
     };
     const composer = createPageComposer(root, {
         allowCustomization: false,
@@ -553,7 +549,11 @@ export async function mount(root, { signal } = {}) {
             article?.querySelectorAll("h2, h3").forEach((heading, index) => {
                 const id = `${slug}-section-${index + 1}`;
                 heading.id = id;
-                navigationItems.push({ id, label: heading.textContent });
+                navigationItems.push({
+                    id,
+                    label: heading.textContent,
+                    targetId: id,
+                });
             });
             const navigation = root.querySelector(
                 "[data-legal-document-navigation]",
@@ -569,6 +569,7 @@ export async function mount(root, { signal } = {}) {
                 storageKeyPrefix: "terms-of-service-sections",
                 activeId: navigationItems[0]?.id,
                 onSelect: selectDocumentSection,
+                scrollBehavior: "smooth",
             });
             if (navigation) {
                 navigation.innerHTML = navigationMenu.render();

@@ -94,6 +94,10 @@ Macht die Zustimmungserzwingung wieder zur alleinigen Eigentümerin der Footer-L
 
 Wird das obligatorische Zustimmungs-Popup abgesendet, ohne jedes erforderliche Dokument auszuwählen, bleibt es nun geöffnet und zeigt über die Toast-Capability des Hosts einen lokalisierten Fehler mit einem klaren Hinweis zum Fortfahren.
 
+## An das Scrollen des Core-Side-Menüs angepasst
+
+Verwendet den neuesten Cognis-Side-Menu-Vertrag, indem jede dargestellte Rechtsüberschrift als `targetId` eines Eintrags übergeben und sanftes Scrollen am Controller konfiguriert wird. Der Core übernimmt nun Zielsuche und am Anfang ausgerichtetes Scrollen; das Modul synchronisiert nur noch den ausgewählten Abschnitt.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -131,3 +135,5 @@ Wird das obligatorische Zustimmungs-Popup abgesendet, ohne jedes erforderliche D
 - [21e6522](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/21e652276d8b297ad9ddb617a78acad9f8157bc8)
 
 - [4fd26a8](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/4fd26a801ce84802d77fd20e7ebdcffe13666e3d)
+
+- [b65f77e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b65f77e1261e7785a2d04b60ae43d4a87c886529)

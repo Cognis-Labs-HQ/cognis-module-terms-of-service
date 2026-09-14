@@ -184,6 +184,12 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /navigationMenu\.render\(\)/);
     assert.match(source, /navigationMenu\.mount\(navigation, \{ signal \}\)/);
     assert.match(source, /navigationMenu\.setActive\(sectionId\)/);
+    assert.match(source, /targetId: id/);
+    assert.match(source, /scrollBehavior: "smooth"/);
+    assert.doesNotMatch(
+        source,
+        /root\.querySelector\(`#\$\{sectionId\}`\)\?\.scrollIntoView/,
+    );
     assert.match(source, /data-legal-document-navigation/);
     assert.match(source, /publicPageComposers\.get\(root\)\?\.destroy/);
     assert.doesNotMatch(source, /openDocumentPopup/);
