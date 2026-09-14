@@ -258,6 +258,15 @@ test("public legal documents use one naturally scrolling composed page", () => {
         /module\.terms_of_service\.public\.page_title\.\$\{definition\.titleKey\}/,
     );
     assert.match(source, /default: \[12, 1\]/);
+    assert.match(source, /authenticated &&[\s\S]*get\("view"\) === "changes"/);
+    assert.match(source, /pageContext: authenticated \?/);
+    assert.match(source, /toolbar: authenticated/);
+    assert.match(source, /showTopbar: authenticated/);
+    assert.match(source, /showThemeToggle: authenticated/);
+    assert.match(source, /showFooter: authenticated/);
+    assert.match(source, /frameless: !authenticated/);
+    assert.match(source, /persistLayoutPreferences: authenticated/);
+    assert.match(source, /enableAccountEnhancements: authenticated/);
     assert.match(
         enforcement,
         /const status = await consentStatus\(\);[\s\S]*syncFooterLinks\(status\.documents, i18n\);[\s\S]*LEGAL_DOCUMENT_PATHS\.has\(location\.pathname\)/,

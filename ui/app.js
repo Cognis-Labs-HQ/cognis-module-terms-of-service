@@ -585,9 +585,10 @@ export async function mount(root, { signal } = {}) {
     const title = i18n.t(
         `module.terms_of_service.document.${definition.titleKey}`,
     );
-    const comparisonMode =
-        new URLSearchParams(window.location.search).get("view") === "changes";
     const authenticated = Boolean(localStorage.getItem("cognis_access_token"));
+    const comparisonMode =
+        authenticated &&
+        new URLSearchParams(window.location.search).get("view") === "changes";
     if (authenticated) await ensureFullAccountSession();
     let renderedContent = "";
     try {
@@ -663,19 +664,29 @@ export async function mount(root, { signal } = {}) {
         ],
         preferenceKey: `terms-of-service-public-${slug}`,
         i18n,
-        pageContext: { title, subtitle: "" },
-        toolbar: [
-            {
-                id: "document-sections",
-                label: i18n.t("module.terms_of_service.public.navigation"),
-                render: () =>
-                    `<div data-legal-document-navigation>${navigationMenu.render()}</div>`,
-            },
-        ],
+        pageContext: authenticated ? { title, subtitle: "" } : null,
+        toolbar: authenticated
+            ? [
+                  {
+                      id: "document-sections",
+                      label: i18n.t(
+                          "module.terms_of_service.public.navigation",
+                      ),
+                      render: () =>
+                          `<div data-legal-document-navigation>${navigationMenu.render()}</div>`,
+                  },
+              ]
+            : [],
         toolbarScrollable: true,
         contentScrolling: false,
+        showTopbar: authenticated,
         showNavbar: authenticated,
+        showThemeToggle: authenticated,
+        showFooter: authenticated,
+        frameless: !authenticated,
+        persistLayoutPreferences: authenticated,
         requireAccountSession: authenticated,
+        enableAccountEnhancements: authenticated,
         onRender() {
             const article = root.querySelector(".terms-of-service-rendered");
             const navigationItems = [];
