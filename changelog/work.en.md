@@ -110,6 +110,10 @@ Legal section links now leave the selected heading visible beneath the fixed she
 
 The consent popup now enables Submit only after every required document is selected. The API validates the submitted version map, returns HTTP 400 for malformed or incomplete published-document consent, and the popup displays a localized error toast when the server rejects such a request.
 
+## Never expose the unpublished sentinel
+
+Consent reports now translate the internal unpublished database sentinel to no recorded version, so the UI displays the localized Never Consented value or an actual published document version ID.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -155,3 +159,5 @@ The consent popup now enables Submit only after every required document is selec
 - [86a9d66](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/86a9d66bed8866d0f92caae634762c6534a89e3d)
 
 - [3012d12](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3012d12222273a77467f224af6b1a3be9fe809aa)
+
+- [ab70147](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/ab70147c3a8f72f4d7f35b0ecefaaea2ea9f930e)

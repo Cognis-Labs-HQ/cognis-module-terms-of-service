@@ -110,6 +110,10 @@ Links zu Abschnitten von Rechtsdokumenten lassen die ausgewählte Überschrift n
 
 Das Zustimmungs-Popup aktiviert Absenden erst, nachdem alle erforderlichen Dokumente ausgewählt wurden. Die API validiert die übermittelte Versionszuordnung, antwortet bei fehlerhafter oder unvollständiger Zustimmung zu veröffentlichten Dokumenten mit HTTP 400 und das Popup zeigt bei einer solchen Ablehnung einen lokalisierten Fehler-Toast.
 
+## Platzhalter für unveröffentlichte Dokumente nie anzeigen
+
+Zustimmungsberichte wandeln den internen Datenbankplatzhalter für unveröffentlichte Dokumente nun in eine nicht erfasste Version um, sodass die Oberfläche den lokalisierten Wert für Nie zugestimmt oder eine tatsächliche veröffentlichte Dokumentversions-ID anzeigt.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -155,3 +159,5 @@ Das Zustimmungs-Popup aktiviert Absenden erst, nachdem alle erforderlichen Dokum
 - [86a9d66](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/86a9d66bed8866d0f92caae634762c6534a89e3d)
 
 - [3012d12](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3012d12222273a77467f224af6b1a3be9fe809aa)
+
+- [ab70147](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/ab70147c3a8f72f4d7f35b0ecefaaea2ea9f930e)

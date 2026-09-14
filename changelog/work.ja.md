@@ -66,6 +66,10 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 
 同意ポップアップは、必須文書がすべて選択された後にのみ送信を有効にします。API は送信されたバージョンマップを検証し、公開済み文書への同意が不正または不完全な場合は HTTP 400 を返し、サーバーがそのリクエストを拒否するとポップアップにローカライズされたエラー Toast を表示します。
 
+## 未公開 Sentinel を表示しない
+
+同意レポートでは、内部データベースの未公開 Sentinel を記録なしのバージョンに変換するようになり、UI にはローカライズされた未同意の値、または実際に公開された文書バージョン ID のみが表示されます。
+
 ## コミット
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -111,3 +115,5 @@ Cognis の再利用可能な Choice Checkbox と State Pill のスタイルを�
 - [86a9d66](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/86a9d66bed8866d0f92caae634762c6534a89e3d)
 
 - [3012d12](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3012d12222273a77467f224af6b1a3be9fe809aa)
+
+- [ab70147](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/ab70147c3a8f72f4d7f35b0ecefaaea2ea9f930e)

@@ -66,6 +66,10 @@ Menghapus pendaftaran footer dari halaman publik agar penegakan persetujuan menj
 
 Popup persetujuan kini hanya mengaktifkan Kirim setelah semua dokumen wajib dipilih. API memvalidasi pemetaan versi yang dikirim, mengembalikan HTTP 400 untuk persetujuan dokumen terbitan yang tidak valid atau tidak lengkap, dan popup menampilkan toast kesalahan terlokalisasi saat server menolak permintaan tersebut.
 
+## Jangan pernah tampilkan penanda belum diterbitkan
+
+Laporan persetujuan kini mengubah penanda basis data internal untuk dokumen yang belum diterbitkan menjadi versi yang tidak tercatat, sehingga antarmuka menampilkan nilai Belum Pernah Menyetujui yang terlokalisasi atau ID versi dokumen terbitan yang sebenarnya.
+
 ## Commit
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -111,3 +115,5 @@ Popup persetujuan kini hanya mengaktifkan Kirim setelah semua dokumen wajib dipi
 - [86a9d66](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/86a9d66bed8866d0f92caae634762c6534a89e3d)
 
 - [3012d12](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3012d12222273a77467f224af6b1a3be9fe809aa)
+
+- [ab70147](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/ab70147c3a8f72f4d7f35b0ecefaaea2ea9f930e)

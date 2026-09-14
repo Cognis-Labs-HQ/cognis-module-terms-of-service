@@ -191,7 +191,10 @@ export class LegalDocumentStore {
         });
         return (result.rows ?? []).map((row) => ({
             accountId: String(row.account_id),
-            version: row[versionColumn] ? String(row[versionColumn]) : null,
+            version:
+                row[versionColumn] && row[versionColumn] !== UNPUBLISHED_VERSION
+                    ? String(row[versionColumn])
+                    : null,
             consentedAt: row.consented_at ?? null,
         }));
     }

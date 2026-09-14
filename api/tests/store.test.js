@@ -233,6 +233,11 @@ test("consent reports expose the selected document version per account", async (
                         privacy_version: "privacy-v3",
                         consented_at: "2026-09-13T00:00:00Z",
                     },
+                    {
+                        account_id: "account-2",
+                        privacy_version: "unpublished",
+                        consented_at: "2026-09-12T00:00:00Z",
+                    },
                 ],
             };
         },
@@ -246,6 +251,11 @@ test("consent reports expose the selected document version per account", async (
             accountId: "account-1",
             version: "privacy-v3",
             consentedAt: "2026-09-13T00:00:00Z",
+        },
+        {
+            accountId: "account-2",
+            version: null,
+            consentedAt: "2026-09-12T00:00:00Z",
         },
     ]);
 });
