@@ -102,6 +102,10 @@ Uses the latest Cognis side-menu contract by supplying each rendered legal headi
 
 Changes the neutral action in the account deletion confirmation from “Keep editing” to the direct “Cancel” label, without changing the separate editor-removal confirmation.
 
+## Stable legal navigation
+
+Legal section links now leave the selected heading visible beneath the fixed shell header. Published legal footer links are reconciled on every SPA route transition and recover if the host registry is remounted, so they remain visible when entering or switching between legal pages.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -143,3 +147,5 @@ Changes the neutral action in the account deletion confirmation from “Keep edi
 - [b65f77e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b65f77e1261e7785a2d04b60ae43d4a87c886529)
 
 - [a3621a1](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a3621a16e00739912d95772fbd73937a449fcd4e)
+
+- [86a9d66](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/86a9d66bed8866d0f92caae634762c6534a89e3d)

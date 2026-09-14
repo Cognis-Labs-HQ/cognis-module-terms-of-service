@@ -90,6 +90,11 @@
     min-height: 12rem;
 }
 
+.terms-of-service-rendered h2,
+.terms-of-service-rendered h3 {
+    scroll-margin-block-start: 5rem;
+}
+
 .terms-of-service-mode-row {
     margin-block-start: 0.5rem;
     padding-block-end: 1rem;

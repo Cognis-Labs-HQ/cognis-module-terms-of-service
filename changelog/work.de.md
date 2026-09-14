@@ -102,6 +102,10 @@ Verwendet den neuesten Cognis-Side-Menu-Vertrag, indem jede dargestellte Rechts�
 
 Ändert die neutrale Aktion in der Bestätigung zur Kontolöschung von „Weiter bearbeiten“ in das eindeutige „Abbrechen“, ohne die separate Bestätigung zum Entfernen des Editors zu verändern.
 
+## Stabile Navigation auf Rechtsseiten
+
+Links zu Abschnitten von Rechtsdokumenten lassen die ausgewählte Überschrift nun unterhalb der festen Kopfzeile sichtbar. Veröffentlichte Links im Footer werden bei jedem SPA-Routenwechsel abgeglichen und nach einer erneuten Einbindung der Host-Registrierung wiederhergestellt, sodass sie beim Öffnen und Wechseln von Rechtsseiten sichtbar bleiben.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -143,3 +147,5 @@ Verwendet den neuesten Cognis-Side-Menu-Vertrag, indem jede dargestellte Rechts�
 - [b65f77e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b65f77e1261e7785a2d04b60ae43d4a87c886529)
 
 - [a3621a1](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/a3621a16e00739912d95772fbd73937a449fcd4e)
+
+- [86a9d66](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/86a9d66bed8866d0f92caae634762c6534a89e3d)

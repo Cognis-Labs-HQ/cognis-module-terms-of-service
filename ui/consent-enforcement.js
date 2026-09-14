@@ -56,15 +56,22 @@ const CONSENT_REFRESH_INTERVAL_MS = 5_000;
 let consentEndpointAvailable = true;
 let consentRefreshTimer;
 let enforcementPromise;
+let footerRefreshPromise;
 const footerLinkDisposers = new Map();
 
 function syncFooterLinks(documents, i18n) {
     const footerLinks = uiCtx.capabilities.get("ui:footerLinks");
     if (typeof footerLinks?.add !== "function") return;
     for (const document of documents) {
-        if (footerLinkDisposers.has(document.slug)) continue;
         const linkId = `terms-of-service:${document.slug}`;
-        if (footerLinks.list?.().some((link) => link.id === linkId)) continue;
+        const registered = footerLinks
+            .list?.()
+            .some((link) => link.id === linkId);
+        if (footerLinkDisposers.has(document.slug) && registered) continue;
+        if (footerLinkDisposers.has(document.slug) && !registered) {
+            footerLinkDisposers.delete(document.slug);
+        }
+        if (registered) continue;
         const titleKey =
             document.slug === "terms-of-service"
                 ? "terms"
@@ -103,6 +110,38 @@ async function consentStatus() {
     }
     if (!response.ok) throw new Error("consent_status_unavailable");
     return (await response.json()).data;
+}
+
+function refreshFooterLinks() {
+    if (!footerRefreshPromise) {
+        footerRefreshPromise = (async () => {
+            const status = await consentStatus();
+            if (!status) return;
+            const i18n = await createI18n({
+                componentStringBaseUrls: [
+                    "/static/modules/terms-of-service/languages",
+                ],
+            });
+            syncFooterLinks(status.documents, i18n);
+        })().finally(() => {
+            footerRefreshPromise = undefined;
+        });
+    }
+    return footerRefreshPromise;
+}
+
+function refreshFooterLinksAfterNavigation() {
+    void refreshFooterLinks().catch((error) => {
+        uiCtx.capabilities.get("ui:log")?.(
+            "error",
+            "Legal footer link refresh failed.",
+            {
+                component: "terms-of-service",
+                operation: "refreshFooterLinks",
+                error: error instanceof Error ? error.message : String(error),
+            },
+        );
+    });
 }
 
 async function deleteCurrentAccount(i18n) {
@@ -339,11 +378,19 @@ function scheduleConsentRefresh() {
 export function teardownConsentEnforcement() {
     clearTimeout(consentRefreshTimer);
     consentRefreshTimer = undefined;
+    window.removeEventListener(
+        "cognis:route-will-change",
+        refreshFooterLinksAfterNavigation,
+    );
     footerLinkDisposers.forEach((dispose) => dispose());
     footerLinkDisposers.clear();
 }
 
 window.addEventListener("pagehide", teardownConsentEnforcement, { once: true });
+window.addEventListener(
+    "cognis:route-will-change",
+    refreshFooterLinksAfterNavigation,
+);
 
 uiCtx.extendFlow(
     "authenticate-session",
