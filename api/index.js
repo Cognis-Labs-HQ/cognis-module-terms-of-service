@@ -75,6 +75,8 @@ export function registerApi(router, ctx) {
                 } catch (error) {
                     const unavailable =
                         error.message === "document_diff_unavailable";
+                    const historicalVersionUnavailable =
+                        error.message === "document_version_not_found";
                     ctx.log?.("error", "Legal document diff loading failed.", {
                         component: "terms-of-service",
                         operation: "loadConsentDiff",
@@ -82,16 +84,24 @@ export function registerApi(router, ctx) {
                         slug,
                         error: error.message,
                     });
-                    sendJson(response, unavailable ? 404 : 500, {
-                        error: {
-                            code: unavailable
-                                ? error.message
-                                : "internal_error",
-                            message: unavailable
-                                ? "No prior consented version is available."
-                                : "The legal document changes could not be loaded.",
+                    sendJson(
+                        response,
+                        unavailable || historicalVersionUnavailable ? 404 : 500,
+                        {
+                            error: {
+                                code: historicalVersionUnavailable
+                                    ? "historical_version_unavailable"
+                                    : unavailable
+                                      ? error.message
+                                      : "internal_error",
+                                message: historicalVersionUnavailable
+                                    ? "The previously consented document version is unavailable."
+                                    : unavailable
+                                      ? "No prior consented version is available."
+                                      : "The legal document changes could not be loaded.",
+                            },
                         },
-                    });
+                    );
                 }
             },
             { access: { minRole: "user" } },

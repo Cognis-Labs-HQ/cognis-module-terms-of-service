@@ -8,6 +8,7 @@ const enforcement = readFileSync("ui/consent-enforcement.js", "utf8");
 const registration = readFileSync("ui/registration-consent.js", "utf8");
 const legalStyles = readFileSync("ui/styles/legal.css", "utf8");
 const uiRegistration = readFileSync("api/ui.js", "utf8");
+const manifest = JSON.parse(readFileSync("manifest.json", "utf8"));
 
 test("browser code imports the core Markdown renderer through ui:reuse", () => {
     assert.match(resources, /Symbol\.for\("cognis\.uiCtx"\)/);
@@ -17,6 +18,10 @@ test("browser code imports the core Markdown renderer through ui:reuse", () => {
     assert.match(source, /importReuseModule\("side-menu\.js"\)/);
     assert.match(source, /renderMarkdown\(textarea\.value\)/);
     assert.doesNotMatch(source, /host\.reuse|markdownComposer/);
+});
+
+test("document comparison declares its host capability", () => {
+    assert.ok(manifest.requiresCapabilities.includes("ui:documentDiff"));
 });
 
 test("legal editors use Cognis utilities and standard action variants", () => {
@@ -139,10 +144,7 @@ test("consent is enforced during registration and authenticated sessions", () =>
     );
     assert.match(enforcement, /while \(true\)/);
     assert.match(enforcement, /terms-of-service-consent-card/);
-    assert.match(enforcement, /capabilities\.get\("ui:documentDiff"\)/);
-    assert.match(enforcement, /renderDocumentDiff\(document\.diff\)/);
-    assert.match(enforcement, /consent-diff\/\$\{document\.slug\}/);
-    assert.match(enforcement, /module\.terms_of_service\.consent\.changes/);
+    assert.match(enforcement, /\?view=changes/);
     assert.match(enforcement, /class="choice-checkbox"/);
     assert.match(enforcement, /loadReuseStylesheet\("choice-checkbox\.css"\)/);
     assert.match(enforcement, /loadReuseStylesheet\("state-pill\.css"\)/);
@@ -214,6 +216,15 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /createPageComposer\(root, \{/);
     assert.match(source, /contentScrolling: false/);
     assert.match(source, /requireAccountSession: authenticated/);
+    assert.match(source, /loadReuseStylesheet\("document-diff\.css"\)/);
+    assert.match(source, /URLSearchParams\(window\.location\.search\)/);
+    assert.match(source, /capabilities\.get\("ui:documentDiff"\)/);
+    assert.match(source, /renderMarkdownDocumentDiff/);
+    assert.match(source, /consent-diff\/\$\{slug\}/);
+    assert.match(
+        source,
+        /module\.terms_of_service\.consent\.changes_unavailable/,
+    );
     assert.match(source, /toolbarScrollable: true/);
     assert.match(source, /querySelectorAll\("h2, h3"\)/);
     assert.match(source, /createSideMenu\(\{/);

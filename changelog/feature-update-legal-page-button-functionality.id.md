@@ -114,6 +114,10 @@ Memperlakukan penanda belum diterbitkan sebagai tidak ada persetujuan sebelumnya
 
 Pengguna yang kembali kini melihat perbandingan terstruktur baris demi baris antara versi yang sebelumnya disetujui dan kebijakan terbaru yang diterbitkan. Rute modul terautentikasi mendelegasikan perbandingan ke `docs:versionStore`, sementara popup persetujuan merender penambahan, penghapusan, dan penggantian melalui kapabilitas host `ui:documentDiff`.
 
+## Perbandingan dipindahkan ke halaman hukum penuh
+
+Mendeklarasikan `ui:documentDiff` sebagai kapabilitas host wajib dan mengubah tautan kebijakan yang diperbarui agar membuka rute hukum biasa dengan `?view=changes`, sementara tautan footer tetap memakai rute polos. Halaman berukuran penuh merender perbandingan sadar Markdown dengan stylesheet host khusus dan menampilkan penjelasan tidak tersedia yang dilokalkan ketika konten historis sebelum migrasi tidak dapat dibandingkan.
+
 ## Commit
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
@@ -154,3 +158,4 @@ Pengguna yang kembali kini melihat perbandingan terstruktur baris demi baris ant
 - [611f637](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/611f637d7272196cbdb2c20276588412de5fe558)
 - [c26254a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c26254a2483d2e4fd05d8ffd2a5545a44c49b90c)
 - [5628abb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5628abb5aee3e080e5046835d094b40d67380a41)
+- [43ee0a3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/43ee0a3ccd9d6cc51f4eb28ece4c9d76aaedc465)

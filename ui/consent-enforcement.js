@@ -198,42 +198,9 @@ async function deleteCurrentAccount(i18n) {
 }
 
 async function requestConsent(status, i18n) {
-    const documentDiff = uiCtx.capabilities.get("ui:documentDiff");
-    if (typeof documentDiff?.renderDocumentDiff !== "function") {
-        throw new Error("Required UI capability unavailable: ui:documentDiff");
-    }
     while (true) {
-        const pendingDocuments = await Promise.all(
-            status.documents
-                .filter((document) => !document.accepted)
-                .map(async (document) => {
-                    if (!document.consentedVersion) return document;
-                    try {
-                        const response = await apiFetch(
-                            `/api/v1/modules/terms-of-service/consent-diff/${document.slug}`,
-                        );
-                        if (!response.ok) throw new Error("diff_unavailable");
-                        return {
-                            ...document,
-                            diff: (await response.json()).data,
-                        };
-                    } catch (error) {
-                        uiCtx.capabilities.get("ui:log")?.(
-                            "error",
-                            "Legal document changes could not be loaded.",
-                            {
-                                component: "terms-of-service",
-                                operation: "loadConsentDiff",
-                                slug: document.slug,
-                                error:
-                                    error instanceof Error
-                                        ? error.message
-                                        : String(error),
-                            },
-                        );
-                        return document;
-                    }
-                }),
+        const pendingDocuments = status.documents.filter(
+            (document) => !document.accepted,
         );
         let acceptedVersions;
         const action = await openPopup({
@@ -248,8 +215,7 @@ async function requestConsent(status, i18n) {
                             <div class="terms-of-service-consent-content">
                                 <div class="terms-of-service-consent-title"><strong>${escapeHtml(i18n.t(`module.terms_of_service.document.${document.slug === "terms-of-service" ? "terms" : document.slug === "privacy-policy" ? "privacy" : "eula"}`))}</strong>
                                 <span class="state-pill pill-active">${escapeHtml(i18n.t(`module.terms_of_service.consent.${document.state}`))}</span></div>
-                                <div class="terms-of-service-consent-read">${escapeHtml(i18n.t("module.terms_of_service.consent.read_latest"))} <a href="${escapeHtml(document.path)}" target="_blank" rel="noopener noreferrer">${escapeHtml(i18n.t("module.terms_of_service.consent.here"))}</a></div>
-                                ${document.diff ? `<div class="terms-of-service-consent-diff"><strong>${escapeHtml(i18n.t("module.terms_of_service.consent.changes"))}</strong>${documentDiff.renderDocumentDiff(document.diff)}</div>` : ""}
+                                <div class="terms-of-service-consent-read">${escapeHtml(i18n.t("module.terms_of_service.consent.read_latest"))} <a href="${escapeHtml(`${document.path}${document.consentedVersion ? "?view=changes" : ""}`)}" target="_blank" rel="noopener noreferrer">${escapeHtml(i18n.t("module.terms_of_service.consent.here"))}</a></div>
                             </div>
                         </label>`,
                     )

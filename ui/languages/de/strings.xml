@@ -41,7 +41,7 @@
   <string name="module.terms_of_service.consent.updated">Aktualisierung</string>
   <string name="module.terms_of_service.consent.read_latest">Lesen Sie das neueste Dokument</string>
   <string name="module.terms_of_service.consent.here">hier</string>
-  <string name="module.terms_of_service.consent.changes">Änderungen seit Ihrer Zustimmung</string>
+  <string name="module.terms_of_service.consent.changes_unavailable">Die Änderungen können nicht angezeigt werden, weil Ihre zuvor akzeptierte Version nicht verfügbar ist. Öffnen Sie das neueste Dokument, um die aktuelle Richtlinie zu prüfen.</string>
   <string name="module.terms_of_service.consent.delete_account">Mein Konto löschen</string>
   <string name="module.terms_of_service.consent.submit">Absenden</string>
   <string name="module.terms_of_service.consent.select_all_error">Wählen Sie vor dem Absenden alle erforderlichen Dokumente aus.</string>

@@ -30,7 +30,10 @@ const [
     importReuseModule("side-menu.js"),
 ]);
 
-await loadReuseStylesheet("state-pill.css");
+await Promise.all([
+    loadReuseStylesheet("state-pill.css"),
+    loadReuseStylesheet("document-diff.css"),
+]);
 
 const API_PATH = "/api/v1/modules/terms-of-service";
 const DOCUMENTS = [
@@ -560,31 +563,59 @@ export async function mount(root, { signal } = {}) {
     const title = i18n.t(
         `module.terms_of_service.document.${definition.titleKey}`,
     );
-    let renderedMarkdown = "";
+    const comparisonMode =
+        new URLSearchParams(window.location.search).get("view") === "changes";
+    const authenticated = Boolean(localStorage.getItem("cognis_access_token"));
+    if (authenticated) await ensureFullAccountSession();
+    let renderedContent = "";
     try {
-        const response = await apiFetch(`${API_PATH}/public/${slug}`, {
-            signal,
-        });
-        const document = await readPayload(response);
-        renderedMarkdown = renderMarkdown(document.markdown);
+        if (comparisonMode) {
+            const documentDiff = uiCtx.capabilities.get("ui:documentDiff");
+            if (
+                typeof documentDiff?.renderMarkdownDocumentDiff !== "function"
+            ) {
+                throw new Error(
+                    "Required UI capability unavailable: ui:documentDiff",
+                );
+            }
+            const response = await apiFetch(
+                `${API_PATH}/consent-diff/${slug}`,
+                { signal },
+            );
+            renderedContent = documentDiff.renderMarkdownDocumentDiff(
+                await readPayload(response),
+            );
+        } else {
+            const response = await apiFetch(`${API_PATH}/public/${slug}`, {
+                signal,
+            });
+            const document = await readPayload(response);
+            renderedContent = renderMarkdown(document.markdown);
+        }
     } catch (error) {
         uiCtx.capabilities.get("ui:log")?.(
             "error",
-            "Public legal document rendering failed.",
+            comparisonMode
+                ? "Legal document comparison rendering failed."
+                : "Public legal document rendering failed.",
             {
                 component: "terms-of-service",
-                operation: "renderPublicDocument",
+                operation: comparisonMode
+                    ? "renderConsentDiff"
+                    : "renderPublicDocument",
                 slug,
                 error: error instanceof Error ? error.message : String(error),
             },
         );
-        renderedMarkdown = `<p>${escapeHtml(
-            i18n.t("module.terms_of_service.public.unavailable"),
+        renderedContent = `<p>${escapeHtml(
+            i18n.t(
+                comparisonMode
+                    ? "module.terms_of_service.consent.changes_unavailable"
+                    : "module.terms_of_service.public.unavailable",
+            ),
         )}</p>`;
     }
 
-    const authenticated = Boolean(localStorage.getItem("cognis_access_token"));
-    if (authenticated) await ensureFullAccountSession();
     applyDocumentTitle(
         i18n,
         `module.terms_of_service.public.page_title.${definition.titleKey}`,
@@ -605,7 +636,7 @@ export async function mount(root, { signal } = {}) {
                 pinned: true,
                 gridSize: { default: [12, 1], min: [6, 1], max: "full" },
                 render: () =>
-                    `<article class="terms-of-service-rendered content-panel">${renderedMarkdown}</article>`,
+                    `<article class="terms-of-service-rendered content-panel">${renderedContent}</article>`,
             },
         ],
         preferenceKey: `terms-of-service-public-${slug}`,

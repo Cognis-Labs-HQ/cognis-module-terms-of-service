@@ -158,6 +158,10 @@ Treats the unpublished sentinel as no prior consent, prevents the refresh timer 
 
 Returning users now see a structured line-by-line comparison between the version they previously consented to and the latest published policy. The authenticated module route delegates comparison to `docs:versionStore`, while the consent popup renders additions, removals, and replacements through the host `ui:documentDiff` capability.
 
+## Moved comparisons to full legal pages
+
+Declares `ui:documentDiff` as a required host capability and changes updated-policy links to open the normal legal route with `?view=changes`, while footer links retain plain routes. The full-size page renders Markdown-aware comparisons with the dedicated host stylesheet and shows a localized unavailable explanation when historical pre-migration content cannot be compared.
+
 ## Commits
 
 - [00eaced](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/00eaced82b2b476b53ddedb031a5d12214d69e61)
@@ -198,3 +202,4 @@ Returning users now see a structured line-by-line comparison between the version
 - [611f637](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/611f637d7272196cbdb2c20276588412de5fe558)
 - [c26254a](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c26254a2483d2e4fd05d8ffd2a5545a44c49b90c)
 - [5628abb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5628abb5aee3e080e5046835d094b40d67380a41)
+- [43ee0a3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/43ee0a3ccd9d6cc51f4eb28ece4c9d76aaedc465)

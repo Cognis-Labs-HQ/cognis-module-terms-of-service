@@ -149,14 +149,6 @@
     display: block;
 }
 
-.terms-of-service-consent-diff {
-    display: grid;
-    gap: 0.5rem;
-    margin-block-start: 0.5rem;
-    max-height: 20rem;
-    overflow: auto;
-}
-
 .terms-of-service-report {
     border-top: 1px solid var(--color-border);
     display: grid;
