@@ -22,6 +22,7 @@
   <string name="module.terms_of_service.action.preview">Pratinjau</string>
   <string name="module.terms_of_service.error.load">Dokumen hukum tidak dapat dimuat.</string>
   <string name="module.terms_of_service.public.unavailable">Dokumen ini belum diterbitkan.</string>
+  <string name="module.terms_of_service.public.navigation">Navigasi</string>
   <string name="module.terms_of_service.name">Ketentuan Layanan</string>
   <string name="module.terms_of_service.summary">Terbitkan halaman Ketentuan Layanan, Kebijakan Privasi, dan EULA.</string>
   <string name="module.terms_of_service.description">Menambahkan administrasi dokumen hukum dan halaman hukum publik yang dirender dengan Markdown.</string>

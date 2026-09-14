@@ -15,6 +15,7 @@ const [
     { renderInfoTooltip },
     { createCollapsibleSectionComposer },
     { createPageComposer },
+    { createSideMenu },
 ] = await Promise.all([
     importReuseModule("api-client.js"),
     importReuseModule("i18n.js"),
@@ -26,6 +27,7 @@ const [
     importReuseModule("info-tooltip.js"),
     importReuseModule("collapsible-section-composer.js"),
     importReuseModule("page-composer/index.js"),
+    importReuseModule("side-menu.js"),
 ]);
 
 await loadReuseStylesheet("state-pill.css");
@@ -37,6 +39,7 @@ const DOCUMENTS = [
     { slug: "eula", titleKey: "eula" },
 ];
 const publicPageComposers = new WeakMap();
+const publicFooterLinkDisposers = new WeakMap();
 const REPORT_PAGE_SIZE = 10;
 const paginationUi = uiCtx.capabilities.get("ui:pagination");
 
@@ -67,6 +70,28 @@ function showToast(message) {
         throw new Error("Required UI capability unavailable: ui:showToast");
     }
     toast(message, { variant: "success" });
+}
+
+function syncPublicFooterLinks(root, i18n) {
+    publicFooterLinkDisposers.get(root)?.forEach((dispose) => dispose());
+    const footerLinks = uiCtx.capabilities.get("ui:footerLinks");
+    if (typeof footerLinks?.add !== "function") return;
+    const disposers = [];
+    for (const document of DOCUMENTS) {
+        const id = `terms-of-service:${document.slug}`;
+        if (footerLinks.list?.().some((link) => link.id === id)) continue;
+        disposers.push(
+            footerLinks.add({
+                id,
+                side: "right",
+                href: `/${document.slug}`,
+                label: i18n.t(
+                    `module.terms_of_service.document.${document.titleKey}`,
+                ),
+            }),
+        );
+    }
+    publicFooterLinkDisposers.set(root, disposers);
 }
 
 async function readPayload(response) {
@@ -501,9 +526,20 @@ export async function mount(root, { signal } = {}) {
         )}</p>`;
     }
 
-    const navigationItems = [];
     const authenticated = Boolean(localStorage.getItem("cognis_access_token"));
     if (authenticated) await ensureFullAccountSession();
+    syncPublicFooterLinks(root, i18n);
+    let navigationMenu = createSideMenu({
+        groups: [],
+        storageKeyPrefix: "terms-of-service-sections",
+    });
+    const selectDocumentSection = (sectionId) => {
+        navigationMenu.setActive(sectionId);
+        root.querySelector(`#${sectionId}`)?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+    };
     const composer = createPageComposer(root, {
         allowCustomization: false,
         elements: [
@@ -522,9 +558,9 @@ export async function mount(root, { signal } = {}) {
         toolbar: [
             {
                 id: "document-sections",
-                label: title,
+                label: i18n.t("module.terms_of_service.public.navigation"),
                 render: () =>
-                    `<nav class="terms-of-service-public-navigation">${navigationItems.join("")}</nav>`,
+                    `<div data-legal-document-navigation>${navigationMenu.render()}</div>`,
             },
         ],
         toolbarScrollable: true,
@@ -533,18 +569,31 @@ export async function mount(root, { signal } = {}) {
         requireAccountSession: authenticated,
         onRender() {
             const article = root.querySelector(".terms-of-service-rendered");
-            navigationItems.length = 0;
+            const navigationItems = [];
             article?.querySelectorAll("h2, h3").forEach((heading, index) => {
                 const id = `${slug}-section-${index + 1}`;
                 heading.id = id;
-                navigationItems.push(
-                    `<a href="#${id}" data-document-section>${escapeHtml(heading.textContent)}</a>`,
-                );
+                navigationItems.push({ id, label: heading.textContent });
             });
             const navigation = root.querySelector(
-                ".terms-of-service-public-navigation",
+                "[data-legal-document-navigation]",
             );
-            if (navigation) navigation.innerHTML = navigationItems.join("");
+            navigationMenu = createSideMenu({
+                groups: [
+                    {
+                        id: slug,
+                        label: title,
+                        items: navigationItems,
+                    },
+                ],
+                storageKeyPrefix: "terms-of-service-sections",
+                activeId: navigationItems[0]?.id,
+                onSelect: selectDocumentSection,
+            });
+            if (navigation) {
+                navigation.innerHTML = navigationMenu.render();
+                navigationMenu.mount(navigation, { signal });
+            }
             initializeMarkdownCodeCopy();
         },
     });
@@ -552,24 +601,13 @@ export async function mount(root, { signal } = {}) {
     publicPageComposers.set(root, composer);
     await composer.init();
     finishLoading();
-    root.addEventListener(
-        "click",
-        (event) => {
-            const link = event.target.closest("[data-document-section]");
-            if (!link) return;
-            event.preventDefault();
-            root.querySelector(link.getAttribute("href"))?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-            });
-        },
-        { signal },
-    );
 }
 
 export function unmount(root) {
     publicPageComposers.get(root)?.destroy?.();
     publicPageComposers.delete(root);
+    publicFooterLinkDisposers.get(root)?.forEach((dispose) => dispose());
+    publicFooterLinkDisposers.delete(root);
     root.replaceChildren();
 }
 

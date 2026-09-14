@@ -14,6 +14,7 @@ test("browser code imports the core Markdown renderer through ui:reuse", () => {
     assert.match(resources, /capabilities\.get\("ui:reuse"\)/);
     assert.match(source, /importReuseModule\("markdown-renderer\.js"\)/);
     assert.match(source, /importReuseModule\("page-composer\/index\.js"\)/);
+    assert.match(source, /importReuseModule\("side-menu\.js"\)/);
     assert.match(source, /renderMarkdown\(textarea\.value\)/);
     assert.doesNotMatch(source, /host\.reuse|markdownComposer/);
 });
@@ -99,7 +100,7 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /action: "delete"/);
     assert.match(enforcement, /ui:footerLinks/);
     assert.match(enforcement, /footerLinks\.list\?\.\(\)/);
-    assert.doesNotMatch(source, /capabilities\.get\("ui:footerLinks"\)/);
+    assert.match(source, /capabilities\.get\("ui:footerLinks"\)/);
     assert.match(enforcement, /response\.ok/);
     assert.match(enforcement, /validate-stored-token/);
     assert.match(enforcement, /apply-alternate-auth/);
@@ -169,13 +170,21 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /requireAccountSession: authenticated/);
     assert.match(source, /toolbarScrollable: true/);
     assert.match(source, /querySelectorAll\("h2, h3"\)/);
-    assert.match(source, /data-document-section/);
+    assert.match(source, /createSideMenu\(\{/);
+    assert.match(source, /navigationMenu\.render\(\)/);
+    assert.match(source, /navigationMenu\.mount\(navigation, \{ signal \}\)/);
+    assert.match(source, /navigationMenu\.setActive\(sectionId\)/);
+    assert.match(source, /data-legal-document-navigation/);
     assert.match(source, /publicPageComposers\.get\(root\)\?\.destroy/);
     assert.doesNotMatch(source, /openDocumentPopup/);
     assert.match(source, /beginPageLoading\(root\)/);
     assert.match(source, /ensureFullAccountSession\(\)/);
     assert.match(source, /showNavbar: authenticated/);
     assert.match(source, /default: \[12, 1\]/);
+    assert.match(source, /function syncPublicFooterLinks/);
+    assert.match(source, /footerLinks\.add\(\{/);
+    assert.match(source, /href: `\/\$\{document\.slug\}`/);
+    assert.match(source, /publicFooterLinkDisposers/);
     assert.match(
         enforcement,
         /LEGAL_DOCUMENT_PATHS\.has\(location\.pathname\)/,

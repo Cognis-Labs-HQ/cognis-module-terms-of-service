@@ -82,6 +82,10 @@ Richtet jedes Zustimmungskontrollkästchen am Dokumenttitel aus. Zustimmungsberi
 
 Fügt jedem Zustimmungsbericht getrennte Spalten für die akzeptierte und die neueste Version hinzu. Jede Zeile zeigt die vom Konto akzeptierte Version neben der aktuell veröffentlichten Version; ohne akzeptierte Version erscheint ein lokalisierter Wert „Nicht akzeptiert“.
 
+## Core-Seitennavigation und aktive Rechtslinks im Footer
+
+Ersetzt die einfache Überschriftenliste der Rechtsdokumente durch Cognis’ exportierten Controller für gruppierte, einklappbare Seitenmenüs, einschließlich Zustand des ausgewählten Abschnitts und sanftem Scrollen. Öffentliche Rechtsseiten tragen während ihrer Einbindung alle drei Rechtsrouten zum Footer bei, sodass der Core-Footer sie anzeigen und seinen routenabhängigen Aktivzustand anwenden kann.
+
 ## Commits
 
 - [2375f2c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2375f2cbe45c6ab21d7d93a70d94d2cc3c6e82a7)
@@ -113,3 +117,5 @@ Fügt jedem Zustimmungsbericht getrennte Spalten für die akzeptierte und die ne
 - [aca7aed](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/aca7aedb050d29fcafc1e1204d6cd0ec4649dda0)
 
 - [51b169b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/51b169b61a9aba1c49b50d66a8444c16964b5348)
+
+- [232a8c0](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/232a8c08a256f5f5cef3dca2200b3436cde4a6ea)

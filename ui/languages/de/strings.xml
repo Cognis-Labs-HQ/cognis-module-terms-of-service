@@ -22,6 +22,7 @@
   <string name="module.terms_of_service.action.preview">Vorschau</string>
   <string name="module.terms_of_service.error.load">Die Rechtsdokumente konnten nicht geladen werden.</string>
   <string name="module.terms_of_service.public.unavailable">Dieses Dokument wurde noch nicht veröffentlicht.</string>
+  <string name="module.terms_of_service.public.navigation">Navigation</string>
   <string name="module.terms_of_service.name">Nutzungsbedingungen</string>
   <string name="module.terms_of_service.summary">Veröffentlicht Nutzungsbedingungen, Datenschutzerklärung und EULA.</string>
   <string name="module.terms_of_service.description">Fügt die Verwaltung von Rechtsdokumenten und öffentliche, mit Markdown dargestellte Rechtsseiten hinzu.</string>

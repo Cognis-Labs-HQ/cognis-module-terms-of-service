@@ -22,6 +22,7 @@
   <string name="module.terms_of_service.action.preview">プレビュー</string>
   <string name="module.terms_of_service.error.load">法的文書を読み込めませんでした。</string>
   <string name="module.terms_of_service.public.unavailable">この文書はまだ公開されていません。</string>
+  <string name="module.terms_of_service.public.navigation">ナビゲーション</string>
   <string name="module.terms_of_service.name">利用規約</string>
   <string name="module.terms_of_service.summary">利用規約、プライバシーポリシー、EULA のページを公開します。</string>
   <string name="module.terms_of_service.description">法的文書の管理機能と Markdown で表示される公開法務ページを追加します。</string>

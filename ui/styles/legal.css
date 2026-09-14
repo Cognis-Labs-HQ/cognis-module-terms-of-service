@@ -6,11 +6,6 @@
     padding: 1.5rem;
 }
 
-.terms-of-service-public-navigation {
-    display: grid;
-    gap: 0.5rem;
-}
-
 .terms-of-service-heading {
     align-items: center;
     display: flex;

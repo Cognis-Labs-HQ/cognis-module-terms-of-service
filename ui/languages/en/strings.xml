@@ -22,6 +22,7 @@
   <string name="module.terms_of_service.action.preview">Preview</string>
   <string name="module.terms_of_service.error.load">The legal documents could not be loaded.</string>
   <string name="module.terms_of_service.public.unavailable">This document has not been published.</string>
+  <string name="module.terms_of_service.public.navigation">Navigation</string>
   <string name="module.terms_of_service.name">Terms of Service</string>
   <string name="module.terms_of_service.summary">Publish Terms of Service, Privacy Policy, and EULA pages.</string>
   <string name="module.terms_of_service.description">Adds legal-document administration and public Markdown-rendered legal pages.</string>
