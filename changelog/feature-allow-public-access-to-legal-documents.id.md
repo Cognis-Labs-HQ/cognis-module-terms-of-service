@@ -1,6 +1,6 @@
 # Dokumen Hukum Publik Tanpa Shell Login
 
-**Cabang Fitur:** work
+**Cabang Fitur:** feature-allow-public-access-to-legal-documents
 
 ## Dokumen hukum tersedia tanpa masuk
 

@@ -1,6 +1,6 @@
 # Öffentliche Rechtsdokumente ohne Anmelde-Shell
 
-**Feature-Branch:** work
+**Feature-Branch:** feature-allow-public-access-to-legal-documents
 
 ## Rechtsdokumente sind ohne Anmeldung verfügbar
 

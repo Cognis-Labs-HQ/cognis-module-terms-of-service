@@ -1,6 +1,6 @@
 # Public Legal Documents Without a Login Shell
 
-**Feature Branch:** work
+**Feature Branch:** feature-allow-public-access-to-legal-documents
 
 ## Legal documents are available without signing in
 

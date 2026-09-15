@@ -1,6 +1,6 @@
 # ログイン Shell のない公開法的文書
 
-**機能ブランチ:** work
+**機能ブランチ:** feature-allow-public-access-to-legal-documents
 
 ## ログインせずに法的文書を閲覧可能
 
