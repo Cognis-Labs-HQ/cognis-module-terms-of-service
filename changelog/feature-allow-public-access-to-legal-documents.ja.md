@@ -14,6 +14,10 @@
 
 認証 Footer は Host の License リンクを維持し、認証済みユーザー専用の Changelog リンクを削除して、3つの法的リンクを表示します。公開法的ページは端から端までの表示ではなく、構成済み文書レイアウトを維持するようになりました。
 
+## 認証 Footer のクリーンアップ
+
+認証 Footer Plugin は、モジュール所有リンクの各 Disposer を保持するようになりました。Export された Teardown がリンクを削除して Core Changelog Descriptor を復元し、無効化、アンインストール、再有効化の各サイクルで古いリンクが残ることを防ぎます。
+
 ## コミット
 
 - [53ee39c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/53ee39c1c93dd3e7a75d08c08fa1117b79002240)
@@ -24,3 +28,4 @@
 - [b8fcb15](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b8fcb1500ad700ed8aa6422148edf6539daee976)
 - [f81a194](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f81a194a3d10e8663d31367aa1c9017094f476db)
 - [0e7944f](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0e7944f94387695520604e30696097c06f192676)
+- [1d1b88e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1d1b88ed34fb5e39e375b6fe1d48618b6e9b7e5a)

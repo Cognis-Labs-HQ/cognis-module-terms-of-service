@@ -14,6 +14,10 @@ Outstanding consent statuses again use the core red disabled-state pill so they 
 
 The authentication footer keeps the host License link, removes the authenticated-only Changelogs link, and shows the three legal links. Public legal pages now retain their composed document layout instead of rendering edge-to-edge.
 
+## Authentication footer cleanup
+
+The authentication-footer plugin now retains every module-owned link disposer. Its exported teardown removes those links and restores the core Changelogs descriptor, preventing stale links across disable, uninstall, and re-enable cycles.
+
 ## Commits
 
 - [53ee39c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/53ee39c1c93dd3e7a75d08c08fa1117b79002240)
@@ -24,3 +28,4 @@ The authentication footer keeps the host License link, removes the authenticated
 - [b8fcb15](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b8fcb1500ad700ed8aa6422148edf6539daee976)
 - [f81a194](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f81a194a3d10e8663d31367aa1c9017094f476db)
 - [0e7944f](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0e7944f94387695520604e30696097c06f192676)
+- [1d1b88e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1d1b88ed34fb5e39e375b6fe1d48618b6e9b7e5a)

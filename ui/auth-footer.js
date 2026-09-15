@@ -11,8 +11,26 @@ const DOCUMENTS = [
     { slug: "eula", titleKey: "eula" },
 ];
 const footerLinks = uiCtx.capabilities.get("ui:footerLinks");
+const linkDisposers = [];
+let removedChangelogLink;
+
+export function teardownAuthFooterPlugin() {
+    linkDisposers.splice(0).forEach((dispose) => dispose());
+    if (
+        removedChangelogLink &&
+        !footerLinks
+            .list?.()
+            .some((link) => link.id === removedChangelogLink.id)
+    ) {
+        footerLinks.add(removedChangelogLink);
+    }
+    removedChangelogLink = undefined;
+}
 
 if (typeof footerLinks?.add === "function") {
+    removedChangelogLink = footerLinks
+        .list?.()
+        .find((link) => link.id === "core:changelogs");
     footerLinks.remove?.("core:changelogs");
     const i18n = await createI18n({
         componentStringBaseUrls: ["/static/modules/terms-of-service/languages"],
@@ -27,14 +45,16 @@ if (typeof footerLinks?.add === "function") {
             if (!response.ok) throw new Error("public_document_unavailable");
             const linkId = `terms-of-service:${document.slug}`;
             if (footerLinks.list?.().some((link) => link.id === linkId)) return;
-            footerLinks.add({
-                id: linkId,
-                side: "right",
-                href: `/${document.slug}`,
-                label: i18n.t(
-                    `module.terms_of_service.document.${document.titleKey}`,
-                ),
-            });
+            linkDisposers.push(
+                footerLinks.add({
+                    id: linkId,
+                    side: "right",
+                    href: `/${document.slug}`,
+                    label: i18n.t(
+                        `module.terms_of_service.document.${document.titleKey}`,
+                    ),
+                }),
+            );
         }),
     );
     publicationResults.forEach((result, index) => {

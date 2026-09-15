@@ -14,6 +14,10 @@ Status persetujuan yang belum diterima kembali memakai pil status nonaktif merah
 
 Footer autentikasi mempertahankan tautan Lisensi milik host, menghapus tautan Changelog khusus pengguna terautentikasi, dan menampilkan ketiga tautan hukum. Halaman hukum publik kini mempertahankan tata letak dokumen tersusun alih-alih dirender dari tepi ke tepi.
 
+## Pembersihan footer autentikasi
+
+Plugin footer autentikasi kini menyimpan setiap disposer tautan milik modul. Teardown yang diekspor menghapus tautan tersebut dan memulihkan deskriptor Changelog inti sehingga tidak ada tautan usang setelah siklus penonaktifan, pencopotan, dan pengaktifan ulang.
+
 ## Commit
 
 - [53ee39c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/53ee39c1c93dd3e7a75d08c08fa1117b79002240)
@@ -24,3 +28,4 @@ Footer autentikasi mempertahankan tautan Lisensi milik host, menghapus tautan Ch
 - [b8fcb15](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b8fcb1500ad700ed8aa6422148edf6539daee976)
 - [f81a194](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f81a194a3d10e8663d31367aa1c9017094f476db)
 - [0e7944f](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0e7944f94387695520604e30696097c06f192676)
+- [1d1b88e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1d1b88ed34fb5e39e375b6fe1d48618b6e9b7e5a)

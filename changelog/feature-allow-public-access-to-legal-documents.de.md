@@ -14,6 +14,10 @@ Ausstehende Zustimmungsstatus verwenden wieder die rote deaktivierte Status-Pill
 
 Der Authentifizierungs-Footer behält den Lizenz-Link des Hosts bei, entfernt den nur für authentifizierte Benutzer bestimmten Changelog-Link und zeigt die drei Rechtslinks. Öffentliche Rechtsseiten behalten nun ihr zusammengesetztes Dokumentlayout, statt randlos dargestellt zu werden.
 
+## Bereinigung des Authentifizierungs-Footers
+
+Das Authentifizierungs-Footer-Plugin bewahrt jetzt jeden Disposer für modulgesteuerte Links auf. Sein exportierter Teardown entfernt diese Links und stellt den Core-Changelog-Deskriptor wieder her, sodass bei Deaktivierung, Deinstallation und erneuter Aktivierung keine veralteten Links verbleiben.
+
 ## Commits
 
 - [53ee39c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/53ee39c1c93dd3e7a75d08c08fa1117b79002240)
@@ -24,3 +28,4 @@ Der Authentifizierungs-Footer behält den Lizenz-Link des Hosts bei, entfernt de
 - [b8fcb15](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b8fcb1500ad700ed8aa6422148edf6539daee976)
 - [f81a194](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f81a194a3d10e8663d31367aa1c9017094f476db)
 - [0e7944f](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0e7944f94387695520604e30696097c06f192676)
+- [1d1b88e](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1d1b88ed34fb5e39e375b6fe1d48618b6e9b7e5a)
