@@ -60,6 +60,8 @@ Keep modules cohesive and files at or below 1000 lines. Prefer existing capabili
 
 ## UI requirements
 
+Build every page through the Cognis page composer. For public pages that do not need page shell components, keep using the page composer and suppress those components through its configuration flags instead of rendering directly into the page root.
+
 Build dashboard content through the Cognis page composer and client-side router contracts supplied by the host. Do not implement full-page navigation with `window.location.href`, `window.location.replace`, or `window.location.reload`.
 
 Resolve all user-facing text through module-owned XML language resources. Namespace module keys as `module.terms_of_service.*`, keep keys lowercase ASCII with dots, hyphens, and underscores, and preserve German, English, Indonesian, and Japanese parity. Translate values in each locale rather than copying English. Route user-facing timestamps through the host timestamp capability and respect the user's font and theme preferences.

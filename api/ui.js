@@ -17,6 +17,9 @@ export function registerUi(ctx) {
         stylesheets: ["/static/modules/terms-of-service/styles/legal.css"],
         access: { minRole: "user" },
     });
+    ctx.registerAuthFooterPlugin({
+        scriptUrl: "/static/modules/terms-of-service/auth-footer.js",
+    });
     for (const slug of PUBLIC_ROUTES) {
         ctx.registerSpaRoute({
             id: `terms-of-service-${slug}`,
@@ -24,7 +27,7 @@ export function registerUi(ctx) {
             base: `/${slug}`,
             scriptUrl: "/static/modules/terms-of-service/app.js",
             stylesheets: ["/static/modules/terms-of-service/styles/legal.css"],
-            access: { public: true },
+            public: true,
         });
     }
 }

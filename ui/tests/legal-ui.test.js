@@ -8,6 +8,7 @@ const enforcement = readFileSync("ui/consent-enforcement.js", "utf8");
 const registration = readFileSync("ui/registration-consent.js", "utf8");
 const legalStyles = readFileSync("ui/styles/legal.css", "utf8");
 const uiRegistration = readFileSync("api/ui.js", "utf8");
+const authFooter = readFileSync("ui/auth-footer.js", "utf8");
 const manifest = JSON.parse(readFileSync("manifest.json", "utf8"));
 
 test("browser code imports the core Markdown renderer through ui:reuse", () => {
@@ -195,6 +196,23 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /operation: "refreshConsentStatus"/);
 });
 
+test("authentication pages receive links to public legal routes", () => {
+    assert.match(uiRegistration, /registerAuthFooterPlugin\(\{/);
+    assert.match(uiRegistration, /auth-footer\.js/);
+    assert.match(authFooter, /capabilities\.get\("ui:footerLinks"\)/);
+    assert.match(authFooter, /footerLinks\.add\(\{/);
+    assert.match(authFooter, /href: `\/\$\{document\.slug\}`/);
+    assert.match(authFooter, /footerLinks\.remove\?\.\("core:changelogs"\)/);
+    assert.match(authFooter, /public\/\$\{document\.slug\}/);
+    assert.match(authFooter, /response\.status === 404/);
+    assert.match(authFooter, /Promise\.allSettled/);
+    assert.match(authFooter, /operation: "loadAuthFooterLink"/);
+    assert.match(authFooter, /linkDisposers\.push\(/);
+    assert.match(authFooter, /export function teardownAuthFooterPlugin\(\)/);
+    assert.match(authFooter, /linkDisposers\.splice\(0\)/);
+    assert.match(authFooter, /footerLinks\.add\(removedChangelogLink\)/);
+});
+
 test("admin contribution follows the Administration sub-composer contract", () => {
     assert.match(source, /export function createAdminSection/);
     assert.match(source, /subComposerOptions:/);
@@ -250,6 +268,7 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /publicPageComposers\.get\(root\)\?\.destroy/);
     assert.doesNotMatch(source, /openDocumentPopup/);
     assert.match(source, /beginPageLoading\(root\)/);
+    assert.match(source, /mountWhenDirect/);
     assert.match(source, /ensureFullAccountSession\(\)/);
     assert.match(source, /showNavbar: authenticated/);
     assert.match(source, /applyDocumentTitle/);
@@ -258,6 +277,15 @@ test("public legal documents use one naturally scrolling composed page", () => {
         /module\.terms_of_service\.public\.page_title\.\$\{definition\.titleKey\}/,
     );
     assert.match(source, /default: \[12, 1\]/);
+    assert.match(source, /authenticated &&[\s\S]*get\("view"\) === "changes"/);
+    assert.match(source, /pageContext: \{ title, subtitle: "" \}/);
+    assert.match(source, /toolbar: \[/);
+    assert.match(source, /showTopbar: authenticated/);
+    assert.match(source, /showThemeToggle: authenticated/);
+    assert.match(source, /showFooter: authenticated/);
+    assert.match(source, /frameless: false/);
+    assert.match(source, /persistLayoutPreferences: authenticated/);
+    assert.match(source, /enableAccountEnhancements: authenticated/);
     assert.match(
         enforcement,
         /const status = await consentStatus\(\);[\s\S]*syncFooterLinks\(status\.documents, i18n\);[\s\S]*LEGAL_DOCUMENT_PATHS\.has\(location\.pathname\)/,
@@ -305,7 +333,7 @@ test("administration renders filterable paginated consent reports", () => {
         source,
         /hasPublishedContent \? consentReportMarkup\(i18n\) : ""/,
     );
-    assert.match(source, /user\.accepted \? "pill-active" : "pill-required"/);
+    assert.match(source, /user\.accepted \? "pill-active" : "pill-disabled"/);
     assert.match(source, /loadReuseStylesheet\("state-pill\.css"\)/);
     assert.match(legalStyles, /terms-of-service-report table/);
     assert.match(legalStyles, /terms-of-service-mode-toggle\.is-active/);
