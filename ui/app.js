@@ -128,7 +128,7 @@ function activateConsentReport(panel, document, i18n, apiFetch) {
         const rows = page.items
             .map(
                 (user) =>
-                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-required"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td><td>${user.version ? `<code>${escapeHtml(user.version)}</code>` : escapeHtml(i18n.t("module.terms_of_service.report.not_consented"))}</td><td><code>${escapeHtml(document.version)}</code></td></tr>`,
+                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-disabled"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td><td>${user.version ? `<code>${escapeHtml(user.version)}</code>` : escapeHtml(i18n.t("module.terms_of_service.report.not_consented"))}</td><td><code>${escapeHtml(document.version)}</code></td></tr>`,
             )
             .join("");
         report.querySelector("[data-consent-report-table]").innerHTML =

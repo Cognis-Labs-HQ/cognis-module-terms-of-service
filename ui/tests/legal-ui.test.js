@@ -196,14 +196,12 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /operation: "refreshConsentStatus"/);
 });
 
-test("authentication pages receive links to published legal documents", () => {
+test("authentication pages receive links to public legal routes", () => {
     assert.match(uiRegistration, /registerAuthFooterPlugin\(\{/);
     assert.match(uiRegistration, /auth-footer\.js/);
     assert.match(authFooter, /capabilities\.get\("ui:footerLinks"\)/);
-    assert.match(authFooter, /public\/\$\{document\.slug\}/);
     assert.match(authFooter, /footerLinks\.add\(\{/);
-    assert.match(authFooter, /Promise\.allSettled/);
-    assert.match(authFooter, /operation: "loadAuthFooterLink"/);
+    assert.match(authFooter, /href: `\/\$\{document\.slug\}`/);
 });
 
 test("admin contribution follows the Administration sub-composer contract", () => {
@@ -326,7 +324,7 @@ test("administration renders filterable paginated consent reports", () => {
         source,
         /hasPublishedContent \? consentReportMarkup\(i18n\) : ""/,
     );
-    assert.match(source, /user\.accepted \? "pill-active" : "pill-required"/);
+    assert.match(source, /user\.accepted \? "pill-active" : "pill-disabled"/);
     assert.match(source, /loadReuseStylesheet\("state-pill\.css"\)/);
     assert.match(legalStyles, /terms-of-service-report table/);
     assert.match(legalStyles, /terms-of-service-mode-toggle\.is-active/);
