@@ -8,6 +8,7 @@ const enforcement = readFileSync("ui/consent-enforcement.js", "utf8");
 const registration = readFileSync("ui/registration-consent.js", "utf8");
 const legalStyles = readFileSync("ui/styles/legal.css", "utf8");
 const uiRegistration = readFileSync("api/ui.js", "utf8");
+const authFooter = readFileSync("ui/auth-footer.js", "utf8");
 const manifest = JSON.parse(readFileSync("manifest.json", "utf8"));
 
 test("browser code imports the core Markdown renderer through ui:reuse", () => {
@@ -193,6 +194,16 @@ test("consent is enforced during registration and authenticated sessions", () =>
         /if \(!event\.persisted\) teardownConsentEnforcement/,
     );
     assert.match(enforcement, /operation: "refreshConsentStatus"/);
+});
+
+test("authentication pages receive links to published legal documents", () => {
+    assert.match(uiRegistration, /registerAuthFooterPlugin\(\{/);
+    assert.match(uiRegistration, /auth-footer\.js/);
+    assert.match(authFooter, /capabilities\.get\("ui:footerLinks"\)/);
+    assert.match(authFooter, /public\/\$\{document\.slug\}/);
+    assert.match(authFooter, /footerLinks\.add\(\{/);
+    assert.match(authFooter, /Promise\.allSettled/);
+    assert.match(authFooter, /operation: "loadAuthFooterLink"/);
 });
 
 test("admin contribution follows the Administration sub-composer contract", () => {

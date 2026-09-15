@@ -49,6 +49,9 @@ function context(registrations) {
         registerNavbarPlugin(plugin) {
             registrations.plugins.push(plugin);
         },
+        registerAuthFooterPlugin(plugin) {
+            registrations.authFooterPlugins.push(plugin);
+        },
         flow: {
             exists() {
                 return false;
@@ -59,7 +62,13 @@ function context(registrations) {
 }
 
 test("registers the Legal administration section and public pages", () => {
-    const registrations = { admin: [], api: [], pages: [], plugins: [] };
+    const registrations = {
+        admin: [],
+        api: [],
+        authFooterPlugins: [],
+        pages: [],
+        plugins: [],
+    };
     bootstrapModule(context(registrations));
 
     assert.equal(
@@ -96,6 +105,10 @@ test("registers the Legal administration section and public pages", () => {
         false,
     );
     assert.match(registrations.plugins[0].scriptUrl, /consent-enforcement/);
+    assert.equal(
+        registrations.authFooterPlugins[0].scriptUrl,
+        "/static/modules/terms-of-service/auth-footer.js",
+    );
 });
 
 test("uninstall deletes content only when requested", async () => {
