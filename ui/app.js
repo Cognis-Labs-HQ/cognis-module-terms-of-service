@@ -664,26 +664,22 @@ export async function mount(root, { signal } = {}) {
         ],
         preferenceKey: `terms-of-service-public-${slug}`,
         i18n,
-        pageContext: authenticated ? { title, subtitle: "" } : null,
-        toolbar: authenticated
-            ? [
-                  {
-                      id: "document-sections",
-                      label: i18n.t(
-                          "module.terms_of_service.public.navigation",
-                      ),
-                      render: () =>
-                          `<div data-legal-document-navigation>${navigationMenu.render()}</div>`,
-                  },
-              ]
-            : [],
+        pageContext: { title, subtitle: "" },
+        toolbar: [
+            {
+                id: "document-sections",
+                label: i18n.t("module.terms_of_service.public.navigation"),
+                render: () =>
+                    `<div data-legal-document-navigation>${navigationMenu.render()}</div>`,
+            },
+        ],
         toolbarScrollable: true,
         contentScrolling: false,
         showTopbar: authenticated,
         showNavbar: authenticated,
         showThemeToggle: authenticated,
         showFooter: authenticated,
-        frameless: !authenticated,
+        frameless: false,
         persistLayoutPreferences: authenticated,
         requireAccountSession: authenticated,
         enableAccountEnhancements: authenticated,

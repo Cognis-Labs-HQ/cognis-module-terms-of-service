@@ -4,11 +4,15 @@
 
 ## Dokumen hukum tersedia tanpa masuk
 
-Setiap rute hukum tetap menggunakan penyusun halaman Cognis. Bagi pengunjung tanpa sesi login, flag penyusun menyembunyikan bilah atas, navigasi, tombol tema, footer, konteks halaman, bilah alat, penyimpanan tata letak, dan penyempurnaan akun sehingga hanya dokumen terbitan hasil render Markdown yang terlihat. Setiap rute SPA hukum didaftarkan secara tegas dengan kemampuan rute host `public: true`, sehingga Cognis dapat menyajikan dan merutekannya secara anonim tanpa melemahkan rute yang dilindungi. Halaman masuk dan pendaftaran memuat plugin footer autentikasi khusus yang menyumbangkan ketiga tautan rute hukum publik terlokalisasi secara sinkron melalui registri footer bersama, tanpa menunggu permintaan API dokumen. Pengguna terautentikasi tetap memperoleh tampilan dokumen dengan shell lengkap dan perbandingan perubahan yang sudah ada.
+Setiap rute hukum tetap menggunakan penyusun halaman Cognis. Bagi pengunjung tanpa sesi login, flag penyusun menyembunyikan kontrol shell global yang bergantung pada akun sambil mempertahankan bingkai dokumen, konteks halaman terlokalisasi, dan bilah alat bagian. Setiap rute SPA hukum didaftarkan secara tegas dengan kemampuan rute host `public: true`, sehingga Cognis dapat menyajikan dan merutekannya secara anonim tanpa melemahkan rute yang dilindungi. Halaman masuk dan pendaftaran memuat plugin footer autentikasi khusus yang menyumbangkan ketiga tautan rute hukum publik terlokalisasi secara sinkron melalui registri footer bersama, tanpa menunggu permintaan API dokumen. Pengguna terautentikasi tetap memperoleh tampilan dokumen dengan shell lengkap dan perbandingan perubahan yang sudah ada.
 
 ## Status belum diterima terlihat merah
 
 Status persetujuan yang belum diterima kembali memakai pil status nonaktif merah dari inti sehingga tetap terlihat berbeda dari status yang diterima.
+
+## Footer autentikasi dan tata letak publik
+
+Footer autentikasi mempertahankan tautan Lisensi milik host, menghapus tautan Changelog khusus pengguna terautentikasi, dan menampilkan ketiga tautan hukum. Halaman hukum publik kini mempertahankan tata letak dokumen tersusun alih-alih dirender dari tepi ke tepi.
 
 ## Commit
 
@@ -18,3 +22,4 @@ Status persetujuan yang belum diterima kembali memakai pil status nonaktif merah
 - [11033bb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/11033bbe0ab028c2b32fca066e2a46719abf5738)
 - [79912f9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/79912f9f68759309d0e0b71b4d53422cc93eab2f)
 - [b8fcb15](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b8fcb1500ad700ed8aa6422148edf6539daee976)
+- [f81a194](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f81a194a3d10e8663d31367aa1c9017094f476db)

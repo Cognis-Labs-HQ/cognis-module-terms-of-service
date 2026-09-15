@@ -4,11 +4,15 @@
 
 ## Rechtsdokumente sind ohne Anmeldung verfügbar
 
-Jede Rechtsroute verwendet weiterhin den Cognis-Seiten-Composer. Für Besucher ohne Anmeldesitzung unterdrücken Composer-Flags Kopfleiste, Navigation, Theme-Umschalter, Footer, Seitenkontext, Werkzeugleiste, Layout-Speicherung und Kontoerweiterungen, sodass nur das veröffentlichte, aus Markdown gerenderte Dokument sichtbar ist. Jede rechtliche SPA-Route wird ausdrücklich mit der Host-Routen-Capability `public: true` registriert, sodass Cognis sie anonym ausliefern und aufrufen kann, ohne geschützte Routen abzuschwächen. Anmelde- und Registrierungsseiten laden ein eigenes Auth-Footer-Plugin, das alle drei lokalisierten Links zu öffentlichen Rechtsrouten synchron über die gemeinsame Footer-Registry beiträgt, ohne auf Dokument-API-Anfragen zu warten. Für authentifizierte Benutzer bleiben die bestehende Dokumentansicht mit vollständiger Shell und der Änderungsvergleich erhalten.
+Jede Rechtsroute verwendet weiterhin den Cognis-Seiten-Composer. Für Besucher ohne Anmeldesitzung unterdrücken Composer-Flags kontoabhängige globale Shell-Steuerelemente, erhalten jedoch Dokumentrahmen, lokalisierten Seitenkontext und Abschnittswerkzeugleiste. Jede rechtliche SPA-Route wird ausdrücklich mit der Host-Routen-Capability `public: true` registriert, sodass Cognis sie anonym ausliefern und aufrufen kann, ohne geschützte Routen abzuschwächen. Anmelde- und Registrierungsseiten laden ein eigenes Auth-Footer-Plugin, das alle drei lokalisierten Links zu öffentlichen Rechtsrouten synchron über die gemeinsame Footer-Registry beiträgt, ohne auf Dokument-API-Anfragen zu warten. Für authentifizierte Benutzer bleiben die bestehende Dokumentansicht mit vollständiger Shell und der Änderungsvergleich erhalten.
 
 ## Ausstehender Status ist sichtbar rot
 
 Ausstehende Zustimmungsstatus verwenden wieder die rote deaktivierte Status-Pill des Cores und bleiben dadurch klar von akzeptierten Status unterscheidbar.
+
+## Authentifizierungs-Footer und öffentliches Layout
+
+Der Authentifizierungs-Footer behält den Lizenz-Link des Hosts bei, entfernt den nur für authentifizierte Benutzer bestimmten Changelog-Link und zeigt die drei Rechtslinks. Öffentliche Rechtsseiten behalten nun ihr zusammengesetztes Dokumentlayout, statt randlos dargestellt zu werden.
 
 ## Commits
 
@@ -18,3 +22,4 @@ Ausstehende Zustimmungsstatus verwenden wieder die rote deaktivierte Status-Pill
 - [11033bb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/11033bbe0ab028c2b32fca066e2a46719abf5738)
 - [79912f9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/79912f9f68759309d0e0b71b4d53422cc93eab2f)
 - [b8fcb15](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b8fcb1500ad700ed8aa6422148edf6539daee976)
+- [f81a194](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f81a194a3d10e8663d31367aa1c9017094f476db)

@@ -10,6 +10,7 @@ const DOCUMENTS = [
 const footerLinks = uiCtx.capabilities.get("ui:footerLinks");
 
 if (typeof footerLinks?.add === "function") {
+    footerLinks.remove?.("core:changelogs");
     const i18n = await createI18n({
         componentStringBaseUrls: ["/static/modules/terms-of-service/languages"],
     });

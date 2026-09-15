@@ -202,6 +202,7 @@ test("authentication pages receive links to public legal routes", () => {
     assert.match(authFooter, /capabilities\.get\("ui:footerLinks"\)/);
     assert.match(authFooter, /footerLinks\.add\(\{/);
     assert.match(authFooter, /href: `\/\$\{document\.slug\}`/);
+    assert.match(authFooter, /footerLinks\.remove\?\.\("core:changelogs"\)/);
 });
 
 test("admin contribution follows the Administration sub-composer contract", () => {
@@ -269,12 +270,12 @@ test("public legal documents use one naturally scrolling composed page", () => {
     );
     assert.match(source, /default: \[12, 1\]/);
     assert.match(source, /authenticated &&[\s\S]*get\("view"\) === "changes"/);
-    assert.match(source, /pageContext: authenticated \?/);
-    assert.match(source, /toolbar: authenticated/);
+    assert.match(source, /pageContext: \{ title, subtitle: "" \}/);
+    assert.match(source, /toolbar: \[/);
     assert.match(source, /showTopbar: authenticated/);
     assert.match(source, /showThemeToggle: authenticated/);
     assert.match(source, /showFooter: authenticated/);
-    assert.match(source, /frameless: !authenticated/);
+    assert.match(source, /frameless: false/);
     assert.match(source, /persistLayoutPreferences: authenticated/);
     assert.match(source, /enableAccountEnhancements: authenticated/);
     assert.match(
