@@ -203,6 +203,10 @@ test("authentication pages receive links to public legal routes", () => {
     assert.match(authFooter, /footerLinks\.add\(\{/);
     assert.match(authFooter, /href: `\/\$\{document\.slug\}`/);
     assert.match(authFooter, /footerLinks\.remove\?\.\("core:changelogs"\)/);
+    assert.match(authFooter, /public\/\$\{document\.slug\}/);
+    assert.match(authFooter, /response\.status === 404/);
+    assert.match(authFooter, /Promise\.allSettled/);
+    assert.match(authFooter, /operation: "loadAuthFooterLink"/);
 });
 
 test("admin contribution follows the Administration sub-composer contract", () => {

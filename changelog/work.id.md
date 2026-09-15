@@ -4,7 +4,7 @@
 
 ## Dokumen hukum tersedia tanpa masuk
 
-Setiap rute hukum tetap menggunakan penyusun halaman Cognis. Bagi pengunjung tanpa sesi login, flag penyusun menyembunyikan kontrol shell global yang bergantung pada akun sambil mempertahankan bingkai dokumen, konteks halaman terlokalisasi, dan bilah alat bagian. Setiap rute SPA hukum didaftarkan secara tegas dengan kemampuan rute host `public: true`, sehingga Cognis dapat menyajikan dan merutekannya secara anonim tanpa melemahkan rute yang dilindungi. Halaman masuk dan pendaftaran memuat plugin footer autentikasi khusus yang menyumbangkan ketiga tautan rute hukum publik terlokalisasi secara sinkron melalui registri footer bersama, tanpa menunggu permintaan API dokumen. Pengguna terautentikasi tetap memperoleh tampilan dokumen dengan shell lengkap dan perbandingan perubahan yang sudah ada.
+Setiap rute hukum tetap menggunakan penyusun halaman Cognis. Bagi pengunjung tanpa sesi login, flag penyusun menyembunyikan kontrol shell global yang bergantung pada akun sambil mempertahankan bingkai dokumen, konteks halaman terlokalisasi, dan bilah alat bagian. Setiap rute SPA hukum didaftarkan secara tegas dengan kemampuan rute host `public: true`, sehingga Cognis dapat menyajikan dan merutekannya secara anonim tanpa melemahkan rute yang dilindungi. Halaman masuk dan pendaftaran memuat plugin footer autentikasi khusus yang memeriksa setiap dokumen publik secara terpisah dan hanya menyumbangkan tautan rute hukum terlokalisasi ketika dokumen diterbitkan; satu pemeriksaan yang gagal tidak menghalangi tautan lainnya. Pengguna terautentikasi tetap memperoleh tampilan dokumen dengan shell lengkap dan perbandingan perubahan yang sudah ada.
 
 ## Status belum diterima terlihat merah
 
@@ -23,3 +23,4 @@ Footer autentikasi mempertahankan tautan Lisensi milik host, menghapus tautan Ch
 - [79912f9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/79912f9f68759309d0e0b71b4d53422cc93eab2f)
 - [b8fcb15](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b8fcb1500ad700ed8aa6422148edf6539daee976)
 - [f81a194](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f81a194a3d10e8663d31367aa1c9017094f476db)
+- [0e7944f](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0e7944f94387695520604e30696097c06f192676)

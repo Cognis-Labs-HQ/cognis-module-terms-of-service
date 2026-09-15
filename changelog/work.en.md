@@ -4,7 +4,7 @@
 
 ## Legal documents are available without signing in
 
-Every legal route continues to use the Cognis page composer. For visitors without a login session, composer flags suppress account-dependent global shell controls while retaining the document frame, localized page context, and section toolbar. Each legal SPA route is explicitly registered with the host’s `public: true` route capability, allowing Cognis to serve and route it anonymously without weakening protected routes. Login and registration pages load a dedicated auth-footer plugin that contributes all three localized public legal-route links synchronously through the shared footer registry, without waiting for document API requests. Authenticated users retain the existing full-shell document view and change comparison.
+Every legal route continues to use the Cognis page composer. For visitors without a login session, composer flags suppress account-dependent global shell controls while retaining the document frame, localized page context, and section toolbar. Each legal SPA route is explicitly registered with the host’s `public: true` route capability, allowing Cognis to serve and route it anonymously without weakening protected routes. Login and registration pages load a dedicated auth-footer plugin that checks each public document independently and contributes its localized legal-route link only when the document is published; one failed lookup does not block other links. Authenticated users retain the existing full-shell document view and change comparison.
 
 ## Outstanding status is visibly red
 
@@ -23,3 +23,4 @@ The authentication footer keeps the host License link, removes the authenticated
 - [79912f9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/79912f9f68759309d0e0b71b4d53422cc93eab2f)
 - [b8fcb15](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b8fcb1500ad700ed8aa6422148edf6539daee976)
 - [f81a194](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f81a194a3d10e8663d31367aa1c9017094f476db)
+- [0e7944f](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0e7944f94387695520604e30696097c06f192676)

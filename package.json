@@ -1,6 +1,6 @@
 {
     "name": "@cognis/module-terms-of-service",
-    "version": "1.5.37",
+    "version": "1.5.38",
     "private": false,
     "type": "module",
     "scripts": {

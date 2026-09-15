@@ -4,7 +4,7 @@
 
 ## ログインせずに法的文書を閲覧可能
 
-すべての法的ルートは引き続き Cognis ページ Composer を使用します。ログインセッションのない訪問者には Composer のフラグでアカウント依存のグローバル Shell 操作部を非表示にしつつ、文書フレーム、ローカライズ済みページコンテキスト、セクションツールバーを維持します。各法的 SPA ルートを Host の `public: true` ルート Capability で明示的に登録し、保護されたルートを弱めることなく Cognis が匿名で配信およびルーティングできるようにします。ログインページと登録ページは専用の認証 Footer Plugin を読み込み、文書 API リクエストを待たずに、3つのローカライズ済み公開法的ルートリンクを共有 Footer Registry へ同期的に提供します。認証済みユーザーには、従来の完全な Shell 付き文書表示と変更比較が引き続き提供されます。
+すべての法的ルートは引き続き Cognis ページ Composer を使用します。ログインセッションのない訪問者には Composer のフラグでアカウント依存のグローバル Shell 操作部を非表示にしつつ、文書フレーム、ローカライズ済みページコンテキスト、セクションツールバーを維持します。各法的 SPA ルートを Host の `public: true` ルート Capability で明示的に登録し、保護されたルートを弱めることなく Cognis が匿名で配信およびルーティングできるようにします。ログインページと登録ページは専用の認証 Footer Plugin を読み込み、各公開文書を個別に確認して、公開済みの場合にのみローカライズ済み法的ルートリンクを提供します。1件の確認失敗が他のリンクを妨げることはありません。認証済みユーザーには、従来の完全な Shell 付き文書表示と変更比較が引き続き提供されます。
 
 ## 未承認ステータスを赤色で明示
 
@@ -23,3 +23,4 @@
 - [79912f9](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/79912f9f68759309d0e0b71b4d53422cc93eab2f)
 - [b8fcb15](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/b8fcb1500ad700ed8aa6422148edf6539daee976)
 - [f81a194](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f81a194a3d10e8663d31367aa1c9017094f476db)
+- [0e7944f](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0e7944f94387695520604e30696097c06f192676)
