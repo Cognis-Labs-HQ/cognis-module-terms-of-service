@@ -1,6 +1,6 @@
 # Veröffentlichungsbewusster Footer auf Authentifizierungsseiten
 
-**Feature-Branch:** work
+**Feature-Branch:** feature-fix-eula-request-on-login-page
 
 ## Keine Anfragen für unveröffentlichte Rechtsdokumente
 
@@ -8,4 +8,4 @@ Der Footer auf Authentifizierungsseiten lädt jetzt einmalig einen öffentlichen
 
 ## Commits
 
-- [2b32f5b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2b32f5bad98240e0eed42ac04836101fea74b631)
+- [271120b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/271120b069085e88096ef06ca91ef01557c18b58)

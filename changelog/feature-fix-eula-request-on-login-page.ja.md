@@ -1,6 +1,6 @@
 # 公開状態を認識する認証 Footer
 
-**機能ブランチ:** work
+**機能ブランチ:** feature-fix-eula-request-on-login-page
 
 ## 未公開の法務文書へのリクエストを回避
 
@@ -8,4 +8,4 @@
 
 ## コミット
 
-- [2b32f5b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2b32f5bad98240e0eed42ac04836101fea74b631)
+- [271120b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/271120b069085e88096ef06ca91ef01557c18b58)

@@ -1,6 +1,6 @@
 # Footer Autentikasi yang Memahami Status Publikasi
 
-**Cabang Fitur:** work
+**Cabang Fitur:** feature-fix-eula-request-on-login-page
 
 ## Hindari permintaan dokumen hukum yang belum diterbitkan
 
@@ -8,4 +8,4 @@ Footer autentikasi kini memuat satu indeks publikasi publik dan hanya membuat ta
 
 ## Commit
 
-- [2b32f5b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2b32f5bad98240e0eed42ac04836101fea74b631)
+- [271120b](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/271120b069085e88096ef06ca91ef01557c18b58)
