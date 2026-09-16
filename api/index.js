@@ -205,6 +205,22 @@ export function registerApi(router, ctx) {
     }
 
     router.get(
+        "/api/v1/modules/terms-of-service/public",
+        async (_request, response) => {
+            await ready;
+            const documents = (await store.listLatest())
+                .filter((document) => document.version)
+                .map(({ slug, path, version, publishedAt }) => ({
+                    slug,
+                    path,
+                    version,
+                    publishedAt,
+                }));
+            sendJson(response, 200, { data: documents });
+        },
+    );
+
+    router.get(
         "/api/v1/modules/terms-of-service/consent",
         async (request, response) => {
             const claims = await requireAuth(request, response, "user");

@@ -203,10 +203,10 @@ test("authentication pages receive links to public legal routes", () => {
     assert.match(authFooter, /footerLinks\.add\(\{/);
     assert.match(authFooter, /href: `\/\$\{document\.slug\}`/);
     assert.match(authFooter, /footerLinks\.remove\?\.\("core:changelogs"\)/);
-    assert.match(authFooter, /public\/\$\{document\.slug\}/);
-    assert.match(authFooter, /response\.status === 404/);
-    assert.match(authFooter, /Promise\.allSettled/);
-    assert.match(authFooter, /operation: "loadAuthFooterLink"/);
+    assert.match(authFooter, /terms-of-service\/public"/);
+    assert.match(authFooter, /publishedSlugs\.has\(document\.slug\)/);
+    assert.doesNotMatch(authFooter, /public\/\$\{document\.slug\}/);
+    assert.match(authFooter, /operation: "loadAuthFooterLinks"/);
     assert.match(authFooter, /linkDisposers\.push\(/);
     assert.match(authFooter, /export function teardownAuthFooterPlugin\(\)/);
     assert.match(authFooter, /linkDisposers\.splice\(0\)/);
