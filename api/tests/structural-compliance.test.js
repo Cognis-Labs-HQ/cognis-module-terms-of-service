@@ -82,6 +82,7 @@ test("external module metadata and declared files are consistent", () => {
     );
     const routes = JSON.parse(readFileSync(resolve(ROOT, "routes.json")));
     assert.equal(manifest.uuid, "e6f133ec-ccd9-4dbb-96bd-1ccf52a359de");
+    assert.equal(manifest.privileged, true);
     assert.equal(manifest.version, packageJson.version);
     assert.equal(manifest.version, packageLock.version);
     assert.ok(Array.isArray(routes));
