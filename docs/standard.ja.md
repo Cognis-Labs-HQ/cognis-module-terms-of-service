@@ -4,7 +4,7 @@
 
 ## 公開コントラクト
 
-モジュールは公開 SPA ルート `/terms-of-service`、`/privacy-policy`、`/eula` を登録します。Browser エントリーポイントはこれらの公開パスでのみ直接 Mount され、管理画面には `registerAdminSection` を通じてローカライズされた法務セクションを1つ追加します。認証 API ルートには必要最小限のロールを要求します。
+モジュールは公開 SPA ルート `/terms-of-service`、`/privacy-policy`、`/eula` を登録します。Browser エントリーポイントはこれらの公開パスでのみ直接 Mount され、管理画面には `registerAdminSection` を通じてローカライズされた法務セクションを1つ追加します。認証 API ルートには必要最小限のロールを要求します。管理画面と同意画面が Host の内部ユーザーディレクトリ、アカウントライフサイクル Endpoint、および保護されたチェックボックス Style Contract を使用するため、Manifest は本モジュールを特権モジュールとして指定します。
 
 公開された法的コンテンツは Cognis が `ui:reuse` を介して描画する Markdown です。保存するたびに `docs:versionStore` を介して不変バージョンを追記します。モジュールは Cognis 内部実装や特定のデータベースドライバーをインポートしません。
 

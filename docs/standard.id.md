@@ -4,7 +4,7 @@ Dokumen ini menetapkan arsitektur yang didukung untuk modul eksternal Ketentuan 
 
 ## Kontrak Publik
 
-Modul mendaftarkan rute SPA publik `/terms-of-service`, `/privacy-policy`, dan `/eula`. Entri browser-nya hanya dipasang secara langsung pada jalur publik tersebut, sementara Administrasi menerima satu bagian Legal yang dilokalkan melalui `registerAdminSection`; rute API terautentikasi meminta peran dengan hak paling rendah yang sesuai.
+Modul mendaftarkan rute SPA publik `/terms-of-service`, `/privacy-policy`, dan `/eula`. Entri browser-nya hanya dipasang secara langsung pada jalur publik tersebut, sementara Administrasi menerima satu bagian Legal yang dilokalkan melalui `registerAdminSection`; rute API terautentikasi meminta peran dengan hak paling rendah yang sesuai. Manifest menandai modul sebagai berprivilese karena antarmuka administrasi dan persetujuannya memakai direktori pengguna internal, endpoint siklus hidup akun, dan kontrak gaya kotak centang terlindungi milik host.
 
 Konten hukum yang diterbitkan berupa Markdown yang dirender Cognis melalui `ui:reuse`. Setiap penyimpanan menambahkan versi tetap melalui `docs:versionStore`. Modul tidak pernah mengimpor internal Cognis atau driver basis data tertentu.
 

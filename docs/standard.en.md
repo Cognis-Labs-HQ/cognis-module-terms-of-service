@@ -4,7 +4,7 @@ This document defines the supported architecture of the Cognis Terms of Service 
 
 ## Public Contract
 
-The module registers the public `/terms-of-service`, `/privacy-policy`, and `/eula` SPA routes. Its browser entry mounts directly only on those public paths, while Administration receives one localized Legal section through `registerAdminSection`; authenticated API routes require the least privileged applicable role.
+The module registers the public `/terms-of-service`, `/privacy-policy`, and `/eula` SPA routes. Its browser entry mounts directly only on those public paths, while Administration receives one localized Legal section through `registerAdminSection`; authenticated API routes require the least privileged applicable role. The manifest marks the module as privileged because its administration and consent interfaces use the host's internal user directory and account-lifecycle endpoint and the protected checkbox style contract.
 
 Published legal content is Markdown rendered by Cognis through `ui:reuse`. Each save appends an immutable version through `docs:versionStore`. The module never imports Cognis internals or a concrete database driver.
 

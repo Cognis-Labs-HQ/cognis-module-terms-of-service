@@ -2,8 +2,9 @@
     "id": "terms-of-service",
     "uuid": "e6f133ec-ccd9-4dbb-96bd-1ccf52a359de",
     "name": "module.terms_of_service.name",
-    "version": "1.5.40",
+    "version": "1.5.41",
     "class": "extension",
+    "privileged": true,
     "coreApiVersion": "v1",
     "capabilities": [],
     "entrypoints": {
@@ -131,7 +132,7 @@
         },
         {
             "path": "api/tests/structural-compliance.test.js",
-            "sha256": "54a2c78f3cad25133558376c0a2341876171a95dc6d0741cc8e047f49fb9d37e"
+            "sha256": "d20dfdad027f16d839925d95457187944455452d424249e2d4d55147fc69a2d9"
         },
         {
             "path": "api/ui.js",
@@ -159,27 +160,27 @@
         },
         {
             "path": "docs/standard.de.md",
-            "sha256": "0124ebaf12932c3dc1e118a626aba2a4147eaa5a93dc5442017b5c1024158500"
+            "sha256": "647cb13d3a6f0e61cf5c18ae2fbde093cfee4e2d94ad340f40635a66b783c16a"
         },
         {
             "path": "docs/standard.en.md",
-            "sha256": "1c2d59a76dd6e89b89f6cae642aeb46c61561506a91b2af1346bc76d2027f403"
+            "sha256": "201f551c7a3ae6db6406b61d42cef94f65de4b40e9054b84f4cd65bed8667f8d"
         },
         {
             "path": "docs/standard.id.md",
-            "sha256": "db3caaa0204847923e904ac06b05e3cace89ea506a0ce09ee77a68d7c230ace0"
+            "sha256": "509a6a7199273eec43ce9f83637bd4338bd9215daa03e10026ccbe783042f08a"
         },
         {
             "path": "docs/standard.ja.md",
-            "sha256": "11766736d5b73f8fff80e7fcce3718921057e125c67aa511f465b1c7ee6f7d1a"
+            "sha256": "c495ab57110d3f1f84eaf1f88a0418beb768ee2c8b64e0e85c067084816a36c7"
         },
         {
             "path": "package-lock.json",
-            "sha256": "78336963732f5715ca907bd071ac58d7817a84c03e51afe19077098581350e56"
+            "sha256": "b699915daa41a3e6d3c2f01faf82e413c675a673efcb5775d146f279f5c1c40c"
         },
         {
             "path": "package.json",
-            "sha256": "f3ec6d55a8064bd38635230cde6be4486f1d34210e9af9211a6472a4d80c5a4c"
+            "sha256": "7e53416b2101aef1e767b29cdf3a86d061dfe38577de97968a7ff6ced1027003"
         },
         {
             "path": "routes.json",
