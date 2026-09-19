@@ -1,6 +1,6 @@
 # Host リソースへの特権アクセス
 
-**機能ブランチ:** work
+**機能ブランチ:** feature-set-privileged-flag-for-tos-enable
 
 ## 必要な特権アクセスを宣言
 
