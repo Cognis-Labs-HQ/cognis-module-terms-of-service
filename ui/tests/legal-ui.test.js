@@ -303,6 +303,9 @@ test("public legal documents use one naturally scrolling composed page", () => {
 test("administration renders filterable paginated consent reports", () => {
     assert.match(source, /consent-report\/\$\{document\.slug\}/);
     assert.match(source, /data-consent-filter="\$\{filter\}"/);
+    assert.match(source, /aria-pressed="\$\{filter === "all"\}"/);
+    assert.match(source, /classList\.toggle\("is-active", isActive\)/);
+    assert.match(source, /setAttribute\("aria-pressed", String\(isActive\)\)/);
     assert.match(source, /data-consent-search/);
     assert.match(source, /REPORT_PAGE_SIZE = 10/);
     assert.match(source, /capabilities\.get\("ui:pagination"\)/);
@@ -337,6 +340,10 @@ test("administration renders filterable paginated consent reports", () => {
     assert.match(source, /loadReuseStylesheet\("state-pill\.css"\)/);
     assert.match(legalStyles, /terms-of-service-report table/);
     assert.match(legalStyles, /terms-of-service-mode-toggle\.is-active/);
+    assert.match(
+        legalStyles,
+        /terms-of-service-report-filters \.state-pill\.is-active/,
+    );
     assert.match(source, /module\.terms_of_service\.report\.latest_version/);
     assert.match(source, /module\.terms_of_service\.report\.consented_version/);
     assert.match(source, /module\.terms_of_service\.report\.not_consented/);

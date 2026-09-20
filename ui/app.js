@@ -92,7 +92,7 @@ function consentReportMarkup(i18n) {
             ]
                 .map(
                     (filter) =>
-                        `<button type="button" class="state-pill${filter === "all" ? " pill-active" : ""}" data-consent-filter="${filter}">${escapeHtml(i18n.t(`module.terms_of_service.report.${filter}`))}</button>`,
+                        `<button type="button" class="state-pill${filter === "all" ? " is-active" : ""}" data-consent-filter="${filter}" aria-pressed="${filter === "all"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${filter}`))}</button>`,
                 )
                 .join("")}</div>
         </div>
@@ -163,12 +163,11 @@ function activateConsentReport(panel, document, i18n, apiFetch) {
             pagination.setPage(0);
             report
                 .querySelectorAll("[data-consent-filter]")
-                .forEach((button) =>
-                    button.classList.toggle(
-                        "pill-active",
-                        button === filterButton,
-                    ),
-                );
+                .forEach((button) => {
+                    const isActive = button === filterButton;
+                    button.classList.toggle("is-active", isActive);
+                    button.setAttribute("aria-pressed", String(isActive));
+                });
         } else return;
         render();
     });
