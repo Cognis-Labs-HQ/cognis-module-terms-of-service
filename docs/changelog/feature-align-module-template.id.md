@@ -8,4 +8,4 @@ Sinkronkan panduan templat, jalur rute domain, dokumentasi integrasi terjemahan,
 
 ## Komit
 
-- [5817ade](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5817ade0367793bf17e2b18cc3db44a1bbd155e8)
+- [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)
