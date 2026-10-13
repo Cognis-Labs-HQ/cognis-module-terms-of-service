@@ -1,3 +1,4 @@
+import { withActionFlows } from "./reuse/flow-runtime.js";
 import assert from "node:assert/strict";
 import { Readable } from "node:stream";
 import test from "node:test";
@@ -42,7 +43,7 @@ test("publishing attributes the document to authenticated claims", async () => {
         },
         log() {},
     };
-    registerApi(router, ctx);
+    registerApi(router, withActionFlows(ctx));
 
     const request = Readable.from([JSON.stringify({ markdown: "# Terms" })]);
     const response = {
@@ -97,7 +98,7 @@ test("public document index lists only published document metadata", async () =>
             assert.fail(`Unexpected capability: ${name}`);
         },
     };
-    registerApi(router, ctx);
+    registerApi(router, withActionFlows(ctx));
 
     const response = {
         writeHead(status) {

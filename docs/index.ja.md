@@ -18,4 +18,14 @@
 
 ## リポジトリ品質
 
-ルートの Manifest、Package、Lockfile、Route メタデータは常に同期します。Server コードは `api/`、Browser コードは `ui/`、運用コマンドは `cli/`、ローカライズ文書は `docs/`、リリースメタデータは `changelog/`、アートワークは `assets/` に配置します。テストはローカル Capability Fake を使用し、Route、永続化、Flow、ライフサイクル、ローカライズ、Package を検証します。
+ルートの Manifest、Package、Lockfile、Route メタデータは常に同期します。Server コードは `api/`、Browser コードは `ui/`、運用コマンドは `cli/`、ローカライズ文書は `docs/`、リリースメタデータは `docs/changelog/`、アートワークは `assets/` に配置します。テストはローカル Capability Fake を使用し、Route、永続化、Flow、ライフサイクル、ローカライズ、Package を検証します。
+
+### 所有するアクションフロー
+
+HTTP操作は、検証・実行・表示のステージを持つモジュール所有のctxフローを通じて実行します。テストはこれらのステージを実行し、検証やスキーマ初期化が失敗した場合に保存が行われないことを確認します。
+
+### 開発者向け構成とホストの責任範囲
+
+新しいモジュールは[cognis-module-template](https://github.com/Cognis-Labs-HQ/cognis-module-template)から作成し、このリポジトリでは`AGENTS.md`に記載されたテンプレート版の指針に従います。`bootstrap.js`はライフサイクルの調整、`api/index.js`はctx依存関係の接続、`api/routes/<domain>/index.js`はHTTP処理、`api/reuse/`は再利用するサーバーコードを担当します。ブラウザー機能は`ui/`、スタイルは`ui/styles/`、再利用するマークアップは`ui/templates/`、翻訳された文書は`docs/index.<locale>.md`に配置します。過去のリリース記録は`docs/changelog/`に置き、パッケージのハッシュ対象から除外します。対応しない任意の領域は作成しません。
+
+公開ctx機能と宣言されたフローを利用し、Cognis内部や他のモジュールをインポートしないでください。ダッシュボードの機能・ナビゲーション提供スクリプトは`mountProvider(scopedUiCtx)`を公開し、所有するリソースの終了処理を返します。インポート時にモジュールの動作を登録してはいけません。ホストは無効化時に機能、フローフック、リスナー、提供状態を解除し、再有効化時にキャッシュ済みスクリプトを再マウントします。設定・管理画面のファクトリーと認証フッターの記述子は、それぞれの公開ホスト契約に従います。独立したテスト用実装で契約を検証し、構成チェックを実行し、最後のパッケージ変更後にハッシュを更新して、公開前にlint、テスト、マニフェスト検証を実行してください。

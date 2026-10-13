@@ -6,7 +6,7 @@ export function registerUi(ctx) {
     ctx.registerStaticDir("", path.join(ctx.moduleRoot, "ui"));
     ctx.registerAdminSection({
         id: "terms-of-service-legal",
-        label: "module.terms_of_service.admin.title",
+        label: "module.terms.of.service.admin.title",
         scriptUrl: "/static/modules/terms-of-service/app.js",
         stylesheets: ["/static/modules/terms-of-service/styles/legal.css"],
         stringsBaseUrl: "/static/modules/terms-of-service/languages",

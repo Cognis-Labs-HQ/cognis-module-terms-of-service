@@ -87,7 +87,7 @@ test("external module metadata and declared files are consistent", () => {
     assert.equal(manifest.version, packageLock.version);
     assert.ok(Array.isArray(routes));
     assert.equal(
-        manifest.files.some((file) => file.path.startsWith("changelog/")),
+        manifest.files.some((file) => file.path.startsWith("docs/changelog/")),
         false,
     );
     for (const entrypoint of Object.values(manifest.entrypoints)) {

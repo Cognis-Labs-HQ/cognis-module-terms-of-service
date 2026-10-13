@@ -35,7 +35,7 @@ test("legal editors use Cognis utilities and standard action variants", () => {
     assert.match(source, /createUnsavedChangesBar/);
     assert.match(
         source,
-        /createCollapsibleSectionComposer\(\{[\s\S]*detailsLabel: i18n\.t\("module\.terms_of_service\.action\.details"\)/,
+        /createCollapsibleSectionComposer\(\{[\s\S]*detailsLabel: i18n\.t\("module\.terms\.of\.service\.action\.details"\)/,
     );
     assert.match(source, /renderInfoTooltip/);
     assert.match(
@@ -109,7 +109,7 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /action: "delete"/);
     assert.match(
         enforcement,
-        /id: "cancel",[\s\S]*module\.terms_of_service\.action\.cancel/,
+        /id: "cancel",[\s\S]*module\.terms\.of\.service\.action\.cancel/,
     );
     assert.match(enforcement, /ui:footerLinks/);
     assert.match(enforcement, /footerLinks[\s\S]*\.list\?\.\(\)/);
@@ -142,13 +142,13 @@ test("consent is enforced during registration and authenticated sessions", () =>
         enforcement,
         /!localStorage\.getItem\("cognis_access_token"\)/,
     );
-    assert.match(enforcement, /while \(true\)/);
+    assert.match(enforcement, /while \(!uiCtx\.signal\.aborted\)/);
     assert.match(enforcement, /terms-of-service-consent-card/);
     assert.match(enforcement, /\?view=changes/);
     assert.match(enforcement, /class="choice-checkbox"/);
     assert.match(enforcement, /loadReuseStylesheet\("choice-checkbox\.css"\)/);
     assert.match(enforcement, /loadReuseStylesheet\("state-pill\.css"\)/);
-    assert.match(enforcement, /loadModuleStylesheet\(\)/);
+    assert.match(enforcement, /export async function mountProvider/);
     assert.match(enforcement, /data-consent-document/);
     assert.match(enforcement, /submitButton\.disabled/);
     assert.match(enforcement, /checkbox\.addEventListener\("change"/);
@@ -157,13 +157,13 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /capabilities\.get\("ui:showToast"\)/);
     assert.match(
         enforcement,
-        /module\.terms_of_service\.consent\.select_all_error/,
+        /module\.terms\.of\.service\.consent\.select\.all\.error/,
     );
     assert.match(enforcement, /\{ variant: "error" \}/);
     assert.match(enforcement, /response\.status === 400/);
     assert.match(
         enforcement,
-        /showToast\([\s\S]*select_all_error[\s\S]*return false/,
+        /showToast\([\s\S]*select\.all\.error[\s\S]*return false/,
     );
     assert.match(enforcement, /status\.documents\.map/);
     assert.match(enforcement, /terms-of-service:consent-recorded/);
@@ -188,7 +188,7 @@ test("consent is enforced during registration and authenticated sessions", () =>
         enforcement,
         /if \(!consentEnforcementDisposed\) scheduleConsentRefresh\(\)/,
     );
-    assert.match(enforcement, /export function teardownConsentEnforcement/);
+    assert.match(enforcement, /return teardownConsentEnforcement/);
     assert.match(
         enforcement,
         /if \(!event\.persisted\) teardownConsentEnforcement/,
@@ -199,18 +199,11 @@ test("consent is enforced during registration and authenticated sessions", () =>
 test("authentication pages receive links to public legal routes", () => {
     assert.match(uiRegistration, /registerAuthFooterPlugin\(\{/);
     assert.match(uiRegistration, /auth-footer\.js/);
-    assert.match(authFooter, /capabilities\.get\("ui:footerLinks"\)/);
-    assert.match(authFooter, /footerLinks\.add\(\{/);
+    assert.match(authFooter, /export async function listAuthFooterLinks/);
     assert.match(authFooter, /href: `\/\$\{document\.slug\}`/);
-    assert.match(authFooter, /footerLinks\.remove\?\.\("core:changelogs"\)/);
     assert.match(authFooter, /terms-of-service\/public"/);
     assert.match(authFooter, /publishedSlugs\.has\(document\.slug\)/);
-    assert.doesNotMatch(authFooter, /public\/\$\{document\.slug\}/);
-    assert.match(authFooter, /operation: "loadAuthFooterLinks"/);
-    assert.match(authFooter, /linkDisposers\.push\(/);
-    assert.match(authFooter, /export function teardownAuthFooterPlugin\(\)/);
-    assert.match(authFooter, /linkDisposers\.splice\(0\)/);
-    assert.match(authFooter, /footerLinks\.add\(removedChangelogLink\)/);
+    assert.match(authFooter, /labelKey:/);
 });
 
 test("admin contribution follows the Administration sub-composer contract", () => {
@@ -244,7 +237,7 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /consent-diff\/\$\{slug\}/);
     assert.match(
         source,
-        /module\.terms_of_service\.consent\.changes_unavailable/,
+        /module\.terms\.of\.service\.consent\.changes\.unavailable/,
     );
     assert.match(source, /toolbarScrollable: true/);
     assert.match(source, /querySelectorAll\("h2, h3"\)/);
@@ -274,7 +267,7 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /applyDocumentTitle/);
     assert.match(
         source,
-        /module\.terms_of_service\.public\.page_title\.\$\{definition\.titleKey\}/,
+        /module\.terms\.of\.service\.public\.page\.title\.\$\{definition\.titleKey\}/,
     );
     assert.match(source, /default: \[12, 1\]/);
     assert.match(source, /authenticated &&[\s\S]*get\("view"\) === "changes"/);
@@ -292,7 +285,7 @@ test("public legal documents use one naturally scrolling composed page", () => {
     );
     assert.match(
         enforcement,
-        /await enforceAuthenticatedConsentOnce\(\)\.then/,
+        /void enforceAuthenticatedConsentOnce\(\)\s*\.then/,
     );
     assert.match(
         enforcement,
@@ -344,9 +337,12 @@ test("administration renders filterable paginated consent reports", () => {
         legalStyles,
         /terms-of-service-report-filters \.state-pill\.is-active/,
     );
-    assert.match(source, /module\.terms_of_service\.report\.latest_version/);
-    assert.match(source, /module\.terms_of_service\.report\.consented_version/);
-    assert.match(source, /module\.terms_of_service\.report\.not_consented/);
+    assert.match(source, /module\.terms\.of\.service\.report\.latest\.version/);
+    assert.match(
+        source,
+        /module\.terms\.of\.service\.report\.consented\.version/,
+    );
+    assert.match(source, /module\.terms\.of\.service\.report\.not\.consented/);
     assert.match(source, /<code>\$\{escapeHtml\(user\.version\)\}<\/code>/);
     assert.match(source, /<code>\$\{escapeHtml\(document\.version\)\}<\/code>/);
     assert.match(

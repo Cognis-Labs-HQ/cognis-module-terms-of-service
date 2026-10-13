@@ -20,7 +20,7 @@ test("CLI commands consume the public module API", async () => {
     };
     assert.equal(commands.size, 2);
     assert.deepEqual(
-        await commands.get("terms-of-service:documents")(context),
+        await commands.get("modules:terms-of-service:documents")(context),
         {
             base: "https://cognis.example",
             path: "/api/v1/modules/terms-of-service/documents",

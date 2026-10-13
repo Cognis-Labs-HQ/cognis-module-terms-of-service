@@ -1,3 +1,4 @@
+import { withActionFlows } from "./reuse/flow-runtime.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { bootstrapModule, uninstallModule } from "../../bootstrap.js";
@@ -69,11 +70,11 @@ test("registers the Legal administration section and public pages", () => {
         pages: [],
         plugins: [],
     };
-    bootstrapModule(context(registrations));
+    bootstrapModule(withActionFlows(context(registrations)));
 
     assert.equal(
         registrations.admin[0].label,
-        "module.terms_of_service.admin.title",
+        "module.terms.of.service.admin.title",
     );
     assert.equal(registrations.admin[0].access.minRole, "admin");
     assert.deepEqual(

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { consentFailure } from "../index.js";
+import { consentFailure } from "../routes/documents/index.js";
 import { DOCUMENTS } from "../store.js";
 
 test("consent failures distinguish malformed, oversized, and stale input", () => {

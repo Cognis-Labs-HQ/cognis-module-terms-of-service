@@ -1,0 +1,273 @@
+import { readJson, sendJson } from "../../reuse/http.js";
+import { DOCUMENTS } from "../../store.js";
+
+const MAX_MARKDOWN_BYTES = 1_000_000;
+
+function accountId(claims) {
+    return String(claims?.sub ?? "").trim();
+}
+
+export function consentFailure(error) {
+    const status =
+        error.message === "invalid_json" ||
+        error.message === "invalid_consent_versions" ||
+        error.message === "incomplete_consent_versions"
+            ? 400
+            : error.message === "request_too_large"
+              ? 413
+              : error.message === "stale_document_versions"
+                ? 409
+                : 500;
+    return {
+        status,
+        payload: {
+            error: {
+                code: status < 500 ? error.message : "internal_error",
+                message:
+                    status === 409
+                        ? "The legal documents changed; review them again."
+                        : status < 500
+                          ? "The consent request is invalid."
+                          : "Consent could not be recorded.",
+            },
+        },
+    };
+}
+
+export function registerDocumentRoutes(
+    router,
+    { requireAuth, service, ready, log },
+) {
+    router.get(
+        "/api/v1/modules/terms-of-service/documents",
+        async (request, response) => {
+            const claims = await requireAuth(request, response, "admin");
+            if (!claims || response.writableEnded) return;
+            await ready;
+            sendJson(response, 200, { data: await service.listLatest() });
+        },
+        { access: { minRole: "admin" } },
+    );
+
+    for (const slug of Object.keys(DOCUMENTS)) {
+        router.get(
+            `/api/v1/modules/terms-of-service/consent-diff/${slug}`,
+            async (request, response) => {
+                const claims = await requireAuth(request, response, "user");
+                if (!claims || response.writableEnded) return;
+                try {
+                    await ready;
+                    sendJson(response, 200, {
+                        data: await service.consentDiff(
+                            accountId(claims),
+                            slug,
+                        ),
+                    });
+                } catch (error) {
+                    const unavailable =
+                        error.message === "document_diff_unavailable";
+                    const historicalVersionUnavailable =
+                        error.message === "document_version_not_found";
+                    log?.("error", "Legal document diff loading failed.", {
+                        component: "terms-of-service",
+                        operation: "loadConsentDiff",
+                        accountId: accountId(claims),
+                        slug,
+                        error: error.message,
+                    });
+                    sendJson(
+                        response,
+                        unavailable || historicalVersionUnavailable ? 404 : 500,
+                        {
+                            error: {
+                                code: historicalVersionUnavailable
+                                    ? "historical_version_unavailable"
+                                    : unavailable
+                                      ? error.message
+                                      : "internal_error",
+                                message: historicalVersionUnavailable
+                                    ? "The previously consented document version is unavailable."
+                                    : unavailable
+                                      ? "No prior consented version is available."
+                                      : "The legal document changes could not be loaded.",
+                            },
+                        },
+                    );
+                }
+            },
+            { access: { minRole: "user" } },
+        );
+    }
+
+    for (const slug of Object.keys(DOCUMENTS)) {
+        router.get(
+            `/api/v1/modules/terms-of-service/consent-report/${slug}`,
+            async (request, response) => {
+                const claims = await requireAuth(request, response, "admin");
+                if (!claims || response.writableEnded) return;
+                await ready;
+                sendJson(response, 200, {
+                    data: await service.listConsentForDocument(slug),
+                });
+            },
+            { access: { minRole: "admin" } },
+        );
+    }
+
+    for (const slug of Object.keys(DOCUMENTS)) {
+        router.put(
+            `/api/v1/modules/terms-of-service/documents/${slug}`,
+            async (request, response) => {
+                const claims = await requireAuth(request, response, "admin");
+                if (!claims || response.writableEnded) return;
+                try {
+                    const body = await readJson(request, {
+                        maxBytes: MAX_MARKDOWN_BYTES,
+                    });
+                    if (
+                        typeof body.markdown !== "string" ||
+                        !body.markdown.trim()
+                    ) {
+                        sendJson(response, 400, {
+                            error: {
+                                code: "invalid_markdown",
+                                message: "Markdown content is required.",
+                            },
+                        });
+                        return;
+                    }
+                    await ready;
+                    const document = await service.publish(
+                        slug,
+                        body.markdown,
+                        accountId(claims),
+                    );
+                    log?.("info", "Legal document published.", {
+                        component: "terms-of-service",
+                        operation: "publishDocument",
+                        slug,
+                    });
+                    sendJson(response, 200, { data: document });
+                } catch (error) {
+                    const invalidRequest = [
+                        "invalid_json",
+                        "request_too_large",
+                    ].includes(error.message);
+                    log?.("error", "Legal document publication failed.", {
+                        component: "terms-of-service",
+                        operation: "publishDocument",
+                        slug,
+                        error: error.message,
+                    });
+                    sendJson(response, invalidRequest ? 400 : 500, {
+                        error: {
+                            code: invalidRequest
+                                ? error.message
+                                : "internal_error",
+                            message: invalidRequest
+                                ? "The request body is invalid."
+                                : "The legal document could not be published.",
+                        },
+                    });
+                }
+            },
+            { access: { minRole: "admin" } },
+        );
+    }
+
+    for (const slug of Object.keys(DOCUMENTS)) {
+        router.get(
+            `/api/v1/modules/terms-of-service/public/${slug}`,
+            async (_request, response) => {
+                await ready;
+                const document = await service.getLatest(slug);
+                if (!document) {
+                    sendJson(response, 404, {
+                        error: {
+                            code: "not_published",
+                            message: "This document is not published.",
+                        },
+                    });
+                    return;
+                }
+                sendJson(response, 200, { data: document });
+            },
+        );
+    }
+
+    router.get(
+        "/api/v1/modules/terms-of-service/public",
+        async (_request, response) => {
+            await ready;
+            const documents = (await service.listLatest())
+                .filter((document) => document.version)
+                .map(({ slug, path, version, publishedAt }) => ({
+                    slug,
+                    path,
+                    version,
+                    publishedAt,
+                }));
+            sendJson(response, 200, { data: documents });
+        },
+    );
+
+    router.get(
+        "/api/v1/modules/terms-of-service/consent",
+        async (request, response) => {
+            const claims = await requireAuth(request, response, "user");
+            if (!claims || response.writableEnded) return;
+            await ready;
+            sendJson(response, 200, {
+                data: await service.consentStatus(accountId(claims)),
+            });
+        },
+        { access: { minRole: "user" } },
+    );
+
+    router.post(
+        "/api/v1/modules/terms-of-service/consent",
+        async (request, response) => {
+            const claims = await requireAuth(request, response, "user");
+            if (!claims || response.writableEnded) return;
+            try {
+                const body = await readJson(request);
+                const versions = body.versions;
+                if (
+                    !versions ||
+                    typeof versions !== "object" ||
+                    Array.isArray(versions) ||
+                    Object.keys(versions).some(
+                        (slug) =>
+                            !Object.hasOwn(DOCUMENTS, slug) ||
+                            typeof versions[slug] !== "string",
+                    ) ||
+                    body.accepted !== true
+                ) {
+                    throw new Error("invalid_consent_versions");
+                }
+                await ready;
+                const status = await service.recordConsent(
+                    accountId(claims),
+                    versions,
+                );
+                log?.("info", "Legal consent recorded.", {
+                    component: "terms-of-service",
+                    operation: "recordConsent",
+                    accountId: accountId(claims),
+                    documentSlugs: Object.keys(versions),
+                });
+                sendJson(response, 201, { data: status });
+            } catch (error) {
+                const failure = consentFailure(error);
+                log?.("error", "Legal consent recording failed.", {
+                    component: "terms-of-service",
+                    operation: "recordConsent",
+                    accountId: accountId(claims),
+                    error: error.message,
+                });
+                sendJson(response, failure.status, failure.payload);
+            }
+        },
+        { access: { minRole: "user" } },
+    );
+}
