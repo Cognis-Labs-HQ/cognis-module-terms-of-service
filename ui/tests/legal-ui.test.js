@@ -203,7 +203,7 @@ test("authentication pages receive links to public legal routes", () => {
     assert.match(authFooter, /href: `\/\$\{document\.slug\}`/);
     assert.match(authFooter, /terms-of-service\/public"/);
     assert.match(authFooter, /publishedSlugs\.has\(document\.slug\)/);
-    assert.match(authFooter, /labelKey:/);
+    assert.match(authFooter, /label: i18n\.t/);
 });
 
 test("admin contribution follows the Administration sub-composer contract", () => {

@@ -7,7 +7,10 @@ const requests = [];
 const footer = {
     list: () => [...links.values()],
     add(link) {
-        links.set(link.id, link);
+        links.set(link.id, {
+            ...link,
+            contexts: link.contexts ?? ["authentication"],
+        });
         return () => links.delete(link.id);
     },
 };
@@ -65,6 +68,15 @@ test("import is inert and cached providers remount with owned cleanup", async ()
         await new Promise((resolve) => setImmediate(resolve));
         assert.equal(hooks.length, 1);
         assert.equal(links.size, 1);
+        assert.equal([...links.values()][0].target, "_blank");
+        assert.deepEqual([...links.values()][0].contexts, ["application"]);
+        for (const event of ["popstate", "pageshow"]) {
+            links.clear();
+            window.dispatchEvent(new Event(event));
+            await new Promise((resolve) => setImmediate(resolve));
+            assert.equal(links.size, 1, event);
+            assert.deepEqual([...links.values()][0].contexts, ["application"]);
+        }
         assert.equal(
             typeof capabilities.get("terms-of-service:refreshFooterLinks"),
             "function",

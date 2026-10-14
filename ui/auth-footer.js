@@ -1,6 +1,9 @@
 import { importReuseModule } from "./reuse/resources.js";
 
-const { apiFetch } = await importReuseModule("api-client.js");
+const [{ apiFetch }, { createI18n }] = await Promise.all([
+    importReuseModule("api-client.js"),
+    importReuseModule("i18n.js"),
+]);
 const DOCUMENTS = [
     { slug: "terms-of-service", titleKey: "terms" },
     { slug: "privacy-policy", titleKey: "privacy" },
@@ -8,6 +11,9 @@ const DOCUMENTS = [
 ];
 
 export async function listAuthFooterLinks() {
+    const i18n = await createI18n({
+        componentStringBaseUrls: ["/static/modules/terms-of-service/languages"],
+    });
     const response = await apiFetch("/api/v1/modules/terms-of-service/public", {
         suppressAccessDeniedEvent: true,
     });
@@ -21,6 +27,7 @@ export async function listAuthFooterLinks() {
         id: document.slug,
         side: "right",
         href: `/${document.slug}`,
-        labelKey: `module.terms-of-service.document.${document.titleKey}`,
+        label: i18n.t(`module.terms-of-service.document.${document.titleKey}`),
+        target: "_blank",
     }));
 }

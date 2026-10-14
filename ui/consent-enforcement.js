@@ -66,6 +66,8 @@ export async function mountProvider(uiCtx) {
                     id: linkId,
                     side: "right",
                     href: document.path,
+                    target: "_blank",
+                    contexts: ["application"],
                     label: i18n.t(
                         `module.terms-of-service.document.${titleKey}`,
                     ),
@@ -426,10 +428,15 @@ export async function mountProvider(uiCtx) {
         consentEnforcementDisposed = true;
         clearTimeout(consentRefreshTimer);
         consentRefreshTimer = undefined;
-        window.removeEventListener(
+        for (const event of [
             "cognis:route-will-change",
-            refreshFooterLinksAfterNavigation,
-        );
+            "popstate",
+            "pageshow",
+        ])
+            window.removeEventListener(
+                event,
+                refreshFooterLinksAfterNavigation,
+            );
         footerLinkDisposers.forEach((dispose) => dispose());
         footerLinkDisposers.clear();
     }
@@ -441,11 +448,10 @@ export async function mountProvider(uiCtx) {
         },
         { signal: uiCtx.signal },
     );
-    window.addEventListener(
-        "cognis:route-will-change",
-        refreshFooterLinksAfterNavigation,
-        { signal: uiCtx.signal },
-    );
+    for (const event of ["cognis:route-will-change", "popstate", "pageshow"])
+        window.addEventListener(event, refreshFooterLinksAfterNavigation, {
+            signal: uiCtx.signal,
+        });
 
     uiCtx.extendFlow(
         "authenticate-session",
