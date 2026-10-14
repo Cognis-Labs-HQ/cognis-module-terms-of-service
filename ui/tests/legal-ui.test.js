@@ -270,7 +270,10 @@ test("public legal documents use one naturally scrolling composed page", () => {
         /module\.terms\.of\.service\.public\.page\.title\.\$\{definition\.titleKey\}/,
     );
     assert.match(source, /default: \[12, 1\]/);
-    assert.match(source, /authenticated &&[\s\S]*get\("view"\) === "changes"/);
+    assert.match(
+        source,
+        /authenticated\s*&&[\s\S]*get\(\s*"view"\s*\)\s*===\s*"changes"/,
+    );
     assert.match(source, /pageContext: \{ title, subtitle: "" \}/);
     assert.match(source, /toolbar: \[/);
     assert.match(source, /showTopbar: authenticated/);

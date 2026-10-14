@@ -2,6 +2,10 @@
 
 **Cabang Fitur:** feature-align-module-template
 
+## Target paket dan panduan pengembang
+
+Rilis 1.5.46 — Validasi paket memastikan titik masuk, ikon, banner, dan tangkapan layar berupa file reguler di dalam checkout, termasuk setelah resolusi jalur. Dokumentasi menjelaskan kontrak publik dan merujuk manifes untuk metadata rilis; changelog mempertahankan asal-usul rilis. Halaman legal publik memakai sinyal siklus hidup entri langsung host. Pemuatan terjemahan atau dokumen yang dibatalkan tidak menerbitkan UI usang, composer dihancurkan saat pembatalan, dan inisialisasi terlambat tidak memperbarui footer halaman tujuan. Setiap token pemuatan dilepas saat selesai, gagal, atau dibatalkan.
+
 ## Struktur standar dan integrasi milik modul
 
 Sinkronkan panduan templat, jalur rute domain, dokumentasi integrasi terjemahan, pemeriksaan struktur, dan hash paket akhir. Pertahankan URL publik dan identitas modul. Kontribusi browser mengikuti kontrak siklus hidup host masing-masing.

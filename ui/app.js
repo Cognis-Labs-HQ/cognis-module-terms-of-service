@@ -574,159 +574,191 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
 }
 
 export async function mount(root, { signal } = {}) {
+    if (signal?.aborted) return;
     const finishLoading = beginPageLoading(root);
-    const i18n = await createI18n({
-        componentStringBaseUrls: ["/static/modules/terms-of-service/languages"],
-    });
-    const slug = location.pathname.slice(1);
-    const definition = DOCUMENTS.find((document) => document.slug === slug);
-    if (!definition) throw new Error("Unsupported legal document route.");
-    const title = i18n.t(
-        `module.terms.of.service.document.${definition.titleKey}`,
-    );
-    const authenticated = Boolean(localStorage.getItem("cognis_access_token"));
-    const comparisonMode =
-        authenticated &&
-        new URLSearchParams(window.location.search).get("view") === "changes";
-    if (authenticated) await ensureFullAccountSession();
-    let renderedContent = "";
     try {
-        if (comparisonMode) {
-            const documentDiff = uiCtx.capabilities.get("ui:documentDiff");
-            if (
-                typeof documentDiff?.renderMarkdownDocumentDiff !== "function"
-            ) {
-                throw new Error(
-                    "Required UI capability unavailable: ui:documentDiff",
-                );
-            }
-            const response = await apiFetch(
-                `${API_PATH}/consent-diff/${slug}`,
-                { signal },
-            );
-            renderedContent = documentDiff.renderMarkdownDocumentDiff(
-                await readPayload(response),
-            );
-        } else {
-            const response = await apiFetch(`${API_PATH}/public/${slug}`, {
-                signal,
-            });
-            const document = await readPayload(response);
-            renderedContent = renderMarkdown(document.markdown);
-        }
-    } catch (error) {
-        uiCtx.capabilities.get("ui:log")?.(
-            "error",
-            comparisonMode
-                ? "Legal document comparison rendering failed."
-                : "Public legal document rendering failed.",
-            {
-                component: "terms-of-service",
-                operation: comparisonMode
-                    ? "renderConsentDiff"
-                    : "renderPublicDocument",
-                slug,
-                error: error instanceof Error ? error.message : String(error),
-            },
+        const i18n = await createI18n({
+            componentStringBaseUrls: [
+                "/static/modules/terms-of-service/languages",
+            ],
+        });
+        if (signal?.aborted) return;
+        const slug = location.pathname.slice(1);
+        const definition = DOCUMENTS.find((document) => document.slug === slug);
+        if (!definition) throw new Error("Unsupported legal document route.");
+        const title = i18n.t(
+            `module.terms.of.service.document.${definition.titleKey}`,
         );
-        renderedContent = `<p>${escapeHtml(
-            i18n.t(
-                comparisonMode
-                    ? "module.terms.of.service.consent.changes.unavailable"
-                    : "module.terms.of.service.public.unavailable",
-            ),
-        )}</p>`;
-    }
-
-    applyDocumentTitle(
-        i18n,
-        `module.terms.of.service.public.page.title.${definition.titleKey}`,
-    );
-    let navigationMenu = createSideMenu({
-        groups: [],
-        storageKeyPrefix: "terms-of-service-sections",
-    });
-    const selectDocumentSection = (sectionId) => {
-        navigationMenu.setActive(sectionId);
-    };
-    const composer = createPageComposer(root, {
-        allowCustomization: false,
-        elements: [
-            {
-                id: `${slug}-document`,
-                label: title,
-                pinned: true,
-                gridSize: { default: [12, 1], min: [6, 1], max: "full" },
-                render: () =>
-                    `<article class="terms-of-service-rendered content-panel">${renderedContent}</article>`,
-            },
-        ],
-        preferenceKey: `terms-of-service-public-${slug}`,
-        i18n,
-        pageContext: { title, subtitle: "" },
-        toolbar: [
-            {
-                id: "document-sections",
-                label: i18n.t("module.terms.of.service.public.navigation"),
-                render: () =>
-                    `<div data-legal-document-navigation>${navigationMenu.render()}</div>`,
-            },
-        ],
-        toolbarScrollable: true,
-        contentScrolling: false,
-        showTopbar: authenticated,
-        showNavbar: authenticated,
-        showThemeToggle: authenticated,
-        showFooter: authenticated,
-        frameless: false,
-        persistLayoutPreferences: authenticated,
-        requireAccountSession: authenticated,
-        enableAccountEnhancements: authenticated,
-        onRender() {
-            const article = root.querySelector(".terms-of-service-rendered");
-            const navigationItems = [];
-            article?.querySelectorAll("h2, h3").forEach((heading, index) => {
-                const id = `${slug}-section-${index + 1}`;
-                heading.id = id;
-                navigationItems.push({
-                    id,
-                    label: heading.textContent,
-                    targetId: id,
+        const authenticated = Boolean(
+            localStorage.getItem("cognis_access_token"),
+        );
+        const comparisonMode =
+            authenticated &&
+            new URLSearchParams(window.location.search).get("view") ===
+                "changes";
+        if (authenticated) await ensureFullAccountSession();
+        if (signal?.aborted) return;
+        let renderedContent = "";
+        try {
+            if (comparisonMode) {
+                const documentDiff = uiCtx.capabilities.get("ui:documentDiff");
+                if (
+                    typeof documentDiff?.renderMarkdownDocumentDiff !==
+                    "function"
+                ) {
+                    throw new Error(
+                        "Required UI capability unavailable: ui:documentDiff",
+                    );
+                }
+                const response = await apiFetch(
+                    `${API_PATH}/consent-diff/${slug}`,
+                    { signal },
+                );
+                renderedContent = documentDiff.renderMarkdownDocumentDiff(
+                    await readPayload(response),
+                );
+            } else {
+                const response = await apiFetch(`${API_PATH}/public/${slug}`, {
+                    signal,
                 });
-            });
-            const navigation = root.querySelector(
-                "[data-legal-document-navigation]",
-            );
-            navigationMenu = createSideMenu({
-                groups: [
-                    {
-                        id: slug,
-                        label: title,
-                        items: navigationItems,
-                    },
-                ],
-                storageKeyPrefix: "terms-of-service-sections",
-                activeId: navigationItems[0]?.id,
-                onSelect: selectDocumentSection,
-                scrollBehavior: "smooth",
-            });
-            if (navigation) {
-                navigation.innerHTML = navigationMenu.render();
-                navigationMenu.mount(navigation, { signal });
+                const document = await readPayload(response);
+                renderedContent = renderMarkdown(document.markdown);
             }
-            initializeMarkdownCodeCopy();
-        },
-    });
-    publicPageComposers.get(root)?.destroy?.();
-    publicPageComposers.set(root, composer);
-    await composer.init();
-    const refreshFooterLinks = uiCtx.capabilities.get(
-        "terms-of-service:refreshFooterLinks",
-    );
-    if (typeof refreshFooterLinks === "function") {
-        await refreshFooterLinks({ forceRender: true });
+        } catch (error) {
+            if (signal?.aborted) return;
+            uiCtx.capabilities.get("ui:log")?.(
+                "error",
+                comparisonMode
+                    ? "Legal document comparison rendering failed."
+                    : "Public legal document rendering failed.",
+                {
+                    component: "terms-of-service",
+                    operation: comparisonMode
+                        ? "renderConsentDiff"
+                        : "renderPublicDocument",
+                    slug,
+                    error:
+                        error instanceof Error ? error.message : String(error),
+                },
+            );
+            renderedContent = `<p>${escapeHtml(
+                i18n.t(
+                    comparisonMode
+                        ? "module.terms.of.service.consent.changes.unavailable"
+                        : "module.terms.of.service.public.unavailable",
+                ),
+            )}</p>`;
+        }
+
+        if (signal?.aborted) return;
+        applyDocumentTitle(
+            i18n,
+            `module.terms.of.service.public.page.title.${definition.titleKey}`,
+        );
+        let navigationMenu = createSideMenu({
+            groups: [],
+            storageKeyPrefix: "terms-of-service-sections",
+        });
+        const selectDocumentSection = (sectionId) => {
+            navigationMenu.setActive(sectionId);
+        };
+        const composer = createPageComposer(root, {
+            signal,
+            allowCustomization: false,
+            elements: [
+                {
+                    id: `${slug}-document`,
+                    label: title,
+                    pinned: true,
+                    gridSize: { default: [12, 1], min: [6, 1], max: "full" },
+                    render: () =>
+                        `<article class="terms-of-service-rendered content-panel">${renderedContent}</article>`,
+                },
+            ],
+            preferenceKey: `terms-of-service-public-${slug}`,
+            i18n,
+            pageContext: { title, subtitle: "" },
+            toolbar: [
+                {
+                    id: "document-sections",
+                    label: i18n.t("module.terms.of.service.public.navigation"),
+                    render: () =>
+                        `<div data-legal-document-navigation>${navigationMenu.render()}</div>`,
+                },
+            ],
+            toolbarScrollable: true,
+            contentScrolling: false,
+            showTopbar: authenticated,
+            showNavbar: authenticated,
+            showThemeToggle: authenticated,
+            showFooter: authenticated,
+            frameless: false,
+            persistLayoutPreferences: authenticated,
+            requireAccountSession: authenticated,
+            enableAccountEnhancements: authenticated,
+            onRender() {
+                if (signal?.aborted) return;
+                const article = root.querySelector(
+                    ".terms-of-service-rendered",
+                );
+                const navigationItems = [];
+                article
+                    ?.querySelectorAll("h2, h3")
+                    .forEach((heading, index) => {
+                        const id = `${slug}-section-${index + 1}`;
+                        heading.id = id;
+                        navigationItems.push({
+                            id,
+                            label: heading.textContent,
+                            targetId: id,
+                        });
+                    });
+                const navigation = root.querySelector(
+                    "[data-legal-document-navigation]",
+                );
+                navigationMenu = createSideMenu({
+                    groups: [
+                        {
+                            id: slug,
+                            label: title,
+                            items: navigationItems,
+                        },
+                    ],
+                    storageKeyPrefix: "terms-of-service-sections",
+                    activeId: navigationItems[0]?.id,
+                    onSelect: selectDocumentSection,
+                    scrollBehavior: "smooth",
+                });
+                if (navigation) {
+                    navigation.innerHTML = navigationMenu.render();
+                    navigationMenu.mount(navigation, { signal });
+                }
+                initializeMarkdownCodeCopy();
+            },
+        });
+        if (signal?.aborted) return;
+        publicPageComposers.get(root)?.destroy?.();
+        publicPageComposers.set(root, composer);
+        signal?.addEventListener(
+            "abort",
+            () => {
+                if (publicPageComposers.get(root) !== composer) return;
+                publicPageComposers.delete(root);
+                composer.destroy();
+            },
+            { once: true },
+        );
+        await composer.init();
+        if (signal?.aborted) return;
+        const refreshFooterLinks = uiCtx.capabilities.get(
+            "terms-of-service:refreshFooterLinks",
+        );
+        if (typeof refreshFooterLinks === "function") {
+            await refreshFooterLinks({ forceRender: true });
+        }
+    } finally {
+        finishLoading();
     }
-    finishLoading();
 }
 
 export function unmount(root) {
@@ -737,10 +769,7 @@ export function unmount(root) {
 
 const directRouteSlug = location.pathname.slice(1);
 if (DOCUMENTS.some((document) => document.slug === directRouteSlug)) {
-    await mountWhenDirect((root) => {
-        const mountController = new AbortController();
-        return mount(root, { signal: mountController.signal });
-    }).catch((error) => {
+    await mountWhenDirect(mount).catch((error) => {
         showError(error instanceof Error ? error.message : String(error));
     });
 }

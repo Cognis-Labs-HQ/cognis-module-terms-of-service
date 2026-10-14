@@ -2,6 +2,10 @@
 
 **Feature-Branch:** feature-align-module-template
 
+## Paketziele und Entwicklerhinweise
+
+Ausgabe 1.5.46 — Die Paketprüfung stellt sicher, dass Einstiegspunkte, Icons, Banner und Screenshots reguläre Dateien innerhalb des Checkouts sind, auch nach Pfadauflösung. Die Dokumentation beschreibt öffentliche Verträge und verweist für Veröffentlichungsmetadaten auf Manifeste; Änderungsprotokolle behalten die Herkunft der Veröffentlichung. Öffentliche Rechtsseiten verwenden das Lebenszyklussignal des direkten Host-Einstiegs. Abgebrochene Übersetzungs- oder Dokumentladevorgänge veröffentlichen keine veraltete UI. Composer werden beim Abbruch zerstört, und verspätete Initialisierung aktualisiert nicht die Fußzeile der Zielseite. Jedes Ladetoken wird bei Abschluss, Fehler oder Abbruch freigegeben.
+
 ## Standardstruktur und eigene Integration
 
 Vorlagenrichtlinien, domänenspezifische Routenpfade, übersetzte Integrationsdokumentation, ausführbare Strukturprüfungen und endgültige Paket-Hashes synchronisieren. Öffentliche URLs und Modulidentität bleiben erhalten. Browserbeiträge folgen den Lebenszyklusverträgen des zuständigen Hosts.
