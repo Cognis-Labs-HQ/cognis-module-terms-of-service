@@ -35,7 +35,7 @@ test("legal editors use Cognis utilities and standard action variants", () => {
     assert.match(source, /createUnsavedChangesBar/);
     assert.match(
         source,
-        /createCollapsibleSectionComposer\(\{[\s\S]*detailsLabel: i18n\.t\("module\.terms\.of\.service\.action\.details"\)/,
+        /createCollapsibleSectionComposer\(\{[\s\S]*detailsLabel: i18n\.t\("module\.terms-of-service\.action\.details"\)/,
     );
     assert.match(source, /renderInfoTooltip/);
     assert.match(
@@ -109,7 +109,7 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /action: "delete"/);
     assert.match(
         enforcement,
-        /id: "cancel",[\s\S]*module\.terms\.of\.service\.action\.cancel/,
+        /id: "cancel",[\s\S]*module\.terms-of-service\.action\.cancel/,
     );
     assert.match(enforcement, /ui:footerLinks/);
     assert.match(enforcement, /footerLinks[\s\S]*\.list\?\.\(\)/);
@@ -157,7 +157,7 @@ test("consent is enforced during registration and authenticated sessions", () =>
     assert.match(enforcement, /capabilities\.get\("ui:showToast"\)/);
     assert.match(
         enforcement,
-        /module\.terms\.of\.service\.consent\.select\.all\.error/,
+        /module\.terms-of-service\.consent\.select\.all\.error/,
     );
     assert.match(enforcement, /\{ variant: "error" \}/);
     assert.match(enforcement, /response\.status === 400/);
@@ -237,7 +237,7 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /consent-diff\/\$\{slug\}/);
     assert.match(
         source,
-        /module\.terms\.of\.service\.consent\.changes\.unavailable/,
+        /module\.terms-of-service\.consent\.changes\.unavailable/,
     );
     assert.match(source, /toolbarScrollable: true/);
     assert.match(source, /querySelectorAll\("h2, h3"\)/);
@@ -267,7 +267,7 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /applyDocumentTitle/);
     assert.match(
         source,
-        /module\.terms\.of\.service\.public\.page\.title\.\$\{definition\.titleKey\}/,
+        /module\.terms-of-service\.public\.page\.title\.\$\{definition\.titleKey\}/,
     );
     assert.match(source, /default: \[12, 1\]/);
     assert.match(
@@ -340,12 +340,12 @@ test("administration renders filterable paginated consent reports", () => {
         legalStyles,
         /terms-of-service-report-filters \.state-pill\.is-active/,
     );
-    assert.match(source, /module\.terms\.of\.service\.report\.latest\.version/);
+    assert.match(source, /module\.terms-of-service\.report\.latest\.version/);
     assert.match(
         source,
-        /module\.terms\.of\.service\.report\.consented\.version/,
+        /module\.terms-of-service\.report\.consented\.version/,
     );
-    assert.match(source, /module\.terms\.of\.service\.report\.not\.consented/);
+    assert.match(source, /module\.terms-of-service\.report\.not\.consented/);
     assert.match(source, /<code>\$\{escapeHtml\(user\.version\)\}<\/code>/);
     assert.match(source, /<code>\$\{escapeHtml\(document\.version\)\}<\/code>/);
     assert.match(

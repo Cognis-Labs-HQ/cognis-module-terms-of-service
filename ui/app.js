@@ -87,7 +87,7 @@ async function readPayload(response) {
 function consentReportMarkup(i18n) {
     return `<section class="terms-of-service-report" data-consent-report>
         <div class="terms-of-service-report-toolbar">
-            <input type="search" class="form-builder-input" data-consent-search placeholder="${escapeHtml(i18n.t("module.terms.of.service.report.search"))}">
+            <input type="search" class="form-builder-input" data-consent-search placeholder="${escapeHtml(i18n.t("module.terms-of-service.report.search"))}">
             <div class="terms-of-service-report-filters">${[
                 "all",
                 "accepted",
@@ -95,7 +95,7 @@ function consentReportMarkup(i18n) {
             ]
                 .map(
                     (filter) =>
-                        `<button type="button" class="state-pill${filter === "all" ? " is-active" : ""}" data-consent-filter="${filter}" aria-pressed="${filter === "all"}">${escapeHtml(i18n.t(`module.terms.of.service.report.${filter}`))}</button>`,
+                        `<button type="button" class="state-pill${filter === "all" ? " is-active" : ""}" data-consent-filter="${filter}" aria-pressed="${filter === "all"}">${escapeHtml(i18n.t(`module.terms-of-service.report.${filter}`))}</button>`,
                 )
                 .join("")}</div>
         </div>
@@ -131,21 +131,21 @@ function activateConsentReport(panel, document, i18n, apiFetch) {
         const rows = page.items
             .map(
                 (user) =>
-                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-disabled"}">${escapeHtml(i18n.t(`module.terms.of.service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td><td>${user.version ? `<code>${escapeHtml(user.version)}</code>` : escapeHtml(i18n.t("module.terms.of.service.report.not.consented"))}</td><td><code>${escapeHtml(document.version)}</code></td></tr>`,
+                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-disabled"}">${escapeHtml(i18n.t(`module.terms-of-service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td><td>${user.version ? `<code>${escapeHtml(user.version)}</code>` : escapeHtml(i18n.t("module.terms-of-service.report.not.consented"))}</td><td><code>${escapeHtml(document.version)}</code></td></tr>`,
             )
             .join("");
         report.querySelector("[data-consent-report-table]").innerHTML =
-            `<div class="terms-of-service-report-table-wrap"><table><thead><tr><th>${escapeHtml(i18n.t("module.terms.of.service.report.user"))}</th><th>${escapeHtml(i18n.t("module.terms.of.service.report.status"))}</th><th>${escapeHtml(i18n.t("module.terms.of.service.report.consented.version"))}</th><th>${escapeHtml(i18n.t("module.terms.of.service.report.latest.version"))}</th></tr></thead><tbody>${rows || `<tr><td colspan="4">${escapeHtml(i18n.t("module.terms.of.service.report.empty"))}</td></tr>`}</tbody></table></div>${paginationUi.renderPaginationControls(
+            `<div class="terms-of-service-report-table-wrap"><table><thead><tr><th>${escapeHtml(i18n.t("module.terms-of-service.report.user"))}</th><th>${escapeHtml(i18n.t("module.terms-of-service.report.status"))}</th><th>${escapeHtml(i18n.t("module.terms-of-service.report.consented.version"))}</th><th>${escapeHtml(i18n.t("module.terms-of-service.report.latest.version"))}</th></tr></thead><tbody>${rows || `<tr><td colspan="4">${escapeHtml(i18n.t("module.terms-of-service.report.empty"))}</td></tr>`}</tbody></table></div>${paginationUi.renderPaginationControls(
                 {
                     page,
                     labels: {
                         previous: i18n.t(
-                            "module.terms.of.service.report.previous",
+                            "module.terms-of-service.report.previous",
                         ),
-                        next: i18n.t("module.terms.of.service.report.next"),
-                        status: i18n.t("module.terms.of.service.report.page"),
+                        next: i18n.t("module.terms-of-service.report.next"),
+                        status: i18n.t("module.terms-of-service.report.page"),
                     },
-                    ariaLabel: i18n.t("module.terms.of.service.report.pages"),
+                    ariaLabel: i18n.t("module.terms-of-service.report.pages"),
                     escapeHtml,
                 },
             )}`;
@@ -203,20 +203,20 @@ function documentDescriptor(document, i18n) {
     const actionVariant = hasPublishedContent ? "btn-cancel" : "btn-confirm";
     return {
         id: document.slug,
-        title: i18n.t(`module.terms.of.service.document.${document.titleKey}`),
+        title: i18n.t(`module.terms-of-service.document.${document.titleKey}`),
         className: "terms-of-service-document",
         contentClassName: "terms-of-service-document-content",
         open: hasPublishedContent,
         controlsHtml: `<button class="terms-of-service-document-action ${actionVariant}" type="button"
-                aria-label="${escapeHtml(i18n.t(`module.terms.of.service.action.${actionKey}`))}">${escapeHtml(i18n.t(`module.terms.of.service.action.${actionKey}`))}</button>`,
+                aria-label="${escapeHtml(i18n.t(`module.terms-of-service.action.${actionKey}`))}">${escapeHtml(i18n.t(`module.terms-of-service.action.${actionKey}`))}</button>`,
         contentHtml: `<div class="terms-of-service-editor">
             <div class="terms-of-service-compose-pane">
-                <textarea rows="16" aria-label="${escapeHtml(i18n.t("module.terms.of.service.editor.content"))}">${escapeHtml(document.markdown ?? "")}</textarea>
+                <textarea rows="16" aria-label="${escapeHtml(i18n.t("module.terms-of-service.editor.content"))}">${escapeHtml(document.markdown ?? "")}</textarea>
             </div>
             <div class="terms-of-service-preview-pane" hidden></div>
             <div class="collapsible-section-action-row terms-of-service-mode-row">
-                <button class="terms-of-service-mode-toggle btn-neutral is-active" type="button" data-mode="compose" aria-pressed="true">${escapeHtml(i18n.t("module.terms.of.service.action.compose"))}</button>
-                <button class="terms-of-service-mode-toggle btn-neutral" type="button" data-mode="preview" aria-pressed="false">${escapeHtml(i18n.t("module.terms.of.service.action.preview"))}</button>
+                <button class="terms-of-service-mode-toggle btn-neutral is-active" type="button" data-mode="compose" aria-pressed="true">${escapeHtml(i18n.t("module.terms-of-service.action.compose"))}</button>
+                <button class="terms-of-service-mode-toggle btn-neutral" type="button" data-mode="preview" aria-pressed="false">${escapeHtml(i18n.t("module.terms-of-service.action.preview"))}</button>
             </div>
             ${hasPublishedContent ? consentReportMarkup(i18n) : ""}
         </div>`,
@@ -290,11 +290,11 @@ function activateEditor(
     function syncDocumentAction() {
         const actionKey = editorActive ? "remove" : "add";
         documentAction.textContent = i18n.t(
-            `module.terms.of.service.action.${actionKey}`,
+            `module.terms-of-service.action.${actionKey}`,
         );
         documentAction.setAttribute(
             "aria-label",
-            i18n.t(`module.terms.of.service.action.${actionKey}`),
+            i18n.t(`module.terms-of-service.action.${actionKey}`),
         );
         documentAction.classList.toggle("btn-cancel", editorActive);
         documentAction.classList.toggle("btn-confirm", !editorActive);
@@ -329,18 +329,18 @@ function activateEditor(
             return;
         }
         const result = await openPopup({
-            title: i18n.t("module.terms.of.service.remove.title"),
-            body: `<p>${escapeHtml(i18n.t("module.terms.of.service.remove.prompt"))}</p>`,
+            title: i18n.t("module.terms-of-service.remove.title"),
+            body: `<p>${escapeHtml(i18n.t("module.terms-of-service.remove.prompt"))}</p>`,
             variant: "warning",
             actions: [
                 {
                     id: "remove",
-                    label: i18n.t("module.terms.of.service.action.remove"),
+                    label: i18n.t("module.terms-of-service.action.remove"),
                     variant: "cancel",
                 },
                 {
                     id: "keep",
-                    label: i18n.t("module.terms.of.service.action.keep"),
+                    label: i18n.t("module.terms-of-service.action.keep"),
                     variant: "confirm",
                 },
             ],
@@ -369,15 +369,15 @@ function mountFloatingDirtyTracker(root, i18n, controllers) {
     const slot = root.querySelector('[data-floating-slot="admin-changes-bar"]');
     if (!slot?.isConnected) return null;
     const dirtyBar = createUnsavedChangesBar(slot, {
-        confirmMessage: i18n.t("module.terms.of.service.editor.unsaved"),
+        confirmMessage: i18n.t("module.terms-of-service.editor.unsaved"),
         onSave: async () => {
             try {
                 await Promise.all(
                     controllers.map((controller) => controller.save()),
                 );
-                showToast(i18n.t("module.terms.of.service.message.updated"));
+                showToast(i18n.t("module.terms-of-service.message.updated"));
             } catch (error) {
-                showError(i18n.t("module.terms.of.service.error.save"));
+                showError(i18n.t("module.terms-of-service.error.save"));
                 throw error;
             }
         },
@@ -391,13 +391,13 @@ function mountFloatingDirtyTracker(root, i18n, controllers) {
 function documentsMarkup(documents, i18n) {
     const sectionComposer = createCollapsibleSectionComposer({
         escapeHtml,
-        detailsLabel: i18n.t("module.terms.of.service.action.details"),
+        detailsLabel: i18n.t("module.terms-of-service.action.details"),
     });
     return `<div class="terms-of-service-heading">
-        <h2>${escapeHtml(i18n.t("module.terms.of.service.admin.title"))}
+        <h2>${escapeHtml(i18n.t("module.terms-of-service.admin.title"))}
             ${renderInfoTooltip(
-                i18n.t("module.terms.of.service.editor.markdown.hint"),
-                i18n.t("module.terms.of.service.editor.more.information"),
+                i18n.t("module.terms-of-service.editor.markdown.hint"),
+                i18n.t("module.terms-of-service.editor.more.information"),
                 "terms-of-service-markdown",
             )}
         </h2>
@@ -479,12 +479,12 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                         error instanceof Error ? error.message : String(error),
                 },
             );
-            showError(i18n.t("module.terms.of.service.error.load"));
+            showError(i18n.t("module.terms-of-service.error.load"));
         });
 
     return {
         id: "terms-of-service-legal",
-        label: i18n.t("module.terms.of.service.admin.title"),
+        label: i18n.t("module.terms-of-service.admin.title"),
         dataReady,
         subComposerOptions: {
             allowCustomization: false,
@@ -566,7 +566,7 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
             elements: [
                 {
                     id: "terms-of-service-documents",
-                    label: i18n.t("module.terms.of.service.admin.title"),
+                    label: i18n.t("module.terms-of-service.admin.title"),
                     pinned: true,
                     gridSize: { default: [12, 6], min: [6, 4], max: "full" },
                     render: () => documentsMarkup(documents, i18n),
@@ -591,7 +591,7 @@ export async function mount(root, { signal } = {}) {
         const definition = DOCUMENTS.find((document) => document.slug === slug);
         if (!definition) throw new Error("Unsupported legal document route.");
         const title = i18n.t(
-            `module.terms.of.service.document.${definition.titleKey}`,
+            `module.terms-of-service.document.${definition.titleKey}`,
         );
         const authenticated = Boolean(
             localStorage.getItem("cognis_access_token"),
@@ -648,8 +648,8 @@ export async function mount(root, { signal } = {}) {
             renderedContent = `<p>${escapeHtml(
                 i18n.t(
                     comparisonMode
-                        ? "module.terms.of.service.consent.changes.unavailable"
-                        : "module.terms.of.service.public.unavailable",
+                        ? "module.terms-of-service.consent.changes.unavailable"
+                        : "module.terms-of-service.public.unavailable",
                 ),
             )}</p>`;
         }
@@ -657,7 +657,7 @@ export async function mount(root, { signal } = {}) {
         if (signal?.aborted) return;
         applyDocumentTitle(
             i18n,
-            `module.terms.of.service.public.page.title.${definition.titleKey}`,
+            `module.terms-of-service.public.page.title.${definition.titleKey}`,
         );
         let navigationMenu = createSideMenu({
             groups: [],
@@ -685,7 +685,7 @@ export async function mount(root, { signal } = {}) {
             toolbar: [
                 {
                     id: "document-sections",
-                    label: i18n.t("module.terms.of.service.public.navigation"),
+                    label: i18n.t("module.terms-of-service.public.navigation"),
                     render: () =>
                         `<div data-legal-document-navigation>${navigationMenu.render()}</div>`,
                 },

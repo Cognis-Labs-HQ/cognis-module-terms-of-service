@@ -39,3 +39,7 @@ Halaman langsung yang dibatalkan segera melepas token pemuatan bersama, meskipun
 Alur penerbitan dan persetujuan mengautentikasi permintaan pada tahap otorisasi. Penerbitan memerlukan administrator; identitas pelaku dan akun persetujuan hanya berasal dari klaim terverifikasi. Pengujian mencakup pemanggilan alur langsung dan identitas palsu. Dokumentasi footer autentikasi kini menjelaskan kontrak penyedia deskriptor.
 
 Muat CSS milik modul melalui pembantu publik page-styles. Katalog stylesheet bersama hanya menerima nama relatif sumber daya bersama; URL modul menggagalkan impor UI dan menyembunyikan bagian Legal. Pengujian menegakkan batas ini dan memverifikasi penemuan bagian administrasi.
+
+### Pertahankan ID modul pada kunci
+
+Kunci terjemahan menggunakan `module.<manifest.id>.<feature>.<label>`. Pertahankan ID modul yang terdiri dari beberapa kata beserta tanda hubungnya; untuk `terms-of-service`, gunakan `module.terms-of-service.admin.title`. Sufiks setelah ID modul menggunakan kata huruf kecil yang dipisahkan titik. Metadata manifes, berkas XML, dan referensi kode harus memakai namespace yang sama.

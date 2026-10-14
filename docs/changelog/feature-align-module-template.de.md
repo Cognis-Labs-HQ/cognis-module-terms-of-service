@@ -34,6 +34,10 @@ Veröffentlichungs- und Zustimmungsabläufe authentifizieren die Anfrage in ihre
 
 Moduleigenes CSS wird über die öffentliche Hilfsfunktion page-styles geladen. Der gemeinsame Stylesheet-Katalog akzeptiert nur relative Namen seiner Wiederverwendungsdateien; eine Modul-URL verhinderte den UI-Import und blendete den Rechtsbereich aus. Tests prüfen diese Grenze und die Erkennung des Administrationsbereichs.
 
+## Modul-IDs in Übersetzungen erhalten
+
+Übersetzungsschlüssel verwenden `module.<manifest.id>.<feature>.<label>`. Eine mehrteilige Modul-ID bleibt mit ihren Bindestrichen erhalten; für `terms-of-service` lautet ein Schlüssel `module.terms-of-service.admin.title`. Der Suffix nach der Modul-ID verwendet kleingeschriebene, durch Punkte getrennte Wörter. Manifest-Metadaten, XML-Dateien und Codeverweise müssen denselben Namensraum verwenden.
+
 ## Commits
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)

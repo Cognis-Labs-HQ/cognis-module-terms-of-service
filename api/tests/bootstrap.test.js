@@ -74,7 +74,7 @@ test("registers the Legal administration section and public pages", () => {
 
     assert.equal(
         registrations.admin[0].label,
-        "module.terms.of.service.admin.title",
+        "module.terms-of-service.admin.title",
     );
     assert.equal(registrations.admin[0].access.minRole, "admin");
     assert.deepEqual(

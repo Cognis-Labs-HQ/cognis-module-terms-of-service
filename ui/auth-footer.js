@@ -21,6 +21,6 @@ export async function listAuthFooterLinks() {
         id: document.slug,
         side: "right",
         href: `/${document.slug}`,
-        labelKey: `module.terms.of.service.document.${document.titleKey}`,
+        labelKey: `module.terms-of-service.document.${document.titleKey}`,
     }));
 }

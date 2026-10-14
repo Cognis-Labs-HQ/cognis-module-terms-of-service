@@ -39,3 +39,7 @@ Eine abgebrochene direkte Seite gibt ihr gemeinsames Ladetoken sofort frei, auch
 Veröffentlichungs- und Zustimmungsabläufe authentifizieren die Anfrage in ihrer Autorisierungsphase. Die Veröffentlichung erfordert Administratorrechte; Bearbeiter und Zustimmungskonto stammen ausschließlich aus geprüften Angaben. Tests prüfen direkte Ablaufaufrufe und gefälschte Identitäten. Die Dokumentation des Authentifizierungsfooters beschreibt jetzt den Deskriptoranbieter-Vertrag.
 
 Moduleigenes CSS wird über die öffentliche Hilfsfunktion page-styles geladen. Der gemeinsame Stylesheet-Katalog akzeptiert nur relative Namen seiner Wiederverwendungsdateien; eine Modul-URL verhinderte den UI-Import und blendete den Rechtsbereich aus. Tests prüfen diese Grenze und die Erkennung des Administrationsbereichs.
+
+### Modul-IDs in Übersetzungen erhalten
+
+Übersetzungsschlüssel verwenden `module.<manifest.id>.<feature>.<label>`. Eine mehrteilige Modul-ID bleibt mit ihren Bindestrichen erhalten; für `terms-of-service` lautet ein Schlüssel `module.terms-of-service.admin.title`. Der Suffix nach der Modul-ID verwendet kleingeschriebene, durch Punkte getrennte Wörter. Manifest-Metadaten, XML-Dateien und Codeverweise müssen denselben Namensraum verwenden.

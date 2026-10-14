@@ -34,6 +34,10 @@ Marketplace のメタデータに短い操作概要と具体的な機能説明�
 
 モジュール所有の CSS は公開の page-styles ヘルパーで読み込みます。共有スタイルシートの一覧は再利用リソースの相対名だけを受け付けるため、モジュール URL を渡すと UI のインポートが失敗し、法的文書セクションが非表示になっていました。テストでこの境界と管理セクションの検出を確認します。
 
+## 翻訳キーでモジュール ID を維持
+
+翻訳キーには `module.<manifest.id>.<feature>.<label>` を使用します。複数の単語からなるモジュール ID はハイフンを含めてそのまま保持します。`terms-of-service` の場合は `module.terms-of-service.admin.title` を使用します。モジュール ID より後の接尾辞には、小文字の単語をピリオドで区切って使用します。マニフェストのメタデータ、XML ファイル、コード参照で同じ名前空間を使用します。
+
 ## コミット
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)
