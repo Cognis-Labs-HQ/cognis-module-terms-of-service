@@ -61,6 +61,11 @@ globalThis[Symbol.for("cognis.uiCtx")] = {
                 ? {
                       importModule: async (path) => modules[path],
                       loadStylesheet: async () => {},
+                      loadStylesheets: async (urls) => {
+                          assert.equal(urls.length, 1);
+                          assert.ok(urls[0].endsWith("/ui/styles/legal.css"));
+                          events.push("legal-styles");
+                      },
                   }
                 : id === "ui:pagination"
                   ? {

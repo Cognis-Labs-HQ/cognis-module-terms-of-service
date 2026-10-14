@@ -22,11 +22,18 @@ Rework the Terms of Service banner so the logo, title, document and shield remai
 
 Use short action summaries and concrete feature descriptions across marketplace metadata, keeping localized meanings aligned.
 
+## Restore marketplace names and full-width legal editors
+
+Preserve published marketplace translation identifiers across release channels. Load the module-owned Legal stylesheet through the host UI reuse capability so administration text editors fill their available width.
+
+## Authorize legal mutations
+
+Publish and consent flows authenticate the request inside their authorization stage. Publishing requires an administrator; actor and consent account identities come only from verified claims. Tests cover direct flow calls and forged identities. Authentication footer documentation now describes its descriptor-provider contract.
+
 ## Commits
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)
 - [bf9b760](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/bf9b760ddc729dd30f1309013c186bdd11321308)
 - [1fe6b25](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1fe6b25a95416e45b08cbf32600d2d3886b70452)
 - [d2639c0](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/d2639c08ce40c538932e1bdd938ba03e6a81ddfc)
-
 - [7655c5f](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/7655c5f9319158ba37f93d2918704cd23a378526)

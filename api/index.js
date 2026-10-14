@@ -18,6 +18,27 @@ export function registerApi(router, ctx) {
     const store = new LegalDocumentStore(database, versionTracker);
     const ready = store.ensureSchema();
 
+    const authenticateAction = async (input, role, action) => {
+        const [request, response] = input;
+        const claims =
+            typeof request === "object" &&
+            request !== null &&
+            typeof response === "object" &&
+            response !== null
+                ? await requireAuth(request, response, role)
+                : null;
+        const accountId = String(claims?.sub ?? "").trim();
+        if (!accountId || response?.writableEnded) {
+            ctx.log?.("error", "Legal action authorization failed.", {
+                component: "terms-of-service",
+                operation: action,
+                requiredRole: role,
+            });
+            throw new Error("authorization_required");
+        }
+        return accountId;
+    };
+
     const validateAccount = ([accountId]) => {
         if (typeof accountId !== "string" || !accountId.trim())
             throw new Error("invalid_account");
@@ -36,7 +57,20 @@ export function registerApi(router, ctx) {
                 execute: (slug) => store.getLatest(slug),
             },
             publish: {
-                validate: validateDocument,
+                authorize: async (input) => [
+                    input[2],
+                    input[3],
+                    await authenticateAction(input, "admin", "publish"),
+                ],
+                validate: (input) => {
+                    validateDocument(input);
+                    if (
+                        typeof input[1] !== "string" ||
+                        !input[1].trim() ||
+                        Buffer.byteLength(input[1], "utf8") > 1_000_000
+                    )
+                        throw new Error("invalid_markdown");
+                },
                 execute: (...args) => store.publish(...args),
             },
             listConsentForDocument: {
@@ -52,6 +86,10 @@ export function registerApi(router, ctx) {
                 execute: (accountId) => store.consentStatus(accountId),
             },
             recordConsent: {
+                authorize: async (input) => [
+                    await authenticateAction(input, "user", "recordConsent"),
+                    input[2],
+                ],
                 validate: validateAccount,
                 execute: (...args) => store.recordConsent(...args),
             },

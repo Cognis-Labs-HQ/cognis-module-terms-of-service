@@ -138,9 +138,10 @@ export function registerDocumentRoutes(
                     }
                     await ready;
                     const document = await service.publish(
+                        request,
+                        response,
                         slug,
                         body.markdown,
-                        accountId(claims),
                     );
                     log?.("info", "Legal document published.", {
                         component: "terms-of-service",
@@ -149,6 +150,7 @@ export function registerDocumentRoutes(
                     });
                     sendJson(response, 200, { data: document });
                 } catch (error) {
+                    if (response.writableEnded) return;
                     const invalidRequest = [
                         "invalid_json",
                         "request_too_large",
@@ -247,7 +249,8 @@ export function registerDocumentRoutes(
                 }
                 await ready;
                 const status = await service.recordConsent(
-                    accountId(claims),
+                    request,
+                    response,
                     versions,
                 );
                 log?.("info", "Legal consent recorded.", {
@@ -258,6 +261,7 @@ export function registerDocumentRoutes(
                 });
                 sendJson(response, 201, { data: status });
             } catch (error) {
+                if (response.writableEnded) return;
                 const failure = consentFailure(error);
                 log?.("error", "Legal consent recording failed.", {
                     component: "terms-of-service",

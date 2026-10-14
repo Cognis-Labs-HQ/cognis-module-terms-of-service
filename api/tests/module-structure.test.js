@@ -32,7 +32,17 @@ test("structure validation rejects misplaced CSS and flat route handlers", async
     assert.equal((await validateModuleStructure(root)).length, 2);
 });
 
-test("module locale keys use period-delimited segments", async () => {
+test("new locale keys use periods while published marketplace identifiers stay stable", async () => {
+    const publishedMetadata = new Set(
+        [
+            "name",
+            "summary",
+            "description",
+            "category.legal",
+            "tag.legal",
+            "tag.administration",
+        ].map((key) => `module.terms_of_service.${key}`),
+    );
     for (const locale of ["de", "en", "id", "ja"]) {
         const xml = await readFile(
             new URL(
@@ -41,7 +51,9 @@ test("module locale keys use period-delimited segments", async () => {
             ),
             "utf8",
         );
-        for (const match of xml.matchAll(/<string name="(module\.[^"]+)"/g))
-            assert.match(match[1], /^module(?:\.[a-z0-9]+)+$/);
+        for (const match of xml.matchAll(/<string name="(module\.[^"]+)"/g)) {
+            if (!publishedMetadata.has(match[1]))
+                assert.match(match[1], /^module(?:\.[a-z0-9]+)+$/);
+        }
     }
 });

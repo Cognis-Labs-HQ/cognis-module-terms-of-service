@@ -1,6 +1,7 @@
 import {
     importReuseModule,
     loadReuseStylesheet,
+    loadModuleStylesheets,
     uiCtx,
 } from "./reuse/resources.js";
 
@@ -31,6 +32,9 @@ const [
 ]);
 
 await Promise.all([
+    loadModuleStylesheets([
+        new URL("./styles/legal.css", import.meta.url).href,
+    ]),
     loadReuseStylesheet("state-pill.css"),
     loadReuseStylesheet("document-diff.css"),
 ]);

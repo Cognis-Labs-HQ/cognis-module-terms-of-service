@@ -79,3 +79,19 @@ test("English titles use Title Case", () => {
     }
     assert.deepEqual(violations, []);
 });
+
+test("marketplace metadata keeps its published translation identifiers", () => {
+    const manifest = JSON.parse(
+        readFileSync(resolve(ROOT, "manifest.json"), "utf8"),
+    );
+    assert.equal(manifest.name, "module.terms_of_service.name");
+    assert.equal(manifest.summary, "module.terms_of_service.summary");
+    assert.equal(manifest.description, "module.terms_of_service.description");
+    assert.deepEqual(manifest.categories, [
+        "module.terms_of_service.category.legal",
+    ]);
+    assert.deepEqual(manifest.tags, [
+        "module.terms_of_service.tag.legal",
+        "module.terms_of_service.tag.administration",
+    ]);
+});
