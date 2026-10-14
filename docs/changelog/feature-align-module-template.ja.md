@@ -6,6 +6,10 @@
 
 テンプレートの指針、ドメイン別ルート、翻訳された統合文書、実行可能な構成チェック、最終パッケージハッシュを同期します。公開URLとモジュール識別子は維持します。ブラウザーの提供機能は担当ホストのライフサイクル契約に従います。
 
+## バナー全体を表示範囲に収める
+
+Terms of Service バナーを再構成し、Marketplace の切り抜き後もロゴ、タイトル、文書、盾の全体を表示します。既存の文書アイコンは維持します。
+
 ## コミット
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)
