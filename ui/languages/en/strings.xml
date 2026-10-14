@@ -29,8 +29,8 @@
   <string name="module.terms.of.service.public.page.title.privacy">Cognis - Privacy Policy</string>
   <string name="module.terms.of.service.public.page.title.eula">Cognis - End User License Agreement</string>
   <string name="module.terms.of.service.name">Terms of Service</string>
-  <string name="module.terms.of.service.summary">Publish Terms of Service, Privacy Policy, and EULA pages.</string>
-  <string name="module.terms.of.service.description">Adds legal-document administration and public Markdown-rendered legal pages.</string>
+  <string name="module.terms.of.service.summary">Publish legal documents in Cognis.</string>
+  <string name="module.terms.of.service.description">Manage Terms of Service, Privacy Policy, and EULA pages with versioned documents and consent tracking.</string>
   <string name="module.terms.of.service.category.legal">Legal</string>
   <string name="module.terms.of.service.tag.legal">Legal</string>
   <string name="module.terms.of.service.tag.administration">Administration</string>

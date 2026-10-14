@@ -29,8 +29,8 @@
   <string name="module.terms.of.service.public.page.title.privacy">Cognis - Kebijakan Privasi</string>
   <string name="module.terms.of.service.public.page.title.eula">Cognis - Perjanjian Lisensi Pengguna Akhir</string>
   <string name="module.terms.of.service.name">Ketentuan Layanan</string>
-  <string name="module.terms.of.service.summary">Terbitkan halaman Ketentuan Layanan, Kebijakan Privasi, dan EULA.</string>
-  <string name="module.terms.of.service.description">Menambahkan administrasi dokumen hukum dan halaman hukum publik yang dirender dengan Markdown.</string>
+  <string name="module.terms.of.service.summary">Terbitkan dokumen hukum di Cognis.</string>
+  <string name="module.terms.of.service.description">Kelola halaman Ketentuan Layanan, Kebijakan Privasi dan Perjanjian Lisensi Pengguna Akhir dengan versi dokumen serta pencatatan persetujuan.</string>
   <string name="module.terms.of.service.category.legal">Hukum</string>
   <string name="module.terms.of.service.tag.legal">Hukum</string>
   <string name="module.terms.of.service.tag.administration">Administrasi</string>

@@ -10,6 +10,10 @@ Synchronize template guidance, domain route paths, localized integration documen
 
 Rework the Terms of Service banner so the logo, title, document and shield remain fully visible within the marketplace hero crop. Preserve the existing document icon.
 
+## Consistent marketplace descriptions
+
+Use short action summaries and concrete feature descriptions across marketplace metadata, keeping localized meanings aligned.
+
 ## Commits
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)

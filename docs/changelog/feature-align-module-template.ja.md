@@ -10,6 +10,10 @@
 
 Terms of Service バナーを再構成し、Marketplace の切り抜き後もロゴ、タイトル、文書、盾の全体を表示します。既存の文書アイコンは維持します。
 
+## Marketplace の説明を統一する
+
+Marketplace のメタデータに短い操作概要と具体的な機能説明を使用し、翻訳の意味を揃えます。
+
 ## コミット
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)

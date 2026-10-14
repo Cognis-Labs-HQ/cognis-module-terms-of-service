@@ -29,8 +29,8 @@
   <string name="module.terms.of.service.public.page.title.privacy">Cognis - プライバシーポリシー</string>
   <string name="module.terms.of.service.public.page.title.eula">Cognis - エンドユーザー使用許諾契約</string>
   <string name="module.terms.of.service.name">利用規約</string>
-  <string name="module.terms.of.service.summary">利用規約、プライバシーポリシー、EULA のページを公開します。</string>
-  <string name="module.terms.of.service.description">法的文書の管理機能と Markdown で表示される公開法務ページを追加します。</string>
+  <string name="module.terms.of.service.summary">Cognis で法的文書を公開します。</string>
+  <string name="module.terms.of.service.description">文書の版管理と同意の記録を使い、利用規約、プライバシーポリシー、エンドユーザー使用許諾契約のページを管理します。</string>
   <string name="module.terms.of.service.category.legal">法務</string>
   <string name="module.terms.of.service.tag.legal">法務</string>
   <string name="module.terms.of.service.tag.administration">管理</string>

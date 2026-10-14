@@ -10,6 +10,10 @@ Vorlagenrichtlinien, domänenspezifische Routenpfade, übersetzte Integrationsdo
 
 Das Terms-of-Service-Banner wird so angepasst, dass Logo, Titel, Dokument und Schild im beschnittenen Marketplace-Bereich vollständig sichtbar bleiben. Das vorhandene Dokument-Icon bleibt erhalten.
 
+## Einheitliche Marketplace-Texte
+
+Verwenden Sie kurze Aktionszusammenfassungen und konkrete Funktionsbeschreibungen in den Marketplace-Metadaten mit inhaltlich abgestimmten Übersetzungen.
+
 ## Commits
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)
