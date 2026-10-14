@@ -6,6 +6,12 @@ let documentWait;
 let composerWait;
 const events = [];
 const modules = {
+    "page-styles.js": {
+        ensurePageStylesheet: async (url) => {
+            assert.ok(url.endsWith("/ui/styles/legal.css"));
+            events.push("legal-styles");
+        },
+    },
     "api-client.js": {
         apiFetch: async () => {
             if (documentWait) await documentWait;
@@ -60,12 +66,11 @@ globalThis[Symbol.for("cognis.uiCtx")] = {
             id === "ui:reuse"
                 ? {
                       importModule: async (path) => modules[path],
-                      loadStylesheet: async () => {},
-                      loadStylesheets: async (urls) => {
-                          assert.equal(urls.length, 1);
-                          assert.ok(urls[0].endsWith("/ui/styles/legal.css"));
-                          events.push("legal-styles");
+                      loadStylesheet: async (path) => {
+                          assert.match(path, /^[a-z0-9-]+\.css$/);
                       },
+                      loadStylesheets: async () =>
+                          assert.fail("Module CSS must use page-styles.js"),
                   }
                 : id === "ui:pagination"
                   ? {
@@ -79,7 +84,21 @@ globalThis[Symbol.for("cognis.uiCtx")] = {
                   : undefined,
     },
 };
-const { mount } = await import("../app.js");
+const { mount, createAdminSection } = await import("../app.js");
+
+test("Legal administration remains discoverable after module styles load", async () => {
+    assert.ok(events.includes("legal-styles"));
+    const section = createAdminSection({
+        i18n: { t: (key) => key },
+        apiFetch: async () => Response.json({ data: [] }),
+    });
+    await section.dataReady;
+    assert.equal(section.id, "terms-of-service-legal");
+    assert.equal(
+        section.subComposerOptions.elements[0].id,
+        "terms-of-service-documents",
+    );
+});
 
 for (const phase of ["translations", "document", "composer"]) {
     test(`public legal page releases ${phase} work when its mount is aborted`, async () => {

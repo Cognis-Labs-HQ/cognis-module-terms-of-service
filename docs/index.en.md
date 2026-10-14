@@ -37,3 +37,5 @@ Package validation checks that entrypoints, icons, banners and screenshots are r
 A cancelled direct page releases its shared loading token immediately, even while translation, provider or composer initialization is pending. Resource cleanup remains bound to the same host signal.
 
 Publish and consent flows authenticate the request inside their authorization stage. Publishing requires an administrator; actor and consent account identities come only from verified claims. Tests cover direct flow calls and forged identities. Authentication footer documentation now describes its descriptor-provider contract.
+
+Load module-owned CSS through the public page-styles helper. The shared stylesheet catalog accepts only reuse-relative names; passing a module URL rejected the UI import and hid the Legal section. Tests enforce this boundary and verify administration discovery.

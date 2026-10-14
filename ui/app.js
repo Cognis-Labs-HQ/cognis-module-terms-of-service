@@ -1,7 +1,6 @@
 import {
     importReuseModule,
     loadReuseStylesheet,
-    loadModuleStylesheets,
     uiCtx,
 } from "./reuse/resources.js";
 
@@ -17,6 +16,7 @@ const [
     { createCollapsibleSectionComposer },
     { createPageComposer },
     { createSideMenu },
+    { ensurePageStylesheet },
 ] = await Promise.all([
     importReuseModule("api-client.js"),
     importReuseModule("i18n.js"),
@@ -29,12 +29,11 @@ const [
     importReuseModule("collapsible-section-composer.js"),
     importReuseModule("page-composer/index.js"),
     importReuseModule("side-menu.js"),
+    importReuseModule("page-styles.js"),
 ]);
 
 await Promise.all([
-    loadModuleStylesheets([
-        new URL("./styles/legal.css", import.meta.url).href,
-    ]),
+    ensurePageStylesheet(new URL("./styles/legal.css", import.meta.url).href),
     loadReuseStylesheet("state-pill.css"),
     loadReuseStylesheet("document-diff.css"),
 ]);

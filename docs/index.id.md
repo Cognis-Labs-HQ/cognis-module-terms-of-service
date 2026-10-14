@@ -37,3 +37,5 @@ Validasi paket memastikan titik masuk, ikon, banner, dan tangkapan layar berupa 
 Halaman langsung yang dibatalkan segera melepas token pemuatan bersama, meskipun inisialisasi terjemahan, penyedia, atau composer masih tertunda. Pembersihan sumber daya tetap terikat pada sinyal host yang sama.
 
 Alur penerbitan dan persetujuan mengautentikasi permintaan pada tahap otorisasi. Penerbitan memerlukan administrator; identitas pelaku dan akun persetujuan hanya berasal dari klaim terverifikasi. Pengujian mencakup pemanggilan alur langsung dan identitas palsu. Dokumentasi footer autentikasi kini menjelaskan kontrak penyedia deskriptor.
+
+Muat CSS milik modul melalui pembantu publik page-styles. Katalog stylesheet bersama hanya menerima nama relatif sumber daya bersama; URL modul menggagalkan impor UI dan menyembunyikan bagian Legal. Pengujian menegakkan batas ini dan memverifikasi penemuan bagian administrasi.

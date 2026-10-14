@@ -30,6 +30,10 @@ Veröffentlichte Übersetzungskennungen für den Marktplatz bleiben über Veröf
 
 Veröffentlichungs- und Zustimmungsabläufe authentifizieren die Anfrage in ihrer Autorisierungsphase. Die Veröffentlichung erfordert Administratorrechte; Bearbeiter und Zustimmungskonto stammen ausschließlich aus geprüften Angaben. Tests prüfen direkte Ablaufaufrufe und gefälschte Identitäten. Die Dokumentation des Authentifizierungsfooters beschreibt jetzt den Deskriptoranbieter-Vertrag.
 
+## Laden des Rechtsbereichs reparieren
+
+Moduleigenes CSS wird über die öffentliche Hilfsfunktion page-styles geladen. Der gemeinsame Stylesheet-Katalog akzeptiert nur relative Namen seiner Wiederverwendungsdateien; eine Modul-URL verhinderte den UI-Import und blendete den Rechtsbereich aus. Tests prüfen diese Grenze und die Erkennung des Administrationsbereichs.
+
 ## Commits
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)

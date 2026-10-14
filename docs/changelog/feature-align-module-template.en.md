@@ -30,6 +30,10 @@ Preserve published marketplace translation identifiers across release channels. 
 
 Publish and consent flows authenticate the request inside their authorization stage. Publishing requires an administrator; actor and consent account identities come only from verified claims. Tests cover direct flow calls and forged identities. Authentication footer documentation now describes its descriptor-provider contract.
 
+## Restore Legal section loading
+
+Load module-owned CSS through the public page-styles helper. The shared stylesheet catalog accepts only reuse-relative names; passing a module URL rejected the UI import and hid the Legal section. Tests enforce this boundary and verify administration discovery.
+
 ## Commits
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)

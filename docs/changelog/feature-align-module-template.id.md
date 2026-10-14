@@ -30,6 +30,10 @@ Pertahankan pengenal terjemahan marketplace yang telah diterbitkan di seluruh sa
 
 Alur penerbitan dan persetujuan mengautentikasi permintaan pada tahap otorisasi. Penerbitan memerlukan administrator; identitas pelaku dan akun persetujuan hanya berasal dari klaim terverifikasi. Pengujian mencakup pemanggilan alur langsung dan identitas palsu. Dokumentasi footer autentikasi kini menjelaskan kontrak penyedia deskriptor.
 
+## Pulihkan pemuatan bagian Legal
+
+Muat CSS milik modul melalui pembantu publik page-styles. Katalog stylesheet bersama hanya menerima nama relatif sumber daya bersama; URL modul menggagalkan impor UI dan menyembunyikan bagian Legal. Pengujian menegakkan batas ini dan memverifikasi penemuan bagian administrasi.
+
 ## Komit
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)

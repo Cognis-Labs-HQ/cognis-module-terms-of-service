@@ -37,3 +37,5 @@ Die Paketprüfung stellt sicher, dass Einstiegspunkte, Icons, Banner und Screens
 Eine abgebrochene direkte Seite gibt ihr gemeinsames Ladetoken sofort frei, auch bei ausstehender Übersetzungs-, Anbieter- oder Composer-Initialisierung. Die Ressourcenbereinigung bleibt an dasselbe Host-Signal gebunden.
 
 Veröffentlichungs- und Zustimmungsabläufe authentifizieren die Anfrage in ihrer Autorisierungsphase. Die Veröffentlichung erfordert Administratorrechte; Bearbeiter und Zustimmungskonto stammen ausschließlich aus geprüften Angaben. Tests prüfen direkte Ablaufaufrufe und gefälschte Identitäten. Die Dokumentation des Authentifizierungsfooters beschreibt jetzt den Deskriptoranbieter-Vertrag.
+
+Moduleigenes CSS wird über die öffentliche Hilfsfunktion page-styles geladen. Der gemeinsame Stylesheet-Katalog akzeptiert nur relative Namen seiner Wiederverwendungsdateien; eine Modul-URL verhinderte den UI-Import und blendete den Rechtsbereich aus. Tests prüfen diese Grenze und die Erkennung des Administrationsbereichs.
