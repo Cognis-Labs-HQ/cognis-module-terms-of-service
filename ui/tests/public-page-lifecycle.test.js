@@ -25,7 +25,14 @@ const modules = {
     },
     "escape-html.js": { escapeHtml: String },
     "page-entry.js": {
-        beginPageLoading: () => () => events.push("finished"),
+        beginPageLoading: () => {
+            let finished = false;
+            return () => {
+                if (finished) return;
+                finished = true;
+                events.push("finished");
+            };
+        },
         async mountWhenDirect() {},
     },
     "auth-session.js": { ensureFullAccountSession: async () => {} },
@@ -83,9 +90,10 @@ for (const phase of ["translations", "document", "composer"]) {
         const operation = mount({}, { signal: controller.signal });
         await new Promise((resolve) => setImmediate(resolve));
         controller.abort();
+        assert.ok(events.includes("finished"));
         release();
         await operation;
-        assert.equal(events.at(-1), "finished");
+        assert.equal(events.filter((event) => event === "finished").length, 1);
         assert.equal(
             events.filter((event) => event === "composer").length,
             phase === "composer" ? 1 : 0,

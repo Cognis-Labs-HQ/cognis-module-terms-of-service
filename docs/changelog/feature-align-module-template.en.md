@@ -2,6 +2,10 @@
 
 **Feature Branch:** feature-align-module-template
 
+## Release loading on cancellation
+
+1.5.47 — A cancelled direct page releases its shared loading token immediately, even while translation, provider or composer initialization is pending. Resource cleanup remains bound to the same host signal.
+
 ## Package targets and developer guidance
 
 Release 1.5.46 — Package validation checks that entrypoints, icons, banners and screenshots are regular files inside the checkout, including resolved paths. Documentation describes public contracts and refers to manifests for release metadata; changelogs retain release provenance. Public legal pages consume the host direct-entry lifecycle signal. Cancelled translation or document loads cannot publish stale UI, composers are destroyed on abort, and late initialization cannot refresh the destination page footer. Every loading token is released on completion, failure or cancellation.

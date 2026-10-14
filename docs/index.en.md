@@ -33,3 +33,5 @@ Consume public ctx capabilities and declared flows; do not import Cognis interna
 The banner keeps the complete Cognis logo, title and document artwork in a central safe band for the marketplace’s height-limited crop. The existing document icon is preserved.
 
 Package validation checks that entrypoints, icons, banners and screenshots are regular files inside the checkout, including resolved paths. Documentation describes public contracts and refers to manifests for release metadata; changelogs retain release provenance. Public legal pages consume the host direct-entry lifecycle signal. Cancelled translation or document loads cannot publish stale UI, composers are destroyed on abort, and late initialization cannot refresh the destination page footer. Every loading token is released on completion, failure or cancellation.
+
+A cancelled direct page releases its shared loading token immediately, even while translation, provider or composer initialization is pending. Resource cleanup remains bound to the same host signal.

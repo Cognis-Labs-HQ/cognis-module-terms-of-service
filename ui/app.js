@@ -576,6 +576,7 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
 export async function mount(root, { signal } = {}) {
     if (signal?.aborted) return;
     const finishLoading = beginPageLoading(root);
+    signal?.addEventListener("abort", finishLoading, { once: true });
     try {
         const i18n = await createI18n({
             componentStringBaseUrls: [

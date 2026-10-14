@@ -2,7 +2,7 @@
     "id": "terms-of-service",
     "uuid": "e6f133ec-ccd9-4dbb-96bd-1ccf52a359de",
     "name": "module.terms.of.service.name",
-    "version": "1.5.46",
+    "version": "1.5.47",
     "class": "extension",
     "privileged": true,
     "coreApiVersion": "v1",
@@ -184,27 +184,27 @@
         },
         {
             "path": "docs/index.de.md",
-            "sha256": "c0758f752498abf8523f880c9e1383681cf6cad3011f708cdb3fec6ffcadf20c"
+            "sha256": "d138d722ff98495d696586ba9437a995071b59c51c731bd4ea55dcb38b1be6cf"
         },
         {
             "path": "docs/index.en.md",
-            "sha256": "7eea4277ba93004b4418adbfaa4d983cbd3e32f6b65f9575343342e9fb70ba67"
+            "sha256": "445a00a51489f9efafbb9397884583c44c929d97a00623120aabbd9d0d6f637f"
         },
         {
             "path": "docs/index.id.md",
-            "sha256": "06d24686009693026dc3a75be23c30504ed62784051f3b5863a149f17e10bce7"
+            "sha256": "f06c04fd26fde163dcc63233d4377d7f4ae555a35e3a5441383798e644ac2269"
         },
         {
             "path": "docs/index.ja.md",
-            "sha256": "943e1af29ceaaf8a3e45553b652cb70efd7b37b2790b37c0a4d893920d7ba457"
+            "sha256": "f44cf52112dcdc9e89e19318fd98c08e760b3dfd3a11c38ac2a47c33c0d3e1dc"
         },
         {
             "path": "package-lock.json",
-            "sha256": "1941153fd5f4e50c676fdfe0b8b69047212372c35adcd47c344cdc0f15284f49"
+            "sha256": "b7d75cc52c464808d088d5aa2ec9dff179d157f68548ab1ff53220686b0738b4"
         },
         {
             "path": "package.json",
-            "sha256": "fe835a231e75cd694ba39ca700883f494d430a53bd3a41f4c72c3395ebe28673"
+            "sha256": "32973c1e45a3c99433b49194e15ee2618debdb2ffd49b612c234629c0393cca9"
         },
         {
             "path": "routes.json",
@@ -232,7 +232,7 @@
         },
         {
             "path": "ui/app.js",
-            "sha256": "d5164a696fa0ec5470ff812364b5f915c102cb95fc7bdb6426e06d6d5882e549"
+            "sha256": "2de90c8cd061ca47230118ff16f9476ceec5d76a358b805da16905338b6acb01"
         },
         {
             "path": "ui/auth-footer.js",
@@ -288,7 +288,7 @@
         },
         {
             "path": "ui/tests/public-page-lifecycle.test.js",
-            "sha256": "1bb7aa535bc99300d9a45047b38913aab2a94d0c547119edc6adce36efe9d004"
+            "sha256": "2dda28cec6ac2ad37824a27fae4db05e8a97a08b84894e078a2bd1121cb559ca"
         }
     ]
 }

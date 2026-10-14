@@ -2,6 +2,10 @@
 
 **Feature-Branch:** feature-align-module-template
 
+## Ladezustand bei Abbruch freigeben
+
+1.5.47 — Eine abgebrochene direkte Seite gibt ihr gemeinsames Ladetoken sofort frei, auch bei ausstehender Übersetzungs-, Anbieter- oder Composer-Initialisierung. Die Ressourcenbereinigung bleibt an dasselbe Host-Signal gebunden.
+
 ## Paketziele und Entwicklerhinweise
 
 Ausgabe 1.5.46 — Die Paketprüfung stellt sicher, dass Einstiegspunkte, Icons, Banner und Screenshots reguläre Dateien innerhalb des Checkouts sind, auch nach Pfadauflösung. Die Dokumentation beschreibt öffentliche Verträge und verweist für Veröffentlichungsmetadaten auf Manifeste; Änderungsprotokolle behalten die Herkunft der Veröffentlichung. Öffentliche Rechtsseiten verwenden das Lebenszyklussignal des direkten Host-Einstiegs. Abgebrochene Übersetzungs- oder Dokumentladevorgänge veröffentlichen keine veraltete UI. Composer werden beim Abbruch zerstört, und verspätete Initialisierung aktualisiert nicht die Fußzeile der Zielseite. Jedes Ladetoken wird bei Abschluss, Fehler oder Abbruch freigegeben.
