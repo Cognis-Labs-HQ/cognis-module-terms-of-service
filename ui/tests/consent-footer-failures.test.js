@@ -162,40 +162,126 @@ test("host-resolved labels are used and footer errors cannot block mandatory con
     }
 });
 
-test("missing or empty English keys fail authentication even when footer failures are isolated", async () => {
-    const key = "module.terms-of-service.document.terms";
-    const original = english.get(key);
-    for (const missing of [undefined, ""]) {
-        if (missing === undefined) english.delete(key);
-        else english.set(key, missing);
-        const controller = new AbortController();
-        let enforce;
-        const dispose = await mountProvider({
+test("missing or empty English keys reject mounting and leave no refresh listeners", async () => {
+    for (const key of [
+        "module.terms-of-service.document.terms",
+        "module.terms-of-service.consent.title",
+    ]) {
+        const original = english.get(key);
+        for (const missing of [undefined, ""]) {
+            if (missing === undefined) english.delete(key);
+            else english.set(key, missing);
+            required = true;
+            const controller = new AbortController();
+            const promptCount = popups.length;
+            const loads = translationLoads;
+            try {
+                await assert.rejects(
+                    mountProvider({
+                        signal: controller.signal,
+                        capabilities: {
+                            get: (id) => capabilities.get(id),
+                            contribute: (id, value) =>
+                                capabilities.set(id, value),
+                        },
+                        extendFlow() {},
+                    }),
+                    { message: `missing_translation:${key}` },
+                );
+                assert.equal(popups.length, promptCount);
+                assert.equal(links.size, 0);
+                window.dispatchEvent(new Event("popstate"));
+                await new Promise((resolve) => setImmediate(resolve));
+                assert.equal(translationLoads, loads + 1);
+            } finally {
+                controller.abort();
+                english.set(key, original);
+                required = false;
+            }
+        }
+    }
+});
+
+test("periodic missing translations propagate and stop subsequent refreshes", async () => {
+    const originalSetTimeout = globalThis.setTimeout;
+    const originalClearTimeout = globalThis.clearTimeout;
+    const originalKey = english.get("module.terms-of-service.consent.title");
+    const originalGetItem = localStorage.getItem;
+    const controller = new AbortController();
+    let refresh;
+    let schedules = 0;
+    globalThis.setTimeout = (callback) => {
+        refresh = callback;
+        schedules++;
+        return schedules;
+    };
+    globalThis.clearTimeout = () => {};
+    localStorage.getItem = () => "token";
+    let dispose;
+    try {
+        required = false;
+        dispose = await mountProvider({
             signal: controller.signal,
             capabilities: {
                 get: (id) => capabilities.get(id),
                 contribute: (id, value) => capabilities.set(id, value),
             },
-            extendFlow: (_flow, _stage, _descriptor, handler) => {
-                enforce = handler;
-            },
+            extendFlow() {},
         });
-        try {
-            await new Promise((resolve) => setImmediate(resolve));
-            const promptCount = popups.length;
-            await assert.rejects(
-                enforce({
-                    stageResults: {
-                        "validate-stored-token": [{ valid: true }],
-                    },
-                }),
-                { message: `missing_translation:${key}` },
-            );
-            assert.equal(popups.length, promptCount);
-        } finally {
-            controller.abort();
-            dispose();
-            english.set(key, original);
-        }
+        assert.equal(schedules, 1);
+        required = true;
+        english.delete("module.terms-of-service.consent.title");
+        await assert.rejects(
+            refresh(),
+            /missing_translation:module.terms-of-service.consent.title/,
+        );
+        assert.equal(schedules, 1);
+        assert.equal(links.size, 0);
+    } finally {
+        globalThis.setTimeout = originalSetTimeout;
+        globalThis.clearTimeout = originalClearTimeout;
+        localStorage.getItem = originalGetItem;
+        english.set("module.terms-of-service.consent.title", originalKey);
+        required = false;
+        controller.abort();
+        dispose?.();
+    }
+});
+
+test("initial consent decline releases mounting before navigation finishes", async () => {
+    const controller = new AbortController();
+    let destination;
+    let settleNavigation;
+    const navigation = new Promise((resolve) => {
+        settleNavigation = resolve;
+    });
+    capabilities.set("ui:navigate", (path) => {
+        destination = path;
+        return navigation;
+    });
+    const previousFooterFailure = footerFailure;
+    footerFailure = false;
+    popupAction = "decline";
+    required = true;
+    let dispose;
+    try {
+        dispose = await mountProvider({
+            signal: controller.signal,
+            capabilities: {
+                get: (id) => capabilities.get(id),
+                contribute: (id, value) => capabilities.set(id, value),
+            },
+            extendFlow() {},
+            runFlow: async (...args) => flows.push(args),
+        });
+        assert.equal(destination, "/login");
+        assert.equal(typeof dispose, "function");
+    } finally {
+        settleNavigation();
+        controller.abort();
+        dispose?.();
+        capabilities.delete("ui:navigate");
+        footerFailure = previousFooterFailure;
+        required = false;
     }
 });

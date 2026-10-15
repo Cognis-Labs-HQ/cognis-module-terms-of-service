@@ -288,10 +288,6 @@ test("public legal documents use one naturally scrolling composed page", () => {
     );
     assert.match(
         enforcement,
-        /void enforceAuthenticatedConsentOnce\(\)\s*\.then/,
-    );
-    assert.match(
-        enforcement,
         /LEGAL_DOCUMENT_PATHS\.has\(location\.pathname\)/,
     );
 });

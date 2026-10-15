@@ -2,6 +2,18 @@
 
 **Cabang Fitur:** feature-align-module-template
 
+## Otorisasi laporan persetujuan pada batas alur
+
+Alur laporan persetujuan memerlukan permintaan administrator terverifikasi, termasuk panggilan ctx langsung. Penangan HTTP meneruskan konteks permintaan ke tahap otorisasi yang sama sebelum membaca catatan persetujuan akun.
+
+## Teruskan kegagalan terjemahan persetujuan
+
+Pemasangan penyedia menunggu penegakan awal dan menolak kunci cadangan bahasa Inggris yang hilang. Penyedia yang gagal melepaskan tautan footer dan pendengarnya; kegagalan terjemahan berkala diteruskan dan menghentikan polling.
+
+## Audit perubahan dokumen hukum di dalam alurnya
+
+Penerbitan dan pencatatan persetujuan menghasilkan satu entri audit info yang berhasil dari alur eksekusi dengan pelaku terverifikasi dan dokumen atau akun terkait. Rute HTTP tidak lagi menggandakan entri tersebut.
+
 ## Lepas status pemuatan saat pembatalan
 
 1.5.47 — Halaman langsung yang dibatalkan segera melepas token pemuatan bersama, meskipun inisialisasi terjemahan, penyedia, atau composer masih tertunda. Pembersihan sumber daya tetap terikat pada sinyal host yang sama.

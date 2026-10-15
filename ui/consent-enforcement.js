@@ -35,6 +35,16 @@ export async function mountProvider(uiCtx) {
     let consentEnforcementDisposed = false;
     const footerLinkDisposers = new Map();
 
+    function propagateMissingTranslation(error) {
+        if (
+            error?.code === "missing_translation" ||
+            error?.message?.startsWith("missing_translation:")
+        ) {
+            teardownConsentEnforcement();
+            throw error;
+        }
+    }
+
     function syncFooterLinks(documents, i18n, { forceRender = false } = {}) {
         if (uiCtx.signal.aborted) return;
         const footerLinks = uiCtx.capabilities.get("ui:footerLinks");
@@ -154,6 +164,7 @@ export async function mountProvider(uiCtx) {
                         error instanceof Error ? error.message : String(error),
                 },
             );
+            propagateMissingTranslation(error);
         });
     }
 
@@ -437,6 +448,7 @@ export async function mountProvider(uiCtx) {
                                 : String(error),
                     },
                 );
+                propagateMissingTranslation(error);
             } finally {
                 if (!consentEnforcementDisposed) scheduleConsentRefresh();
             }
@@ -456,17 +468,18 @@ export async function mountProvider(uiCtx) {
                 event,
                 refreshFooterLinksAfterNavigation,
             );
+        window.removeEventListener("pagehide", handlePageHide);
         footerLinkDisposers.forEach((dispose) => dispose());
         footerLinkDisposers.clear();
     }
 
-    window.addEventListener(
-        "pagehide",
-        (event) => {
-            if (!event.persisted) teardownConsentEnforcement();
-        },
-        { signal: uiCtx.signal },
-    );
+    function handlePageHide(event) {
+        if (!event.persisted) teardownConsentEnforcement();
+    }
+
+    window.addEventListener("pagehide", handlePageHide, {
+        signal: uiCtx.signal,
+    });
     for (const event of ["cognis:route-will-change", "popstate", "pageshow"])
         window.addEventListener(event, refreshFooterLinksAfterNavigation, {
             signal: uiCtx.signal,
@@ -479,7 +492,7 @@ export async function mountProvider(uiCtx) {
         enforceConsent,
     );
 
-    void enforceAuthenticatedConsentOnce()
+    await enforceAuthenticatedConsentOnce()
         .then((result) => {
             if (uiCtx.signal.aborted) return;
             if (result.redirectTo) {
@@ -489,7 +502,21 @@ export async function mountProvider(uiCtx) {
                         "Required UI capability unavailable: ui:navigate",
                     );
                 }
-                return navigate(result.redirectTo);
+                void navigate(result.redirectTo).catch((error) => {
+                    uiCtx.capabilities.get("ui:log")?.(
+                        "error",
+                        "Legal consent navigation failed.",
+                        {
+                            component: "terms-of-service",
+                            operation: "navigateAfterConsent",
+                            error:
+                                error instanceof Error
+                                    ? error.message
+                                    : String(error),
+                        },
+                    );
+                    propagateMissingTranslation(error);
+                });
             }
         })
         .catch((error) => {
@@ -501,8 +528,10 @@ export async function mountProvider(uiCtx) {
                     component: "terms-of-service",
                     operation: "enforceConsent",
                     errorName: error.name,
+                    error: error.message,
                 },
             );
+            propagateMissingTranslation(error);
         });
     scheduleConsentRefresh();
 

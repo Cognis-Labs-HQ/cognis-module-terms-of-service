@@ -36,7 +36,7 @@ Package validation checks that entrypoints, icons, banners and screenshots are r
 
 A cancelled direct page releases its shared loading token immediately, even while translation, provider or composer initialization is pending. Resource cleanup remains bound to the same host signal.
 
-Publish and consent flows authenticate the request inside their authorization stage. Publishing requires an administrator; actor and consent account identities come only from verified claims. Tests cover direct flow calls and forged identities. Authentication footer documentation now describes its descriptor-provider contract.
+Publish, consent-report, and consent-recording flows authenticate the request inside their authorization stage using `auth:requireAuth`. Publishing and account-wide consent reports require an administrator; actor and consent account identities come only from verified claims. Invoke `terms-of-service:listConsentForDocument` with `[request, response, slug]`; a slug alone or a non-administrator request is rejected before any consent rows are read. Successful publishing and consent recording log one `info` audit entry inside the executing flow, including the verified account and affected document, so direct ctx calls and HTTP requests have the same audit coverage. Tests cover direct calls, forged identities, rejected report access, and unsuccessful persistence.
 
 Load module-owned CSS through the public page-styles helper. The shared stylesheet catalog accepts only reuse-relative names; passing a module URL rejected the UI import and hid the Legal section. Tests enforce this boundary and verify administration discovery.
 
@@ -49,3 +49,5 @@ Locale keys use `module.<manifest.id>.<feature>.<label>`. Keep a multiword modul
 All browser clients use the footer registry owned by `ctx`, including separately loaded static and bundled scripts. Footer descriptors may request `target: "_blank"`; the renderer adds `noopener noreferrer`. Authentication providers supply translated labels and authentication contexts, while signed-in legal links explicitly belong to the application context. History and browser-cache restoration refresh published legal links without replacing core License or Changelogs links.
 
 Public legal pages, footer contributions, and consent enforcement use the host `createI18n` with module bundle URLs. Core owns English XML fallback and explicit missing-key failures. Translation failures propagate through consent enforcement; isolating footer-rendering errors does not suppress them.
+
+Initial consent enforcement is awaited during provider mounting. A missing or empty English fallback key rejects the mount and releases owned footer links and navigation listeners. Missing translations during foreground refresh also propagate and stop further polling instead of silently skipping mandatory consent. Ordinary footer-rendering failures remain logged independently so they do not prevent consent enforcement.

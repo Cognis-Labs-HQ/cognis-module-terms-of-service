@@ -2,6 +2,18 @@
 
 **Feature Branch:** feature-align-module-template
 
+## Authorize consent reports at the flow boundary
+
+Consent-report flows require a verified administrator request, including direct ctx calls. HTTP handlers pass the request context through the same authorization stage before reading account consent records.
+
+## Propagate consent translation failures
+
+Provider mounting awaits initial enforcement and rejects missing English fallback keys. Failed providers release owned footer links and listeners; periodic translation failures propagate and stop polling.
+
+## Audit legal mutations inside their flows
+
+Publishing and consent recording emit one successful info audit entry from the executing flow with the verified actor and affected document or account. HTTP routes no longer duplicate these entries.
+
 ## Release loading on cancellation
 
 1.5.47 — A cancelled direct page releases its shared loading token immediately, even while translation, provider or composer initialization is pending. Resource cleanup remains bound to the same host signal.

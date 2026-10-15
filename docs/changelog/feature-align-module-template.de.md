@@ -2,6 +2,18 @@
 
 **Feature-Branch:** feature-align-module-template
 
+## Zustimmungsberichte an der Ablaufgrenze autorisieren
+
+Zustimmungsberichte erfordern eine geprüfte Administratoranfrage, auch bei direkten ctx-Aufrufen. HTTP-Handler übergeben den Anfragekontext an dieselbe Autorisierungsphase, bevor Zustimmungsdaten gelesen werden.
+
+## Übersetzungsfehler der Zustimmungsprüfung weitergeben
+
+Das Einbinden wartet auf die erste Prüfung und scheitert bei fehlenden englischen Ersatzschlüsseln. Fehlgeschlagene Anbieter entfernen eigene Footer-Links und Listener; periodische Übersetzungsfehler werden weitergegeben und stoppen weitere Abfragen.
+
+## Rechtliche Änderungen im Ablauf protokollieren
+
+Veröffentlichungen und gespeicherte Zustimmungen erzeugen genau einen erfolgreichen Info-Audit-Eintrag im ausführenden Ablauf mit geprüftem Bearbeiter und betroffenem Dokument oder Konto. HTTP-Routen duplizieren diese Einträge nicht mehr.
+
 ## Ladezustand bei Abbruch freigeben
 
 1.5.47 — Eine abgebrochene direkte Seite gibt ihr gemeinsames Ladetoken sofort frei, auch bei ausstehender Übersetzungs-, Anbieter- oder Composer-Initialisierung. Die Ressourcenbereinigung bleibt an dasselbe Host-Signal gebunden.

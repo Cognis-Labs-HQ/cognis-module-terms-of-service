@@ -71,9 +71,31 @@ export function registerApi(router, ctx) {
                     )
                         throw new Error("invalid_markdown");
                 },
-                execute: (...args) => store.publish(...args),
+                execute: async (slug, markdown, accountId) => {
+                    const document = await store.publish(
+                        slug,
+                        markdown,
+                        accountId,
+                    );
+                    ctx.log?.("info", "Legal document published.", {
+                        component: "terms-of-service",
+                        operation: "publishDocument",
+                        accountId,
+                        slug,
+                        version: document.version,
+                    });
+                    return document;
+                },
             },
             listConsentForDocument: {
+                authorize: async (input) => {
+                    await authenticateAction(
+                        input,
+                        "admin",
+                        "listConsentForDocument",
+                    );
+                    return [input[2]];
+                },
                 validate: validateDocument,
                 execute: (slug) => store.listConsentForDocument(slug),
             },
@@ -91,7 +113,19 @@ export function registerApi(router, ctx) {
                     input[2],
                 ],
                 validate: validateAccount,
-                execute: (...args) => store.recordConsent(...args),
+                execute: async (accountId, versions) => {
+                    const status = await store.recordConsent(
+                        accountId,
+                        versions,
+                    );
+                    ctx.log?.("info", "Legal consent recorded.", {
+                        component: "terms-of-service",
+                        operation: "recordConsent",
+                        accountId,
+                        documentSlugs: Object.keys(versions),
+                    });
+                    return status;
+                },
             },
         },
         ready,

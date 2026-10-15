@@ -107,7 +107,11 @@ export function registerDocumentRoutes(
                 if (!claims || response.writableEnded) return;
                 await ready;
                 sendJson(response, 200, {
-                    data: await service.listConsentForDocument(slug),
+                    data: await service.listConsentForDocument(
+                        request,
+                        response,
+                        slug,
+                    ),
                 });
             },
             { access: { minRole: "admin" } },
@@ -143,11 +147,6 @@ export function registerDocumentRoutes(
                         slug,
                         body.markdown,
                     );
-                    log?.("info", "Legal document published.", {
-                        component: "terms-of-service",
-                        operation: "publishDocument",
-                        slug,
-                    });
                     sendJson(response, 200, { data: document });
                 } catch (error) {
                     if (response.writableEnded) return;
@@ -253,12 +252,6 @@ export function registerDocumentRoutes(
                     response,
                     versions,
                 );
-                log?.("info", "Legal consent recorded.", {
-                    component: "terms-of-service",
-                    operation: "recordConsent",
-                    accountId: accountId(claims),
-                    documentSlugs: Object.keys(versions),
-                });
                 sendJson(response, 201, { data: status });
             } catch (error) {
                 if (response.writableEnded) return;
