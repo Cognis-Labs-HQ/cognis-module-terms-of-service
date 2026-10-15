@@ -162,3 +162,41 @@ test("missing selected-locale labels use module English; footer errors cannot bl
         dispose();
     }
 });
+
+test("missing or empty English keys fail authentication even when footer failures are isolated", async () => {
+    const key = "module.terms-of-service.document.terms";
+    const original = english.get(key);
+    for (const missing of [undefined, ""]) {
+        if (missing === undefined) english.delete(key);
+        else english.set(key, missing);
+        const controller = new AbortController();
+        let enforce;
+        const dispose = await mountProvider({
+            signal: controller.signal,
+            capabilities: {
+                get: (id) => capabilities.get(id),
+                contribute: (id, value) => capabilities.set(id, value),
+            },
+            extendFlow: (_flow, _stage, _descriptor, handler) => {
+                enforce = handler;
+            },
+        });
+        try {
+            await new Promise((resolve) => setImmediate(resolve));
+            const promptCount = popups.length;
+            await assert.rejects(
+                enforce({
+                    stageResults: {
+                        "validate-stored-token": [{ valid: true }],
+                    },
+                }),
+                { message: `missing_translation:${key}` },
+            );
+            assert.equal(popups.length, promptCount);
+        } finally {
+            controller.abort();
+            dispose();
+            english.set(key, original);
+        }
+    }
+});

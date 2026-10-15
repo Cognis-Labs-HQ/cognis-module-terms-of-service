@@ -59,6 +59,9 @@ export async function mountProvider(uiCtx) {
                     : document.slug === "privacy-policy"
                       ? "privacy"
                       : "eula";
+            const label = i18n.t(
+                `module.terms-of-service.document.${titleKey}`,
+            );
             try {
                 footerLinkDisposers.set(
                     document.slug,
@@ -68,9 +71,7 @@ export async function mountProvider(uiCtx) {
                         href: document.path,
                         target: "_blank",
                         contexts: ["application"],
-                        label: i18n.t(
-                            `module.terms-of-service.document.${titleKey}`,
-                        ),
+                        label,
                     }),
                 );
             } catch (error) {
@@ -82,11 +83,7 @@ export async function mountProvider(uiCtx) {
                         operation: "registerFooterLink",
                         slug: document.slug,
                         hasHref: Boolean(document.path),
-                        hasLabel: Boolean(
-                            i18n.t(
-                                `module.terms-of-service.document.${titleKey}`,
-                            ),
-                        ),
+                        hasLabel: Boolean(label),
                         error:
                             error instanceof Error
                                 ? error.message

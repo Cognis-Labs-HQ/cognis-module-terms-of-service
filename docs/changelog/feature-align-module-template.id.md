@@ -46,6 +46,10 @@ Semua klien browser menggunakan registri footer milik `ctx`, termasuk skrip stat
 
 Label hukum menggunakan teks bahasa Inggris milik modul bila kunci bahasa pilihan tidak tersedia, tanpa mengubah preferensi bahasa pengguna. Terjemahan yang hilang dan kegagalan kontribusi footer dicatat dengan bidang diagnostik yang aman. Kegagalan footer tidak mengganggu persetujuan wajib, pengiriman persetujuan, atau penolakan dan keluar.
 
+## Wajibkan kunci bahasa tanpa teks pengganti literal
+
+Instruksi AI melarang teks bahasa Inggris yang ditanam langsung untuk pengguna dalam setiap alur. Nilai yang tidak tersedia dalam bahasa pilihan dapat menggunakan kunci yang sama dari sumber daya XML bahasa Inggris. Nilai pengganti bahasa Inggris yang hilang atau kosong harus menimbulkan kegagalan eksplisit, bukan menampilkan teks Inggris literal, kunci mentah, atau teks kosong. Kesalahan terjemahan yang hilang tidak boleh disembunyikan.
+
 ## Komit
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)

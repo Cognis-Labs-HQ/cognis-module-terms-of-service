@@ -46,6 +46,10 @@ All browser clients use the footer registry owned by `ctx`, including separately
 
 Legal labels fall back to the module’s English strings when selected-locale keys are unavailable, without changing the user’s language preferences. Missing translations and failed footer contributions are logged with safe diagnostic fields. A failed footer contribution cannot interrupt mandatory consent, submission, or decline/logout.
 
+## Require language keys without literal fallbacks
+
+AI instructions prohibit hardcoded English user-facing strings in every path. Missing preferred-language values may use the same keys from English XML resources; absent or empty English fallback values must fail explicitly instead of rendering literal English, raw keys, or blank text. Missing-translation errors must not be suppressed.
+
 ## Commits
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)

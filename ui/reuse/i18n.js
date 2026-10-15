@@ -34,7 +34,9 @@ export async function createLegalI18n() {
                     },
                 );
             }
-            return fallback?.t(key) ?? "";
+            const english = fallback?.t(key);
+            if (english) return english;
+            throw new Error(`missing_translation:${key}`);
         },
     };
 }

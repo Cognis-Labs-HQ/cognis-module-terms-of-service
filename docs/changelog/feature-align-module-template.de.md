@@ -46,6 +46,10 @@ Alle Browserclients verwenden die Footer-Registrierung von `ctx`, auch getrennt 
 
 Fehlende Übersetzungen verwenden die englischen Modultexte, ohne die Spracheinstellungen des Benutzers zu ändern. Fehlende Übersetzungen und fehlgeschlagene Fußzeilenbeiträge werden mit sicheren Diagnosefeldern protokolliert. Fehler der Fußzeile unterbrechen weder die verpflichtende Einwilligung noch deren Übermittlung oder Ablehnung mit Abmeldung.
 
+## Sprachschlüssel ohne wörtliche Ersatztexte verlangen
+
+Die KI-Anweisungen verbieten fest kodierte englische Benutzertexte in allen Abläufen. Fehlende Werte der bevorzugten Sprache dürfen dieselben Schlüssel der englischen XML-Ressourcen verwenden. Fehlende oder leere englische Ersatzwerte müssen ausdrücklich einen Fehler auslösen, statt englische Literale, rohe Schlüssel oder leeren Text anzuzeigen. Fehler wegen fehlender Übersetzungen dürfen nicht unterdrückt werden.
+
 ## Commits
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)
