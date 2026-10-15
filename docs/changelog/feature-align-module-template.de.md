@@ -50,6 +50,10 @@ Fehlende Übersetzungen verwenden die englischen Modultexte, ohne die Spracheins
 
 Die KI-Anweisungen verbieten fest kodierte englische Benutzertexte in allen Abläufen. Fehlende Werte der bevorzugten Sprache dürfen dieselben Schlüssel der englischen XML-Ressourcen verwenden. Fehlende oder leere englische Ersatzwerte müssen ausdrücklich einen Fehler auslösen, statt englische Literale, rohe Schlüssel oder leeren Text anzuzeigen. Fehler wegen fehlender Übersetzungen dürfen nicht unterdrückt werden.
 
+## Den gemeinsamen Core-Resolver verwenden
+
+Öffentliche Rechtsseiten, Fußzeilenbeiträge und Einwilligungsprüfung verwenden `createI18n` des Hosts mit den Ressourcen-URLs des Moduls. Core übernimmt den Ersatz durch englische XML-Werte und ausdrückliche Fehler bei fehlenden Schlüsseln. Übersetzungsfehler werden bei der Einwilligungsprüfung weitergegeben und nicht durch die Fehlerisolierung der Fußzeilendarstellung unterdrückt.
+
 ## Commits
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)

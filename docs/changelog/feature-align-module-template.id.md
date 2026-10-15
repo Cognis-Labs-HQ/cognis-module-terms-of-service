@@ -50,6 +50,10 @@ Label hukum menggunakan teks bahasa Inggris milik modul bila kunci bahasa piliha
 
 Instruksi AI melarang teks bahasa Inggris yang ditanam langsung untuk pengguna dalam setiap alur. Nilai yang tidak tersedia dalam bahasa pilihan dapat menggunakan kunci yang sama dari sumber daya XML bahasa Inggris. Nilai pengganti bahasa Inggris yang hilang atau kosong harus menimbulkan kegagalan eksplisit, bukan menampilkan teks Inggris literal, kunci mentah, atau teks kosong. Kesalahan terjemahan yang hilang tidak boleh disembunyikan.
 
+## Gunakan resolver lokalisasi bersama Core
+
+Halaman hukum publik, kontribusi footer, dan penegakan persetujuan menggunakan `createI18n` host dengan URL bundel modul. Core menangani penggantian melalui XML bahasa Inggris dan kegagalan eksplisit untuk kunci yang hilang. Kesalahan terjemahan diteruskan melalui penegakan persetujuan dan tidak disembunyikan oleh isolasi kesalahan perenderan footer.
+
 ## Komit
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)

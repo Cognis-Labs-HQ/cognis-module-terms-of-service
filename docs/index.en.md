@@ -48,6 +48,4 @@ Locale keys use `module.<manifest.id>.<feature>.<label>`. Keep a multiword modul
 
 All browser clients use the footer registry owned by `ctx`, including separately loaded static and bundled scripts. Footer descriptors may request `target: "_blank"`; the renderer adds `noopener noreferrer`. Authentication providers supply translated labels and authentication contexts, while signed-in legal links explicitly belong to the application context. History and browser-cache restoration refresh published legal links without replacing core License or Changelogs links.
 
-Legal labels fall back to the module’s English strings when selected-locale keys are unavailable, without changing the user’s language preferences. Missing translations and failed footer contributions are logged with safe diagnostic fields. A failed footer contribution cannot interrupt mandatory consent, submission, or decline/logout.
-
-Legal translation lookup fails explicitly if both the selected-locale value and the English XML value are absent or empty. This failure propagates through consent enforcement; footer-rendering error isolation must not suppress it.
+Public legal pages, footer contributions, and consent enforcement use the host `createI18n` with module bundle URLs. Core owns English XML fallback and explicit missing-key failures. Translation failures propagate through consent enforcement; isolating footer-rendering errors does not suppress them.

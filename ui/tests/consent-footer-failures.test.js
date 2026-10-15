@@ -16,7 +16,7 @@ const popups = [];
 const flows = [];
 let required = false;
 let footerFailure = false;
-let fallbackLoads = 0;
+let translationLoads = 0;
 let popupAction = "decline";
 let submitted;
 const capabilities = new Map([
@@ -62,14 +62,19 @@ const capabilities = new Map([
                         },
                     });
                 },
-                createI18n: async () => ({ locale: "fr", t: () => "" }),
-                extendI18n: async (base, paths) => {
-                    assert.equal(base.locale, "en");
-                    assert.deepEqual(paths, [
+                createI18n: async (options) => {
+                    assert.deepEqual(options.componentStringBaseUrls, [
                         "/static/modules/terms-of-service/languages",
                     ]);
-                    fallbackLoads++;
-                    return { locale: "en", t: (key) => english.get(key) ?? "" };
+                    translationLoads++;
+                    return {
+                        locale: "fr",
+                        t(key) {
+                            const value = english.get(key);
+                            if (value) return value;
+                            throw new Error(`missing_translation:${key}`);
+                        },
+                    };
                 },
                 openPopup: async (options) => {
                     popups.push(options);
@@ -97,7 +102,7 @@ globalThis.document = { visibilityState: "visible" };
 globalThis.localStorage = { getItem: () => "" };
 const { mountProvider } = await import("../consent-enforcement.js");
 
-test("missing selected-locale labels use module English; footer errors cannot block mandatory consent", async () => {
+test("host-resolved labels are used and footer errors cannot block mandatory consent", async () => {
     const controller = new AbortController();
     let enforce;
     const dispose = await mountProvider({
@@ -113,16 +118,10 @@ test("missing selected-locale labels use module English; footer errors cannot bl
     });
     try {
         await new Promise((resolve) => setImmediate(resolve));
-        assert.ok(fallbackLoads > 0);
+        assert.ok(translationLoads > 0);
         assert.equal(
             links.get("terms-of-service:terms-of-service").label,
             "Terms of Service (ToS)",
-        );
-        assert.ok(
-            logs.some(
-                ([, , details]) =>
-                    details.operation === "translateLegalContent",
-            ),
         );
         assert.equal(popups.length, 0);
         links.clear();

@@ -1,4 +1,3 @@
-import { createLegalI18n } from "./reuse/i18n.js";
 import {
     importReuseModule,
     loadReuseStylesheet,
@@ -7,7 +6,7 @@ import {
 
 const [
     { apiFetch },
-    { applyDocumentTitle },
+    { applyDocumentTitle, createI18n },
     { renderMarkdown, initializeMarkdownCodeCopy },
     { escapeHtml },
     { beginPageLoading, mountWhenDirect },
@@ -582,7 +581,11 @@ export async function mount(root, { signal } = {}) {
     const finishLoading = beginPageLoading(root);
     signal?.addEventListener("abort", finishLoading, { once: true });
     try {
-        const i18n = await createLegalI18n();
+        const i18n = await createI18n({
+            componentStringBaseUrls: [
+                "/static/modules/terms-of-service/languages",
+            ],
+        });
         if (signal?.aborted) return;
         const slug = location.pathname.slice(1);
         const definition = DOCUMENTS.find((document) => document.slug === slug);

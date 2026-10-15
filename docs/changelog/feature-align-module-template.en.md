@@ -50,6 +50,10 @@ Legal labels fall back to the module’s English strings when selected-locale ke
 
 AI instructions prohibit hardcoded English user-facing strings in every path. Missing preferred-language values may use the same keys from English XML resources; absent or empty English fallback values must fail explicitly instead of rendering literal English, raw keys, or blank text. Missing-translation errors must not be suppressed.
 
+## Use Core’s shared localization resolver
+
+Public legal pages, footer contributions, and consent enforcement use the host `createI18n` with module bundle URLs. Core owns English XML fallback and explicit missing-key failures. Translation failures propagate through consent enforcement; isolating footer-rendering errors does not suppress them.
+
 ## Commits
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)

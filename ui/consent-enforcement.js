@@ -1,11 +1,12 @@
-import { createLegalI18n } from "./reuse/i18n.js";
 import { importReuseModule, loadReuseStylesheet } from "./reuse/resources.js";
 
-const [{ apiFetch }, { openPopup }, { escapeHtml }] = await Promise.all([
-    importReuseModule("api-client.js"),
-    importReuseModule("popup.js"),
-    importReuseModule("escape-html.js"),
-]);
+const [{ apiFetch }, { createI18n }, { openPopup }, { escapeHtml }] =
+    await Promise.all([
+        importReuseModule("api-client.js"),
+        importReuseModule("i18n.js"),
+        importReuseModule("popup.js"),
+        importReuseModule("escape-html.js"),
+    ]);
 
 export async function mountProvider(uiCtx) {
     await Promise.all([
@@ -123,7 +124,11 @@ export async function mountProvider(uiCtx) {
             footerRefreshPromise = (async () => {
                 const status = await consentStatus();
                 if (!status) return;
-                const i18n = await createLegalI18n();
+                const i18n = await createI18n({
+                    componentStringBaseUrls: [
+                        "/static/modules/terms-of-service/languages",
+                    ],
+                });
                 syncFooterLinks(status.documents, i18n, { forceRender });
             })().finally(() => {
                 footerRefreshPromise = undefined;
@@ -379,7 +384,11 @@ export async function mountProvider(uiCtx) {
     async function enforceAuthenticatedConsent() {
         const status = await consentStatus();
         if (!status) return { requiresSetup: false };
-        const i18n = await createLegalI18n();
+        const i18n = await createI18n({
+            componentStringBaseUrls: [
+                "/static/modules/terms-of-service/languages",
+            ],
+        });
         syncFooterLinks(status.documents, i18n);
         if (
             LEGAL_DOCUMENT_PATHS.has(location.pathname) ||
