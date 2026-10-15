@@ -80,3 +80,4 @@ Die KI-Anweisungen verbieten fest kodierte englische Benutzertexte in allen Abl√
 - [1f1e4fe](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1f1e4feca4db7886c52dd4f71b5ef923a99a4ec3)
 - [0d94f22](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0d94f22c51bbe460e3339c5f43966d7f348fcc90)
 - [004a9ec](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/004a9ec8e4dfa237d669e140245dc65cd4bf88b3)
+- [52478e56](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/52478e56b28c8c70339d24fb134f3d471a4bebaa)
