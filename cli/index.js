@@ -1,6 +1,6 @@
 export function registerCommands({ register, apiGet }) {
     register(
-        "terms-of-service:documents",
+        "modules:terms-of-service:documents",
         async ({ apiBaseUrl, getApiToken }) =>
             apiGet(
                 apiBaseUrl,
@@ -8,13 +8,13 @@ export function registerCommands({ register, apiGet }) {
                 await getApiToken(),
             ),
         {
-            usage: "cognisctl terms-of-service:documents",
+            usage: "cognisctl modules:terms-of-service:documents",
             description: "List the current legal document versions.",
         },
     );
 
     register(
-        "terms-of-service:consent",
+        "modules:terms-of-service:consent",
         async ({ apiBaseUrl, getApiToken }) =>
             apiGet(
                 apiBaseUrl,
@@ -22,7 +22,7 @@ export function registerCommands({ register, apiGet }) {
                 await getApiToken(),
             ),
         {
-            usage: "cognisctl terms-of-service:consent",
+            usage: "cognisctl modules:terms-of-service:consent",
             description: "Show consent status for the authenticated account.",
         },
     );

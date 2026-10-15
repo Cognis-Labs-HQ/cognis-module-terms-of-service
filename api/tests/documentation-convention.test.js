@@ -15,13 +15,13 @@ function headingLevels(path) {
 }
 
 test("localized standards and documentation templates stay synchronized", () => {
-    const standardLevels = headingLevels(resolve(ROOT, "docs/standard.en.md"));
+    const standardLevels = headingLevels(resolve(ROOT, "docs/index.en.md"));
     const templateLevels = headingLevels(
         resolve(ROOT, ".github/DOCUMENTATION_TEMPLATE.en.md"),
     );
     for (const language of LANGUAGES) {
         assert.deepEqual(
-            headingLevels(resolve(ROOT, `docs/standard.${language}.md`)),
+            headingLevels(resolve(ROOT, `docs/index.${language}.md`)),
             standardLevels,
         );
         assert.deepEqual(
@@ -37,7 +37,7 @@ test("localized changelogs follow the shared release-note contract", () => {
     const commitUrl =
         "https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/";
     for (const language of LANGUAGES) {
-        const path = resolve(ROOT, `changelog/${BRANCH}.${language}.md`);
+        const path = resolve(ROOT, `docs/changelog/${BRANCH}.${language}.md`);
         assert.ok(statSync(path).isFile());
         const markdown = readFileSync(path, "utf8");
         assert.match(markdown, /^# [^#]/);
@@ -50,7 +50,7 @@ test("localized changelogs follow the shared release-note contract", () => {
         assert.doesNotMatch(markdown, /^- \[[^\]]+\]\([^\n)]+\)\s+—/m);
     }
     assert.deepEqual(
-        readdirSync(resolve(ROOT, "changelog")).filter((name) =>
+        readdirSync(resolve(ROOT, "docs/changelog")).filter((name) =>
             name.startsWith(BRANCH),
         ).length,
         LANGUAGES.length,

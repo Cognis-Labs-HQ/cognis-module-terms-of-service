@@ -1,6 +1,6 @@
 {
     "name": "@cognis/module-terms-of-service",
-    "version": "1.5.42",
+    "version": "1.5.55",
     "private": false,
     "type": "module",
     "scripts": {
@@ -11,6 +11,6 @@
         "check": "npm test && npm run lint && npm run check:manifest"
     },
     "devDependencies": {
-        "prettier": "^3.9.6"
+        "prettier": "<=3.9.6"
     }
 }

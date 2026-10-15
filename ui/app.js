@@ -16,6 +16,7 @@ const [
     { createCollapsibleSectionComposer },
     { createPageComposer },
     { createSideMenu },
+    { ensurePageStylesheet },
 ] = await Promise.all([
     importReuseModule("api-client.js"),
     importReuseModule("i18n.js"),
@@ -28,9 +29,11 @@ const [
     importReuseModule("collapsible-section-composer.js"),
     importReuseModule("page-composer/index.js"),
     importReuseModule("side-menu.js"),
+    importReuseModule("page-styles.js"),
 ]);
 
 await Promise.all([
+    ensurePageStylesheet(new URL("./styles/legal.css", import.meta.url).href),
     loadReuseStylesheet("state-pill.css"),
     loadReuseStylesheet("document-diff.css"),
 ]);
@@ -84,7 +87,7 @@ async function readPayload(response) {
 function consentReportMarkup(i18n) {
     return `<section class="terms-of-service-report" data-consent-report>
         <div class="terms-of-service-report-toolbar">
-            <input type="search" class="form-builder-input" data-consent-search placeholder="${escapeHtml(i18n.t("module.terms_of_service.report.search"))}">
+            <input type="search" class="form-builder-input" data-consent-search placeholder="${escapeHtml(i18n.t("module.terms-of-service.report.search"))}">
             <div class="terms-of-service-report-filters">${[
                 "all",
                 "accepted",
@@ -92,7 +95,7 @@ function consentReportMarkup(i18n) {
             ]
                 .map(
                     (filter) =>
-                        `<button type="button" class="state-pill${filter === "all" ? " is-active" : ""}" data-consent-filter="${filter}" aria-pressed="${filter === "all"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${filter}`))}</button>`,
+                        `<button type="button" class="state-pill${filter === "all" ? " is-active" : ""}" data-consent-filter="${filter}" aria-pressed="${filter === "all"}">${escapeHtml(i18n.t(`module.terms-of-service.report.${filter}`))}</button>`,
                 )
                 .join("")}</div>
         </div>
@@ -128,21 +131,21 @@ function activateConsentReport(panel, document, i18n, apiFetch) {
         const rows = page.items
             .map(
                 (user) =>
-                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-disabled"}">${escapeHtml(i18n.t(`module.terms_of_service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td><td>${user.version ? `<code>${escapeHtml(user.version)}</code>` : escapeHtml(i18n.t("module.terms_of_service.report.not_consented"))}</td><td><code>${escapeHtml(document.version)}</code></td></tr>`,
+                    `<tr><td>${escapeHtml(user.label)}</td><td><span class="state-pill ${user.accepted ? "pill-active" : "pill-disabled"}">${escapeHtml(i18n.t(`module.terms-of-service.report.${user.accepted ? "accepted" : "outstanding"}`))}</span></td><td>${user.version ? `<code>${escapeHtml(user.version)}</code>` : escapeHtml(i18n.t("module.terms-of-service.report.not.consented"))}</td><td><code>${escapeHtml(document.version)}</code></td></tr>`,
             )
             .join("");
         report.querySelector("[data-consent-report-table]").innerHTML =
-            `<div class="terms-of-service-report-table-wrap"><table><thead><tr><th>${escapeHtml(i18n.t("module.terms_of_service.report.user"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.status"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.consented_version"))}</th><th>${escapeHtml(i18n.t("module.terms_of_service.report.latest_version"))}</th></tr></thead><tbody>${rows || `<tr><td colspan="4">${escapeHtml(i18n.t("module.terms_of_service.report.empty"))}</td></tr>`}</tbody></table></div>${paginationUi.renderPaginationControls(
+            `<div class="terms-of-service-report-table-wrap"><table><thead><tr><th>${escapeHtml(i18n.t("module.terms-of-service.report.user"))}</th><th>${escapeHtml(i18n.t("module.terms-of-service.report.status"))}</th><th>${escapeHtml(i18n.t("module.terms-of-service.report.consented.version"))}</th><th>${escapeHtml(i18n.t("module.terms-of-service.report.latest.version"))}</th></tr></thead><tbody>${rows || `<tr><td colspan="4">${escapeHtml(i18n.t("module.terms-of-service.report.empty"))}</td></tr>`}</tbody></table></div>${paginationUi.renderPaginationControls(
                 {
                     page,
                     labels: {
                         previous: i18n.t(
-                            "module.terms_of_service.report.previous",
+                            "module.terms-of-service.report.previous",
                         ),
-                        next: i18n.t("module.terms_of_service.report.next"),
-                        status: i18n.t("module.terms_of_service.report.page"),
+                        next: i18n.t("module.terms-of-service.report.next"),
+                        status: i18n.t("module.terms-of-service.report.page"),
                     },
-                    ariaLabel: i18n.t("module.terms_of_service.report.pages"),
+                    ariaLabel: i18n.t("module.terms-of-service.report.pages"),
                     escapeHtml,
                 },
             )}`;
@@ -200,20 +203,20 @@ function documentDescriptor(document, i18n) {
     const actionVariant = hasPublishedContent ? "btn-cancel" : "btn-confirm";
     return {
         id: document.slug,
-        title: i18n.t(`module.terms_of_service.document.${document.titleKey}`),
+        title: i18n.t(`module.terms-of-service.document.${document.titleKey}`),
         className: "terms-of-service-document",
         contentClassName: "terms-of-service-document-content",
         open: hasPublishedContent,
         controlsHtml: `<button class="terms-of-service-document-action ${actionVariant}" type="button"
-                aria-label="${escapeHtml(i18n.t(`module.terms_of_service.action.${actionKey}`))}">${escapeHtml(i18n.t(`module.terms_of_service.action.${actionKey}`))}</button>`,
+                aria-label="${escapeHtml(i18n.t(`module.terms-of-service.action.${actionKey}`))}">${escapeHtml(i18n.t(`module.terms-of-service.action.${actionKey}`))}</button>`,
         contentHtml: `<div class="terms-of-service-editor">
             <div class="terms-of-service-compose-pane">
-                <textarea rows="16" aria-label="${escapeHtml(i18n.t("module.terms_of_service.editor.content"))}">${escapeHtml(document.markdown ?? "")}</textarea>
+                <textarea rows="16" aria-label="${escapeHtml(i18n.t("module.terms-of-service.editor.content"))}">${escapeHtml(document.markdown ?? "")}</textarea>
             </div>
             <div class="terms-of-service-preview-pane" hidden></div>
             <div class="collapsible-section-action-row terms-of-service-mode-row">
-                <button class="terms-of-service-mode-toggle btn-neutral is-active" type="button" data-mode="compose" aria-pressed="true">${escapeHtml(i18n.t("module.terms_of_service.action.compose"))}</button>
-                <button class="terms-of-service-mode-toggle btn-neutral" type="button" data-mode="preview" aria-pressed="false">${escapeHtml(i18n.t("module.terms_of_service.action.preview"))}</button>
+                <button class="terms-of-service-mode-toggle btn-neutral is-active" type="button" data-mode="compose" aria-pressed="true">${escapeHtml(i18n.t("module.terms-of-service.action.compose"))}</button>
+                <button class="terms-of-service-mode-toggle btn-neutral" type="button" data-mode="preview" aria-pressed="false">${escapeHtml(i18n.t("module.terms-of-service.action.preview"))}</button>
             </div>
             ${hasPublishedContent ? consentReportMarkup(i18n) : ""}
         </div>`,
@@ -287,11 +290,11 @@ function activateEditor(
     function syncDocumentAction() {
         const actionKey = editorActive ? "remove" : "add";
         documentAction.textContent = i18n.t(
-            `module.terms_of_service.action.${actionKey}`,
+            `module.terms-of-service.action.${actionKey}`,
         );
         documentAction.setAttribute(
             "aria-label",
-            i18n.t(`module.terms_of_service.action.${actionKey}`),
+            i18n.t(`module.terms-of-service.action.${actionKey}`),
         );
         documentAction.classList.toggle("btn-cancel", editorActive);
         documentAction.classList.toggle("btn-confirm", !editorActive);
@@ -326,18 +329,18 @@ function activateEditor(
             return;
         }
         const result = await openPopup({
-            title: i18n.t("module.terms_of_service.remove.title"),
-            body: `<p>${escapeHtml(i18n.t("module.terms_of_service.remove.prompt"))}</p>`,
+            title: i18n.t("module.terms-of-service.remove.title"),
+            body: `<p>${escapeHtml(i18n.t("module.terms-of-service.remove.prompt"))}</p>`,
             variant: "warning",
             actions: [
                 {
                     id: "remove",
-                    label: i18n.t("module.terms_of_service.action.remove"),
+                    label: i18n.t("module.terms-of-service.action.remove"),
                     variant: "cancel",
                 },
                 {
                     id: "keep",
-                    label: i18n.t("module.terms_of_service.action.keep"),
+                    label: i18n.t("module.terms-of-service.action.keep"),
                     variant: "confirm",
                 },
             ],
@@ -366,15 +369,15 @@ function mountFloatingDirtyTracker(root, i18n, controllers) {
     const slot = root.querySelector('[data-floating-slot="admin-changes-bar"]');
     if (!slot?.isConnected) return null;
     const dirtyBar = createUnsavedChangesBar(slot, {
-        confirmMessage: i18n.t("module.terms_of_service.editor.unsaved"),
+        confirmMessage: i18n.t("module.terms-of-service.editor.unsaved"),
         onSave: async () => {
             try {
                 await Promise.all(
                     controllers.map((controller) => controller.save()),
                 );
-                showToast(i18n.t("module.terms_of_service.message.updated"));
+                showToast(i18n.t("module.terms-of-service.message.updated"));
             } catch (error) {
-                showError(i18n.t("module.terms_of_service.error.save"));
+                showError(i18n.t("module.terms-of-service.error.save"));
                 throw error;
             }
         },
@@ -388,13 +391,13 @@ function mountFloatingDirtyTracker(root, i18n, controllers) {
 function documentsMarkup(documents, i18n) {
     const sectionComposer = createCollapsibleSectionComposer({
         escapeHtml,
-        detailsLabel: i18n.t("module.terms_of_service.action.details"),
+        detailsLabel: i18n.t("module.terms-of-service.action.details"),
     });
     return `<div class="terms-of-service-heading">
-        <h2>${escapeHtml(i18n.t("module.terms_of_service.admin.title"))}
+        <h2>${escapeHtml(i18n.t("module.terms-of-service.admin.title"))}
             ${renderInfoTooltip(
-                i18n.t("module.terms_of_service.editor.markdown_hint"),
-                i18n.t("module.terms_of_service.editor.more_information"),
+                i18n.t("module.terms-of-service.editor.markdown.hint"),
+                i18n.t("module.terms-of-service.editor.more.information"),
                 "terms-of-service-markdown",
             )}
         </h2>
@@ -476,12 +479,12 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                         error instanceof Error ? error.message : String(error),
                 },
             );
-            showError(i18n.t("module.terms_of_service.error.load"));
+            showError(i18n.t("module.terms-of-service.error.load"));
         });
 
     return {
         id: "terms-of-service-legal",
-        label: i18n.t("module.terms_of_service.admin.title"),
+        label: i18n.t("module.terms-of-service.admin.title"),
         dataReady,
         subComposerOptions: {
             allowCustomization: false,
@@ -563,7 +566,7 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
             elements: [
                 {
                     id: "terms-of-service-documents",
-                    label: i18n.t("module.terms_of_service.admin.title"),
+                    label: i18n.t("module.terms-of-service.admin.title"),
                     pinned: true,
                     gridSize: { default: [12, 6], min: [6, 4], max: "full" },
                     render: () => documentsMarkup(documents, i18n),
@@ -574,159 +577,192 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
 }
 
 export async function mount(root, { signal } = {}) {
+    if (signal?.aborted) return;
     const finishLoading = beginPageLoading(root);
-    const i18n = await createI18n({
-        componentStringBaseUrls: ["/static/modules/terms-of-service/languages"],
-    });
-    const slug = location.pathname.slice(1);
-    const definition = DOCUMENTS.find((document) => document.slug === slug);
-    if (!definition) throw new Error("Unsupported legal document route.");
-    const title = i18n.t(
-        `module.terms_of_service.document.${definition.titleKey}`,
-    );
-    const authenticated = Boolean(localStorage.getItem("cognis_access_token"));
-    const comparisonMode =
-        authenticated &&
-        new URLSearchParams(window.location.search).get("view") === "changes";
-    if (authenticated) await ensureFullAccountSession();
-    let renderedContent = "";
+    signal?.addEventListener("abort", finishLoading, { once: true });
     try {
-        if (comparisonMode) {
-            const documentDiff = uiCtx.capabilities.get("ui:documentDiff");
-            if (
-                typeof documentDiff?.renderMarkdownDocumentDiff !== "function"
-            ) {
-                throw new Error(
-                    "Required UI capability unavailable: ui:documentDiff",
-                );
-            }
-            const response = await apiFetch(
-                `${API_PATH}/consent-diff/${slug}`,
-                { signal },
-            );
-            renderedContent = documentDiff.renderMarkdownDocumentDiff(
-                await readPayload(response),
-            );
-        } else {
-            const response = await apiFetch(`${API_PATH}/public/${slug}`, {
-                signal,
-            });
-            const document = await readPayload(response);
-            renderedContent = renderMarkdown(document.markdown);
-        }
-    } catch (error) {
-        uiCtx.capabilities.get("ui:log")?.(
-            "error",
-            comparisonMode
-                ? "Legal document comparison rendering failed."
-                : "Public legal document rendering failed.",
-            {
-                component: "terms-of-service",
-                operation: comparisonMode
-                    ? "renderConsentDiff"
-                    : "renderPublicDocument",
-                slug,
-                error: error instanceof Error ? error.message : String(error),
-            },
+        const i18n = await createI18n({
+            componentStringBaseUrls: [
+                "/static/modules/terms-of-service/languages",
+            ],
+        });
+        if (signal?.aborted) return;
+        const slug = location.pathname.slice(1);
+        const definition = DOCUMENTS.find((document) => document.slug === slug);
+        if (!definition) throw new Error("Unsupported legal document route.");
+        const title = i18n.t(
+            `module.terms-of-service.document.${definition.titleKey}`,
         );
-        renderedContent = `<p>${escapeHtml(
-            i18n.t(
-                comparisonMode
-                    ? "module.terms_of_service.consent.changes_unavailable"
-                    : "module.terms_of_service.public.unavailable",
-            ),
-        )}</p>`;
-    }
-
-    applyDocumentTitle(
-        i18n,
-        `module.terms_of_service.public.page_title.${definition.titleKey}`,
-    );
-    let navigationMenu = createSideMenu({
-        groups: [],
-        storageKeyPrefix: "terms-of-service-sections",
-    });
-    const selectDocumentSection = (sectionId) => {
-        navigationMenu.setActive(sectionId);
-    };
-    const composer = createPageComposer(root, {
-        allowCustomization: false,
-        elements: [
-            {
-                id: `${slug}-document`,
-                label: title,
-                pinned: true,
-                gridSize: { default: [12, 1], min: [6, 1], max: "full" },
-                render: () =>
-                    `<article class="terms-of-service-rendered content-panel">${renderedContent}</article>`,
-            },
-        ],
-        preferenceKey: `terms-of-service-public-${slug}`,
-        i18n,
-        pageContext: { title, subtitle: "" },
-        toolbar: [
-            {
-                id: "document-sections",
-                label: i18n.t("module.terms_of_service.public.navigation"),
-                render: () =>
-                    `<div data-legal-document-navigation>${navigationMenu.render()}</div>`,
-            },
-        ],
-        toolbarScrollable: true,
-        contentScrolling: false,
-        showTopbar: authenticated,
-        showNavbar: authenticated,
-        showThemeToggle: authenticated,
-        showFooter: authenticated,
-        frameless: false,
-        persistLayoutPreferences: authenticated,
-        requireAccountSession: authenticated,
-        enableAccountEnhancements: authenticated,
-        onRender() {
-            const article = root.querySelector(".terms-of-service-rendered");
-            const navigationItems = [];
-            article?.querySelectorAll("h2, h3").forEach((heading, index) => {
-                const id = `${slug}-section-${index + 1}`;
-                heading.id = id;
-                navigationItems.push({
-                    id,
-                    label: heading.textContent,
-                    targetId: id,
+        const authenticated = Boolean(
+            localStorage.getItem("cognis_access_token"),
+        );
+        const comparisonMode =
+            authenticated &&
+            new URLSearchParams(window.location.search).get("view") ===
+                "changes";
+        if (authenticated) await ensureFullAccountSession();
+        if (signal?.aborted) return;
+        let renderedContent = "";
+        try {
+            if (comparisonMode) {
+                const documentDiff = uiCtx.capabilities.get("ui:documentDiff");
+                if (
+                    typeof documentDiff?.renderMarkdownDocumentDiff !==
+                    "function"
+                ) {
+                    throw new Error(
+                        "Required UI capability unavailable: ui:documentDiff",
+                    );
+                }
+                const response = await apiFetch(
+                    `${API_PATH}/consent-diff/${slug}`,
+                    { signal },
+                );
+                renderedContent = documentDiff.renderMarkdownDocumentDiff(
+                    await readPayload(response),
+                );
+            } else {
+                const response = await apiFetch(`${API_PATH}/public/${slug}`, {
+                    signal,
                 });
-            });
-            const navigation = root.querySelector(
-                "[data-legal-document-navigation]",
-            );
-            navigationMenu = createSideMenu({
-                groups: [
-                    {
-                        id: slug,
-                        label: title,
-                        items: navigationItems,
-                    },
-                ],
-                storageKeyPrefix: "terms-of-service-sections",
-                activeId: navigationItems[0]?.id,
-                onSelect: selectDocumentSection,
-                scrollBehavior: "smooth",
-            });
-            if (navigation) {
-                navigation.innerHTML = navigationMenu.render();
-                navigationMenu.mount(navigation, { signal });
+                const document = await readPayload(response);
+                renderedContent = renderMarkdown(document.markdown);
             }
-            initializeMarkdownCodeCopy();
-        },
-    });
-    publicPageComposers.get(root)?.destroy?.();
-    publicPageComposers.set(root, composer);
-    await composer.init();
-    const refreshFooterLinks = uiCtx.capabilities.get(
-        "terms-of-service:refreshFooterLinks",
-    );
-    if (typeof refreshFooterLinks === "function") {
-        await refreshFooterLinks({ forceRender: true });
+        } catch (error) {
+            if (signal?.aborted) return;
+            uiCtx.capabilities.get("ui:log")?.(
+                "error",
+                comparisonMode
+                    ? "Legal document comparison rendering failed."
+                    : "Public legal document rendering failed.",
+                {
+                    component: "terms-of-service",
+                    operation: comparisonMode
+                        ? "renderConsentDiff"
+                        : "renderPublicDocument",
+                    slug,
+                    error:
+                        error instanceof Error ? error.message : String(error),
+                },
+            );
+            renderedContent = `<p>${escapeHtml(
+                i18n.t(
+                    comparisonMode
+                        ? "module.terms-of-service.consent.changes.unavailable"
+                        : "module.terms-of-service.public.unavailable",
+                ),
+            )}</p>`;
+        }
+
+        if (signal?.aborted) return;
+        applyDocumentTitle(
+            i18n,
+            `module.terms-of-service.public.page.title.${definition.titleKey}`,
+        );
+        let navigationMenu = createSideMenu({
+            groups: [],
+            storageKeyPrefix: "terms-of-service-sections",
+        });
+        const selectDocumentSection = (sectionId) => {
+            navigationMenu.setActive(sectionId);
+        };
+        const composer = createPageComposer(root, {
+            signal,
+            allowCustomization: false,
+            elements: [
+                {
+                    id: `${slug}-document`,
+                    label: title,
+                    pinned: true,
+                    gridSize: { default: [12, 1], min: [6, 1], max: "full" },
+                    render: () =>
+                        `<article class="terms-of-service-rendered content-panel">${renderedContent}</article>`,
+                },
+            ],
+            preferenceKey: `terms-of-service-public-${slug}`,
+            i18n,
+            pageContext: { title, subtitle: "" },
+            toolbar: [
+                {
+                    id: "document-sections",
+                    label: i18n.t("module.terms-of-service.public.navigation"),
+                    render: () =>
+                        `<div data-legal-document-navigation>${navigationMenu.render()}</div>`,
+                },
+            ],
+            toolbarScrollable: true,
+            contentScrolling: false,
+            showTopbar: authenticated,
+            showNavbar: authenticated,
+            showThemeToggle: authenticated,
+            showFooter: authenticated,
+            frameless: false,
+            persistLayoutPreferences: authenticated,
+            requireAccountSession: authenticated,
+            enableAccountEnhancements: authenticated,
+            onRender() {
+                if (signal?.aborted) return;
+                const article = root.querySelector(
+                    ".terms-of-service-rendered",
+                );
+                const navigationItems = [];
+                article
+                    ?.querySelectorAll("h2, h3")
+                    .forEach((heading, index) => {
+                        const id = `${slug}-section-${index + 1}`;
+                        heading.id = id;
+                        navigationItems.push({
+                            id,
+                            label: heading.textContent,
+                            targetId: id,
+                        });
+                    });
+                const navigation = root.querySelector(
+                    "[data-legal-document-navigation]",
+                );
+                navigationMenu = createSideMenu({
+                    groups: [
+                        {
+                            id: slug,
+                            label: title,
+                            items: navigationItems,
+                        },
+                    ],
+                    storageKeyPrefix: "terms-of-service-sections",
+                    activeId: navigationItems[0]?.id,
+                    onSelect: selectDocumentSection,
+                    scrollBehavior: "smooth",
+                });
+                if (navigation) {
+                    navigation.innerHTML = navigationMenu.render();
+                    navigationMenu.mount(navigation, { signal });
+                }
+                initializeMarkdownCodeCopy();
+            },
+        });
+        if (signal?.aborted) return;
+        publicPageComposers.get(root)?.destroy?.();
+        publicPageComposers.set(root, composer);
+        signal?.addEventListener(
+            "abort",
+            () => {
+                if (publicPageComposers.get(root) !== composer) return;
+                publicPageComposers.delete(root);
+                composer.destroy();
+            },
+            { once: true },
+        );
+        await composer.init();
+        if (signal?.aborted) return;
+        const refreshFooterLinks = uiCtx.capabilities.get(
+            "terms-of-service:refreshFooterLinks",
+        );
+        if (typeof refreshFooterLinks === "function") {
+            await refreshFooterLinks({ forceRender: true });
+        }
+    } finally {
+        finishLoading();
     }
-    finishLoading();
 }
 
 export function unmount(root) {
@@ -737,10 +773,7 @@ export function unmount(root) {
 
 const directRouteSlug = location.pathname.slice(1);
 if (DOCUMENTS.some((document) => document.slug === directRouteSlug)) {
-    await mountWhenDirect((root) => {
-        const mountController = new AbortController();
-        return mount(root, { signal: mountController.signal });
-    }).catch((error) => {
+    await mountWhenDirect(mount).catch((error) => {
         showError(error instanceof Error ? error.message : String(error));
     });
 }

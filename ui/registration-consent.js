@@ -6,14 +6,14 @@ export function createRegistrationField({ i18n }) {
         name: FIELD_NAME,
         type: "checkbox",
         required: true,
-        label: `${i18n.t("module.terms_of_service.consent.signup.prefix")} ${i18n.t("module.terms_of_service.consent.signup.terms")}, ${i18n.t("module.terms_of_service.consent.signup.privacy")} ${i18n.t("module.terms_of_service.consent.signup.and")} ${i18n.t("module.terms_of_service.document.eula")}`,
+        label: `${i18n.t("module.terms-of-service.consent.signup.prefix")} ${i18n.t("module.terms-of-service.consent.signup.terms")}, ${i18n.t("module.terms-of-service.consent.signup.privacy")} ${i18n.t("module.terms-of-service.consent.signup.and")} ${i18n.t("module.terms-of-service.document.eula")}`,
     };
 }
 
 export function validateRegistration({ values, i18n }) {
     return values[FIELD_NAME] === true || values[FIELD_NAME] === "on"
         ? null
-        : i18n.t("module.terms_of_service.consent.required");
+        : i18n.t("module.terms-of-service.consent.required");
 }
 
 export async function completeRegistration({ apiFetch }) {
