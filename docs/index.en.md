@@ -47,3 +47,5 @@ Locale keys use `module.<manifest.id>.<feature>.<label>`. Keep a multiword modul
 ### Keep legal footer links available
 
 All browser clients use the footer registry owned by `ctx`, including separately loaded static and bundled scripts. Footer descriptors may request `target: "_blank"`; the renderer adds `noopener noreferrer`. Authentication providers supply translated labels and authentication contexts, while signed-in legal links explicitly belong to the application context. History and browser-cache restoration refresh published legal links without replacing core License or Changelogs links.
+
+Legal labels fall back to the module’s English strings when selected-locale keys are unavailable, without changing the user’s language preferences. Missing translations and failed footer contributions are logged with safe diagnostic fields. A failed footer contribution cannot interrupt mandatory consent, submission, or decline/logout.

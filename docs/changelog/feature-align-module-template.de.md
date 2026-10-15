@@ -42,6 +42,10 @@ Moduleigenes CSS wird über die öffentliche Hilfsfunktion page-styles geladen. 
 
 Alle Browserclients verwenden die Footer-Registrierung von `ctx`, auch getrennt geladene statische Skripte und Bundles. Footer-Deskriptoren können `target: "_blank"` anfordern; die Darstellung ergänzt `noopener noreferrer`. Authentifizierungsanbieter liefern übersetzte Beschriftungen und Authentifizierungskontexte, während Rechtstextlinks angemeldeter Sitzungen ausdrücklich zum Anwendungskontext gehören. Verlauf und Browser-Cache-Wiederherstellung aktualisieren veröffentlichte Rechtstextlinks, ohne die Core-Links für Lizenz oder Änderungen zu ersetzen.
 
+## Einwilligung unabhängig von der Fußzeile durchsetzen
+
+Fehlende Übersetzungen verwenden die englischen Modultexte, ohne die Spracheinstellungen des Benutzers zu ändern. Fehlende Übersetzungen und fehlgeschlagene Fußzeilenbeiträge werden mit sicheren Diagnosefeldern protokolliert. Fehler der Fußzeile unterbrechen weder die verpflichtende Einwilligung noch deren Übermittlung oder Ablehnung mit Abmeldung.
+
 ## Commits
 
 - [41d44fb](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/41d44fb683efbe9206ebe78a32f4b9f78cef2bb9)

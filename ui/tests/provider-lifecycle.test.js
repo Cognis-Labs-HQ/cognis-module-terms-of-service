@@ -36,7 +36,7 @@ capabilities.set("ui:reuse", {
                 }),
             };
         },
-        createI18n: async () => ({ t: (key) => key }),
+        createI18n: async () => ({ locale: "en", t: (key) => key }),
         openPopup: () => assert.fail("Accepted consent must not prompt"),
         escapeHtml: String,
     }),

@@ -47,3 +47,5 @@ Kunci terjemahan menggunakan `module.<manifest.id>.<feature>.<label>`. Pertahank
 ### Pertahankan tautan legal di footer
 
 Semua klien browser menggunakan registri footer milik `ctx`, termasuk skrip statis dan bundel yang dimuat terpisah. Deskriptor footer dapat meminta `target: "_blank"`; perender menambahkan `noopener noreferrer`. Penyedia autentikasi menyediakan label terjemahan dan konteks autentikasi, sedangkan tautan legal sesi masuk secara eksplisit memakai konteks aplikasi. Pemulihan riwayat dan cache browser memperbarui tautan dokumen legal yang diterbitkan tanpa mengganti tautan inti Lisensi atau Catatan Perubahan.
+
+Label hukum menggunakan teks bahasa Inggris milik modul bila kunci bahasa pilihan tidak tersedia, tanpa mengubah preferensi bahasa pengguna. Terjemahan yang hilang dan kegagalan kontribusi footer dicatat dengan bidang diagnostik yang aman. Kegagalan footer tidak mengganggu persetujuan wajib, pengiriman persetujuan, atau penolakan dan keluar.

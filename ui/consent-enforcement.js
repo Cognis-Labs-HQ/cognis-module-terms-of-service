@@ -1,12 +1,11 @@
+import { createLegalI18n } from "./reuse/i18n.js";
 import { importReuseModule, loadReuseStylesheet } from "./reuse/resources.js";
 
-const [{ apiFetch }, { createI18n }, { openPopup }, { escapeHtml }] =
-    await Promise.all([
-        importReuseModule("api-client.js"),
-        importReuseModule("i18n.js"),
-        importReuseModule("popup.js"),
-        importReuseModule("escape-html.js"),
-    ]);
+const [{ apiFetch }, { openPopup }, { escapeHtml }] = await Promise.all([
+    importReuseModule("api-client.js"),
+    importReuseModule("popup.js"),
+    importReuseModule("escape-html.js"),
+]);
 
 export async function mountProvider(uiCtx) {
     await Promise.all([
@@ -60,19 +59,41 @@ export async function mountProvider(uiCtx) {
                     : document.slug === "privacy-policy"
                       ? "privacy"
                       : "eula";
-            footerLinkDisposers.set(
-                document.slug,
-                footerLinks.add({
-                    id: linkId,
-                    side: "right",
-                    href: document.path,
-                    target: "_blank",
-                    contexts: ["application"],
-                    label: i18n.t(
-                        `module.terms-of-service.document.${titleKey}`,
-                    ),
-                }),
-            );
+            try {
+                footerLinkDisposers.set(
+                    document.slug,
+                    footerLinks.add({
+                        id: linkId,
+                        side: "right",
+                        href: document.path,
+                        target: "_blank",
+                        contexts: ["application"],
+                        label: i18n.t(
+                            `module.terms-of-service.document.${titleKey}`,
+                        ),
+                    }),
+                );
+            } catch (error) {
+                uiCtx.capabilities.get("ui:log")?.(
+                    "error",
+                    "Legal footer link registration failed; consent enforcement will continue.",
+                    {
+                        component: "terms-of-service",
+                        operation: "registerFooterLink",
+                        slug: document.slug,
+                        hasHref: Boolean(document.path),
+                        hasLabel: Boolean(
+                            i18n.t(
+                                `module.terms-of-service.document.${titleKey}`,
+                            ),
+                        ),
+                        error:
+                            error instanceof Error
+                                ? error.message
+                                : String(error),
+                    },
+                );
+            }
         }
     }
 
@@ -105,11 +126,7 @@ export async function mountProvider(uiCtx) {
             footerRefreshPromise = (async () => {
                 const status = await consentStatus();
                 if (!status) return;
-                const i18n = await createI18n({
-                    componentStringBaseUrls: [
-                        "/static/modules/terms-of-service/languages",
-                    ],
-                });
+                const i18n = await createLegalI18n();
                 syncFooterLinks(status.documents, i18n, { forceRender });
             })().finally(() => {
                 footerRefreshPromise = undefined;
@@ -365,11 +382,7 @@ export async function mountProvider(uiCtx) {
     async function enforceAuthenticatedConsent() {
         const status = await consentStatus();
         if (!status) return { requiresSetup: false };
-        const i18n = await createI18n({
-            componentStringBaseUrls: [
-                "/static/modules/terms-of-service/languages",
-            ],
-        });
+        const i18n = await createLegalI18n();
         syncFooterLinks(status.documents, i18n);
         if (
             LEGAL_DOCUMENT_PATHS.has(location.pathname) ||

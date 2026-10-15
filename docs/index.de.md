@@ -47,3 +47,5 @@ Moduleigenes CSS wird über die öffentliche Hilfsfunktion page-styles geladen. 
 ### Rechtstextlinks im Footer erhalten
 
 Alle Browserclients verwenden die Footer-Registrierung von `ctx`, auch getrennt geladene statische Skripte und Bundles. Footer-Deskriptoren können `target: "_blank"` anfordern; die Darstellung ergänzt `noopener noreferrer`. Authentifizierungsanbieter liefern übersetzte Beschriftungen und Authentifizierungskontexte, während Rechtstextlinks angemeldeter Sitzungen ausdrücklich zum Anwendungskontext gehören. Verlauf und Browser-Cache-Wiederherstellung aktualisieren veröffentlichte Rechtstextlinks, ohne die Core-Links für Lizenz oder Änderungen zu ersetzen.
+
+Fehlende Übersetzungen verwenden die englischen Modultexte, ohne die Spracheinstellungen des Benutzers zu ändern. Fehlende Übersetzungen und fehlgeschlagene Fußzeilenbeiträge werden mit sicheren Diagnosefeldern protokolliert. Fehler der Fußzeile unterbrechen weder die verpflichtende Einwilligung noch deren Übermittlung oder Ablehnung mit Abmeldung.

@@ -33,7 +33,10 @@ globalThis[Symbol.for("cognis.uiCtx")] = {
                                       "/static/modules/terms-of-service/languages",
                                   ],
                               );
-                              return { t: (key) => labels.get(key) ?? key };
+                              return {
+                                  locale: "en",
+                                  t: (key) => labels.get(key) ?? "",
+                              };
                           },
                       },
         }),

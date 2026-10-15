@@ -21,7 +21,7 @@ const modules = {
     "i18n.js": {
         createI18n: async () => {
             if (translationWait) await translationWait;
-            return { t: (key) => key };
+            return { locale: "en", t: (key) => key };
         },
         applyDocumentTitle: () => events.push("title"),
     },
