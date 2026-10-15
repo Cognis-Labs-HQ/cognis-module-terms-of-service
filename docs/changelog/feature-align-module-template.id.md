@@ -67,3 +67,4 @@ Halaman hukum publik, kontribusi footer, dan penegakan persetujuan menggunakan `
 - [f4f4598](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/f4f45988a7cc220ff43b22f16fae7adfd860148f)
 - [1f1e4fe](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1f1e4feca4db7886c52dd4f71b5ef923a99a4ec3)
 - [0d94f22](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/0d94f22c51bbe460e3339c5f43966d7f348fcc90)
+- [004a9ec](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/004a9ec8e4dfa237d669e140245dc65cd4bf88b3)
