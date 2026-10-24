@@ -11,3 +11,4 @@
 ## コミット
 
 - [2dba1c6](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2dba1c61ea1ba7b219e06c09036408d89503571b)
+- [2492ad3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2492ad306ac7458b8d8e27083116420f298bebc1)
