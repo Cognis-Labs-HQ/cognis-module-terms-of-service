@@ -1,3 +1,6 @@
+import { createOfflineHost } from "./reuse/offline-context.js";
+const offlineHost = createOfflineHost();
+globalThis.localStorage = offlineHost.storage;
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFileSync } from "node:fs";
@@ -14,32 +17,40 @@ let published = ["terms-of-service", "eula"];
 const requests = [];
 globalThis[Symbol.for("cognis.uiCtx")] = {
     capabilities: {
-        get: () => ({
-            importModule: async (path) =>
-                path === "api-client.js"
-                    ? {
-                          apiFetch: async (url, options) => {
-                              requests.push({ url, options });
-                              return Response.json({
-                                  data: published.map((slug) => ({ slug })),
-                              });
-                          },
-                      }
-                    : {
-                          createI18n: async (options) => {
-                              assert.deepEqual(
-                                  options.componentStringBaseUrls,
-                                  [
-                                      "/static/modules/terms-of-service/languages",
-                                  ],
-                              );
-                              return {
-                                  locale: "en",
-                                  t: (key) => labels.get(key) ?? "",
-                              };
-                          },
-                      },
-        }),
+        get: (id) =>
+            id === "offline:accessPolicy"
+                ? offlineHost.policy
+                : id === "ui:log"
+                  ? () => {}
+                  : {
+                        importModule: async (path) =>
+                            path === "api-client.js"
+                                ? {
+                                      apiFetch: async (url, options) => {
+                                          requests.push({ url, options });
+                                          return Response.json({
+                                              data: published.map((slug) => ({
+                                                  slug,
+                                                  version: `${slug}-v1`,
+                                              })),
+                                          });
+                                      },
+                                  }
+                                : {
+                                      createI18n: async (options) => {
+                                          assert.deepEqual(
+                                              options.componentStringBaseUrls,
+                                              [
+                                                  "/static/modules/terms-of-service/languages",
+                                              ],
+                                          );
+                                          return {
+                                              locale: "en",
+                                              t: (key) => labels.get(key) ?? "",
+                                          };
+                                      },
+                                  },
+                    },
     },
 };
 const { listAuthFooterLinks } = await import("../auth-footer.js");

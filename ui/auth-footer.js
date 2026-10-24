@@ -1,4 +1,5 @@
-import { importReuseModule } from "./reuse/resources.js";
+import { importReuseModule, uiCtx } from "./reuse/resources.js";
+import { createOfflineConsent } from "./offline-consent.js";
 
 const [{ apiFetch }, { createI18n }] = await Promise.all([
     importReuseModule("api-client.js"),
@@ -19,9 +20,13 @@ export async function listAuthFooterLinks() {
         suppressAccessDeniedEvent: true,
     });
     if (!response.ok) throw new Error("public_documents_unavailable");
-    const publishedSlugs = new Set(
-        (await response.json()).data.map((document) => document.slug),
-    );
+    const documents = (await response.json()).data;
+    const offlineConsent = createOfflineConsent({
+        policy: uiCtx.capabilities.get("offline:accessPolicy"),
+        log: uiCtx.capabilities.get("ui:log"),
+    });
+    for (const document of documents) offlineConsent.observe(document);
+    const publishedSlugs = new Set(documents.map((document) => document.slug));
     return DOCUMENTS.filter((document) =>
         publishedSlugs.has(document.slug),
     ).map((document) => ({

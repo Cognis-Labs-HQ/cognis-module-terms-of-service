@@ -1,3 +1,5 @@
+import { createOfflineHost } from "./reuse/offline-context.js";
+const offlineHost = createOfflineHost();
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -29,6 +31,9 @@ capabilities.set("ui:reuse", {
                         documents: [
                             {
                                 slug: "terms-of-service",
+                                version: "published",
+                                consentedVersion: "published",
+                                accepted: true,
                                 path: "/terms-of-service",
                             },
                         ],
@@ -41,13 +46,15 @@ capabilities.set("ui:reuse", {
         escapeHtml: String,
     }),
 });
+capabilities.set("offline:accessPolicy", offlineHost.policy);
+capabilities.set("offline:state", offlineHost.state);
 globalThis[Symbol.for("cognis.uiCtx")] = {
     capabilities: { get: (id) => capabilities.get(id) },
 };
 globalThis.window = new EventTarget();
 globalThis.location = { pathname: "/login" };
 globalThis.document = { visibilityState: "visible" };
-globalThis.localStorage = { getItem: () => "" };
+globalThis.localStorage = offlineHost.storage;
 const { mountProvider } = await import("../consent-enforcement.js");
 
 test("import is inert and cached providers remount with owned cleanup", async () => {

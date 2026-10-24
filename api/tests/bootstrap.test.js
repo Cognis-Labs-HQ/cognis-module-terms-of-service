@@ -47,6 +47,10 @@ function context(registrations) {
         registerAdminSection(section) {
             registrations.admin.push(section);
         },
+        registerCapabilityProvider(provider) {
+            registrations.capabilityProviders ??= [];
+            registrations.capabilityProviders.push(provider);
+        },
         registerNavbarPlugin(plugin) {
             registrations.plugins.push(plugin);
         },

@@ -1,3 +1,5 @@
+import { createOfflineHost } from "./reuse/offline-context.js";
+const offlineHost = createOfflineHost();
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFileSync } from "node:fs";
@@ -55,6 +57,9 @@ const capabilities = new Map([
                                     slug: "terms-of-service",
                                     path: "/terms-of-service",
                                     version: "published",
+                                    consentedVersion: required
+                                        ? null
+                                        : "published",
                                     state: "new",
                                     accepted: !required,
                                 },
@@ -93,13 +98,15 @@ const capabilities = new Map([
         },
     ],
 ]);
+capabilities.set("offline:accessPolicy", offlineHost.policy);
+capabilities.set("offline:state", offlineHost.state);
 globalThis[Symbol.for("cognis.uiCtx")] = {
     capabilities: { get: (id) => capabilities.get(id) },
 };
 globalThis.window = new EventTarget();
 globalThis.location = { pathname: "/calendar" };
 globalThis.document = { visibilityState: "visible" };
-globalThis.localStorage = { getItem: () => "" };
+globalThis.localStorage = offlineHost.storage;
 const { mountProvider } = await import("../consent-enforcement.js");
 
 test("host-resolved labels are used and footer errors cannot block mandatory consent", async () => {
