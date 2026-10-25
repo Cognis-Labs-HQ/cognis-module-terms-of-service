@@ -16,3 +16,4 @@ Offline Mode stops consent polling and ordinary recovery polling. Only one light
 
 - [2dba1c6](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2dba1c61ea1ba7b219e06c09036408d89503571b)
 - [2492ad3](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/2492ad306ac7458b8d8e27083116420f298bebc1)
+- [3b245ac](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/3b245ac3c4fd6d4c03551ec02a90deda5fd5549f)
