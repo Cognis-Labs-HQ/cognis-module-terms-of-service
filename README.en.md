@@ -16,3 +16,7 @@ Existing-account enforcement needs no additional core contract. A lifecycle-scop
 ## Security and lifecycle
 
 Only administrators may list or publish documents. Public readers can only retrieve one of the three fixed document slugs. Content is retained across disable/re-enable and removed on uninstall only when `deleteContent` is true.
+
+## Offline polling limits
+
+Offline Mode stops consent polling and ordinary recovery polling. Only one lightweight server health probe runs every fifteen minutes, even after repeated browser online events. Online connection-recovery failures back off to fifteen minutes. Consent polling backs off after failures to five minutes, stops entirely offline, and resumes after reconnection. Required cached legal acceptance still gates offline access.

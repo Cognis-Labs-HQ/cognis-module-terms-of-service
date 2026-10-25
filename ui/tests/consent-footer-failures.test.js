@@ -21,6 +21,8 @@ let footerFailure = false;
 let translationLoads = 0;
 let popupAction = "decline";
 let submitted;
+let consentFailure = false;
+let consentRequests = 0;
 const capabilities = new Map([
     ["ui:log", (...args) => logs.push(args)],
     [
@@ -44,6 +46,9 @@ const capabilities = new Map([
             loadStylesheet: async () => {},
             importModule: async () => ({
                 apiFetch: async (_path, options) => {
+                    consentRequests++;
+                    if (consentFailure)
+                        throw new Error("consent_service_unavailable");
                     if (options?.method === "POST") {
                         submitted = JSON.parse(options.body);
                         required = false;
@@ -290,5 +295,69 @@ test("initial consent decline releases mounting before navigation finishes", asy
         capabilities.delete("ui:navigate");
         footerFailure = previousFooterFailure;
         required = false;
+    }
+});
+
+test("consent polling backs off after failures and stops entirely offline", async () => {
+    const originalSetTimeout = globalThis.setTimeout;
+    const originalClearTimeout = globalThis.clearTimeout;
+    const originalGetItem = localStorage.getItem;
+    const previousPath = location.pathname;
+    const timers = new Map();
+    let sequence = 0;
+    const controller = new AbortController();
+    globalThis.setTimeout = (callback, delay) => {
+        const id = ++sequence;
+        timers.set(id, { callback, delay });
+        return id;
+    };
+    globalThis.clearTimeout = (id) => timers.delete(id);
+    localStorage.getItem = () => "token";
+    location.pathname = "/dashboard";
+    let dispose;
+    const tick = async () => {
+        const [id, timer] = timers.entries().next().value;
+        timers.delete(id);
+        await timer.callback();
+    };
+    try {
+        required = false;
+        dispose = await mountProvider({
+            signal: controller.signal,
+            capabilities: {
+                get: (id) => capabilities.get(id),
+                contribute: (id, value) => capabilities.set(id, value),
+            },
+            extendFlow() {},
+        });
+        assert.equal(timers.values().next().value.delay, 5000);
+        consentFailure = true;
+        await tick();
+        assert.equal(timers.values().next().value.delay, 10000);
+        await tick();
+        assert.equal(timers.values().next().value.delay, 20000);
+        const scheduled = timers.values().next().value.callback;
+        const beforeOffline = consentRequests;
+        offlineHost.setOffline(true);
+        window.dispatchEvent(new Event("cognis:connectivity-changed"));
+        assert.equal(timers.size, 0);
+        await scheduled();
+        assert.equal(consentRequests, beforeOffline);
+        assert.equal(timers.size, 0);
+        offlineHost.setOffline(false);
+        consentFailure = false;
+        window.dispatchEvent(new Event("cognis:connectivity-changed"));
+        assert.equal(timers.values().next().value.delay, 5000);
+        await tick();
+        assert.equal(timers.values().next().value.delay, 5000);
+    } finally {
+        dispose?.();
+        controller.abort();
+        offlineHost.setOffline(false);
+        consentFailure = false;
+        globalThis.setTimeout = originalSetTimeout;
+        globalThis.clearTimeout = originalClearTimeout;
+        localStorage.getItem = originalGetItem;
+        location.pathname = previousPath;
     }
 });

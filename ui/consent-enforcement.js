@@ -40,6 +40,7 @@ export async function mountProvider(uiCtx) {
     ]);
     const CONSENT_REFRESH_INTERVAL_MS = 5_000;
     let consentRefreshTimer;
+    let consentRefreshDelayMs = CONSENT_REFRESH_INTERVAL_MS;
     let enforcementPromise;
     let footerRefreshPromise;
     let consentEnforcementDisposed = false;
@@ -446,8 +447,10 @@ export async function mountProvider(uiCtx) {
 
     function scheduleConsentRefresh() {
         clearTimeout(consentRefreshTimer);
-        if (consentEnforcementDisposed) return;
+        if (consentEnforcementDisposed || connectivity.isOffline()) return;
         consentRefreshTimer = setTimeout(async () => {
+            consentRefreshTimer = undefined;
+            if (consentEnforcementDisposed || connectivity.isOffline()) return;
             try {
                 if (
                     document.visibilityState === "visible" &&
@@ -455,8 +458,13 @@ export async function mountProvider(uiCtx) {
                     localStorage.getItem("cognis_access_token")
                 ) {
                     await enforceAuthenticatedConsentOnce();
+                    consentRefreshDelayMs = CONSENT_REFRESH_INTERVAL_MS;
                 }
             } catch (error) {
+                consentRefreshDelayMs = Math.min(
+                    5 * 60_000,
+                    consentRefreshDelayMs * 2,
+                );
                 uiCtx.capabilities.get("ui:log")?.(
                     "error",
                     "Periodic consent enforcement failed.",
@@ -473,13 +481,32 @@ export async function mountProvider(uiCtx) {
             } finally {
                 if (!consentEnforcementDisposed) scheduleConsentRefresh();
             }
-        }, CONSENT_REFRESH_INTERVAL_MS);
+        }, consentRefreshDelayMs);
     }
+
+    function handleConnectivityChange() {
+        clearTimeout(consentRefreshTimer);
+        consentRefreshTimer = undefined;
+        if (!connectivity.isOffline()) {
+            consentRefreshDelayMs = CONSENT_REFRESH_INTERVAL_MS;
+            scheduleConsentRefresh();
+        }
+    }
+
+    window.addEventListener(
+        "cognis:connectivity-changed",
+        handleConnectivityChange,
+        { signal: uiCtx.signal },
+    );
 
     function teardownConsentEnforcement() {
         consentEnforcementDisposed = true;
         clearTimeout(consentRefreshTimer);
         consentRefreshTimer = undefined;
+        window.removeEventListener(
+            "cognis:connectivity-changed",
+            handleConnectivityChange,
+        );
         for (const event of [
             "cognis:route-will-change",
             "popstate",

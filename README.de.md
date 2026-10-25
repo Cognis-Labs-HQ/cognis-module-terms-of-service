@@ -11,3 +11,7 @@ Die vorhandenen Browser-Verträge reichen für Markdown, Feedback, Navigation un
 ## Sicherheit und Lebenszyklus
 
 Nur Administratoren dürfen Dokumente verwalten. Öffentliche Leser können ausschließlich die drei festen Dokumente abrufen. Inhalte bleiben beim Deaktivieren erhalten und werden bei der Deinstallation nur mit `deleteContent` gelöscht.
+
+## Abfragelimits im Offline-Modus
+
+Im Offline-Modus stoppen die Einwilligungsabfragen und normalen Wiederherstellungsabfragen. Nur eine kleine Server-Gesundheitsabfrage läuft alle fünfzehn Minuten, auch bei wiederholten Online-Ereignissen des Browsers. Fehlgeschlagene Online-Verbindungsprüfungen werden bis auf fünfzehn Minuten verlangsamt. Einwilligungsabfragen werden bei Fehlern bis auf fünf Minuten verlangsamt, offline vollständig gestoppt und nach Wiederverbindung fortgesetzt. Die erforderliche zwischengespeicherte Zustimmung bleibt Voraussetzung für Offline-Zugriff.
