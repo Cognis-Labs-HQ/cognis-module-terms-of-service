@@ -12,6 +12,11 @@ export function registerUi(ctx) {
         stringsBaseUrl: "/static/modules/terms-of-service/languages",
         access: { minRole: "admin" },
     });
+    ctx.registerCapabilityProvider({
+        scriptUrl: "/static/modules/terms-of-service/consent-enforcement.js",
+        providesCapabilities: ["terms-of-service:refreshFooterLinks"],
+        offlineAccessGuard: "terms-of-service",
+    });
     ctx.registerNavbarPlugin({
         scriptUrl: "/static/modules/terms-of-service/consent-enforcement.js",
         stylesheets: ["/static/modules/terms-of-service/styles/legal.css"],

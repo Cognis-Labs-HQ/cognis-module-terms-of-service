@@ -1,3 +1,4 @@
+import { createOfflineConsent } from "./offline-consent.js";
 import { importReuseModule, loadReuseStylesheet } from "./reuse/resources.js";
 
 const [{ apiFetch }, { createI18n }, { openPopup }, { escapeHtml }] =
@@ -9,6 +10,15 @@ const [{ apiFetch }, { createI18n }, { openPopup }, { escapeHtml }] =
     ]);
 
 export async function mountProvider(uiCtx) {
+    const policy = uiCtx.capabilities.get("offline:accessPolicy");
+    const connectivity = uiCtx.capabilities.get("offline:state");
+    if (!policy || !connectivity)
+        throw new Error("offline_contract_unavailable");
+    const offlineConsent = createOfflineConsent({
+        policy,
+        log: uiCtx.capabilities.get("ui:log"),
+    });
+    offlineConsent.restore();
     await Promise.all([
         loadReuseStylesheet("choice-checkbox.css"),
         loadReuseStylesheet("state-pill.css"),
@@ -30,6 +40,7 @@ export async function mountProvider(uiCtx) {
     ]);
     const CONSENT_REFRESH_INTERVAL_MS = 5_000;
     let consentRefreshTimer;
+    let consentRefreshDelayMs = CONSENT_REFRESH_INTERVAL_MS;
     let enforcementPromise;
     let footerRefreshPromise;
     let consentEnforcementDisposed = false;
@@ -106,11 +117,20 @@ export async function mountProvider(uiCtx) {
     }
 
     async function consentStatus() {
+        if (connectivity.isOffline()) {
+            if (!offlineConsent.allowed())
+                throw new Error("offline_access_denied");
+            return offlineConsent.load();
+        }
         const response = await apiFetch(API_PATH, {
             suppressAccessDeniedEvent: true,
             signal: uiCtx.signal,
         });
         if (response.status === 404) {
+            policy.update("terms-of-service", {
+                allowed: false,
+                revision: "unavailable",
+            });
             uiCtx.capabilities.get("ui:log")?.(
                 "info",
                 "Consent enforcement skipped because the module endpoint is unavailable.",
@@ -123,7 +143,7 @@ export async function mountProvider(uiCtx) {
             return null;
         }
         if (!response.ok) throw new Error("consent_status_unavailable");
-        return (await response.json()).data;
+        return offlineConsent.record((await response.json()).data);
     }
 
     async function refreshFooterLinks({ forceRender = false } = {}) {
@@ -334,7 +354,9 @@ export async function mountProvider(uiCtx) {
                     }),
                 });
                 if (response.ok) {
-                    status = (await response.json()).data;
+                    status = offlineConsent.record(
+                        (await response.json()).data,
+                    );
                     window.dispatchEvent(
                         new CustomEvent("terms-of-service:consent-recorded"),
                     );
@@ -425,8 +447,10 @@ export async function mountProvider(uiCtx) {
 
     function scheduleConsentRefresh() {
         clearTimeout(consentRefreshTimer);
-        if (consentEnforcementDisposed) return;
+        if (consentEnforcementDisposed || connectivity.isOffline()) return;
         consentRefreshTimer = setTimeout(async () => {
+            consentRefreshTimer = undefined;
+            if (consentEnforcementDisposed || connectivity.isOffline()) return;
             try {
                 if (
                     document.visibilityState === "visible" &&
@@ -434,8 +458,13 @@ export async function mountProvider(uiCtx) {
                     localStorage.getItem("cognis_access_token")
                 ) {
                     await enforceAuthenticatedConsentOnce();
+                    consentRefreshDelayMs = CONSENT_REFRESH_INTERVAL_MS;
                 }
             } catch (error) {
+                consentRefreshDelayMs = Math.min(
+                    5 * 60_000,
+                    consentRefreshDelayMs * 2,
+                );
                 uiCtx.capabilities.get("ui:log")?.(
                     "error",
                     "Periodic consent enforcement failed.",
@@ -452,13 +481,32 @@ export async function mountProvider(uiCtx) {
             } finally {
                 if (!consentEnforcementDisposed) scheduleConsentRefresh();
             }
-        }, CONSENT_REFRESH_INTERVAL_MS);
+        }, consentRefreshDelayMs);
     }
+
+    function handleConnectivityChange() {
+        clearTimeout(consentRefreshTimer);
+        consentRefreshTimer = undefined;
+        if (!connectivity.isOffline()) {
+            consentRefreshDelayMs = CONSENT_REFRESH_INTERVAL_MS;
+            scheduleConsentRefresh();
+        }
+    }
+
+    window.addEventListener(
+        "cognis:connectivity-changed",
+        handleConnectivityChange,
+        { signal: uiCtx.signal },
+    );
 
     function teardownConsentEnforcement() {
         consentEnforcementDisposed = true;
         clearTimeout(consentRefreshTimer);
         consentRefreshTimer = undefined;
+        window.removeEventListener(
+            "cognis:connectivity-changed",
+            handleConnectivityChange,
+        );
         for (const event of [
             "cognis:route-will-change",
             "popstate",

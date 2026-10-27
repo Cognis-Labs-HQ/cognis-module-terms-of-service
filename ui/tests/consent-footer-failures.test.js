@@ -1,3 +1,5 @@
+import { createOfflineHost } from "./reuse/offline-context.js";
+const offlineHost = createOfflineHost();
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFileSync } from "node:fs";
@@ -15,10 +17,13 @@ const links = new Map();
 const popups = [];
 const flows = [];
 let required = false;
+let documentMarkdown = "";
 let footerFailure = false;
 let translationLoads = 0;
 let popupAction = "decline";
 let submitted;
+let consentFailure = false;
+let consentRequests = 0;
 const capabilities = new Map([
     ["ui:log", (...args) => logs.push(args)],
     [
@@ -42,6 +47,9 @@ const capabilities = new Map([
             loadStylesheet: async () => {},
             importModule: async () => ({
                 apiFetch: async (_path, options) => {
+                    consentRequests++;
+                    if (consentFailure)
+                        throw new Error("consent_service_unavailable");
                     if (options?.method === "POST") {
                         submitted = JSON.parse(options.body);
                         required = false;
@@ -53,8 +61,12 @@ const capabilities = new Map([
                             documents: [
                                 {
                                     slug: "terms-of-service",
+                                    markdown: documentMarkdown,
                                     path: "/terms-of-service",
                                     version: "published",
+                                    consentedVersion: required
+                                        ? null
+                                        : "published",
                                     state: "new",
                                     accepted: !required,
                                 },
@@ -93,13 +105,15 @@ const capabilities = new Map([
         },
     ],
 ]);
+capabilities.set("offline:accessPolicy", offlineHost.policy);
+capabilities.set("offline:state", offlineHost.state);
 globalThis[Symbol.for("cognis.uiCtx")] = {
     capabilities: { get: (id) => capabilities.get(id) },
 };
 globalThis.window = new EventTarget();
 globalThis.location = { pathname: "/calendar" };
 globalThis.document = { visibilityState: "visible" };
-globalThis.localStorage = { getItem: () => "" };
+globalThis.localStorage = offlineHost.storage;
 const { mountProvider } = await import("../consent-enforcement.js");
 
 test("host-resolved labels are used and footer errors cannot block mandatory consent", async () => {
@@ -283,5 +297,135 @@ test("initial consent decline releases mounting before navigation finishes", asy
         capabilities.delete("ui:navigate");
         footerFailure = previousFooterFailure;
         required = false;
+    }
+});
+
+test("consent polling backs off after failures and stops entirely offline", async () => {
+    const originalSetTimeout = globalThis.setTimeout;
+    const originalClearTimeout = globalThis.clearTimeout;
+    const originalGetItem = localStorage.getItem;
+    const previousPath = location.pathname;
+    const timers = new Map();
+    let sequence = 0;
+    const controller = new AbortController();
+    globalThis.setTimeout = (callback, delay) => {
+        const id = ++sequence;
+        timers.set(id, { callback, delay });
+        return id;
+    };
+    globalThis.clearTimeout = (id) => timers.delete(id);
+    localStorage.getItem = () => "token";
+    location.pathname = "/dashboard";
+    let dispose;
+    const tick = async () => {
+        const [id, timer] = timers.entries().next().value;
+        timers.delete(id);
+        await timer.callback();
+    };
+    try {
+        required = false;
+        dispose = await mountProvider({
+            signal: controller.signal,
+            capabilities: {
+                get: (id) => capabilities.get(id),
+                contribute: (id, value) => capabilities.set(id, value),
+            },
+            extendFlow() {},
+        });
+        assert.equal(timers.values().next().value.delay, 5000);
+        consentFailure = true;
+        await tick();
+        assert.equal(timers.values().next().value.delay, 10000);
+        await tick();
+        assert.equal(timers.values().next().value.delay, 20000);
+        const scheduled = timers.values().next().value.callback;
+        const beforeOffline = consentRequests;
+        offlineHost.setOffline(true);
+        window.dispatchEvent(new Event("cognis:connectivity-changed"));
+        assert.equal(timers.size, 0);
+        await scheduled();
+        assert.equal(consentRequests, beforeOffline);
+        assert.equal(timers.size, 0);
+        offlineHost.setOffline(false);
+        consentFailure = false;
+        window.dispatchEvent(new Event("cognis:connectivity-changed"));
+        assert.equal(timers.values().next().value.delay, 5000);
+        await tick();
+        assert.equal(timers.values().next().value.delay, 5000);
+    } finally {
+        dispose?.();
+        controller.abort();
+        offlineHost.setOffline(false);
+        consentFailure = false;
+        globalThis.setTimeout = originalSetTimeout;
+        globalThis.clearTimeout = originalClearTimeout;
+        localStorage.getItem = originalGetItem;
+        location.pathname = previousPath;
+    }
+});
+
+test("cache limits and storage failures cannot suppress mandatory online consent or acceptance", async () => {
+    for (const failure of ["oversized", "storage"]) {
+        const controller = new AbortController();
+        const originalSetItem = offlineHost.storage.setItem;
+        const before = popups.length;
+        let enforce;
+        let dispose;
+        try {
+            required = false;
+            documentMarkdown = "";
+            dispose = await mountProvider({
+                signal: controller.signal,
+                capabilities: {
+                    get: (id) => capabilities.get(id),
+                    contribute: (id, value) => capabilities.set(id, value),
+                },
+                extendFlow: (_flow, _stage, _descriptor, handler) => {
+                    enforce = handler;
+                },
+                runFlow: async (...args) => flows.push(args),
+            });
+            if (failure === "oversized") documentMarkdown = "x".repeat(500001);
+            else
+                offlineHost.storage.setItem = () => {
+                    throw new Error("quota_exceeded");
+                };
+            required = true;
+            popupAction = "decline";
+            const denied = await enforce({
+                stageResults: { "validate-stored-token": [{ valid: true }] },
+            });
+            assert.deepEqual(denied, {
+                requiresSetup: true,
+                redirectTo: "/login",
+            });
+            assert.equal(popups.length, before + 1);
+            assert.equal(popups.at(-1).mandatory, true);
+            assert.equal(
+                offlineHost.receipts.get("terms-of-service").allowed,
+                false,
+            );
+            popupAction = "submit";
+            const accepted = await enforce({
+                stageResults: { "validate-stored-token": [{ valid: true }] },
+            });
+            assert.deepEqual(accepted, { requiresSetup: false });
+            assert.equal(
+                offlineHost.receipts.get("terms-of-service").allowed,
+                false,
+            );
+            assert.ok(
+                logs.some(
+                    ([, , meta]) => meta.operation === "writeOfflineConsent",
+                ),
+            );
+        } finally {
+            offlineHost.storage.setItem = originalSetItem;
+            required = false;
+            documentMarkdown = "";
+            popupAction = "decline";
+            controller.abort();
+            dispose?.();
+        }
     }
 });

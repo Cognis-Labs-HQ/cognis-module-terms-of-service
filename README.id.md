@@ -11,3 +11,7 @@ Kontrak browser yang ada sudah cukup untuk Markdown, umpan balik, navigasi, dan 
 ## Keamanan dan siklus hidup
 
 Hanya administrator yang dapat mengelola dokumen. Pembaca publik hanya dapat mengambil tiga dokumen tetap. Konten tetap ada saat dinonaktifkan dan hanya dihapus saat pencopotan menggunakan `deleteContent`.
+
+## Batas polling offline
+
+Mode Offline menghentikan polling persetujuan dan pemulihan biasa. Hanya satu pemeriksaan kesehatan server ringan berjalan setiap lima belas menit, termasuk setelah peristiwa online browser berulang. Kegagalan pemulihan koneksi saat online memperpanjang interval hingga lima belas menit. Polling persetujuan memperpanjang interval kegagalan hingga lima menit, berhenti sepenuhnya saat offline, dan dilanjutkan setelah tersambung kembali. Persetujuan dokumen wajib yang disimpan tetap menjadi syarat akses offline.

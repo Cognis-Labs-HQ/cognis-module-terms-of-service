@@ -1,3 +1,4 @@
+import { createOfflineConsent } from "./offline-consent.js";
 import {
     importReuseModule,
     loadReuseStylesheet,
@@ -259,6 +260,10 @@ function activateEditor(
             },
         );
         const publishedDocument = await readPayload(response);
+        createOfflineConsent({
+            policy: uiCtx.capabilities.get("offline:accessPolicy"),
+            log: uiCtx.capabilities.get("ui:log"),
+        }).observe(publishedDocument);
         Object.assign(document, publishedDocument);
         savedMarkdown = textarea.value;
         editorActive = true;
@@ -626,6 +631,10 @@ export async function mount(root, { signal } = {}) {
                     signal,
                 });
                 const document = await readPayload(response);
+                createOfflineConsent({
+                    policy: uiCtx.capabilities.get("offline:accessPolicy"),
+                    log: uiCtx.capabilities.get("ui:log"),
+                }).observe(document);
                 renderedContent = renderMarkdown(document.markdown);
             }
         } catch (error) {
