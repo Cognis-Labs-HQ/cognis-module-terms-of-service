@@ -2,6 +2,10 @@
 
 **Feature Branch:** feature-offline-delivery
 
+## Consent Cache Safety
+
+Consent snapshots retain previously observed documents omitted by an older response. Newly published, unaccepted documents continue blocking offline access and replay until their current versions are accepted by the server. Cache size limits and storage failures revoke offline permission without discarding the fresh online status: mandatory consent, online acceptance and public legal rendering continue. Shared, account-scoped in-memory state preserves observed versions during a cache failure and prevents stale stored permission from being restored by another client in the same page. Offline permission returns only after a complete accepted snapshot is successfully cached.
+
 ## Queued Delivery and Consent
 
 Recovery refreshes providers and runs `authenticate-session` before the final `afterSession` stage can replay activity. Required providers declare `offlineAccessGuard` in the server catalog. Unknown requirements or missing consent fail closed. Terms of Service caches the latest fetched document versions and server-confirmed acceptance per account. A new unaccepted version immediately blocks offline reads, navigation and queued writes, and prevents replay until online consent succeeds. Offline acceptance is unavailable. Private content snapshots remain tab-local; only the bounded operation queue and legal snapshots survive reload.

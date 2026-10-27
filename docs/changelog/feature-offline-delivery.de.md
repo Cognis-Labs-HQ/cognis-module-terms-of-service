@@ -2,6 +2,10 @@
 
 **Feature-Zweig:** feature-offline-delivery
 
+## Sicherer Einwilligungscache
+
+Einwilligungssnapshots behalten bereits beobachtete Dokumente bei, die in einer älteren Antwort fehlen. Neu veröffentlichte, nicht akzeptierte Dokumente sperren Offline-Zugriff und Zustellung weiterhin, bis der Server die Annahme ihrer aktuellen Versionen bestätigt. Größenlimits und Speicherfehler entziehen die Offline-Berechtigung, ohne den aktuellen Online-Status zu verwerfen: verpflichtende Einwilligung, Online-Annahme und öffentliche Rechtsseiten funktionieren weiterhin. Gemeinsamer, kontogebundener Arbeitsspeicher erhält beobachtete Versionen bei Cachefehlern und verhindert, dass ein anderer Client derselben Seite veraltete gespeicherte Berechtigungen wiederherstellt. Die Offline-Berechtigung kehrt erst zurück, wenn ein vollständiger akzeptierter Snapshot erfolgreich gespeichert wurde.
+
 ## Übertragung und Zustimmung
 
 Die Wiederherstellung aktualisiert Anbieter und führt `authenticate-session` aus, bevor die abschließende Phase `afterSession` Aktivitäten überträgt. Erforderliche Anbieter deklarieren `offlineAccessGuard` im Serverkatalog. Unbekannte Anforderungen oder fehlende Zustimmung sperren Offline-Zugriff. Terms of Service speichert zuletzt abgerufene Dokumentversionen und serverbestätigte Zustimmung je Konto. Neue nicht akzeptierte Versionen sperren Offline-Lesen, Navigation und Einträge sofort sowie die Übertragung bis zur Online-Zustimmung. Offline-Zustimmung ist nicht möglich. Private Inhalte bleiben tablokal; nur begrenzte Warteschlangen und Rechtstexte überstehen Neuladen.

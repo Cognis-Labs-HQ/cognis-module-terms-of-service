@@ -14,6 +14,7 @@ const labels = new Map(
     ].map((match) => [match[1], match[2]]),
 );
 let published = ["terms-of-service", "eula"];
+let markdown = "";
 const requests = [];
 globalThis[Symbol.for("cognis.uiCtx")] = {
     capabilities: {
@@ -31,6 +32,7 @@ globalThis[Symbol.for("cognis.uiCtx")] = {
                                           return Response.json({
                                               data: published.map((slug) => ({
                                                   slug,
+                                                  markdown,
                                                   version: `${slug}-v1`,
                                               })),
                                           });
@@ -80,4 +82,35 @@ test("a later authentication mount refreshes its published document set", async 
         (await listAuthFooterLinks()).map(({ href }) => href),
         ["/privacy-policy"],
     );
+});
+
+test("public links remain usable when legal snapshots exceed cache limits or storage is full", async () => {
+    const originalSetItem = offlineHost.storage.setItem;
+    try {
+        published = ["terms-of-service"];
+        markdown = "x".repeat(500001);
+        assert.equal(
+            (await listAuthFooterLinks())[0].href,
+            "/terms-of-service",
+        );
+        assert.equal(
+            offlineHost.receipts.get("terms-of-service").allowed,
+            false,
+        );
+        markdown = "# Published terms";
+        offlineHost.storage.setItem = () => {
+            throw new Error("quota_exceeded");
+        };
+        assert.equal(
+            (await listAuthFooterLinks())[0].href,
+            "/terms-of-service",
+        );
+        assert.equal(
+            offlineHost.receipts.get("terms-of-service").allowed,
+            false,
+        );
+    } finally {
+        offlineHost.storage.setItem = originalSetItem;
+        markdown = "";
+    }
 });

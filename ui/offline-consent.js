@@ -1,4 +1,5 @@
 const CACHE_KEY = "module.terms-of-service.offline";
+const cacheStates = new WeakMap();
 
 /** Cache only successful server snapshots; accepting terms always requires the server. */
 export function createOfflineConsent({
@@ -7,7 +8,27 @@ export function createOfflineConsent({
     account = () => storage.getItem("cognis_account") ?? "",
     log,
 }) {
+    function cacheState() {
+        let owner;
+        try {
+            owner = account();
+        } catch (error) {
+            log?.("error", "Legal cache account could not be read.", {
+                component: "terms-of-service",
+                operation: "readOfflineConsentAccount",
+                errorName: error.name,
+            });
+            return { account: null, failed: true, status: null };
+        }
+        let state = cacheStates.get(storage);
+        if (!state || state.account !== owner) {
+            state = { account: owner, failed: false, status: null };
+            cacheStates.set(storage, state);
+        }
+        return state;
+    }
     function load() {
+        if (cacheState().failed) return null;
         try {
             const cached = JSON.parse(storage.getItem(CACHE_KEY) ?? "null");
             return cached?.account === account() ? cached.status : null;
@@ -45,8 +66,15 @@ export function createOfflineConsent({
         });
     }
     function revoke() {
+        cacheState().failed = true;
         try {
             storage.removeItem(CACHE_KEY);
+        } catch (error) {
+            log?.("error", "Cached legal documents could not be removed.", {
+                component: "terms-of-service",
+                operation: "removeOfflineConsent",
+                errorName: error.name,
+            });
         } finally {
             publish(null);
         }
@@ -64,10 +92,11 @@ export function createOfflineConsent({
                 !Array.isArray(status.documents) ||
                 typeof status.required !== "boolean"
             ) {
+                cacheState().status = null;
                 revoke();
                 throw new Error("invalid_consent_snapshot");
             }
-            const current = load();
+            const current = load() ?? cacheState().status;
             const documents = status.documents.map((document) => {
                 const previous = current?.documents?.find(
                     (candidate) => candidate.slug === document.slug,
@@ -78,19 +107,37 @@ export function createOfflineConsent({
                     ? { ...previous, accepted: false }
                     : document;
             });
+            const returnedSlugs = new Set(documents.map(({ slug }) => slug));
+            documents.push(
+                ...(current?.documents ?? []).filter(
+                    ({ slug }) => !returnedSlugs.has(slug),
+                ),
+            );
             status = { ...status, documents };
             if (documents.some((document) => !document.accepted))
                 status = { ...status, required: true, accepted: false };
-            const snapshot = JSON.stringify({ account: account(), status });
-            if (snapshot.length * 2 > 1_000_000) {
-                revoke();
-                throw new Error("offline_consent_cache_full");
-            }
+            cacheState().status = status;
             try {
+                const owner = cacheState().account;
+                if (owner === null)
+                    throw new Error("offline_consent_account_unavailable");
+                const snapshot = JSON.stringify({ account: owner, status });
+                if (snapshot.length * 2 > 1_000_000)
+                    throw new Error("offline_consent_cache_full");
                 storage.setItem(CACHE_KEY, snapshot);
+                cacheState().failed = false;
             } catch (error) {
                 revoke();
-                throw error;
+                log?.(
+                    "error",
+                    "Legal snapshot caching failed; online enforcement continues.",
+                    {
+                        component: "terms-of-service",
+                        operation: "writeOfflineConsent",
+                        errorName: error.name,
+                    },
+                );
+                return status;
             }
             publish(status);
             return status;
@@ -102,7 +149,7 @@ export function createOfflineConsent({
                 typeof document.version !== "string"
             )
                 throw new Error("invalid_legal_document");
-            const current = load();
+            const current = load() ?? cacheState().status;
             const previous = current?.documents.find(
                 (candidate) => candidate.slug === document.slug,
             );

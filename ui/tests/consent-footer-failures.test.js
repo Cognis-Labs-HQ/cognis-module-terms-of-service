@@ -17,6 +17,7 @@ const links = new Map();
 const popups = [];
 const flows = [];
 let required = false;
+let documentMarkdown = "";
 let footerFailure = false;
 let translationLoads = 0;
 let popupAction = "decline";
@@ -60,6 +61,7 @@ const capabilities = new Map([
                             documents: [
                                 {
                                     slug: "terms-of-service",
+                                    markdown: documentMarkdown,
                                     path: "/terms-of-service",
                                     version: "published",
                                     consentedVersion: required
@@ -359,5 +361,71 @@ test("consent polling backs off after failures and stops entirely offline", asyn
         globalThis.clearTimeout = originalClearTimeout;
         localStorage.getItem = originalGetItem;
         location.pathname = previousPath;
+    }
+});
+
+test("cache limits and storage failures cannot suppress mandatory online consent or acceptance", async () => {
+    for (const failure of ["oversized", "storage"]) {
+        const controller = new AbortController();
+        const originalSetItem = offlineHost.storage.setItem;
+        const before = popups.length;
+        let enforce;
+        let dispose;
+        try {
+            required = false;
+            documentMarkdown = "";
+            dispose = await mountProvider({
+                signal: controller.signal,
+                capabilities: {
+                    get: (id) => capabilities.get(id),
+                    contribute: (id, value) => capabilities.set(id, value),
+                },
+                extendFlow: (_flow, _stage, _descriptor, handler) => {
+                    enforce = handler;
+                },
+                runFlow: async (...args) => flows.push(args),
+            });
+            if (failure === "oversized") documentMarkdown = "x".repeat(500001);
+            else
+                offlineHost.storage.setItem = () => {
+                    throw new Error("quota_exceeded");
+                };
+            required = true;
+            popupAction = "decline";
+            const denied = await enforce({
+                stageResults: { "validate-stored-token": [{ valid: true }] },
+            });
+            assert.deepEqual(denied, {
+                requiresSetup: true,
+                redirectTo: "/login",
+            });
+            assert.equal(popups.length, before + 1);
+            assert.equal(popups.at(-1).mandatory, true);
+            assert.equal(
+                offlineHost.receipts.get("terms-of-service").allowed,
+                false,
+            );
+            popupAction = "submit";
+            const accepted = await enforce({
+                stageResults: { "validate-stored-token": [{ valid: true }] },
+            });
+            assert.deepEqual(accepted, { requiresSetup: false });
+            assert.equal(
+                offlineHost.receipts.get("terms-of-service").allowed,
+                false,
+            );
+            assert.ok(
+                logs.some(
+                    ([, , meta]) => meta.operation === "writeOfflineConsent",
+                ),
+            );
+        } finally {
+            offlineHost.storage.setItem = originalSetItem;
+            required = false;
+            documentMarkdown = "";
+            popupAction = "decline";
+            controller.abort();
+            dispose?.();
+        }
     }
 });

@@ -2,6 +2,10 @@
 
 **Cabang Fitur:** feature-offline-delivery
 
+## Keamanan Cache Persetujuan
+
+Snapshot persetujuan mempertahankan dokumen yang telah diamati tetapi tidak disertakan dalam respons lama. Dokumen baru yang belum disetujui tetap memblokir akses luring dan pengiriman antrean hingga server mengonfirmasi persetujuan versi terkininya. Batas ukuran cache dan kegagalan penyimpanan mencabut izin luring tanpa membuang status daring terbaru: dialog persetujuan wajib, persetujuan daring, dan tampilan dokumen hukum publik tetap berjalan. Status dalam memori yang dibagikan dan dibatasi per akun mempertahankan versi yang diamati saat cache gagal serta mencegah klien lain pada halaman yang sama memulihkan izin tersimpan yang usang. Izin luring kembali hanya setelah snapshot lengkap yang disetujui berhasil disimpan.
+
 ## Antrean dan Persetujuan
 
 Pemulihan memperbarui penyedia dan menjalankan `authenticate-session` sebelum tahap akhir `afterSession` mengirim aktivitas. Penyedia wajib mendeklarasikan `offlineAccessGuard` dalam katalog server. Persyaratan yang tidak diketahui atau persetujuan yang belum ada memblokir akses offline. Terms of Service menyimpan versi dokumen terakhir yang diambil dan persetujuan terkonfirmasi server per akun. Versi baru yang belum disetujui langsung memblokir pembacaan, navigasi, dan catatan offline serta pengiriman sampai persetujuan online berhasil. Persetujuan offline tidak tersedia. Snapshot privat tetap di tab; hanya antrean terbatas dan snapshot dokumen hukum bertahan setelah muat ulang.
