@@ -67,4 +67,11 @@
   <string name="module.terms-of-service.report.next">Next</string>
   <string name="module.terms-of-service.report.page">Page {{current}} of {{total}}</string>
   <string name="module.terms-of-service.report.pages">Consent report pages</string>
+    <string name="module.terms-of-service.tutorial.title">Read The Legal Documents</string>
+    <string name="module.terms-of-service.tutorial.welcome.title">Legal Document Overview</string>
+    <string name="module.terms-of-service.tutorial.welcome.body">This walkthrough explains document navigation. It does not accept terms, change consent or bypass required consent dialogs.</string>
+    <string name="module.terms-of-service.tutorial.document.title">Read The Current Document</string>
+    <string name="module.terms-of-service.tutorial.document.body">Read the displayed document and version. Use the normal consent interface when agreement is required; this walkthrough cannot agree for you.</string>
+    <string name="module.terms-of-service.tutorial.navigation.title">Find Related Documents</string>
+    <string name="module.terms-of-service.tutorial.navigation.body">Use the document navigation to find the other published legal documents. Leaving this page safely ends the walkthrough.</string>
 </resources>

@@ -61,3 +61,7 @@ Host menyediakan `offline:outbox`, `offline:state`, dan `offline:accessPolicy` m
 ## Keamanan Cache Persetujuan
 
 Snapshot persetujuan mempertahankan dokumen yang telah diamati tetapi tidak disertakan dalam respons lama. Dokumen baru yang belum disetujui tetap memblokir akses luring dan pengiriman antrean hingga server mengonfirmasi persetujuan versi terkininya. Batas ukuran cache dan kegagalan penyimpanan mencabut izin luring tanpa membuang status daring terbaru: dialog persetujuan wajib, persetujuan daring, dan tampilan dokumen hukum publik tetap berjalan. Status dalam memori yang dibagikan dan dibatasi per akun mempertahankan versi yang diamati saat cache gagal serta mencegah klien lain pada halaman yang sama memulihkan izin tersimpan yang usang. Izin luring kembali hanya setelah snapshot lengkap yang disetujui berhasil disimpan.
+
+## Tutorial terpandu
+
+[Tutorial terpandu](tutorials.id.md)

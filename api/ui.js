@@ -3,6 +3,10 @@ import path from "node:path";
 const PUBLIC_ROUTES = ["terms-of-service", "privacy-policy", "eula"];
 
 export function registerUi(ctx) {
+    ctx.registerCapabilityProvider({
+        scriptUrl: "/static/modules/terms-of-service/tutorials/provider.js",
+        providesCapabilities: ["terms-of-service:tutorials"],
+    });
     ctx.registerStaticDir("", path.join(ctx.moduleRoot, "ui"));
     ctx.registerAdminSection({
         id: "terms-of-service-legal",
