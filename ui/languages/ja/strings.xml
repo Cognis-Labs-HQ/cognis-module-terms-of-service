@@ -67,4 +67,11 @@
   <string name="module.terms-of-service.report.next">次へ</string>
   <string name="module.terms-of-service.report.page">{{total}} ページ中 {{current}} ページ</string>
   <string name="module.terms-of-service.report.pages">同意レポートのページ</string>
+    <string name="module.terms-of-service.tutorial.title">法的文書を読む</string>
+    <string name="module.terms-of-service.tutorial.welcome.title">法的文書の概要</string>
+    <string name="module.terms-of-service.tutorial.welcome.body">このガイドは文書のナビゲーションを説明します。規約への同意、同意状態の変更、必須の同意ダイアログの回避は行いません。</string>
+    <string name="module.terms-of-service.tutorial.document.title">現在の文書を読む</string>
+    <string name="module.terms-of-service.tutorial.document.body">表示された文書とバージョンを読みます。同意が必要な場合は通常の画面を使ってください。ガイドが代わりに同意することはありません。</string>
+    <string name="module.terms-of-service.tutorial.navigation.title">関連文書を探す</string>
+    <string name="module.terms-of-service.tutorial.navigation.body">文書のナビゲーションで他の公開された法的文書を探します。ページを移動するとガイドは安全に終了します。</string>
 </resources>

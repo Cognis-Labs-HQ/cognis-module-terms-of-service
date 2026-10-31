@@ -67,4 +67,11 @@
   <string name="module.terms-of-service.report.next">Berikutnya</string>
   <string name="module.terms-of-service.report.page">Halaman {{current}} dari {{total}}</string>
   <string name="module.terms-of-service.report.pages">Halaman laporan persetujuan</string>
+    <string name="module.terms-of-service.tutorial.title">Membaca Dokumen Hukum</string>
+    <string name="module.terms-of-service.tutorial.welcome.title">Ringkasan Dokumen Hukum</string>
+    <string name="module.terms-of-service.tutorial.welcome.body">Panduan ini menjelaskan navigasi dokumen. Panduan tidak menerima ketentuan, mengubah persetujuan, atau melewati dialog persetujuan wajib.</string>
+    <string name="module.terms-of-service.tutorial.document.title">Baca Dokumen Saat Ini</string>
+    <string name="module.terms-of-service.tutorial.document.body">Baca dokumen dan versi yang ditampilkan. Gunakan antarmuka persetujuan biasa jika diperlukan; panduan ini tidak dapat menyetujuinya untuk Anda.</string>
+    <string name="module.terms-of-service.tutorial.navigation.title">Temukan Dokumen Terkait</string>
+    <string name="module.terms-of-service.tutorial.navigation.body">Gunakan navigasi dokumen untuk menemukan dokumen hukum lain yang diterbitkan. Meninggalkan halaman mengakhiri panduan dengan aman.</string>
 </resources>

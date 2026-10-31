@@ -67,4 +67,11 @@
   <string name="module.terms-of-service.report.next">Weiter</string>
   <string name="module.terms-of-service.report.page">Seite {{current}} von {{total}}</string>
   <string name="module.terms-of-service.report.pages">Seiten des Zustimmungsberichts</string>
+    <string name="module.terms-of-service.tutorial.title">Rechtsdokumente lesen</string>
+    <string name="module.terms-of-service.tutorial.welcome.title">Rechtsdokumente im Überblick</string>
+    <string name="module.terms-of-service.tutorial.welcome.body">Diese Anleitung erklärt die Dokumentnavigation. Sie akzeptiert keine Bedingungen, ändert keine Zustimmung und umgeht keine erforderlichen Zustimmungsdialoge.</string>
+    <string name="module.terms-of-service.tutorial.document.title">Aktuelles Dokument lesen</string>
+    <string name="module.terms-of-service.tutorial.document.body">Lesen Sie das angezeigte Dokument und seine Version. Nutzen Sie bei erforderlicher Zustimmung die normale Oberfläche; die Anleitung kann nicht für Sie zustimmen.</string>
+    <string name="module.terms-of-service.tutorial.navigation.title">Weitere Dokumente finden</string>
+    <string name="module.terms-of-service.tutorial.navigation.body">Über die Dokumentnavigation finden Sie weitere veröffentlichte Rechtsdokumente. Ein Seitenwechsel beendet die Anleitung sicher.</string>
 </resources>
