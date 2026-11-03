@@ -15,3 +15,5 @@ Der Ablauf erklärt nur und führt keine privilegierte Aktion aus. Fehlende Ziel
 Anbietertests prüfen den öffentlichen Vertrag, alle vier Übersetzungen, Verfügbarkeitsregeln, Fehlerbereinigung und die Ablehnung nicht unterstützter Host-Versionen.
 
 Die Rechtsanleitung gilt für Nutzungsbedingungen, Datenschutz und EULA und bleibt beim geöffneten Dokument.
+
+Die Anleitung im sichtbaren Verwaltungsbereich für Rechtsdokumente erklärt versionierte Veröffentlichung und Zustimmungsberichte. Sie erfordert Administratorrechte und speichert keine Änderungen oder Zustimmungen.

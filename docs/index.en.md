@@ -1,4 +1,4 @@
-# Terms of Service Module Standard
+# Terms of Service Module
 
 This document defines the supported architecture of the Cognis Terms of Service external module.
 

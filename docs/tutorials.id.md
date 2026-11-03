@@ -15,3 +15,5 @@ Panduan hanya memberi informasi dan tidak menjalankan aksi berizin khusus. Targe
 Pengujian penyedia memeriksa kontrak publik, keempat terjemahan, aturan ketersediaan, pembersihan saat gagal, dan penolakan versi host yang tidak didukung.
 
 Panduan hukum cocok dengan halaman Ketentuan Layanan, Kebijakan Privasi, dan EULA, serta tetap pada dokumen yang dibuka pengguna.
+
+Panduan administrator menjelaskan penerbitan berversi dan laporan persetujuan di bagian Hukum yang terlihat. Panduan ini memerlukan akses administrator dan tidak menyimpan perubahan atau memberikan persetujuan.

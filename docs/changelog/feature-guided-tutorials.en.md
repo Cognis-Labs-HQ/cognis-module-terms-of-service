@@ -18,6 +18,10 @@ The host owns callouts, arrows, spotlight, accessibility and the shared floating
 
 The legal guide matches Terms of Service, Privacy Policy and EULA pages and stays on the document that the user opened.
 
+## Administrator Legal Guide
+
+A restricted guide on the visible Legal administration section explains versioned publishing and consent reports without changing documents or accepting consent.
+
 ## Commits
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)

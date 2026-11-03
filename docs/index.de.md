@@ -1,4 +1,4 @@
-# Standard des Nutzungsbedingungen-Moduls
+# Nutzungsbedingungen-Modul
 
 Dieses Dokument definiert die unterstützte Architektur des externen Cognis-Moduls für Nutzungsbedingungen.
 

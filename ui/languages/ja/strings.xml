@@ -74,4 +74,9 @@
     <string name="module.terms-of-service.tutorial.document.body">表示された文書とバージョンを読みます。同意が必要な場合は通常の画面を使ってください。ガイドが代わりに同意することはありません。</string>
     <string name="module.terms-of-service.tutorial.navigation.title">関連文書を探す</string>
     <string name="module.terms-of-service.tutorial.navigation.body">文書のナビゲーションで他の公開された法的文書を探します。ページを移動するとガイドは安全に終了します。</string>
+    <string name="module.terms-of-service.tutorial.admin.title">法的文書の管理</string>
+    <string name="module.terms-of-service.tutorial.admin.documents.title">法的文書を公開</string>
+    <string name="module.terms-of-service.tutorial.admin.documents.body">編集する文書グループを開き、作成またはプレビューを使って、変更用フローティングメニューから保存します。保存すると、変更できない新しい文書バージョンが公開されます。</string>
+    <string name="module.terms-of-service.tutorial.admin.consent.title">同意状況を確認</string>
+    <string name="module.terms-of-service.tutorial.admin.consent.body">公開済み文書のグループには同意状況の一覧があります。アカウントを検索し、同意済みまたは未同意で絞り込めます。変更を公開しても、他の利用者に代わって同意することはありません。</string>
 </resources>

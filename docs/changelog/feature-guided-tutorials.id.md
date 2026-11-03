@@ -18,6 +18,10 @@ Host mengelola petunjuk, panah, sorotan, aksesibilitas, dan menu aksi mengambang
 
 Panduan hukum cocok dengan halaman Ketentuan Layanan, Kebijakan Privasi, dan EULA, serta tetap pada dokumen yang dibuka pengguna.
 
+## Panduan Administrasi Hukum
+
+Panduan terbatas pada bagian administrasi Hukum yang terlihat menjelaskan penerbitan berversi dan laporan persetujuan tanpa mengubah dokumen atau memberikan persetujuan.
+
 ## Komit
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)

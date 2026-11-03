@@ -1,4 +1,4 @@
-# Standar Modul Ketentuan Layanan
+# Modul Ketentuan Layanan
 
 Dokumen ini menetapkan arsitektur yang didukung untuk modul eksternal Ketentuan Layanan Cognis.
 

@@ -74,4 +74,9 @@
     <string name="module.terms-of-service.tutorial.document.body">Read the displayed document and version. Use the normal consent interface when agreement is required; this walkthrough cannot agree for you.</string>
     <string name="module.terms-of-service.tutorial.navigation.title">Find Related Documents</string>
     <string name="module.terms-of-service.tutorial.navigation.body">Use the document navigation to find the other published legal documents. Leaving this page safely ends the walkthrough.</string>
+    <string name="module.terms-of-service.tutorial.admin.title">Legal Administration</string>
+    <string name="module.terms-of-service.tutorial.admin.documents.title">Publish Legal Documents</string>
+    <string name="module.terms-of-service.tutorial.admin.documents.body">Open the document group you want to edit, use Compose or Preview, then save through the floating changes menu. Saving publishes a new immutable document version.</string>
+    <string name="module.terms-of-service.tutorial.admin.consent.title">Review Consent</string>
+    <string name="module.terms-of-service.tutorial.admin.consent.body">Published document groups include a consent report. Search accounts and filter accepted or outstanding consent; publishing changes does not accept them on another user’s behalf.</string>
 </resources>

@@ -4,6 +4,12 @@ const PUBLIC_ROUTES = ["terms-of-service", "privacy-policy", "eula"];
 
 export function registerUi(ctx) {
     ctx.registerCapabilityProvider({
+        scriptUrl:
+            "/static/modules/terms-of-service/tutorials/admin-provider.js",
+        providesCapabilities: ["terms-of-service:adminTutorials"],
+        access: { minRole: "admin" },
+    });
+    ctx.registerCapabilityProvider({
         scriptUrl: "/static/modules/terms-of-service/tutorials/provider.js",
         providesCapabilities: ["terms-of-service:tutorials"],
     });
