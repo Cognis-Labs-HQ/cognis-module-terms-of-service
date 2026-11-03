@@ -1,5 +1,6 @@
 export const definition = {
     version: 1,
+    page: "/terms-of-service",
     id: "introduction",
     titleKey: "module.terms-of-service.tutorial.title",
     steps: [
