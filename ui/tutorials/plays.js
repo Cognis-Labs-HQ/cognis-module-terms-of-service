@@ -1,6 +1,7 @@
 export const definition = {
     version: 1,
-    page: "/terms-of-service",
+    page: ({ pathname }) =>
+        ["/terms-of-service", "/privacy-policy", "/eula"].includes(pathname),
     id: "introduction",
     titleKey: "module.terms-of-service.tutorial.title",
     steps: [
@@ -17,7 +18,6 @@ export const definition = {
                 timeoutMs: 5000,
                 action: "retry",
             },
-            route: "/terms-of-service",
         },
         {
             id: "document",

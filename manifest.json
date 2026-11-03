@@ -2,7 +2,7 @@
     "id": "terms-of-service",
     "uuid": "e6f133ec-ccd9-4dbb-96bd-1ccf52a359de",
     "name": "module.terms-of-service.name",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "class": "extension",
     "privileged": true,
     "coreApiVersion": "v1",
@@ -206,27 +206,27 @@
         },
         {
             "path": "docs/tutorials.de.md",
-            "sha256": "ee51b305dc6c359db6e272e9c247650cc51901144e27910d068ae991811efb83"
+            "sha256": "5b4dd334c9912c7030aa8c424cecec8e212bd09d64d0eb3942e7cb3265aa789a"
         },
         {
             "path": "docs/tutorials.en.md",
-            "sha256": "9da2d97fb0b2494143e3cb72bacd2d775da369229ca001f63d643c9d38159dc2"
+            "sha256": "3a5ad24eb206e4a9cdb2f38d30262e0add1ddbeb51df3d94d8391cc4703d2aab"
         },
         {
             "path": "docs/tutorials.id.md",
-            "sha256": "78431d56edce26922cf884b5e6377ef66496dfa2d2915cd7e65fa266e48e4abf"
+            "sha256": "995f0109b36865b38ea60537908cf320f1b198e74c8c9b0687b53c35fcbfeb30"
         },
         {
             "path": "docs/tutorials.ja.md",
-            "sha256": "4552b03bf093631960abdf6e3014e631594f3f6311bd8677bba1e529fc5153a8"
+            "sha256": "4b468848320f85e69eb8ae2d70c06da9fde4abf8f510fb2308dcd488fb01641e"
         },
         {
             "path": "package-lock.json",
-            "sha256": "133cd31d8b0e11c800f0cc76861aeedaea3e17fe8facce8c29f8e41a61edd2fe"
+            "sha256": "46280c51a41301aca5101e01730ba9429d57d75779ff0097f4c993efa39d6dfa"
         },
         {
             "path": "package.json",
-            "sha256": "d39ef4ecd600fdeea7cefefd26ed4db75988d8162aacadac3b261eb87a342392"
+            "sha256": "823eed4ee011931414d2e466f314f4c29c2e9c8e6e5ebe6f25d7d7abfd6121db"
         },
         {
             "path": "routes.json",
@@ -334,11 +334,11 @@
         },
         {
             "path": "ui/tests/tutorials.test.js",
-            "sha256": "87fc1c80807e727ce87f65f121713483112c2a15e4741380659a0077d6b88f32"
+            "sha256": "82ac69b215d9de814bc562d3bffd712cbe81f5abfb43f14ea5781a65758a9149"
         },
         {
             "path": "ui/tutorials/plays.js",
-            "sha256": "b9b232926a3deb35b5239661387d5f81f03cb257ec69b7d9fadf2bb0f969ad6a"
+            "sha256": "7c8206a306c2f05e5c3941a069f15f30b23d6ed3f8f49c4fdcccc90f671c1de0"
         },
         {
             "path": "ui/tutorials/provider.js",

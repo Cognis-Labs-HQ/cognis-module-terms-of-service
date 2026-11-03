@@ -117,7 +117,9 @@ test("the module contributes a localized, permission-aware play through the publ
     assert.equal(typeof dispose, "function");
     assert.ok(state.published.has(`${manifest.id}:tutorials`));
     assert.equal(state.play.version, 1);
-    assert.equal(state.play.page, "/terms-of-service");
+    for (const pathname of ["/terms-of-service", "/privacy-policy", "/eula"])
+        assert.equal(state.play.page({ pathname }), true);
+    assert.equal(state.play.page({ pathname: "/settings" }), false);
     assert.ok(state.play.steps.length >= 2);
     assert.equal(state.play.available(), true);
     for (const step of state.play.steps) {
