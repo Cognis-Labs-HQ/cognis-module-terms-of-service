@@ -22,6 +22,10 @@ The legal guide matches Terms of Service, Privacy Policy and EULA pages and stay
 
 A restricted guide on the visible Legal administration section explains versioned publishing and consent reports without changing documents or accepting consent.
 
+## Actionable Tutorial Copy
+
+Tutorial steps focus on the controls and tasks available on the page, without unrelated reassurances about permissions or actions the guide does not perform.
+
 ## Commits
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)

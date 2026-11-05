@@ -69,14 +69,14 @@
   <string name="module.terms-of-service.report.pages">Halaman laporan persetujuan</string>
     <string name="module.terms-of-service.tutorial.title">Membaca Dokumen Hukum</string>
     <string name="module.terms-of-service.tutorial.welcome.title">Ringkasan Dokumen Hukum</string>
-    <string name="module.terms-of-service.tutorial.welcome.body">Panduan ini menjelaskan navigasi dokumen. Panduan tidak menerima ketentuan, mengubah persetujuan, atau melewati dialog persetujuan wajib.</string>
+    <string name="module.terms-of-service.tutorial.welcome.body">Buka dokumen untuk membaca ketentuan dan versi yang tersedia.</string>
     <string name="module.terms-of-service.tutorial.document.title">Baca Dokumen Saat Ini</string>
     <string name="module.terms-of-service.tutorial.document.body">Baca dokumen dan versi yang ditampilkan. Gunakan antarmuka persetujuan biasa jika diperlukan; panduan ini tidak dapat menyetujuinya untuk Anda.</string>
     <string name="module.terms-of-service.tutorial.navigation.title">Temukan Dokumen Terkait</string>
-    <string name="module.terms-of-service.tutorial.navigation.body">Gunakan navigasi dokumen untuk menemukan dokumen hukum lain yang diterbitkan. Meninggalkan halaman mengakhiri panduan dengan aman.</string>
+    <string name="module.terms-of-service.tutorial.navigation.body">Gunakan navigasi dokumen untuk menemukan dokumen hukum lain yang diterbitkan.</string>
     <string name="module.terms-of-service.tutorial.admin.title">Administrasi Dokumen Hukum</string>
     <string name="module.terms-of-service.tutorial.admin.documents.title">Terbitkan Dokumen Hukum</string>
     <string name="module.terms-of-service.tutorial.admin.documents.body">Buka kelompok dokumen yang ingin diedit, gunakan Tulis atau Pratinjau, lalu simpan melalui menu perubahan mengambang. Penyimpanan menerbitkan versi dokumen baru yang tidak dapat diubah.</string>
     <string name="module.terms-of-service.tutorial.admin.consent.title">Tinjau Persetujuan</string>
-    <string name="module.terms-of-service.tutorial.admin.consent.body">Kelompok dokumen terbitan menyertakan laporan persetujuan. Cari akun dan saring persetujuan yang diterima atau masih tertunda; penerbitan perubahan tidak menyetujuinya atas nama pengguna lain.</string>
+    <string name="module.terms-of-service.tutorial.admin.consent.body">Buka laporan persetujuan grup dokumen yang diterbitkan untuk mencari akun dan menyaring persetujuan yang diterima atau masih tertunda.</string>
 </resources>

@@ -22,6 +22,10 @@ Panduan hukum cocok dengan halaman Ketentuan Layanan, Kebijakan Privasi, dan EUL
 
 Panduan terbatas pada bagian administrasi Hukum yang terlihat menjelaskan penerbitan berversi dan laporan persetujuan tanpa mengubah dokumen atau memberikan persetujuan.
 
+## Petunjuk Yang Berguna
+
+Langkah tutorial berfokus pada kontrol dan tugas yang tersedia, tanpa pernyataan yang tidak relevan tentang izin atau tindakan yang tidak dilakukan panduan.
+
 ## Komit
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)

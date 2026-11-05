@@ -22,6 +22,10 @@ Die Rechtsanleitung gilt für Nutzungsbedingungen, Datenschutz und EULA und blei
 
 Eine zugriffsbeschränkte Anleitung im sichtbaren Verwaltungsbereich für Rechtsdokumente erläutert versionierte Veröffentlichung und Zustimmungsberichte, ohne Dokumente oder Zustimmungen zu ändern.
 
+## Konkrete Anleitungstexte
+
+Die Schritte beschreiben verfügbare Bedienelemente und Aufgaben, ohne sachfremde Zusicherungen über Berechtigungen oder nicht ausgeführte Aktionen.
+
 ## Commits
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)
