@@ -71,7 +71,7 @@
     <string name="module.terms-of-service.tutorial.welcome.title">Rechtsdokumente im Überblick</string>
     <string name="module.terms-of-service.tutorial.welcome.body">Öffnen Sie ein Dokument, um seine Bedingungen und verfügbaren Versionen zu lesen.</string>
     <string name="module.terms-of-service.tutorial.document.title">Aktuelles Dokument lesen</string>
-    <string name="module.terms-of-service.tutorial.document.body">Lesen Sie das angezeigte Dokument und seine Version. Nutzen Sie bei erforderlicher Zustimmung die normale Oberfläche; die Anleitung kann nicht für Sie zustimmen.</string>
+    <string name="module.terms-of-service.tutorial.document.body">Lesen Sie das angezeigte Dokument und seine Version.</string>
     <string name="module.terms-of-service.tutorial.navigation.title">Weitere Dokumente finden</string>
     <string name="module.terms-of-service.tutorial.navigation.body">Finden Sie weitere veröffentlichte Rechtsdokumente über die Dokumentnavigation.</string>
     <string name="module.terms-of-service.tutorial.admin.title">Rechtsdokumente verwalten</string>
