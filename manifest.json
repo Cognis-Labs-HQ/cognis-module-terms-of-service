@@ -2,7 +2,7 @@
     "id": "terms-of-service",
     "uuid": "e6f133ec-ccd9-4dbb-96bd-1ccf52a359de",
     "name": "module.terms-of-service.name",
-    "version": "1.6.5",
+    "version": "1.6.6",
     "class": "extension",
     "privileged": true,
     "coreApiVersion": "v1",
@@ -62,7 +62,7 @@
         },
         {
             "path": ".github/copilot-instructions.md",
-            "sha256": "5125ee9362d4ed2c97cd1f6fd85c6d1c52bc319754e47e664c4c6bfb14337257"
+            "sha256": "1195d85e2a5bd1a0860986ae6ac3686dbfd0c954bf9bf19ff2c494a8b9e229ea"
         },
         {
             "path": ".gitignore",
@@ -206,27 +206,27 @@
         },
         {
             "path": "docs/tutorials.de.md",
-            "sha256": "6baa08bd778f12dfa2adecb2487d4b4936398732511a2c878bf8e4b507fee5bc"
+            "sha256": "2bff497cb796ff65fbe1b11ad20065c23af8052ae58baec9cac1d7f34def57df"
         },
         {
             "path": "docs/tutorials.en.md",
-            "sha256": "3ebd5c911f2e02f68967f1f3d3ad1294ab5c90dc2ceb9e23d7301aa455e2b0e5"
+            "sha256": "42a56402beac06a1c4ba2aef980e6b4ff60a8211e53c3d7e9928ed546f3c5e82"
         },
         {
             "path": "docs/tutorials.id.md",
-            "sha256": "992f7b8a895da43936c348cf679f5c9429dc05a53af3d6b954c3e0f056123696"
+            "sha256": "061a4f50275410f36231e7ba0720985b42f1f5f7318faf819a4db69ee27f4216"
         },
         {
             "path": "docs/tutorials.ja.md",
-            "sha256": "5841a140dfce32805d559c7585071d6e25229a90b57d2fba309f3f47ce65c880"
+            "sha256": "3d8daa1e4337d64fed5f6502f4533dffc7cd39858b2bd82bdba889c429c13620"
         },
         {
             "path": "package-lock.json",
-            "sha256": "e2ed8a4481f43995859104390c0d221fd5b290702c0868d9a8bfd6c69a8c7e85"
+            "sha256": "ab0da6ea1d5cffced8c9b80264255a137ead33b2604d966fe0881b96db6498eb"
         },
         {
             "path": "package.json",
-            "sha256": "884447a7483c5875a7ddd6ce1df86d02964387f07e8ae123e55174b6e4a18cbd"
+            "sha256": "a900fbc406e82dd6c4e93ae534efd411c69b03d4003e5da9b2483c79ee0a235d"
         },
         {
             "path": "routes.json",
@@ -302,7 +302,7 @@
         },
         {
             "path": "ui/tests/admin-tutorials.test.js",
-            "sha256": "fe21b0dbe06d441193397df87fc3cdda4df430af72d4d24142d7efc4d620820a"
+            "sha256": "d163f965da1af92875ad09f8cf1425643a48a0043383cc78dff5a479cd4d3166"
         },
         {
             "path": "ui/tests/auth-footer.test.js",
@@ -338,7 +338,7 @@
         },
         {
             "path": "ui/tests/tutorials.test.js",
-            "sha256": "82ac69b215d9de814bc562d3bffd712cbe81f5abfb43f14ea5781a65758a9149"
+            "sha256": "03f1573ba7b22b2e860fa9c67926967fc9b514576a60b2cb32f829b12c0d0580"
         },
         {
             "path": "ui/tutorials/admin-provider.js",
@@ -346,11 +346,11 @@
         },
         {
             "path": "ui/tutorials/admin.js",
-            "sha256": "f1ca896daa29d86f17de519090113077e4c64e33d4c4511149336423a258ca3d"
+            "sha256": "2bc3a1f3e2cc6f2749e29de2d721944d35b61dcd03f8b836cbe7d9954b6daf9f"
         },
         {
             "path": "ui/tutorials/plays.js",
-            "sha256": "7c8206a306c2f05e5c3941a069f15f30b23d6ed3f8f49c4fdcccc90f671c1de0"
+            "sha256": "7236253712db64573e1ddeeda2066341af69591ddf51dd89ae1b9cb646abce15"
         },
         {
             "path": "ui/tutorials/provider.js",

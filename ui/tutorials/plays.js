@@ -6,6 +6,7 @@ export const definition = {
     titleKey: "module.terms-of-service.tutorial.title",
     steps: [
         {
+            highlightNext: true,
             id: "welcome",
             titleKey: "module.terms-of-service.tutorial.welcome.title",
             bodyKey: "module.terms-of-service.tutorial.welcome.body",
@@ -20,6 +21,7 @@ export const definition = {
             },
         },
         {
+            highlightNext: true,
             id: "document",
             titleKey: "module.terms-of-service.tutorial.document.title",
             bodyKey: "module.terms-of-service.tutorial.document.body",
@@ -35,6 +37,7 @@ export const definition = {
             target: "document",
         },
         {
+            highlightNext: true,
             id: "navigation",
             titleKey: "module.terms-of-service.tutorial.navigation.title",
             bodyKey: "module.terms-of-service.tutorial.navigation.body",

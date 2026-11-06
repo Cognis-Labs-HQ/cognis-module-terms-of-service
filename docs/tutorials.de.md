@@ -17,3 +17,5 @@ Anbietertests prüfen den öffentlichen Vertrag, alle vier Übersetzungen, Verf�
 Die Rechtsanleitung gilt für Nutzungsbedingungen, Datenschutz und EULA und bleibt beim geöffneten Dokument.
 
 Die Anleitung im sichtbaren Verwaltungsbereich für Rechtsdokumente erklärt versionierte Veröffentlichung und Zustimmungsberichte. Sie erfordert Administratorrechte und speichert keine Änderungen oder Zustimmungen.
+
+Jeder Tutorial-Schritt legt `highlightNext` ausdrücklich fest: Erklärungen, die Weiter oder Fertig benötigen, aktivieren den Hinweis; interaktive und wartebasierte Übungen deaktivieren ihn. Bei reduzierter Bewegung bleibt eine statische Umrandung.

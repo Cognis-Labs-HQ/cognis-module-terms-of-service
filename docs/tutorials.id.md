@@ -17,3 +17,5 @@ Pengujian penyedia memeriksa kontrak publik, keempat terjemahan, aturan ketersed
 Panduan hukum cocok dengan halaman Ketentuan Layanan, Kebijakan Privasi, dan EULA, serta tetap pada dokumen yang dibuka pengguna.
 
 Panduan administrator menjelaskan penerbitan berversi dan laporan persetujuan di bagian Hukum yang terlihat. Panduan ini memerlukan akses administrator dan tidak menyimpan perubahan atau memberikan persetujuan.
+
+Setiap langkah tutorial kini menetapkan `highlightNext` secara eksplisit: penjelasan yang memerlukan Berikutnya atau Selesai mengaktifkannya, sedangkan latihan berbasis interaksi atau penantian menonaktifkannya. Pengurangan gerakan mempertahankan garis tepi statis.

@@ -17,3 +17,5 @@ Provider tests check the public contract, all four translations, availability ru
 The legal guide matches Terms of Service, Privacy Policy and EULA pages and stays on the document that the user opened.
 
 The administrator guide covers versioned publishing and consent reports in the visible Legal section. It requires administrator access and never saves changes or accepts consent.
+
+Each tutorial step now explicitly declares `highlightNext`: explanations that require Next or Finish enable it, while interaction- and wait-driven exercises disable it. The cue retains a static outline for reduced motion.

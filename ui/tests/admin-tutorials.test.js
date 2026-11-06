@@ -45,6 +45,9 @@ test("page tutorials preserve scoped publication, administrator boundaries and f
     assert.equal(plays[0].scope, "#terms-of-service-legal");
     assert.equal(plays[0].page, "/administration");
     assert.equal(contribution.capability, "terms-of-service:adminTutorials");
+    for (const play of plays)
+        for (const step of play.steps)
+            assert.equal(step.highlightNext, true, `${play.id}:${step.id}`);
     for (const locale of ["en", "de", "id", "ja"]) {
         const xml = readFileSync(
             new URL(`../languages/${locale}/strings.xml`, import.meta.url),
