@@ -2,7 +2,7 @@
     "id": "terms-of-service",
     "uuid": "e6f133ec-ccd9-4dbb-96bd-1ccf52a359de",
     "name": "module.terms-of-service.name",
-    "version": "1.6.6",
+    "version": "1.6.7",
     "class": "extension",
     "privileged": true,
     "coreApiVersion": "v1",
@@ -206,27 +206,27 @@
         },
         {
             "path": "docs/tutorials.de.md",
-            "sha256": "2bff497cb796ff65fbe1b11ad20065c23af8052ae58baec9cac1d7f34def57df"
+            "sha256": "37fff974f347d196e8f7d64a5e8c62d28980255ebc7b1ff3be45ea4ef0205d88"
         },
         {
             "path": "docs/tutorials.en.md",
-            "sha256": "42a56402beac06a1c4ba2aef980e6b4ff60a8211e53c3d7e9928ed546f3c5e82"
+            "sha256": "01662f20f8d934ccf9e40613d08ba03954a6bd503acd7debe67e31dec1a02da0"
         },
         {
             "path": "docs/tutorials.id.md",
-            "sha256": "061a4f50275410f36231e7ba0720985b42f1f5f7318faf819a4db69ee27f4216"
+            "sha256": "c7f6b999a5e7d186dac6b92ffa21d3211ddf4e15c261b0e8824fe194bd0aac37"
         },
         {
             "path": "docs/tutorials.ja.md",
-            "sha256": "3d8daa1e4337d64fed5f6502f4533dffc7cd39858b2bd82bdba889c429c13620"
+            "sha256": "d9a4aa4a503e76eb1e74c6bc1a046b2d8c661cf64b58314fc9a11c0cecc72ccb"
         },
         {
             "path": "package-lock.json",
-            "sha256": "ab0da6ea1d5cffced8c9b80264255a137ead33b2604d966fe0881b96db6498eb"
+            "sha256": "247b1a12e2d480455aacec78b809b7fcd9f51d998050bb9b403447a4af67ff55"
         },
         {
             "path": "package.json",
-            "sha256": "a900fbc406e82dd6c4e93ae534efd411c69b03d4003e5da9b2483c79ee0a235d"
+            "sha256": "ff38b0bf0ad6d870fa118f5e2bc0e8af4c6506f6c7bbeddb7e608b331192ab96"
         },
         {
             "path": "routes.json",
@@ -346,7 +346,7 @@
         },
         {
             "path": "ui/tutorials/admin.js",
-            "sha256": "2bc3a1f3e2cc6f2749e29de2d721944d35b61dcd03f8b836cbe7d9954b6daf9f"
+            "sha256": "a30f18520304c9567529c6f7fcbe886be31f9df560c061c1b132b5e3f4cb7359"
         },
         {
             "path": "ui/tutorials/plays.js",

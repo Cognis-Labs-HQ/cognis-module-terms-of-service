@@ -19,3 +19,5 @@ Panduan hukum cocok dengan halaman Ketentuan Layanan, Kebijakan Privasi, dan EUL
 Panduan administrator menjelaskan penerbitan berversi dan laporan persetujuan di bagian Hukum yang terlihat. Panduan ini memerlukan akses administrator dan tidak menyimpan perubahan atau memberikan persetujuan.
 
 Setiap langkah tutorial kini menetapkan `highlightNext` secara eksplisit: penjelasan yang memerlukan Berikutnya atau Selesai mengaktifkannya, sedangkan latihan berbasis interaksi atau penantian menonaktifkannya. Pengurangan gerakan mempertahankan garis tepi statis.
+
+Panduan dokumen menyoroti judul dokumen, sedangkan panduan persetujuan menyoroti kolom pencarian laporan persetujuan dokumen terbit yang tersedia. Target pertama yang dapat digunakan dipilih dalam bagian tutorial; langkah dilewati jika tidak ada kontrol yang cocok.

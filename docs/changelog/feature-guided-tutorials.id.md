@@ -32,6 +32,10 @@ Setiap langkah tutorial kini menetapkan `highlightNext` secara eksplisit: penjel
 
 Setiap komponen antarmuka wajib dicakup tutorial. Panduan kontribusi mengharuskan alur tugas yang berfokus pada pengguna dan peninjauan tutorial setiap kali fitur atau perilaku antarmuka berubah.
 
+## Target tepat dan pengulangan cabang
+
+Panduan dokumen menyoroti judul dokumen, sedangkan panduan persetujuan menyoroti kolom pencarian laporan persetujuan dokumen terbit yang tersedia. Target pertama yang dapat digunakan dipilih dalam bagian tutorial; langkah dilewati jika tidak ada kontrol yang cocok.
+
 ## Komit
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)

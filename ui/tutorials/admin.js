@@ -12,7 +12,8 @@ export const guides = [
                     {
                         highlightNext: true,
                         id: "documents",
-                        selector: ".terms-of-service-documents",
+                        selector: ".terms-of-service-document>summary",
+                        targetMatch: "first",
                         titleKey:
                             "module.terms-of-service.tutorial.admin.documents.title",
                         bodyKey:
@@ -21,7 +22,8 @@ export const guides = [
                     {
                         highlightNext: true,
                         id: "consent",
-                        selector: "#terms-of-service-legal",
+                        selector: "[data-consent-search]",
+                        targetMatch: "first",
                         titleKey:
                             "module.terms-of-service.tutorial.admin.consent.title",
                         bodyKey:

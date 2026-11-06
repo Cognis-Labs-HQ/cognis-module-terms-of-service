@@ -19,3 +19,5 @@ The legal guide matches Terms of Service, Privacy Policy and EULA pages and stay
 The administrator guide covers versioned publishing and consent reports in the visible Legal section. It requires administrator access and never saves changes or accepts consent.
 
 Each tutorial step now explicitly declares `highlightNext`: explanations that require Next or Finish enable it, while interaction- and wait-driven exercises disable it. The cue retains a static outline for reduced motion.
+
+Document guidance highlights a document header, and consent guidance highlights the search field of an available published-document consent report. The first usable target is selected inside the tutorial section and the step is skipped when no matching control is available.

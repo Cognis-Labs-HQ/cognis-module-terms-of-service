@@ -19,3 +19,5 @@ Die Rechtsanleitung gilt für Nutzungsbedingungen, Datenschutz und EULA und blei
 Die Anleitung im sichtbaren Verwaltungsbereich für Rechtsdokumente erklärt versionierte Veröffentlichung und Zustimmungsberichte. Sie erfordert Administratorrechte und speichert keine Änderungen oder Zustimmungen.
 
 Jeder Tutorial-Schritt legt `highlightNext` ausdrücklich fest: Erklärungen, die Weiter oder Fertig benötigen, aktivieren den Hinweis; interaktive und wartebasierte Übungen deaktivieren ihn. Bei reduzierter Bewegung bleibt eine statische Umrandung.
+
+Die Dokumentanleitung hebt eine Dokumentüberschrift hervor; die Einwilligungsanleitung zeigt auf das Suchfeld eines verfügbaren Berichts für ein veröffentlichtes Dokument. Der erste nutzbare Treffer wird im Tutorial-Abschnitt gewählt; ohne passenden Treffer wird der Schritt übersprungen.
