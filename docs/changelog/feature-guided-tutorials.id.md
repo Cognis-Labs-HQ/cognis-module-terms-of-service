@@ -36,6 +36,18 @@ Setiap komponen antarmuka wajib dicakup tutorial. Panduan kontribusi mengharuska
 
 Panduan dokumen menyoroti judul dokumen, sedangkan panduan persetujuan menyoroti kolom pencarian laporan persetujuan dokumen terbit yang tersedia. Target pertama yang dapat digunakan dipilih dalam bagian tutorial; langkah dilewati jika tidak ada kontrol yang cocok.
 
+## Wilayah tutorial yang terlihat
+
+Wilayah tutorial dan isyarat Berikutnya ditetapkan secara eksplisit.
+
+## Antrean menu mengambang bersama
+
+Menu mengikuti antrean host bersama dan masa hidup komponen.
+
+## Kontrol pemulihan yang didokumentasikan
+
+Tampilan target hilang menyediakan Berikutnya dan Mulai Ulang Tutorial; pemutaran ulang juga menyediakan Batal.
+
 ## Komit
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)

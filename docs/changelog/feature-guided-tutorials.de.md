@@ -36,6 +36,18 @@ Alle UI-Komponenten benötigen eine Anleitung. Die Beitragsrichtlinien verlangen
 
 Die Dokumentanleitung hebt eine Dokumentüberschrift hervor; die Einwilligungsanleitung zeigt auf das Suchfeld eines verfügbaren Berichts für ein veröffentlichtes Dokument. Der erste nutzbare Treffer wird im Tutorial-Abschnitt gewählt; ohne passenden Treffer wird der Schritt übersprungen.
 
+## Sichtbare Tutorial-Ziele
+
+Tutorial-Ziele und Weiter-Hinweise sind ausdrücklich festgelegt.
+
+## Gemeinsame Menüwarteschlange
+
+Menüs folgen der gemeinsamen Host-Warteschlange und der Komponentenlebensdauer.
+
+## Dokumentierte Wiederherstellungsaktionen
+
+Bei fehlenden Zielen stehen Weiter und Tutorial neu starten bereit; Wiederholungen bieten auch Abbrechen.
+
 ## Commits
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)
