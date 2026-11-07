@@ -64,3 +64,4 @@ Tutorials explain distinct visible controls in UI order. Shared guidance covers 
 - [5613809](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/56138097d74e38bd34f0c05c024d9770d59adedf)
 - [1a75db1](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1a75db178c7c3550aa4e5aea74089df66c8acfb0)
 - [5fe49707c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5fe49707c9638dbdd173fd74046188312f13945e)
+- [46186da39](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/46186da399d77530c3349fb0bd9c711315bcc719)
