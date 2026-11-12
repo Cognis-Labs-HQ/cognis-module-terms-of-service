@@ -69,3 +69,4 @@ Anleitungen erklären unterschiedliche sichtbare Bedienelemente in UI-Reihenfolg
 - [1a75db1](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/1a75db178c7c3550aa4e5aea74089df66c8acfb0)
 - [5fe49707c](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5fe49707c9638dbdd173fd74046188312f13945e)
 - [46186da39](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/46186da399d77530c3349fb0bd9c711315bcc719)
+- [feaf0ce](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/feaf0ceecf088f06aa8d80891e0413086bec6ddd)
