@@ -148,7 +148,7 @@ test("host-resolved labels are used and footer errors cannot block mandatory con
         assert.equal(popups[0].mandatory, true);
         assert.equal(
             popups[0].title,
-            english.get("module.terms-of-service.consent.title"),
+            english.get("module.terms.of.service.consent.title"),
         );
         assert.match(popups[0].body, /Terms of Service/);
         assert.ok(
@@ -178,8 +178,8 @@ test("host-resolved labels are used and footer errors cannot block mandatory con
 
 test("missing or empty English keys reject mounting and leave no refresh listeners", async () => {
     for (const key of [
-        "module.terms-of-service.document.terms",
-        "module.terms-of-service.consent.title",
+        "module.terms.of.service.document.terms",
+        "module.terms.of.service.consent.title",
     ]) {
         const original = english.get(key);
         for (const missing of [undefined, ""]) {
@@ -219,7 +219,7 @@ test("missing or empty English keys reject mounting and leave no refresh listene
 test("periodic missing translations propagate and stop subsequent refreshes", async () => {
     const originalSetTimeout = globalThis.setTimeout;
     const originalClearTimeout = globalThis.clearTimeout;
-    const originalKey = english.get("module.terms-of-service.consent.title");
+    const originalKey = english.get("module.terms.of.service.consent.title");
     const originalGetItem = localStorage.getItem;
     const controller = new AbortController();
     let refresh;
@@ -244,10 +244,10 @@ test("periodic missing translations propagate and stop subsequent refreshes", as
         });
         assert.equal(schedules, 1);
         required = true;
-        english.delete("module.terms-of-service.consent.title");
+        english.delete("module.terms.of.service.consent.title");
         await assert.rejects(
             refresh(),
-            /missing_translation:module.terms-of-service.consent.title/,
+            /missing_translation:module.terms.of.service.consent.title/,
         );
         assert.equal(schedules, 1);
         assert.equal(links.size, 0);
@@ -255,7 +255,7 @@ test("periodic missing translations propagate and stop subsequent refreshes", as
         globalThis.setTimeout = originalSetTimeout;
         globalThis.clearTimeout = originalClearTimeout;
         localStorage.getItem = originalGetItem;
-        english.set("module.terms-of-service.consent.title", originalKey);
+        english.set("module.terms.of.service.consent.title", originalKey);
         required = false;
         controller.abort();
         dispose?.();

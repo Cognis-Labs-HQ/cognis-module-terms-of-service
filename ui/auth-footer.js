@@ -33,7 +33,7 @@ export async function listAuthFooterLinks() {
         id: document.slug,
         side: "right",
         href: `/${document.slug}`,
-        label: i18n.t(`module.terms-of-service.document.${document.titleKey}`),
+        label: i18n.t(`module.terms.of.service.document.${document.titleKey}`),
         target: "_blank",
     }));
 }

@@ -42,7 +42,7 @@ Moduleigenes CSS wird über die öffentliche Hilfsfunktion page-styles geladen. 
 
 ### Modul-IDs in Übersetzungen erhalten
 
-Übersetzungsschlüssel verwenden `module.<manifest.id>.<feature>.<label>`. Eine mehrteilige Modul-ID bleibt mit ihren Bindestrichen erhalten; für `terms-of-service` lautet ein Schlüssel `module.terms-of-service.admin.title`. Der Suffix nach der Modul-ID verwendet kleingeschriebene, durch Punkte getrennte Wörter. Manifest-Metadaten, XML-Dateien und Codeverweise müssen denselben Namensraum verwenden.
+Übersetzungsschlüssel verwenden `module.<manifest.id>.<feature>.<label>`. Eine mehrteilige Modul-ID bleibt mit ihren Bindestrichen erhalten; für `terms-of-service` lautet ein Schlüssel `module.terms.of.service.admin.title`. Der Suffix nach der Modul-ID verwendet kleingeschriebene, durch Punkte getrennte Wörter. Manifest-Metadaten, XML-Dateien und Codeverweise müssen denselben Namensraum verwenden.
 
 ### Rechtstextlinks im Footer erhalten
 

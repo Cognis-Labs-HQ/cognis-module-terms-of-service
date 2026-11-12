@@ -1,4 +1,4 @@
-const CACHE_KEY = "module.terms-of-service.offline";
+const CACHE_KEY = "module.terms.of.service.offline";
 const cacheStates = new WeakMap();
 
 /** Cache only successful server snapshots; accepting terms always requires the server. */
