@@ -208,7 +208,7 @@ function documentDescriptor(document, i18n) {
         className: "terms-of-service-document",
         contentClassName: "terms-of-service-document-content",
         open: hasPublishedContent,
-        controlsHtml: `<button class="terms-of-service-document-action ${actionVariant}" type="button"
+        controlsHtml: `<button class="terms-of-service-document-action ${actionVariant}" data-legal-action="${actionKey}" type="button"
                 aria-label="${escapeHtml(i18n.t(`module.terms.of.service.action.${actionKey}`))}">${escapeHtml(i18n.t(`module.terms.of.service.action.${actionKey}`))}</button>`,
         contentHtml: `<div class="terms-of-service-editor">
             <div class="terms-of-service-compose-pane">
@@ -248,6 +248,7 @@ function activateEditor(
     let activeConsentReport = consentReport;
     let savedMarkdown = document.markdown ?? "";
     panel.dataset.legalDraft = String(textarea.value !== savedMarkdown);
+    panel.dataset.legalEditor = String(panel.open);
     let editorActive = panel.open;
 
     async function save() {
@@ -296,7 +297,9 @@ function activateEditor(
     }
 
     function syncDocumentAction() {
+        panel.dataset.legalEditor = String(editorActive);
         const actionKey = editorActive ? "remove" : "add";
+        documentAction.dataset.legalAction = actionKey;
         documentAction.textContent = i18n.t(
             `module.terms.of.service.action.${actionKey}`,
         );

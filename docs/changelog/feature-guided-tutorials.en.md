@@ -60,6 +60,10 @@ Translation keys use lowercase period-delimited words throughout the module meta
 
 The public guide describes section headings within the current document and omits navigation when no section headings exist. The administrator guide opens one stable document editor, requires a real staged edit before its Preview branch, and explains publishing only after the draft preview is visible. Next bypasses unopened editing branches, unavailable consent reports are excluded, and no content is published or discarded automatically. The established `module.terms-of-service.offline` persistence key is retained so server-confirmed snapshots continue to permit offline access after upgrades.
 
+## Draft Documents And Compliance
+
+Start with one legal document. For a new document, click Add; for a published document, use its existing editor. Type or revise Markdown, then click Preview to inspect the reader’s view. No tutorial action publishes the draft. Save and Discard become available through the queued changes menu after the guide yields. The compliance branch chooses a published document independently of the draft, opens its tracker, and explains account search, Accepted/Outstanding/All filters and accepted-versus-latest version columns. Empty matches and unpublished installations are handled without creating consent records.
+
 ## Commits
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)

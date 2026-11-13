@@ -143,3 +143,5 @@ Treat ctx as the backbone of every supported server and browser action. Extend d
 Template guidance baseline: [d71b980](https://github.com/Cognis-Labs-HQ/cognis-module-template/blob/d71b98077d8d7af087b44009dafc2d736f86b617/.github/copilot-instructions.md).
 
 Compose public legal pages through the page composer with shell suppression flags. Preserve versioned documents, consent enforcement and account-deletion ownership.
+
+Legal authoring guides must demonstrate Add for unpublished documents and a real Markdown edit/Preview branch without publishing. Independently choose a published document for compliance search, status filters and accepted/latest-version comparison; never require publication to invent tracker data.

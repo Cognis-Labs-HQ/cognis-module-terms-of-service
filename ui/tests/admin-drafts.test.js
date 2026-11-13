@@ -84,6 +84,7 @@ async function fixture(context) {
     const textarea = new Element();
     const compose = new Element();
     const preview = new Element();
+    const action = new Element();
     const composePane = new Element();
     const previewPane = new Element();
     previewPane.hidden = true;
@@ -92,12 +93,12 @@ async function fixture(context) {
         ["textarea", textarea],
         [".terms-of-service-compose-pane", composePane],
         [".terms-of-service-preview-pane", previewPane],
-        [".terms-of-service-document-action", new Element()],
+        [".terms-of-service-document-action", action],
         ['[data-mode="compose"]', compose],
         ['[data-mode="preview"]', preview],
     ]);
     panel.querySelector = (selector) => controls.get(selector);
-    for (const element of [summary, textarea, compose, preview])
+    for (const element of [summary, textarea, compose, preview, action])
         element.closest = () => panel;
     preview.closest = () => preview;
     const slot = new Element();
@@ -134,6 +135,7 @@ async function fixture(context) {
         compose,
         preview,
         previewPane,
+        action,
         slot,
         requests,
         steps,
@@ -143,8 +145,19 @@ async function fixture(context) {
 test("the publishing branch opens an editor and requires real staged changes before preview and Save guidance", async (context) => {
     const state = await fixture(context);
     state.steps.documents.enter({ target: state.summary });
+    assert.equal(state.panel.open, false);
+    assert.equal(state.panel.dataset.legalEditor, "false");
+    assert.equal(
+        state.steps.add.advance.accept({ target: state.action }),
+        false,
+    );
+    state.action.click();
     assert.equal(state.panel.open, true);
-    assert.equal(state.compose.getAttribute("aria-pressed"), "true");
+    assert.equal(state.panel.dataset.legalEditor, "true");
+    assert.equal(
+        state.steps.add.advance.accept({ target: state.action }),
+        true,
+    );
     assert.equal(
         state.steps.edit.advance.accept({ target: state.textarea }),
         false,
@@ -196,4 +209,37 @@ test("discarding a real draft clears the owner marker and preserves the stored d
     assert.equal(state.textarea.value, "");
     assert.equal(state.panel.dataset.legalDraft, "false");
     assert.ok(state.requests.every(({ options }) => !options?.method));
+});
+
+test("compliance search and filter progression require the user's matching action", async (context) => {
+    const { steps } = await fixture(context);
+    assert.equal(
+        steps.consent.advance.accept({ target: { value: " " } }),
+        false,
+    );
+    assert.equal(
+        steps.consent.advance.accept({ target: { value: "Alex" } }),
+        true,
+    );
+    const filter = new Element();
+    filter.closest = () => filter;
+    filter.setAttribute("aria-pressed", "false");
+    assert.equal(
+        steps["compliance-filter"].advance.accept({ target: filter }),
+        false,
+    );
+    filter.setAttribute("aria-pressed", "true");
+    assert.equal(
+        steps["compliance-filter"].advance.accept({ target: filter }),
+        true,
+    );
+    for (const id of [
+        "compliance-document",
+        "consent",
+        "compliance-filter",
+        "compliance-versions",
+    ]) {
+        assert.equal(steps[id].when({ targetAvailable: false }), false);
+        assert.equal(steps[id].when({ targetAvailable: true }), true);
+    }
 });

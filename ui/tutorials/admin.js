@@ -20,6 +20,7 @@ export const guides = [
                             const panel = target.closest(
                                 ".terms-of-service-document",
                             );
+                            if (panel.dataset.legalEditor !== "true") return;
                             panel.open = true;
                             panel
                                 .querySelector('[data-mode="compose"]')
@@ -32,9 +33,32 @@ export const guides = [
                     },
                     {
                         highlightNext: false,
+                        id: "add",
+                        group: "draft",
+                        selector:
+                            '.terms-of-service-document-action[data-legal-action="add"]',
+                        targetScope: ".terms-of-service-document",
+                        when: ({ targetAvailable }) => targetAvailable,
+                        interaction: "target",
+                        advance: {
+                            event: "click",
+                            accept: (event) =>
+                                event.target.closest(
+                                    ".terms-of-service-document",
+                                )?.dataset.legalEditor === "true",
+                        },
+                        titleKey:
+                            "module.terms.of.service.tutorial.admin.add.title",
+                        bodyKey:
+                            "module.terms.of.service.tutorial.admin.add.body",
+                    },
+                    {
+                        highlightNext: false,
                         id: "edit",
                         group: "draft",
-                        selector: ".terms-of-service-compose-pane textarea",
+                        selector:
+                            '.terms-of-service-document[data-legal-editor="true"] .terms-of-service-compose-pane textarea',
+                        when: ({ targetAvailable }) => targetAvailable,
                         targetScope: ".terms-of-service-document",
                         interaction: "target",
                         advance: {
@@ -85,14 +109,70 @@ export const guides = [
                     },
                     {
                         highlightNext: true,
-                        id: "consent",
-                        selector: "[data-consent-search]",
-                        targetScope: ".terms-of-service-document",
+                        id: "compliance-document",
+                        group: "compliance",
+                        selector: "[data-consent-report]",
+                        targetMatch: "first",
+                        targetScope:
+                            ".terms-of-service-document:has([data-consent-report])",
                         when: ({ targetAvailable }) => targetAvailable,
+                        titleKey:
+                            "module.terms.of.service.tutorial.admin.compliance.title",
+                        bodyKey:
+                            "module.terms.of.service.tutorial.admin.compliance.body",
+                    },
+                    {
+                        highlightNext: false,
+                        id: "consent",
+                        group: "compliance",
+                        selector: "[data-consent-search]",
+                        targetScope:
+                            ".terms-of-service-document:has([data-consent-report])",
+                        when: ({ targetAvailable }) => targetAvailable,
+                        interaction: "target",
+                        advance: {
+                            event: "input",
+                            accept: (event) =>
+                                Boolean(event.target.value.trim()),
+                        },
                         titleKey:
                             "module.terms.of.service.tutorial.admin.consent.title",
                         bodyKey:
                             "module.terms.of.service.tutorial.admin.consent.body",
+                    },
+                    {
+                        highlightNext: false,
+                        id: "compliance-filter",
+                        group: "compliance",
+                        selector: ".terms-of-service-report-filters",
+                        targetScope:
+                            ".terms-of-service-document:has([data-consent-report])",
+                        when: ({ targetAvailable }) => targetAvailable,
+                        interaction: "target",
+                        advance: {
+                            event: "click",
+                            accept: (event) =>
+                                event.target
+                                    .closest("[data-consent-filter]")
+                                    ?.getAttribute("aria-pressed") === "true",
+                        },
+                        titleKey:
+                            "module.terms.of.service.tutorial.admin.filter.title",
+                        bodyKey:
+                            "module.terms.of.service.tutorial.admin.filter.body",
+                    },
+                    {
+                        highlightNext: true,
+                        id: "compliance-versions",
+                        group: "compliance",
+                        selector: ".terms-of-service-report-table-wrap",
+                        targetScope:
+                            ".terms-of-service-document:has([data-consent-report])",
+                        when: ({ targetAvailable }) => targetAvailable,
+                        titleKey:
+                            "module.terms.of.service.tutorial.admin.versions.title",
+                        bodyKey:
+                            "module.terms.of.service.tutorial.admin.versions.body",
                     },
                 ],
             },

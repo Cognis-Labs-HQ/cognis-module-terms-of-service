@@ -60,6 +60,10 @@ Anleitungen erklären unterschiedliche sichtbare Bedienelemente in UI-Reihenfolg
 
 Die öffentliche Anleitung erklärt Abschnittsüberschriften im aktuellen Dokument und lässt die Navigation aus, wenn keine solchen Überschriften vorhanden sind. Die Administratoranleitung öffnet einen festen Dokumenteditor, setzt eine echte vorgemerkte Änderung vor dem Vorschauzweig voraus und erklärt die Veröffentlichung erst bei sichtbarer Entwurfsvorschau. Weiter überspringt nicht ausgeführte Bearbeitungszweige, fehlende Zustimmungsberichte werden ausgelassen und Inhalte werden nie automatisch veröffentlicht oder verworfen. Der bestehende Speicherschlüssel `module.terms-of-service.offline` bleibt erhalten, damit serverbestätigte Zustimmungen nach Aktualisierungen weiterhin den Offlinezugriff erlauben.
 
+## Dokumententwürfe und Zustimmungsübersicht
+
+Beginnen Sie mit einem Rechtsdokument. Klicken Sie bei einem neuen Dokument auf Hinzufügen; verwenden Sie bei einem veröffentlichten den vorhandenen Editor. Schreiben oder überarbeiten Sie Markdown und prüfen Sie die Leseransicht über Vorschau. Keine Tutorialaktion veröffentlicht den Entwurf. Speichern und Verwerfen stehen nach der Anleitung im wartenden Änderungsmenü bereit. Der Zustimmungszweig wählt unabhängig vom Entwurf ein veröffentlichtes Dokument, öffnet dessen Übersicht und erklärt Kontosuche, Akzeptiert/Ausstehend/Alle sowie akzeptierte und neueste Version. Leere Treffer und unveröffentlichte Installationen erzeugen keine Zustimmungsdatensätze.
+
 ## Commits
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)

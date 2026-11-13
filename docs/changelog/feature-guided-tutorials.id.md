@@ -60,6 +60,10 @@ Kunci terjemahan menggunakan kata huruf kecil yang dipisahkan titik pada metadat
 
 Panduan publik menjelaskan judul bagian dalam dokumen saat ini dan melewati navigasi jika tidak ada judul bagian. Panduan administrator membuka editor untuk satu dokumen yang tetap, memerlukan perubahan nyata sebelum cabang Pratinjau, dan menjelaskan penerbitan hanya setelah pratinjau draf terlihat. Berikutnya melewati cabang pengeditan yang belum dijalankan, laporan persetujuan yang tidak tersedia dikecualikan, dan konten tidak diterbitkan atau dibuang secara otomatis. Kunci penyimpanan `module.terms-of-service.offline` tetap dipertahankan agar snapshot yang dikonfirmasi server terus mengizinkan akses luring setelah pembaruan.
 
+## Draf Dokumen Dan Pelacakan Persetujuan
+
+Mulai dari satu dokumen hukum. Untuk dokumen baru, klik Tambah; untuk dokumen terbit, gunakan editornya. Tulis atau revisi Markdown, lalu klik Pratinjau untuk memeriksa tampilan pembaca. Tidak ada aksi tutorial yang menerbitkan draf. Simpan dan Buang tersedia melalui menu perubahan yang mengantre setelah panduan selesai. Cabang persetujuan memilih dokumen terbit secara terpisah dari draf, membuka pelacaknya, dan menjelaskan pencarian akun, filter Disetujui/Tertunda/Semua serta kolom versi yang disetujui dan terbaru. Hasil kosong dan instalasi tanpa dokumen terbit tidak membuat catatan persetujuan.
+
 ## Komit
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)
