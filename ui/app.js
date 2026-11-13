@@ -247,6 +247,7 @@ function activateEditor(
     const previewButton = panel.querySelector('[data-mode="preview"]');
     let activeConsentReport = consentReport;
     let savedMarkdown = document.markdown ?? "";
+    panel.dataset.legalDraft = String(textarea.value !== savedMarkdown);
     let editorActive = panel.open;
 
     async function save() {
@@ -266,6 +267,7 @@ function activateEditor(
         }).observe(publishedDocument);
         Object.assign(document, publishedDocument);
         savedMarkdown = textarea.value;
+        panel.dataset.legalDraft = "false";
         editorActive = true;
         syncDocumentAction();
         if (!activeConsentReport) {
@@ -284,6 +286,7 @@ function activateEditor(
 
     function discard() {
         textarea.value = savedMarkdown;
+        panel.dataset.legalDraft = "false";
         if (!savedMarkdown) closeEditor();
     }
 
@@ -322,7 +325,9 @@ function activateEditor(
     }
 
     textarea.addEventListener("input", () => {
-        dirtyBar?.markDirty(document.slug, textarea.value !== savedMarkdown);
+        const dirty = textarea.value !== savedMarkdown;
+        panel.dataset.legalDraft = String(dirty);
+        dirtyBar?.markDirty(document.slug, dirty);
     });
     documentAction.addEventListener("click", async (event) => {
         event.preventDefault();
@@ -352,6 +357,7 @@ function activateEditor(
         });
         if (result !== "remove") return;
         textarea.value = savedMarkdown;
+        panel.dataset.legalDraft = "false";
         dirtyBar?.markDirty(document.slug, false);
         editorActive = false;
         closeEditor();

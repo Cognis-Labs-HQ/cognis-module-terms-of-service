@@ -17,6 +17,13 @@ export async function mountProvider(ctx) {
             targets[name] = (
                 await owner.target(name, {
                     resolve: () => {
+                        if (
+                            name === "navigation" &&
+                            !document.querySelector(
+                                ".terms-of-service-rendered h2, .terms-of-service-rendered h3",
+                            )
+                        )
+                            return null;
                         const matches = document.querySelectorAll(selector);
                         return matches.length === 1 ? matches[0] : null;
                     },

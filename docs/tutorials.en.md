@@ -12,8 +12,6 @@ Provider tests check the public contract, all four translations, availability ru
 
 The legal guide matches Terms of Service, Privacy Policy and EULA pages and stays on the document that the user opened.
 
-The administrator guide covers versioned publishing and consent reports in the visible Legal section. It requires administrator access and never saves changes or accepts consent.
-
-Document guidance highlights a document header, and consent guidance highlights the search field of an available published-document consent report. The first usable target is selected inside the tutorial section and the step is skipped when no matching control is available.
+The public guide describes section headings within the current document and omits navigation when no section headings exist. The administrator guide opens one stable document editor, requires a real staged edit before its Preview branch, and explains publishing only after the draft preview is visible. Next bypasses unopened editing branches, unavailable consent reports are excluded, and no content is published or discarded automatically. The established `module.terms-of-service.offline` persistence key is retained so server-confirmed snapshots continue to permit offline access after upgrades.
 
 The shared host provides queued floating actions. First visits offer Next/Finish without Cancel or Skip; replays offer Skip before the last visible step. Restart Tutorial appears after the first visible step. Completion survives content updates. Explicit highlightNext flags enable only a breathing animation for explanatory steps; reduced motion disables it. Each stage highlights a distinct rendered control in UI order. Guides stay bound to the current view, handle empty and optional states, and release their resources on navigation or owner removal.

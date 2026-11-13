@@ -56,6 +56,10 @@ Anleitungen erklären unterschiedliche sichtbare Bedienelemente in UI-Reihenfolg
 
 Übersetzungsschlüssel verwenden in Modulmetadaten und Tutorials durchgehend kleingeschriebene, durch Punkte getrennte Wörter. Katalogeinträge behalten ihre ursprünglichen Übersetzungen und entsprechen der umgebenden XML-Einrückung. Strenge Namensraumprüfungen weisen Bindestriche und Unterstriche in Übersetzungsschlüsseln zurück. Modul-IDs, UUIDs, Fähigkeiten und Tutorialabschluss-Bezeichner bleiben unverändert.
 
+## Korrigierte Anleitungen für rechtliche Dokumente
+
+Die öffentliche Anleitung erklärt Abschnittsüberschriften im aktuellen Dokument und lässt die Navigation aus, wenn keine solchen Überschriften vorhanden sind. Die Administratoranleitung öffnet einen festen Dokumenteditor, setzt eine echte vorgemerkte Änderung vor dem Vorschauzweig voraus und erklärt die Veröffentlichung erst bei sichtbarer Entwurfsvorschau. Weiter überspringt nicht ausgeführte Bearbeitungszweige, fehlende Zustimmungsberichte werden ausgelassen und Inhalte werden nie automatisch veröffentlicht oder verworfen. Der bestehende Speicherschlüssel `module.terms-of-service.offline` bleibt erhalten, damit serverbestätigte Zustimmungen nach Aktualisierungen weiterhin den Offlinezugriff erlauben.
+
 ## Commits
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)

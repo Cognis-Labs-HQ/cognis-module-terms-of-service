@@ -56,6 +56,10 @@ Tutorial menjelaskan kontrol terlihat yang berbeda sesuai urutan UI. Petunjuk be
 
 Kunci terjemahan menggunakan kata huruf kecil yang dipisahkan titik pada metadata modul dan tutorial. Entri katalog mempertahankan nilai terjemahan asli dan mengikuti indentasi XML di sekitarnya. Pemeriksaan namespace yang ketat menolak tanda hubung dan garis bawah pada kunci terjemahan. ID modul, UUID, kapabilitas, dan identitas penyelesaian tutorial tetap sama.
 
+## Perbaikan Tutorial Dokumen Hukum
+
+Panduan publik menjelaskan judul bagian dalam dokumen saat ini dan melewati navigasi jika tidak ada judul bagian. Panduan administrator membuka editor untuk satu dokumen yang tetap, memerlukan perubahan nyata sebelum cabang Pratinjau, dan menjelaskan penerbitan hanya setelah pratinjau draf terlihat. Berikutnya melewati cabang pengeditan yang belum dijalankan, laporan persetujuan yang tidak tersedia dikecualikan, dan konten tidak diterbitkan atau dibuang secara otomatis. Kunci penyimpanan `module.terms-of-service.offline` tetap dipertahankan agar snapshot yang dikonfirmasi server terus mengizinkan akses luring setelah pembaruan.
+
 ## Komit
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)

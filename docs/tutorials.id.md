@@ -12,8 +12,6 @@ Pengujian penyedia memeriksa kontrak publik, keempat terjemahan, aturan ketersed
 
 Panduan hukum cocok dengan halaman Ketentuan Layanan, Kebijakan Privasi, dan EULA, serta tetap pada dokumen yang dibuka pengguna.
 
-Panduan administrator menjelaskan penerbitan berversi dan laporan persetujuan di bagian Hukum yang terlihat. Panduan ini memerlukan akses administrator dan tidak menyimpan perubahan atau memberikan persetujuan.
-
-Panduan dokumen menyoroti judul dokumen, sedangkan panduan persetujuan menyoroti kolom pencarian laporan persetujuan dokumen terbit yang tersedia. Target pertama yang dapat digunakan dipilih dalam bagian tutorial; langkah dilewati jika tidak ada kontrol yang cocok.
+Panduan publik menjelaskan judul bagian dalam dokumen saat ini dan melewati navigasi jika tidak ada judul bagian. Panduan administrator membuka editor untuk satu dokumen yang tetap, memerlukan perubahan nyata sebelum cabang Pratinjau, dan menjelaskan penerbitan hanya setelah pratinjau draf terlihat. Berikutnya melewati cabang pengeditan yang belum dijalankan, laporan persetujuan yang tidak tersedia dikecualikan, dan konten tidak diterbitkan atau dibuang secara otomatis. Kunci penyimpanan `module.terms-of-service.offline` tetap dipertahankan agar snapshot yang dikonfirmasi server terus mengizinkan akses luring setelah pembaruan.
 
 Host bersama menyediakan aksi mengambang melalui antreannya. Kunjungan awal menawarkan Berikutnya/Selesai tanpa Batal atau Lewati; pemutaran ulang menawarkan Lewati sebelum tahap terlihat terakhir. Mulai Ulang Tutorial muncul setelah tahap terlihat pertama. Penyelesaian tetap berlaku setelah pembaruan konten. Flag highlightNext hanya mengaktifkan animasi berdenyut untuk penjelasan; pengurangan gerakan menonaktifkannya. Setiap tahap menyorot kontrol nyata berbeda sesuai urutan UI. Panduan tetap terikat ke tampilan aktif, menangani keadaan kosong dan opsional, serta membersihkan sumber daya saat navigasi atau pelepasan pemilik.

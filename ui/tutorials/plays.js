@@ -36,6 +36,7 @@ export const definition = {
                 action: "retry",
             },
             target: "navigation",
+            when: ({ targetAvailable }) => targetAvailable,
         },
     ],
 };

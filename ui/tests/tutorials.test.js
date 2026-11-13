@@ -17,6 +17,7 @@ function fixture({ fail = false } = {}) {
     const targets = [],
         routes = [],
         published = new Map();
+    const targetOptions = new Map();
     const owner = {
         signal: controller.signal,
         dispose: () => {
@@ -25,6 +26,7 @@ function fixture({ fail = false } = {}) {
         target: async (id, options) => {
             assert.equal(typeof options.resolve, "function");
             targets.push(id);
+            targetOptions.set(id, options);
             return { id: `module.${manifest.id}:${id}` };
         },
         register: async (play) => {
@@ -90,6 +92,7 @@ function fixture({ fail = false } = {}) {
     return {
         ctx,
         targets,
+        targetOptions,
         routes,
         published,
         capabilities,
@@ -194,4 +197,28 @@ test("an unsupported host contract is rejected before allocating an owner", asyn
         mountProvider(state.ctx),
         /tutorial_contract_unavailable/,
     );
+});
+
+test("section navigation guidance is available only when the current article has headings", async (context) => {
+    const previous = globalThis.document;
+    context.after(() => {
+        if (previous === undefined) delete globalThis.document;
+        else globalThis.document = previous;
+    });
+    let headings = false;
+    const navigation = {};
+    globalThis.document = {
+        querySelector: () => (headings ? {} : null),
+        querySelectorAll: () => [navigation],
+    };
+    const state = fixture();
+    const dispose = await mountProvider(state.ctx);
+    context.after(dispose);
+    const resolve = state.targetOptions.get("navigation").resolve;
+    assert.equal(resolve(), null);
+    headings = true;
+    assert.equal(resolve(), navigation);
+    const step = state.play.steps.find(({ id }) => id === "navigation");
+    assert.equal(step.when({ targetAvailable: false }), false);
+    assert.equal(step.when({ targetAvailable: true }), true);
 });

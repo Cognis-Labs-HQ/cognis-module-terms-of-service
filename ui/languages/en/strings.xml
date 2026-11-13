@@ -72,11 +72,17 @@
   <string name="module.terms.of.service.tutorial.welcome.body">Open a document to read its terms and available versions.</string>
   <string name="module.terms.of.service.tutorial.document.title">Read The Current Document</string>
   <string name="module.terms.of.service.tutorial.document.body">Read the displayed document and version.</string>
-  <string name="module.terms.of.service.tutorial.navigation.title">Find Related Documents</string>
-  <string name="module.terms.of.service.tutorial.navigation.body">Use the document navigation to find other published legal documents.</string>
+  <string name="module.terms.of.service.tutorial.navigation.title">Jump To A Section</string>
+  <string name="module.terms.of.service.tutorial.navigation.body">Choose a heading in this menu to jump to that section of the document you are reading.</string>
   <string name="module.terms.of.service.tutorial.admin.title">Legal Administration</string>
-  <string name="module.terms.of.service.tutorial.admin.documents.title">Publish Legal Documents</string>
-  <string name="module.terms.of.service.tutorial.admin.documents.body">Open the document group you want to edit, use Compose or Preview, then save through the floating changes menu. Saving publishes a new immutable document version.</string>
+  <string name="module.terms.of.service.tutorial.admin.documents.title">Open A Document</string>
+  <string name="module.terms.of.service.tutorial.admin.documents.body">Each group holds one legal document. Its editor is open below so you can review the text and prepare a draft.</string>
   <string name="module.terms.of.service.tutorial.admin.consent.title">Review Consent</string>
-  <string name="module.terms.of.service.tutorial.admin.consent.body">Open a published document group’s consent report to search accounts and filter accepted or outstanding consent.</string>
+  <string name="module.terms.of.service.tutorial.admin.consent.body">For the currently published version, search accounts and filter accepted or outstanding consent. Reports appear only after a document has been published.</string>
+  <string name="module.terms.of.service.tutorial.admin.edit.title">Edit The Draft</string>
+  <string name="module.terms.of.service.tutorial.admin.edit.body">Edit the document text to prepare a draft. Type your own change, or choose Next to skip this editing branch.</string>
+  <string name="module.terms.of.service.tutorial.admin.preview.title">Preview Your Changes</string>
+  <string name="module.terms.of.service.tutorial.admin.preview.body">Click Preview to check how your staged text will look to readers.</string>
+  <string name="module.terms.of.service.tutorial.admin.publish.title">Review Your Draft</string>
+  <string name="module.terms.of.service.tutorial.admin.publish.body">Review this draft. After finishing the guide, use Save in the floating changes menu to publish a new version, or Discard to keep the published version.</string>
 </resources>

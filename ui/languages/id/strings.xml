@@ -72,11 +72,17 @@
   <string name="module.terms.of.service.tutorial.welcome.body">Buka dokumen untuk membaca ketentuan dan versi yang tersedia.</string>
   <string name="module.terms.of.service.tutorial.document.title">Baca Dokumen Saat Ini</string>
   <string name="module.terms.of.service.tutorial.document.body">Baca dokumen dan versi yang ditampilkan.</string>
-  <string name="module.terms.of.service.tutorial.navigation.title">Temukan Dokumen Terkait</string>
-  <string name="module.terms.of.service.tutorial.navigation.body">Gunakan navigasi dokumen untuk menemukan dokumen hukum lain yang diterbitkan.</string>
+  <string name="module.terms.of.service.tutorial.navigation.title">Lompat ke Bagian</string>
+  <string name="module.terms.of.service.tutorial.navigation.body">Pilih judul dalam menu ini untuk menuju bagian tersebut pada dokumen yang sedang Anda baca.</string>
   <string name="module.terms.of.service.tutorial.admin.title">Administrasi Dokumen Hukum</string>
-  <string name="module.terms.of.service.tutorial.admin.documents.title">Terbitkan Dokumen Hukum</string>
-  <string name="module.terms.of.service.tutorial.admin.documents.body">Buka kelompok dokumen yang ingin diedit, gunakan Tulis atau Pratinjau, lalu simpan melalui menu perubahan mengambang. Penyimpanan menerbitkan versi dokumen baru yang tidak dapat diubah.</string>
+  <string name="module.terms.of.service.tutorial.admin.documents.title">Buka Dokumen</string>
+  <string name="module.terms.of.service.tutorial.admin.documents.body">Setiap grup berisi satu dokumen hukum. Editor di bawahnya sudah terbuka agar Anda dapat meninjau teks dan menyiapkan draf.</string>
   <string name="module.terms.of.service.tutorial.admin.consent.title">Tinjau Persetujuan</string>
-  <string name="module.terms.of.service.tutorial.admin.consent.body">Buka laporan persetujuan grup dokumen yang diterbitkan untuk mencari akun dan menyaring persetujuan yang diterima atau masih tertunda.</string>
+  <string name="module.terms.of.service.tutorial.admin.consent.body">Cari akun untuk versi yang saat ini diterbitkan dan filter persetujuan yang diterima atau masih tertunda. Laporan hanya muncul setelah dokumen diterbitkan.</string>
+  <string name="module.terms.of.service.tutorial.admin.edit.title">Edit Draf</string>
+  <string name="module.terms.of.service.tutorial.admin.edit.body">Edit teks dokumen untuk menyiapkan draf. Masukkan perubahan Anda sendiri, atau pilih Berikutnya untuk melewati cabang pengeditan ini.</string>
+  <string name="module.terms.of.service.tutorial.admin.preview.title">Pratinjau Perubahan Anda</string>
+  <string name="module.terms.of.service.tutorial.admin.preview.body">Klik Pratinjau untuk memeriksa tampilan teks yang telah Anda ubah bagi pembaca.</string>
+  <string name="module.terms.of.service.tutorial.admin.publish.title">Tinjau Draf Anda</string>
+  <string name="module.terms.of.service.tutorial.admin.publish.body">Tinjau draf ini. Setelah panduan selesai, gunakan Simpan pada menu perubahan mengambang untuk menerbitkan versi baru, atau Buang untuk mempertahankan versi yang sudah diterbitkan.</string>
 </resources>

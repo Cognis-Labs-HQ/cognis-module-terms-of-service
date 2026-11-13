@@ -56,6 +56,10 @@ Tutorials explain distinct visible controls in UI order. Shared guidance covers 
 
 Translation keys use lowercase period-delimited words throughout the module metadata and tutorials. Catalog entries retain their original translated values and match the surrounding XML indentation. Strict namespace checks reject hyphens and underscores in translation keys. Module IDs, UUIDs, capabilities and tutorial completion identities remain unchanged.
 
+## Legal Tutorial Corrections
+
+The public guide describes section headings within the current document and omits navigation when no section headings exist. The administrator guide opens one stable document editor, requires a real staged edit before its Preview branch, and explains publishing only after the draft preview is visible. Next bypasses unopened editing branches, unavailable consent reports are excluded, and no content is published or discarded automatically. The established `module.terms-of-service.offline` persistence key is retained so server-confirmed snapshots continue to permit offline access after upgrades.
+
 ## Commits
 
 - [5c18cc7](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/5c18cc77ee2ea8a0629214557234304abab94ab8)
