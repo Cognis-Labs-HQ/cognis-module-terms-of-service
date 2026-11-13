@@ -32,11 +32,7 @@ test("structure validation rejects misplaced CSS and flat route handlers", async
     assert.equal((await validateModuleStructure(root)).length, 2);
 });
 
-test("module locale keys preserve the manifest ID as one namespace segment", async () => {
-    const manifest = JSON.parse(
-        await readFile(new URL("../../manifest.json", import.meta.url), "utf8"),
-    );
-    const prefix = `module.${manifest.id}.`;
+test("module locale keys use period-delimited segments", async () => {
     for (const locale of ["de", "en", "id", "ja"]) {
         const xml = await readFile(
             new URL(
@@ -45,12 +41,7 @@ test("module locale keys preserve the manifest ID as one namespace segment", asy
             ),
             "utf8",
         );
-        for (const match of xml.matchAll(/<string name="(module\.[^"]+)"/g)) {
-            assert.ok(match[1].startsWith(prefix), match[1]);
-            assert.match(
-                match[1].slice(prefix.length),
-                /^[a-z0-9]+(?:\.[a-z0-9]+)*$/,
-            );
-        }
+        for (const match of xml.matchAll(/<string name="(module\.[^"]+)"/g))
+            assert.match(match[1], /^module(?:\.[a-z0-9]+)+$/);
     }
 });

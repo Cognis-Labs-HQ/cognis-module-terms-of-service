@@ -182,3 +182,24 @@ test("unreadable account storage does not block a fresh online status", () => {
     assert.equal(consent.load(), null);
     assert.equal(state.receipts.at(-1).allowed, false);
 });
+
+test("an existing server-confirmed offline snapshot survives an upgrade without reconnecting", () => {
+    const state = fixture();
+    const snapshot = status("v1");
+    state.values.set(
+        "module.terms-of-service.offline",
+        JSON.stringify({ account: "first", status: snapshot }),
+    );
+    assert.deepEqual(state.make().restore(), snapshot);
+    assert.equal(state.receipts.at(-1).allowed, true);
+    state.values.set("cognis_account", "second");
+    assert.equal(state.make().restore(), null);
+    assert.equal(state.receipts.at(-1).allowed, false);
+    state.values.set("cognis_account", "first");
+    state.make().record(status("v2"));
+    assert.equal(
+        JSON.parse(state.values.get("module.terms-of-service.offline")).status
+            .documents[0].version,
+        "v2",
+    );
+});

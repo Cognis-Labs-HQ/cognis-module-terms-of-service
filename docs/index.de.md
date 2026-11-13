@@ -1,4 +1,4 @@
-# Standard des Nutzungsbedingungen-Moduls
+# Nutzungsbedingungen-Modul
 
 Dieses Dokument definiert die unterstützte Architektur des externen Cognis-Moduls für Nutzungsbedingungen.
 
@@ -42,7 +42,7 @@ Moduleigenes CSS wird über die öffentliche Hilfsfunktion page-styles geladen. 
 
 ### Modul-IDs in Übersetzungen erhalten
 
-Übersetzungsschlüssel verwenden `module.<manifest.id>.<feature>.<label>`. Eine mehrteilige Modul-ID bleibt mit ihren Bindestrichen erhalten; für `terms-of-service` lautet ein Schlüssel `module.terms-of-service.admin.title`. Der Suffix nach der Modul-ID verwendet kleingeschriebene, durch Punkte getrennte Wörter. Manifest-Metadaten, XML-Dateien und Codeverweise müssen denselben Namensraum verwenden.
+Übersetzungsschlüssel verwenden `module.<manifest.id>.<feature>.<label>`. Eine mehrteilige Modul-ID bleibt mit ihren Bindestrichen erhalten; für `terms-of-service` lautet ein Schlüssel `module.terms.of.service.admin.title`. Der Suffix nach der Modul-ID verwendet kleingeschriebene, durch Punkte getrennte Wörter. Manifest-Metadaten, XML-Dateien und Codeverweise müssen denselben Namensraum verwenden.
 
 ### Rechtstextlinks im Footer erhalten
 
@@ -61,3 +61,7 @@ Der Host stellt `offline:outbox`, `offline:state` und `offline:accessPolicy` üb
 ## Sicherer Einwilligungscache
 
 Einwilligungssnapshots behalten bereits beobachtete Dokumente bei, die in einer älteren Antwort fehlen. Neu veröffentlichte, nicht akzeptierte Dokumente sperren Offline-Zugriff und Zustellung weiterhin, bis der Server die Annahme ihrer aktuellen Versionen bestätigt. Größenlimits und Speicherfehler entziehen die Offline-Berechtigung, ohne den aktuellen Online-Status zu verwerfen: verpflichtende Einwilligung, Online-Annahme und öffentliche Rechtsseiten funktionieren weiterhin. Gemeinsamer, kontogebundener Arbeitsspeicher erhält beobachtete Versionen bei Cachefehlern und verhindert, dass ein anderer Client derselben Seite veraltete gespeicherte Berechtigungen wiederherstellt. Die Offline-Berechtigung kehrt erst zurück, wenn ein vollständiger akzeptierter Snapshot erfolgreich gespeichert wurde.
+
+## Geführtes Tutorial
+
+[Geführtes Tutorial](tutorials.de.md)

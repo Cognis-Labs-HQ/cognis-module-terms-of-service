@@ -82,7 +82,7 @@ export async function mountProvider(uiCtx) {
                       ? "privacy"
                       : "eula";
             const label = i18n.t(
-                `module.terms-of-service.document.${titleKey}`,
+                `module.terms.of.service.document.${titleKey}`,
             );
             try {
                 footerLinkDisposers.set(
@@ -191,21 +191,21 @@ export async function mountProvider(uiCtx) {
     async function deleteCurrentAccount(i18n) {
         let password = "";
         const result = await openPopup({
-            title: i18n.t("module.terms-of-service.consent.delete.account"),
-            body: `<label>${escapeHtml(i18n.t("module.terms-of-service.consent.password"))}
+            title: i18n.t("module.terms.of.service.consent.delete.account"),
+            body: `<label>${escapeHtml(i18n.t("module.terms.of.service.consent.password"))}
             <input class="form-builder-input" type="password" autocomplete="current-password" data-delete-account-password>
         </label>`,
             variant: "danger",
             actions: [
                 {
                     id: "cancel",
-                    label: i18n.t("module.terms-of-service.action.cancel"),
+                    label: i18n.t("module.terms.of.service.action.cancel"),
                     variant: "neutral",
                 },
                 {
                     id: "confirm",
                     label: i18n.t(
-                        "module.terms-of-service.consent.delete.account",
+                        "module.terms.of.service.consent.delete.account",
                     ),
                     variant: "cancel",
                 },
@@ -236,8 +236,8 @@ export async function mountProvider(uiCtx) {
             );
             let acceptedVersions;
             const action = await openPopup({
-                title: i18n.t("module.terms-of-service.consent.title"),
-                body: `<p>${escapeHtml(i18n.t("module.terms-of-service.consent.prompt"))}</p>
+                title: i18n.t("module.terms.of.service.consent.title"),
+                body: `<p>${escapeHtml(i18n.t("module.terms.of.service.consent.prompt"))}</p>
                 <div class="terms-of-service-consent-cards">${pendingDocuments
                     .map(
                         (
@@ -245,9 +245,9 @@ export async function mountProvider(uiCtx) {
                         ) => `<label class="terms-of-service-consent-card">
                             <input class="choice-checkbox" type="checkbox" data-consent-document="${escapeHtml(document.slug)}">
                             <div class="terms-of-service-consent-content">
-                                <div class="terms-of-service-consent-title"><strong>${escapeHtml(i18n.t(`module.terms-of-service.document.${document.slug === "terms-of-service" ? "terms" : document.slug === "privacy-policy" ? "privacy" : "eula"}`))}</strong>
-                                <span class="state-pill pill-active">${escapeHtml(i18n.t(`module.terms-of-service.consent.${document.state}`))}</span></div>
-                                <div class="terms-of-service-consent-read">${escapeHtml(i18n.t("module.terms-of-service.consent.read.latest"))} <a href="${escapeHtml(`${document.path}${document.consentedVersion ? "?view=changes" : ""}`)}" target="_blank" rel="noopener noreferrer">${escapeHtml(i18n.t("module.terms-of-service.consent.here"))}</a></div>
+                                <div class="terms-of-service-consent-title"><strong>${escapeHtml(i18n.t(`module.terms.of.service.document.${document.slug === "terms-of-service" ? "terms" : document.slug === "privacy-policy" ? "privacy" : "eula"}`))}</strong>
+                                <span class="state-pill pill-active">${escapeHtml(i18n.t(`module.terms.of.service.consent.${document.state}`))}</span></div>
+                                <div class="terms-of-service-consent-read">${escapeHtml(i18n.t("module.terms.of.service.consent.read.latest"))} <a href="${escapeHtml(`${document.path}${document.consentedVersion ? "?view=changes" : ""}`)}" target="_blank" rel="noopener noreferrer">${escapeHtml(i18n.t("module.terms.of.service.consent.here"))}</a></div>
                             </div>
                         </label>`,
                     )
@@ -289,7 +289,7 @@ export async function mountProvider(uiCtx) {
                         ?.setAttribute(
                             "title",
                             i18n.t(
-                                "module.terms-of-service.consent.decline.hint",
+                                "module.terms.of.service.consent.decline.hint",
                             ),
                         );
                 },
@@ -308,7 +308,7 @@ export async function mountProvider(uiCtx) {
                         }
                         showToast(
                             i18n.t(
-                                "module.terms-of-service.consent.select.all.error",
+                                "module.terms.of.service.consent.select.all.error",
                             ),
                             { variant: "error" },
                         );
@@ -326,20 +326,20 @@ export async function mountProvider(uiCtx) {
                     {
                         id: "delete",
                         label: i18n.t(
-                            "module.terms-of-service.consent.delete.account",
+                            "module.terms.of.service.consent.delete.account",
                         ),
                         variant: "cancel",
                     },
                     {
                         id: "decline",
                         label: i18n.t(
-                            "module.terms-of-service.consent.decline",
+                            "module.terms.of.service.consent.decline",
                         ),
                         variant: "cancel",
                     },
                     {
                         id: "submit",
-                        label: i18n.t("module.terms-of-service.consent.submit"),
+                        label: i18n.t("module.terms.of.service.consent.submit"),
                         variant: "confirm",
                     },
                 ],
@@ -372,7 +372,7 @@ export async function mountProvider(uiCtx) {
                         }
                         showToast(
                             i18n.t(
-                                "module.terms-of-service.consent.select.all.error",
+                                "module.terms.of.service.consent.select.all.error",
                             ),
                             { variant: "error" },
                         );

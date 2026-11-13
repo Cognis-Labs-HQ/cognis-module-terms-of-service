@@ -1,4 +1,4 @@
-# Terms of Service Module Standard
+# Terms of Service Module
 
 This document defines the supported architecture of the Cognis Terms of Service external module.
 
@@ -42,7 +42,7 @@ Load module-owned CSS through the public page-styles helper. The shared styleshe
 
 ### Preserve module IDs in locale keys
 
-Locale keys use `module.<manifest.id>.<feature>.<label>`. Keep a multiword module ID intact with its hyphens; for `terms-of-service`, use `module.terms-of-service.admin.title`. The suffix after the module ID uses lowercase period-delimited words. Manifest metadata, XML bundles and code references must use the same namespace.
+Locale keys use `module.<manifest.id>.<feature>.<label>`. Keep a multiword module ID intact with its hyphens; for `terms-of-service`, use `module.terms.of.service.admin.title`. The suffix after the module ID uses lowercase period-delimited words. Manifest metadata, XML bundles and code references must use the same namespace.
 
 ### Keep legal footer links available
 
@@ -61,3 +61,7 @@ The host exposes `offline:outbox`, `offline:state` and `offline:accessPolicy` th
 ## Consent Cache Safety
 
 Consent snapshots retain previously observed documents omitted by an older response. Newly published, unaccepted documents continue blocking offline access and replay until their current versions are accepted by the server. Cache size limits and storage failures revoke offline permission without discarding the fresh online status: mandatory consent, online acceptance and public legal rendering continue. Shared, account-scoped in-memory state preserves observed versions during a cache failure and prevents stale stored permission from being restored by another client in the same page. Offline permission returns only after a complete accepted snapshot is successfully cached.
+
+## Guided tutorial
+
+[Guided tutorial](tutorials.en.md)

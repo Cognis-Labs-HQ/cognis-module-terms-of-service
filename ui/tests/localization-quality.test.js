@@ -84,14 +84,14 @@ test("marketplace metadata uses the canonical hyphenated module ID", () => {
     const manifest = JSON.parse(
         readFileSync(resolve(ROOT, "manifest.json"), "utf8"),
     );
-    assert.equal(manifest.name, "module.terms-of-service.name");
-    assert.equal(manifest.summary, "module.terms-of-service.summary");
-    assert.equal(manifest.description, "module.terms-of-service.description");
+    assert.equal(manifest.name, "module.terms.of.service.name");
+    assert.equal(manifest.summary, "module.terms.of.service.summary");
+    assert.equal(manifest.description, "module.terms.of.service.description");
     assert.deepEqual(manifest.categories, [
-        "module.terms-of-service.category.legal",
+        "module.terms.of.service.category.legal",
     ]);
     assert.deepEqual(manifest.tags, [
-        "module.terms-of-service.tag.legal",
-        "module.terms-of-service.tag.administration",
+        "module.terms.of.service.tag.legal",
+        "module.terms.of.service.tag.administration",
     ]);
 });

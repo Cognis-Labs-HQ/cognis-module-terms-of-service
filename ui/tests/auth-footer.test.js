@@ -65,11 +65,11 @@ test("anonymous footer descriptors contain localized published links with new-ta
     );
     assert.equal(
         links[0].label,
-        labels.get("module.terms-of-service.document.terms"),
+        labels.get("module.terms.of.service.document.terms"),
     );
     assert.equal(
         links[1].label,
-        labels.get("module.terms-of-service.document.eula"),
+        labels.get("module.terms.of.service.document.eula"),
     );
     assert.ok(links.every(({ target }) => target === "_blank"));
     assert.equal(requests[0].url, "/api/v1/modules/terms-of-service/public");
