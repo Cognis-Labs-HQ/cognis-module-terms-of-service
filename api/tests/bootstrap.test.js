@@ -24,6 +24,13 @@ function context(registrations) {
             },
         },
         getCapability(name) {
+            if (name === "auth:onboarding")
+                return {
+                    registerOperation(operation) {
+                        registrations.onboarding ??= [];
+                        registrations.onboarding.push(operation);
+                    },
+                };
             if (name === "auth:requireAuth") return async () => {};
             if (name === "db:executor") return database;
             if (name === "docs:versionStore") {
@@ -157,4 +164,46 @@ test("uninstall deletes content only when requested", async () => {
     assert.equal(commands[1].table, "terms_of_service_consents");
     assert.equal(commands[2].table, "terms_of_service_consents");
     assert.equal(commands[3].table, "core_document_versions");
+});
+
+test("registration advertises only owned scoped consent operations", async () => {
+    const registrations = {
+        admin: [],
+        api: [],
+        authFooterPlugins: [],
+        pages: [],
+        plugins: [],
+    };
+    const ctx = withActionFlows(context(registrations));
+    ctx.registerFlow({
+        id: "constructRegistrationUi",
+        stages: ["compose-form"],
+    });
+    bootstrapModule(ctx);
+    const result = await ctx.flow.run("constructRegistrationUi", {});
+    const descriptor = result.stageResults["compose-form"][0].integrations[0];
+    assert.deepEqual(descriptor.onboardingOperations, [
+        "terms-of-service:consent:status",
+        "terms-of-service:consent:record",
+    ]);
+    assert.deepEqual(
+        registrations.onboarding.map((operation) => operation.id),
+        descriptor.onboardingOperations,
+    );
+});
+
+test("missing onboarding host rejects bootstrap before publishing routes", () => {
+    const registrations = {
+        admin: [],
+        api: [],
+        authFooterPlugins: [],
+        pages: [],
+        plugins: [],
+    };
+    const ctx = withActionFlows(context(registrations));
+    const getCapability = ctx.getCapability;
+    ctx.getCapability = (name) =>
+        name === "auth:onboarding" ? undefined : getCapability(name);
+    assert.throws(() => bootstrapModule(ctx), /auth:onboarding/);
+    assert.deepEqual(registrations.api, []);
 });
