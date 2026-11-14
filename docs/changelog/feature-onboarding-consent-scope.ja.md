@@ -14,4 +14,4 @@ Authは検証済みの登録アカウントを提供し、有効期限、失効�
 
 ## コミット
 
-- [8fbf3b5](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/8fbf3b5818dac34e8f466b250b43ddac8b9e46be)
+- [c57bfd2](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c57bfd265cba82e573273e41313de8bfbdf07120)
