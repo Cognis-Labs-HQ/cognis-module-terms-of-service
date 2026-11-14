@@ -137,7 +137,7 @@ export class LegalDocumentStore {
         };
     }
 
-    async recordConsent(accountId, versions) {
+    async recordConsent(accountId, versions, assertCurrent) {
         const status = await this.consentStatus(accountId);
         if (
             status.documents.some(
@@ -147,6 +147,7 @@ export class LegalDocumentStore {
             throw new Error("incomplete_consent_versions");
         }
         if (
+            Object.keys(versions).length !== status.documents.length ||
             !status.required ||
             status.documents.some(
                 (document) => versions[document.slug] !== document.version,
@@ -162,6 +163,7 @@ export class LegalDocumentStore {
             eula_version: versions.eula ?? UNPUBLISHED_VERSION,
             consented_at: consentedAt,
         };
+        await assertCurrent?.();
         await this.database.executeCommand({
             option: "INSERT",
             table: "terms_of_service_consents",

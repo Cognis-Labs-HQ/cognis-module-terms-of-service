@@ -16,26 +16,19 @@ export function validateRegistration({ values, i18n }) {
         : i18n.t("module.terms.of.service.consent.required");
 }
 
-export async function completeRegistration({ apiFetch }) {
-    const statusResponse = await apiFetch(
-        "/api/v1/modules/terms-of-service/consent",
+export async function completeRegistration({ values, executeOnboarding }) {
+    if (values?.[FIELD_NAME] !== true && values?.[FIELD_NAME] !== "on")
+        throw new Error("consent_required");
+    const status = await executeOnboarding(
+        "terms-of-service:consent:status",
+        {},
     );
-    if (!statusResponse.ok) throw new Error("consent_status_unavailable");
-    const status = (await statusResponse.json()).data;
     if (!status.required) return;
     const versions = Object.fromEntries(
         status.documents.map((document) => [document.slug, document.version]),
     );
-    const response = await apiFetch(
-        "/api/v1/modules/terms-of-service/consent",
-        {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({
-                accepted: true,
-                versions,
-            }),
-        },
-    );
-    if (!response.ok) throw new Error("consent_recording_failed");
+    await executeOnboarding("terms-of-service:consent:record", {
+        accepted: true,
+        versions,
+    });
 }
