@@ -1,3 +1,4 @@
+import { registerOnboarding } from "./api/consent/onboarding.js";
 import { registerApi } from "./api/index.js";
 import { LegalDocumentStore } from "./api/store.js";
 import { registerUi } from "./api/ui.js";
@@ -19,17 +20,25 @@ export async function uninstallModule(ctx, { deleteContent }) {
 }
 
 export function bootstrapModule(ctx) {
+    const onboarding = ctx.getCapability("auth:onboarding");
+    if (typeof onboarding?.registerOperation !== "function")
+        throw new Error("Required capability unavailable: auth:onboarding");
     registerUi(ctx);
-    registerApi(ctx.router, ctx);
-    if (ctx.flow.exists("construct-registration-ui")) {
+    const { store, ready } = registerApi(ctx.router, ctx);
+    registerOnboarding(ctx, onboarding, store, ready);
+    if (ctx.flow.exists("constructRegistrationUi")) {
         ctx.flow.extend(
-            "construct-registration-ui",
+            "constructRegistrationUi",
             "compose-form",
             { id: "terms-of-service:add-consent" },
             () => ({
                 integrations: [
                     {
                         id: "terms-of-service-consent",
+                        onboardingOperations: [
+                            "terms-of-service:consent:status",
+                            "terms-of-service:consent:record",
+                        ],
                         scriptUrl:
                             "/static/modules/terms-of-service/registration-consent.js",
                         stringsBaseUrl:

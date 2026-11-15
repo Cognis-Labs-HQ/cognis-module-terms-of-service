@@ -136,4 +136,5 @@ export function registerApi(router, ctx) {
         ready,
         log: ctx.log,
     });
+    return { store, ready };
 }

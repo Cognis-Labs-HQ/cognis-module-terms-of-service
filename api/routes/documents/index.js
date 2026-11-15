@@ -1,3 +1,4 @@
+import { consentVersions } from "../../consent/validation.js";
 import { readJson, sendJson } from "../../reuse/http.js";
 import { DOCUMENTS } from "../../store.js";
 
@@ -232,20 +233,7 @@ export function registerDocumentRoutes(
             if (!claims || response.writableEnded) return;
             try {
                 const body = await readJson(request);
-                const versions = body.versions;
-                if (
-                    !versions ||
-                    typeof versions !== "object" ||
-                    Array.isArray(versions) ||
-                    Object.keys(versions).some(
-                        (slug) =>
-                            !Object.hasOwn(DOCUMENTS, slug) ||
-                            typeof versions[slug] !== "string",
-                    ) ||
-                    body.accepted !== true
-                ) {
-                    throw new Error("invalid_consent_versions");
-                }
+                const versions = consentVersions(body);
                 await ready;
                 const status = await service.recordConsent(
                     request,
