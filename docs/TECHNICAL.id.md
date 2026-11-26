@@ -1,8 +1,18 @@
-# Modul Ketentuan Layanan
+# Referensi Teknis
+
+Antarmuka publik, konfigurasi, dan siklus hidup Dokumen Hukum.
+
+## Antarmuka
 
 Dokumen ini menetapkan arsitektur yang didukung untuk modul eksternal Ketentuan Layanan Cognis.
 
-## Kontrak Publik
+## Konfigurasi
+
+Dokumen hukum dikonfigurasi melalui draf dan penerbitan administrator, bukan preferensi modul. Versi dokumen serta persetujuan akun disimpan melalui `db:executor`. Tautan publik dan persetujuan wajib berasal dari rekaman terbitan; menyunting draf tidak menerbitkannya.
+
+## Perilaku
+
+### Kontrak Publik
 
 Modul mendaftarkan rute SPA publik `/terms-of-service`, `/privacy-policy`, dan `/eula`. Entri browser-nya hanya dipasang secara langsung pada jalur publik tersebut, sementara Administrasi menerima satu bagian Legal yang dilokalkan melalui `registerAdminSection`; rute API terautentikasi meminta peran dengan hak paling rendah yang sesuai. Manifest menandai modul sebagai berprivilese karena antarmuka administrasi dan persetujuannya memakai direktori pengguna internal, endpoint siklus hidup akun, dan kontrak gaya kotak centang terlindungi milik host.
 
@@ -10,35 +20,19 @@ Konten hukum yang diterbitkan berupa Markdown yang dirender Cognis melalui `ui:r
 
 Editor dokumen hukum memakai penyusun bagian yang dapat diciutkan milik host untuk satu kelompok deskriptor dokumen selebar penuh dan menyediakan label pengungkapan yang dilokalkan agar bagian tersebut dapat dirender. Judul terlokalisasi berupa teks biasa, sedangkan kontrol Tambah/Hapus dan Tulis/Pratinjau yang disanitasi serta konten editor memakai bidang HTML tepercaya penyusun. Editor yang sedang dipasang menentukan status Tambah atau Hapus: konfirmasi Hapus menutup editor dan mengembalikan Tambah tanpa menghapus versi terbitan yang tetap. Tulis dan Pratinjau memakai tombol baris tindakan host netral di bawah editor selebar penuh yang tidak dapat diubah ukurannya, dan modul memakai utilitas tooltip informasi serta pelacak perubahan mengambang Cognis. Penambahan editor menampilkan kotak penulisan Markdown dengan padding yang tidak dapat diubah ukurannya serta tombol Tulis dan Pratinjau bergaya penyusun Pesan; tindakan Simpan pada pelacak perubahan menerbitkan pembaruan melalui satu rute API persis untuk setiap dokumen tetap dan melaporkan keberhasilan melalui toast host. Editor yang telah diterbitkan terbuka kembali dengan Markdown tersimpan setelah halaman disegarkan. Buang memulihkan konten yang telah diterbitkan, atau menutup editor baru yang belum disimpan dan mengembalikan tindakannya ke Tambah; penghapusan editor memerlukan konfirmasi.
 
-## Persetujuan dan Siklus Hidup
+### Persetujuan dan Siklus Hidup
 
 Modul mencatat versi Ketentuan dan Privasi persis yang disetujui setiap akun. Pendaftaran wajib meminta persetujuan tegas. Flow sesi terautentikasi dan pemeriksaan penyegaran latar depan setiap lima detik segera memblokir akun yang persetujuannya tidak mutakhir; penerimaan mencatat semua versi terbitan secara atomik dan penolakan mengeluarkan akun. Halaman hukum publik tetap tersedia selama penegakan. Dialog persetujuan bersifat wajib dan tunggal serta secara eksplisit memuat gaya modul dan gaya kotak centang serta pil inti sebelum dibuka agar penyegaran dan navigasi SPA tampil konsisten, menyediakan tindakan penghapusan siklus hidup akun terautentikasi dengan alternatif berlabel Batal yang jelas, dan menolak melalui flow keluar host. Integrasi persetujuan terautentikasi memiliki tautan footer rata kanan yang idempoten di dalam shell pengguna yang sudah masuk. Footer autentikasi mendaftarkan penyedia deskriptor melalui `ctx.registerAuthFooterPlugin({ scriptUrl })`. Ekspor `listAuthFooterLinks()` membaca indeks publikasi anonim dan mengembalikan deskriptor tautan terlokalisasi hanya untuk dokumen yang telah diterbitkan. Host mengelola tampilan, visibilitas tautan inti, dan penghapusan kontribusi saat modul dinonaktifkan. Setiap halaman hukum menggunakan penyusun halaman Cognis. Akun terautentikasi menerima shell lengkap. Bagi pengunjung tanpa sesi login, penyusun mempertahankan bingkai dokumen, konteks halaman, dan bilah alat bagian sambil menyembunyikan bilah atas, navigasi, tombol tema, footer, penyimpanan tata letak, serta penyempurnaan akun yang bergantung pada akun. Halaman ini memakai pengguliran dokumen alami dan membangun navigasi bagian samping yang dikelompokkan serta dapat diciutkan dari judul yang dirender melalui ekspor penggunaan ulang inti `side-menu.js`. Setiap item memasok judul bagiannya sebagai `targetId`, sehingga pengontrol menu samping inti menangani pengguliran halus yang rata ke awal sementara modul memperbarui status pilihan; margin gulir judul menjaga judul terpilih tetap terlihat di bawah header shell tetap. Integrasi persetujuan tetap menjadi satu-satunya pemilik `ui:footerLinks`: integrasi memuat status penerbitan bahkan pada rute hukum, hanya menyumbangkan dokumen terbitan, mempertahankan tautan tersebut saat halaman SPA berganti, menyelaraskannya pada setiap transisi rute, memicu notifikasi registri setelah halaman hukum dipasang agar shell yang digunakan ulang merender ulang footer, dan membiarkan footer inti menandai rute yang cocok sebagai aktif. Setiap rute hukum menerapkan judul dokumen terlokalisasi setelah penyiapan shell terautentikasi agar penyegaran penuh dan navigasi SPA menampilkan konteks halaman yang benar. Status persetujuan dievaluasi secara terpisah untuk setiap versi Ketentuan, Privasi, dan EULA yang diterbitkan; popup persisten hanya mencantumkan dokumen yang belum diakui sebagai kartu kotak centang dan mengirimkan set versi terbitan lengkap. Kirim tetap dinonaktifkan sampai semua kotak centang wajib dipilih. API menolak set versi terbitan yang tidak valid atau tidak lengkap dengan HTTP 400, dan klien memakai kapabilitas toast host untuk menampilkan kesalahan terlokalisasi. Untuk pengguna yang kembali, tautan popup membuka rute hukum berukuran penuh biasa dengan `?view=changes`; tampilan terautentikasi tersebut membandingkan hash yang telah disetujui dengan hash terbaru melalui `docs:versionStore` dan merender hasil terstruktur melalui `ui:documentDiff` agar baris yang ditambah, dihapus, dan diubah terlihat sebelum persetujuan. Tautan footer biasa tetap membuka dokumen terkini. Jika versi historis sebelum migrasi tidak tersedia, API mengembalikan hasil tidak tersedia yang eksplisit dan halaman menampilkan penjelasan terlokalisasi alih-alih menyembunyikan perbandingan. Administrasi hanya menampilkan tabel persetujuan yang dapat dicari untuk dokumen terbitan, dengan filter Semua, Diterima, dan Belum diterima yang menampilkan tepat satu status aktif dan ditekan, serta paginasi sepuluh baris dari kapabilitas host `ui:pagination`; pil status hijau dan merah membedakan akun yang sudah menerima dan yang masih tertunda, serta kolom Versi yang disetujui dan Versi terbaru menampilkan versi yang diterima setiap akun di samping hash yang sedang diterbitkan; akun tanpa persetujuan tercatat memperoleh nilai terlokalisasi, dan penanda internal dokumen yang belum diterbitkan tidak pernah ditampilkan sebagai versi yang disetujui. Pemuatan dokumen hukum diselesaikan secara terpisah dari permintaan tambahan pengguna dan laporan persetujuan, sehingga kegagalan pelaporan tidak menampilkan editor terbitan sebagai kosong. Saat pembaruan diterbitkan, setiap status akun yang ditampilkan langsung dihitung ulang terhadap versi yang dikembalikan dan laporannya dirender ulang. Persetujuan yang berhasil langsung memicu peristiwa browser, sementara laporan administrasi yang terlihat juga disegarkan dari API setiap lima detik agar persetujuan dari sesi lain muncul tanpa memuat ulang halaman. Tulis dan Pratinjau memiliki status ditekan yang sesuai serta tampilan tombol aktif yang terlihat. Persetujuan setiap dokumen terbitan berdiri sendiri; kolom dokumen yang belum diterbitkan memakai penanda non-null yang eksplisit. Rute hukum publik tidak pernah menampilkan popup persetujuan, menginisialisasi pemuatan dan sesi terautentikasi sebelum penyusun halaman, merender bidang Markdown dari penyimpanan versi, dan memakai elemen penyusun yang mengikuti ukuran konten agar pengguna yang masuk menerima shell Cognis penuh dengan ukuran yang benar.
 
 Pendaftaran berskop dihapus saat modul dinonaktifkan. Jika hook browser yang sudah dimuat mendapati endpoint persetujuan modul sementara tidak tersedia selama pembaruan atau mulai ulang, hook tersebut mencatat endpoint, melanjutkan tanpa memblokir navigasi, dan tetap mencoba secara berkala agar penegakan pulih setelah endpoint tersedia. Penyimpanan halaman dalam cache maju-mundur mempertahankan listener dan timer aktif. Dokumen dan persetujuan bertahan setelah penonaktifan dan mulai ulang; pencopotan hanya menghapusnya saat `deleteContent` bernilai benar. Sumber daya browser memakai `cognis.uiCtx` serta kontrak host untuk umpan balik, navigasi, API, popup, i18n, dan entri halaman.
 
-## Kualitas Repositori
+### Kualitas Repositori
 
 Metadata manifest, paket, lockfile, dan rute pada root selalu tersinkron. Kode server berada di `api/`, kode browser di `ui/`, perintah operasional di `cli/`, dokumentasi lokal di `docs/`, metadata rilis di `docs/changelog/`, dan karya visual di `assets/`. Pengujian memakai capability palsu lokal dan mencakup rute, persistensi, flow, siklus hidup, lokalisasi, dan pengemasan.
 
 ### Alur tindakan milik modul
 
 Operasi HTTP berjalan melalui alur ctx milik modul dengan tahap validasi, eksekusi, dan penyajian. Pengujian menjalankan tahap-tahap ini dan mencegah penyimpanan ketika validasi atau inisialisasi skema gagal.
-
-### Struktur kontributor dan kepemilikan host
-
-Mulai modul baru dari [cognis-module-template](https://github.com/Cognis-Labs-HQ/cognis-module-template); repositori ini mengikuti revisi panduan yang dicatat dalam `AGENTS.md`. `bootstrap.js` mengatur siklus hidup, `api/index.js` menghubungkan dependensi ctx, `api/routes/<domain>/index.js` menangani HTTP, dan `api/reuse/` berisi kode server yang dipakai ulang. Fitur browser berada di `ui/`, gaya di `ui/styles/`, templat bersama di `ui/templates/`, dan dokumentasi terjemahan di `docs/index.<locale>.md`. Riwayat rilis berada di `docs/changelog/` dan dikecualikan dari hash paket. Bagian opsional yang tidak didukung tidak dibuat.
-
-Gunakan kapabilitas ctx publik dan alur yang dideklarasikan; jangan mengimpor bagian internal Cognis atau modul lain. Penyedia kapabilitas dan navigasi dasbor mengekspor `mountProvider(scopedUiCtx)` dan mengembalikan fungsi pembersihan sumber daya miliknya. Impor tidak boleh mendaftarkan perilaku modul. Host menghapus kapabilitas, kait alur, listener, dan status penyedia saat dinonaktifkan, lalu memasang kembali penyedia yang tersimpan saat diaktifkan ulang. Pabrik pengaturan, administrasi, dan penyedia deskriptor footer autentikasi mengikuti kontrak host masing-masing. Uji kontrak dengan pengganti mandiri, jalankan pemeriksaan struktur, perbarui hash setelah perubahan paket terakhir, lalu jalankan lint, pengujian, dan validasi manifes sebelum publikasi.
-
-Banner menempatkan seluruh logo Cognis, judul dan ilustrasi dokumen di pita tengah yang aman untuk potongan Marketplace dengan tinggi terbatas. Ikon dokumen yang ada dipertahankan.
-
-Validasi paket memastikan titik masuk, ikon, banner, dan tangkapan layar berupa file reguler di dalam checkout, termasuk setelah resolusi jalur. Dokumentasi menjelaskan kontrak publik dan merujuk manifes untuk metadata rilis; changelog mempertahankan asal-usul rilis. Halaman legal publik memakai sinyal siklus hidup entri langsung host. Pemuatan terjemahan atau dokumen yang dibatalkan tidak menerbitkan UI usang, composer dihancurkan saat pembatalan, dan inisialisasi terlambat tidak memperbarui footer halaman tujuan. Setiap token pemuatan dilepas saat selesai, gagal, atau dibatalkan.
-
-Halaman langsung yang dibatalkan segera melepas token pemuatan bersama, meskipun inisialisasi terjemahan, penyedia, atau composer masih tertunda. Pembersihan sumber daya tetap terikat pada sinyal host yang sama.
-
-Alur penerbitan, laporan persetujuan, dan pencatatan persetujuan mengautentikasi permintaan pada tahap otorisasi melalui `auth:requireAuth`. Penerbitan dan laporan persetujuan seluruh akun memerlukan administrator; identitas pelaku dan akun persetujuan hanya berasal dari klaim terverifikasi. Panggil `terms-of-service:listConsentForDocument` dengan `[request, response, slug]`; slug saja atau permintaan bukan administrator ditolak sebelum baris persetujuan dibaca. Penerbitan dan pencatatan persetujuan yang berhasil menghasilkan satu entri audit `info` di dalam alur eksekusi, termasuk akun terverifikasi dan dokumen terkait, sehingga panggilan ctx langsung dan permintaan HTTP memiliki cakupan audit yang sama. Pengujian mencakup panggilan langsung, identitas palsu, penolakan akses laporan, dan kegagalan penyimpanan.
-
-Muat CSS milik modul melalui pembantu publik page-styles. Katalog stylesheet bersama hanya menerima nama relatif sumber daya bersama; URL modul menggagalkan impor UI dan menyembunyikan bagian Legal. Pengujian menegakkan batas ini dan memverifikasi penemuan bagian administrasi.
 
 ### Pertahankan ID modul pada kunci
 
@@ -52,21 +46,17 @@ Halaman hukum publik, kontribusi footer, dan penegakan persetujuan menggunakan `
 
 Pemasangan penyedia menunggu penegakan persetujuan awal. Kunci cadangan bahasa Inggris yang hilang atau kosong menggagalkan pemasangan dan melepaskan tautan footer serta pendengar navigasi milik penyedia. Terjemahan yang hilang selama penyegaran latar depan juga diteruskan dan menghentikan polling berikutnya, alih-alih melewati persetujuan wajib secara diam-diam. Kegagalan perenderan footer biasa tetap dicatat secara terpisah agar tidak menghalangi penegakan persetujuan.
 
-## Antrean dan Persetujuan
+### Antrean dan Persetujuan
 
 Pemulihan memperbarui penyedia dan menjalankan `authenticate-session` sebelum tahap akhir `afterSession` mengirim aktivitas. Penyedia wajib mendeklarasikan `offlineAccessGuard` dalam katalog server. Persyaratan yang tidak diketahui atau persetujuan yang belum ada memblokir akses offline. Terms of Service menyimpan versi dokumen terakhir yang diambil dan persetujuan terkonfirmasi server per akun. Versi baru yang belum disetujui langsung memblokir pembacaan, navigasi, dan catatan offline serta pengiriman sampai persetujuan online berhasil. Persetujuan offline tidak tersedia. Snapshot privat tetap di tab; hanya antrean terbatas dan snapshot dokumen hukum bertahan setelah muat ulang.
 
 Host menyediakan `offline:outbox`, `offline:state`, dan `offline:accessPolicy` melalui ctx. Komponen mendaftarkan pengirim selama masa hidup penyedia dan ID operasi stabil melalui `offline:enqueue`; `offline:flush` mengotorisasi dan mengirim. Antrean permanen per akun dibatasi 1.000 catatan dan 1 MB selama tujuh hari, tanpa token. ID serta waktu asli dipertahankan; kegagalan sementara dicoba ulang, catatan yang dikonfirmasi atau ditolak permanen dihapus. Penolakan menampilkan peringatan terlokalisasi. Keluar menghapus antrean akun; pergantian akun tidak mengirim data akun lain. Menonaktifkan Mode Offline menghentikan catatan baru. Antrean lama tetap dapat dikirim saat online.
 
-## Keamanan Cache Persetujuan
+### Tutorial terpandu
 
-Snapshot persetujuan mempertahankan dokumen yang telah diamati tetapi tidak disertakan dalam respons lama. Dokumen baru yang belum disetujui tetap memblokir akses luring dan pengiriman antrean hingga server mengonfirmasi persetujuan versi terkininya. Batas ukuran cache dan kegagalan penyimpanan mencabut izin luring tanpa membuang status daring terbaru: dialog persetujuan wajib, persetujuan daring, dan tampilan dokumen hukum publik tetap berjalan. Status dalam memori yang dibagikan dan dibatasi per akun mempertahankan versi yang diamati saat cache gagal serta mencegah klien lain pada halaman yang sama memulihkan izin tersimpan yang usang. Izin luring kembali hanya setelah snapshot lengkap yang disetujui berhasil disimpan.
+[Tutorial terpandu](TECHNICAL.id.md)
 
-## Tutorial terpandu
-
-[Tutorial terpandu](tutorials.id.md)
-
-## Persetujuan pendaftaran
+### Persetujuan pendaftaran
 
 Pendaftaran menggunakan kontrak auth:onboarding versi satu. Kontribusi constructRegistrationUi hanya mendeklarasikan terms-of-service:consent:status dan terms-of-service:consent:record. Fungsi penyelesaian menerima executeOnboarding dan menolak melanjutkan tanpa kotak persetujuan yang dipilih secara eksplisit. Fungsi ini mengirim tepat versi dokumen terbit saat ini. Persetujuan yang tidak ada serta versi tidak valid atau tidak lengkap ditolak; versi yang berubah atau sudah disetujui menghasilkan konflik, bukan persetujuan ulang diam-diam.
 
@@ -79,3 +69,25 @@ Penyimpanan persetujuan dan pencabutan kredensial Auth merupakan operasi terpisa
 Tinjauan tutorial: panduan halaman hukum dan administrasi mempertahankan targetnya dan tidak pernah memberikan persetujuan. Kotak pendaftaran tetap merupakan tindakan wajib pengguna; panduan tidak memilih atau mengirimkannya.
 
 Pembacaan versi dokumen dan penyimpanan persetujuan bukan transaksi lintas penyimpanan. Penerbitan bersamaan dapat langsung membuat persetujuan baru kedaluwarsa; penegakan persetujuan biasa memeriksa versi saat ini kembali.
+
+Pengujian penyedia memeriksa kontrak publik, keempat terjemahan, aturan ketersediaan, pembersihan saat gagal, dan penolakan versi host yang tidak didukung.
+
+Panduan hukum cocok dengan halaman Ketentuan Layanan, Kebijakan Privasi, dan EULA, serta tetap pada dokumen yang dibuka pengguna.
+
+Host bersama menyediakan aksi mengambang melalui antreannya. Kunjungan awal menawarkan Berikutnya/Selesai tanpa Batal atau Lewati; pemutaran ulang menawarkan Lewati sebelum tahap terlihat terakhir. Mulai Ulang Tutorial muncul setelah tahap terlihat pertama. Penyelesaian tetap berlaku setelah pembaruan konten. Flag highlightNext hanya mengaktifkan animasi berdenyut untuk penjelasan; pengurangan gerakan menonaktifkannya. Setiap tahap menyorot kontrol nyata berbeda sesuai urutan UI. Panduan tetap terikat ke tampilan aktif, menangani keadaan kosong dan opsional, serta membersihkan sumber daya saat navigasi atau pelepasan pemilik.
+
+Mulai dari satu dokumen hukum. Untuk dokumen baru, klik Tambah; untuk dokumen terbit, gunakan editornya. Tulis atau revisi Markdown, lalu klik Pratinjau untuk memeriksa tampilan pembaca. Tidak ada aksi tutorial yang menerbitkan draf. Simpan dan Buang tersedia melalui menu perubahan yang mengantre setelah panduan selesai. Cabang persetujuan memilih dokumen terbit secara terpisah dari draf, membuka pelacaknya, dan menjelaskan pencarian akun, filter Disetujui/Tertunda/Semua serta kolom versi yang disetujui dan terbaru. Hasil kosong dan instalasi tanpa dokumen terbit tidak membuat catatan persetujuan.
+
+## Keamanan
+
+Persetujuan memerlukan penerimaan tegas akun atas versi dokumen yang tepat dan berlaku. Teks publik serta snapshot cache tidak mengizinkan penulisan persetujuan. Penerbitan dan laporan seluruh akun memerlukan administrator. Persetujuan pendaftaran memakai operasi onboarding terbatas yang dideklarasikan; pembatalan dan perubahan versi tidak mengizinkan penerimaan lama.
+
+### Keamanan Cache Persetujuan
+
+Snapshot persetujuan mempertahankan dokumen yang telah diamati tetapi tidak disertakan dalam respons lama. Dokumen baru yang belum disetujui tetap memblokir akses luring dan pengiriman antrean hingga server mengonfirmasi persetujuan versi terkininya. Batas ukuran cache dan kegagalan penyimpanan mencabut izin luring tanpa membuang status daring terbaru: dialog persetujuan wajib, persetujuan daring, dan tampilan dokumen hukum publik tetap berjalan. Status dalam memori yang dibagikan dan dibatasi per akun mempertahankan versi yang diamati saat cache gagal serta mencegah klien lain pada halaman yang sama memulihkan izin tersimpan yang usang. Izin luring kembali hanya setelah snapshot lengkap yang disetujui berhasil disimpan.
+
+## Referensi
+
+- [manifest.json](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/blob/HEAD/manifest.json)
+- [bootstrap.js](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/blob/HEAD/bootstrap.js)
+- [Cognis](https://github.com/Cognis-Labs-HQ/Cognis/blob/HEAD/src/docs/modules/external/TECHNICAL.en.md)
