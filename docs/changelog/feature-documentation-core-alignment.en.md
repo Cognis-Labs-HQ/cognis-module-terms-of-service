@@ -10,6 +10,11 @@ Info, Usage and Technical are complete localized document families declared by t
 
 Runtime diagnostics follow the host logging gateway and its output policy. Command reports use terminal streams, and a native-console guard checks module JavaScript, including aliases and computed access. Existing provider ownership, authorization and tutorial completion identities are preserved.
 
+## Descriptive bindings
+
+Module bindings now use descriptive role names while retaining public API labels, payload keys and import targets. Syntax-tree validation scans bootstrap, scripts, tests and fixtures, replacing the line-based check. Sixty shared regression fixtures cover declarations, destructuring, parameters, private members, enum/namespace bindings, TypeScript assertions and permitted type identities. Component instructions and four-language technical manuals describe the same policy; versions, lockfiles and packaged hashes are synchronized.
+
 ## Commits
 
 - [c9a4fd5](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/c9a4fd5465026bd64703dc4203e50be347204f72)
+- [bb97b11](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/bb97b11a9e404d6e6ae371276e26300984c068b7)
