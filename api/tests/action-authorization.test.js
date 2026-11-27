@@ -44,7 +44,7 @@ function fixture({ failMutation = false } = {}) {
         ),
         {
             ...runtime,
-            log: (...args) => logs.push(args),
+            log: (...argumentsList) => logs.push(argumentsList),
             getCapability(id) {
                 if (id === "db:executor") return database;
                 if (id === "docs:versionStore")

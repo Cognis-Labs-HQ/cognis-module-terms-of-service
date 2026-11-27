@@ -101,7 +101,8 @@ export function registerApi(router, ctx) {
             },
             consentDiff: {
                 validate: validateAccount,
-                execute: (...args) => store.consentDiff(...args),
+                execute: (...argumentsList) =>
+                    store.consentDiff(...argumentsList),
             },
             consentStatus: {
                 validate: validateAccount,

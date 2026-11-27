@@ -180,7 +180,7 @@ test("consent is enforced during registration and authenticated sessions", () =>
         /registerNavbarPlugin\([\s\S]*stylesheets: \["\/static\/modules\/terms-of-service\/styles\/legal\.css"\]/,
     );
     assert.match(legalStyles, /terms-of-service-consent-title \.state-pill/);
-    assert.match(enforcement, /CONSENT_REFRESH_INTERVAL_MS = 5_000/);
+    assert.match(enforcement, /CONSENT_REFRESH_INTERVAL_MILLISECONDS = 5_000/);
     assert.match(enforcement, /enforceAuthenticatedConsentOnce/);
     assert.match(enforcement, /scheduleConsentRefresh/);
     assert.match(enforcement, /consentEnforcementDisposed = true/);
@@ -308,7 +308,10 @@ test("administration renders filterable paginated consent reports", () => {
     assert.doesNotMatch(source, /data-report-next/);
     assert.match(source, /activateConsentReport/);
     assert.match(source, /activeConsentReport\.render\(\)/);
-    assert.match(source, /CONSENT_REPORT_REFRESH_INTERVAL_MS = 5_000/);
+    assert.match(
+        source,
+        /CONSENT_REPORT_REFRESH_INTERVAL_MILLISECONDS = 5_000/,
+    );
     assert.match(source, /async refresh\(\)/);
     assert.match(source, /consentByAccount/);
     assert.match(source, /consentUsers: \[\]/);

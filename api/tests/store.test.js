@@ -166,12 +166,12 @@ test("consent diffs compare the accepted and latest document versions", async ()
             return { rows: [{ terms_version: "terms-accepted" }] };
         },
     };
-    const diff = await new LegalDocumentStore(database, tracker).consentDiff(
-        "account-1",
-        "terms-of-service",
-    );
-    assert.equal(diff.fromVersion, "terms-accepted");
-    assert.equal(diff.toVersion, "terms-current");
+    const difference = await new LegalDocumentStore(
+        database,
+        tracker,
+    ).consentDiff("account-1", "terms-of-service");
+    assert.equal(difference.fromVersion, "terms-accepted");
+    assert.equal(difference.toVersion, "terms-current");
     assert.deepEqual(tracker.calls.at(-1), [
         "diff",
         "terms-accepted",

@@ -69,7 +69,7 @@ test("import is inert and cached providers remount with owned cleanup", async ()
                 get: (id) => capabilities.get(id),
                 contribute: (id, value) => capabilities.set(id, value),
             },
-            extendFlow: (...args) => hooks.push(args),
+            extendFlow: (...argumentsList) => hooks.push(argumentsList),
         };
         const dispose = await mountProvider(ctx);
         await new Promise((resolve) => setImmediate(resolve));
