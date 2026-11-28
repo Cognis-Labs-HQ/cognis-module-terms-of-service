@@ -38,9 +38,9 @@ export async function mountProvider(uiCtx) {
         "/privacy-policy",
         "/eula",
     ]);
-    const CONSENT_REFRESH_INTERVAL_MILLISECONDS = 5_000;
+    const CONSENT_REFRESH_INTERVAL_MS = 5_000;
     let consentRefreshTimer;
-    let consentRefreshDelayMilliseconds = CONSENT_REFRESH_INTERVAL_MILLISECONDS;
+    let consentRefreshDelayMs = CONSENT_REFRESH_INTERVAL_MS;
     let enforcementPromise;
     let footerRefreshPromise;
     let consentEnforcementDisposed = false;
@@ -458,13 +458,12 @@ export async function mountProvider(uiCtx) {
                     localStorage.getItem("cognis_access_token")
                 ) {
                     await enforceAuthenticatedConsentOnce();
-                    consentRefreshDelayMilliseconds =
-                        CONSENT_REFRESH_INTERVAL_MILLISECONDS;
+                    consentRefreshDelayMs = CONSENT_REFRESH_INTERVAL_MS;
                 }
             } catch (error) {
-                consentRefreshDelayMilliseconds = Math.min(
+                consentRefreshDelayMs = Math.min(
                     5 * 60_000,
-                    consentRefreshDelayMilliseconds * 2,
+                    consentRefreshDelayMs * 2,
                 );
                 uiCtx.capabilities.get("ui:log")?.(
                     "error",
@@ -482,15 +481,14 @@ export async function mountProvider(uiCtx) {
             } finally {
                 if (!consentEnforcementDisposed) scheduleConsentRefresh();
             }
-        }, consentRefreshDelayMilliseconds);
+        }, consentRefreshDelayMs);
     }
 
     function handleConnectivityChange() {
         clearTimeout(consentRefreshTimer);
         consentRefreshTimer = undefined;
         if (!connectivity.isOffline()) {
-            consentRefreshDelayMilliseconds =
-                CONSENT_REFRESH_INTERVAL_MILLISECONDS;
+            consentRefreshDelayMs = CONSENT_REFRESH_INTERVAL_MS;
             scheduleConsentRefresh();
         }
     }

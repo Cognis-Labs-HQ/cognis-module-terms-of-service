@@ -2,7 +2,7 @@
     "id": "terms-of-service",
     "uuid": "e6f133ec-ccd9-4dbb-96bd-1ccf52a359de",
     "name": "module.terms.of.service.name",
-    "version": "1.6.17",
+    "version": "1.6.18",
     "class": "extension",
     "privileged": true,
     "coreApiVersion": "v1",
@@ -47,7 +47,7 @@
     "files": [
         {
             "path": ".github/copilot-instructions.md",
-            "sha256": "e5c3af9021f3795e1cc3c93957efb437f7cae72425d7116bd9689070eb39a74d"
+            "sha256": "c789d0527c12434b0a4539fde5af56599741e9953cec0734a3896b5dfd1c2de2"
         },
         {
             "path": ".github/documentation/README.de.md",
@@ -267,19 +267,19 @@
         },
         {
             "path": "docs/TECHNICAL.de.md",
-            "sha256": "c8cacb593dd10d4c82a9e9eb08692eba6b70dec4e65445492152be027a31b8a8"
+            "sha256": "e3fecf413b432b2fc70873e982629e557a1e2e27c1e7691e7b5d0964d1e5a163"
         },
         {
             "path": "docs/TECHNICAL.en.md",
-            "sha256": "442bc7594935600a16b8663efb69ab20761a09f6c9c4c73faabf3bbbe96bf905"
+            "sha256": "1620d6f53ba3d791f0866d3f0462407373490bbe8914d549999796cb433bf03d"
         },
         {
             "path": "docs/TECHNICAL.id.md",
-            "sha256": "c79d0b1a91abbd924d90e818c2cb8a2f76b4d7dfbd72fdffedb6257ad85b36ca"
+            "sha256": "7a968a2e91adce68f44438ba8fbabf028bbab144ef9ea9d4c628f3a8b59f77fe"
         },
         {
             "path": "docs/TECHNICAL.ja.md",
-            "sha256": "edd332e54ad9800442b61c6ee935e13ef55d40e787cd0cc6ac784e6b7e23352f"
+            "sha256": "5b7a27b6b9d4974c1136b47bcf2dab5529e32b3a53ba34a13562005dc2893133"
         },
         {
             "path": "docs/USAGE.de.md",
@@ -299,11 +299,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "684ba67f87717b6452c48f0316d7f3e9eff454473e25dcd9cb4607a44e2c1ba6"
+            "sha256": "f442c016f891e8e20663498128e7f0c376498587f38958749af28addc620b60b"
         },
         {
             "path": "package.json",
-            "sha256": "293fb1d08c89c7a38127b52043f17d8492e8c9a7552f2548162502960fe86f52"
+            "sha256": "5ec915061f7b4251ebd88c86bf82d69d27d5772a2bd1bda77f6bffc89dc7ac63"
         },
         {
             "path": "routes.json",
@@ -343,11 +343,11 @@
         },
         {
             "path": "tooling/reuse/ambiguous-name-words.json",
-            "sha256": "4b021010dde8a029186cc4d4e9bcaf5e3ac2484c38d27733ece49c53916cf212"
+            "sha256": "1c181f2061b3a4c452a8f79045a9291a400b0e3247fc337cda5949f98d2d2d2e"
         },
         {
             "path": "tooling/reuse/ambiguous-names.js",
-            "sha256": "428bed8de094747472e17de6795aee6e0d5fc939538afc02b8d2aeba0cb72423"
+            "sha256": "a1b37d839e684e5dd73076e80a8338c5b820cb6a3bac2ffa9a3bdc8a13368e89"
         },
         {
             "path": "tooling/reuse/source-files.js",
@@ -363,7 +363,7 @@
         },
         {
             "path": "ui/app.js",
-            "sha256": "7e739752d25b15f1ebedf696a1c88d47f76da5442d084caebca87dea73d117ba"
+            "sha256": "11faedb33a4cd2a5954f9277fa26e47b7d71ebeb8e3ff053129751f9a5ed1bb1"
         },
         {
             "path": "ui/auth-footer.js",
@@ -371,7 +371,7 @@
         },
         {
             "path": "ui/consent-enforcement.js",
-            "sha256": "d75a5abd61da9377d3b65478e56a39d7cb91e980f80cb9d327fd52b60d9cb956"
+            "sha256": "c2569863eb838ed2f3f938a1f1530b048b3113e9d94ea322a510eed7a441b655"
         },
         {
             "path": "ui/index.html",
@@ -431,11 +431,11 @@
         },
         {
             "path": "ui/tests/fixtures/naming-cases.json",
-            "sha256": "dcb3f32c6d28e24f2442687bd241379b7779d95db9a22f3cd574b460c42b3ef2"
+            "sha256": "262bd84ff7483a61a4cba4162e2567d68466fff68ee6b3b1cae263a0cc332289"
         },
         {
             "path": "ui/tests/legal-ui.test.js",
-            "sha256": "f0a4af4618a9b3a6babb26fdf7ee2e4aa81bd7a5a69477c1c2a33b93d17df10e"
+            "sha256": "35bb149620b6b1e716fbc030c48a34e5e46749b1169f6106969ad2c3d35881bf"
         },
         {
             "path": "ui/tests/localization-quality.test.js",

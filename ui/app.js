@@ -47,7 +47,7 @@ const DOCUMENTS = [
 ];
 const publicPageComposers = new WeakMap();
 const REPORT_PAGE_SIZE = 10;
-const CONSENT_REPORT_REFRESH_INTERVAL_MILLISECONDS = 5_000;
+const CONSENT_REPORT_REFRESH_INTERVAL_MS = 5_000;
 const paginationUi = uiCtx.capabilities.get("ui:pagination");
 
 if (
@@ -558,7 +558,7 @@ export function createAdminSection({ i18n, apiFetch, openPopup }) {
                     if (document.visibilityState === "visible") {
                         refreshConsentReports();
                     }
-                }, CONSENT_REPORT_REFRESH_INTERVAL_MILLISECONDS);
+                }, CONSENT_REPORT_REFRESH_INTERVAL_MS);
                 window.addEventListener(
                     "terms-of-service:consent-recorded",
                     refreshConsentReports,
