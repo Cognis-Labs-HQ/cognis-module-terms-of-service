@@ -99,9 +99,9 @@ export function registerApi(router, ctx) {
                 validate: validateDocument,
                 execute: (slug) => store.listConsentForDocument(slug),
             },
-            consentDiff: {
+            consentDifference: {
                 validate: validateAccount,
-                execute: (...args) => store.consentDiff(...args),
+                execute: (...args) => store.consentDifference(...args),
             },
             consentStatus: {
                 validate: validateAccount,
