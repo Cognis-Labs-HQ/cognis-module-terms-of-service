@@ -14,7 +14,7 @@ function fixture() {
     const make = () =>
         createOfflineConsent({
             storage,
-            log: (...argumentsList) => logs.push(argumentsList),
+            log: (...args) => logs.push(args),
             policy: {
                 update: (id, status) => receipts.push({ id, ...status }),
             },
@@ -161,7 +161,7 @@ test("unwritable storage preserves online acceptance but cannot reuse stale perm
     assert.equal(state.receipts.at(-1).allowed, false);
     assert.ok(
         state.logs.some(
-            ([, , metadata]) => metadata.operation === "removeOfflineConsent",
+            ([, , meta]) => meta.operation === "removeOfflineConsent",
         ),
     );
     state.storage.setItem = setItem;

@@ -25,7 +25,7 @@ let submitted;
 let consentFailure = false;
 let consentRequests = 0;
 const capabilities = new Map([
-    ["ui:log", (...argumentsList) => logs.push(argumentsList)],
+    ["ui:log", (...args) => logs.push(args)],
     [
         "ui:footerLinks",
         {
@@ -128,7 +128,7 @@ test("host-resolved labels are used and footer errors cannot block mandatory con
         extendFlow: (_flow, _stage, _descriptor, handler) => {
             enforce = handler;
         },
-        runFlow: async (...argumentsList) => flows.push(argumentsList),
+        runFlow: async (...args) => flows.push(args),
     });
     try {
         await new Promise((resolve) => setImmediate(resolve));
@@ -286,7 +286,7 @@ test("initial consent decline releases mounting before navigation finishes", asy
                 contribute: (id, value) => capabilities.set(id, value),
             },
             extendFlow() {},
-            runFlow: async (...argumentsList) => flows.push(argumentsList),
+            runFlow: async (...args) => flows.push(args),
         });
         assert.equal(destination, "/login");
         assert.equal(typeof dispose, "function");
@@ -383,7 +383,7 @@ test("cache limits and storage failures cannot suppress mandatory online consent
                 extendFlow: (_flow, _stage, _descriptor, handler) => {
                     enforce = handler;
                 },
-                runFlow: async (...argumentsList) => flows.push(argumentsList),
+                runFlow: async (...args) => flows.push(args),
             });
             if (failure === "oversized") documentMarkdown = "x".repeat(500001);
             else
@@ -416,8 +416,7 @@ test("cache limits and storage failures cannot suppress mandatory online consent
             );
             assert.ok(
                 logs.some(
-                    ([, , metadata]) =>
-                        metadata.operation === "writeOfflineConsent",
+                    ([, , meta]) => meta.operation === "writeOfflineConsent",
                 ),
             );
         } finally {

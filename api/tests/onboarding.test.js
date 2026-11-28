@@ -39,7 +39,7 @@ function fixture() {
     const store = new LegalDocumentStore(database, tracker);
     const register = () =>
         registerOnboarding(
-            { ...runtime, log: (...argumentsList) => logs.push(argumentsList) },
+            { ...runtime, log: (...args) => logs.push(args) },
             {
                 registerOperation(operation) {
                     assert.equal(operations.has(operation.id), false);

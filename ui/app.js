@@ -622,7 +622,7 @@ export async function mount(root, { signal } = {}) {
                 const documentDifference =
                     uiCtx.capabilities.get("ui:documentDiff");
                 if (
-                    typeof documentDifference?.renderMarkdownDocumentDiff !==
+                    typeof documentDifference?.renderMarkdownDocumentDifference !==
                     "function"
                 ) {
                     throw new Error(
@@ -633,9 +633,10 @@ export async function mount(root, { signal } = {}) {
                     `${API_PATH}/consent-diff/${slug}`,
                     { signal },
                 );
-                renderedContent = documentDifference.renderMarkdownDocumentDiff(
-                    await readPayload(response),
-                );
+                renderedContent =
+                    documentDifference.renderMarkdownDocumentDifference(
+                        await readPayload(response),
+                    );
             } else {
                 const response = await apiFetch(`${API_PATH}/public/${slug}`, {
                     signal,
