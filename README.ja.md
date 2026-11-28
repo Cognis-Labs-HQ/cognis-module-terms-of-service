@@ -1,17 +1,19 @@
-# Cognis 利用規約モジュール
+# 法的文書
 
-[English](README.en.md) · [Deutsch](README.de.md) · [Bahasa Indonesia](README.id.md) · **日本語**
+公開された法的文書を読み、現在の版への同意を明示的に行えます。
 
-Cognis の管理画面に **法務** セクションを追加し、利用規約、プライバシーポリシー、EULA を `/terms-of-service`、`/privacy-policy`、`/eula` で公開します。
+## できること
 
-## Cognis Core に必要な対応
+フッターから法的文書を開き、必要な同意内容を確認できます。管理者は文書の下書き、プレビュー、公開、同意状況の確認を行えます。
 
-Markdown、フィードバック、ナビゲーション、管理画面には既存のブラウザーコントラクトで十分です。Core は追加で、Docs と Changelog の追記専用アーカイブを `docs:versionStore` Capability として公開し、`createStore({ namespace, database, documents })` から `ensureSchema()`、`getLatest(slug)`、`publish({ slug, content, actorId })`、`deleteAll()` を提供する必要があります。`publish` は必ず暗号学的識別子を持つ不変バージョンを新規作成します。また、Core 所有の `construct-registration-ui` Flow に `compose-form` Stage を設け、`/register` で統合を読み込み、フィールドを検証し、認証済みセッション確立後に `completeRegistration({ apiFetch })` を実行する必要があります。既存アカウントの強制には既存の `authenticate-session`、Popup、Logout、Router、`uiCtx` コントラクトを使用します。
+## 始める前に
 
-## セキュリティとライフサイクル
+公開された文書はログインせずに読めます。同意はログイン中のアカウントに紐づき、公開やアカウント全体のレポートには管理者権限が必要です。
 
-文書を管理できるのは管理者だけです。公開利用者が取得できるのは固定された3文書のみです。無効化しても内容は保持され、`deleteContent` を指定したアンインストール時だけ削除されます。
+## はじめに
 
-## オフラインの定期確認の制限
+法的文書のリンクから現在の内容を読み、Cognis に求められた場合は明示的に同意します。管理者は文書の管理画面で下書きを追加・編集し、プレビュー後に公開するか判断します。
 
-オフラインモードでは、同意確認と通常の接続復旧の定期確認を停止します。ブラウザーのオンラインイベントが繰り返されても、軽量のサーバーヘルスチェックだけを十五分ごとに実行します。オンラインでの接続確認の失敗時は最大十五分まで間隔を延ばします。同意確認は失敗時に最大五分まで間隔を延ばし、オフラインでは完全に停止して再接続後に再開します。必要な文書へのキャッシュ済みの同意は引き続きオフラインアクセスの条件です。
+## 詳しい情報
+
+手順は[使用例](docs/USAGE.ja.md)、契約と設定は[技術情報](docs/TECHNICAL.ja.md)を参照してください。

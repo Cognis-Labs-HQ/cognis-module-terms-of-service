@@ -1,8 +1,12 @@
-# Terms of Service Module
+# Technical Reference
+
+Public interfaces, configuration and lifecycle of Legal Documents.
+
+## Interfaces
 
 This document defines the supported architecture of the Cognis Terms of Service external module.
 
-## Public Contract
+### Public Contract
 
 The module registers the public `/terms-of-service`, `/privacy-policy`, and `/eula` SPA routes. Its browser entry mounts directly only on those public paths, while Administration receives one localized Legal section through `registerAdminSection`; authenticated API routes require the least privileged applicable role. The manifest marks the module as privileged because its administration and consent interfaces use the host's internal user directory and account-lifecycle endpoint and the protected checkbox style contract.
 
@@ -10,35 +14,25 @@ Published legal content is Markdown rendered by Cognis through `ui:reuse`. Each 
 
 Legal editors use the host collapsible-section composer for one full-width group of document descriptors and supply its localized disclosure label so the section can render. Localized titles are plain text, while sanitized Add/Remove and Compose/Preview controls and editor content use the composer’s trusted HTML fields. The currently mounted editor determines Add or Remove state: confirming Remove closes the editor and restores Add without deleting the immutable published version. Compose and Preview use neutral host action-row buttons below the full-width, non-resizable editor, and the module uses the Cognis information-tooltip and floating dirty-tracker utilities. Adding an editor exposes a padded, non-resizable Markdown composer with message-composer-style Compose and Preview controls; the dirty tracker's Save action publishes updates through one exact API route per fixed document and reports success through the host toast. Published editors reopen with their saved Markdown after a page refresh. Discard restores published content, or closes an unsaved new editor and returns its action to Add; removing an editor requires confirmation.
 
-## Consent and Lifecycle
+## Configuration
+
+Legal documents are configured by administrator drafting and publication, not a module preference form. Document versions and account consent are stored through `db:executor`. Public links and required acceptance derive from published records; editing a draft does not publish it.
+
+## Behavior
+
+### Consent and Lifecycle
 
 The module records the exact Terms and Privacy versions accepted by each account. Registration must require explicit consent. The authenticated-session flow and a five-second foreground refresh check promptly block accounts whose recorded versions are not current; acceptance atomically records every published version and declining logs the account out. Public legal pages remain available during enforcement. Consent dialogs are mandatory and singleton, explicitly load their module styles and the core checkbox and pill styles before opening for consistent refresh and SPA rendering, expose the authenticated account-lifecycle deletion action with a plainly labeled Cancel alternative, and decline through the host logout flow. The authenticated consent integration owns idempotent right-aligned footer links within the signed-in shell. The authentication footer registers a descriptor provider through `ctx.registerAuthFooterPlugin({ scriptUrl })`. Its `listAuthFooterLinks()` export reads the anonymous publication index and returns localized link descriptors only for published documents. The host owns rendering, the visibility of core links, and removal of contributions when the module is disabled. Every legal page uses the Cognis page composer. Authenticated accounts receive the full shell. Visitors without a login session retain the composed document frame, page context, and section toolbar, while the composer suppresses account-dependent top bar, navigation, theme toggle, footer, layout persistence, and account enhancements. These pages use natural document scrolling and build their grouped, collapsible section navigation from rendered headings through the core `side-menu.js` reuse export. Each item supplies the heading as its `targetId`, so the core side-menu controller owns smooth, start-aligned scrolling while the module updates selection state; heading scroll margins preserve the selected heading below the fixed shell header. The consent integration remains the sole `ui:footerLinks` owner: it loads publication status even on legal routes, contributes only published documents, preserves those links across SPA page mounts, reconciles them on every route transition, forces a registry notification after a legal page mounts so a reused shell redraws its footer, and lets the core footer mark the matching route active. Each legal route applies its localized document title after authenticated shell setup so hard refreshes and SPA navigation expose the correct page context. Consent status is evaluated independently for every published Terms, Privacy, and EULA version; the persistent popup lists only unacknowledged documents as checkbox cards and submits the complete published version set. Submit remains disabled until every required checkbox is selected. The API rejects malformed or incomplete published-version sets with HTTP 400, and the client uses the host toast capability to show a localized error. For returning users, the popup link opens the normal full-size legal route with `?view=changes`; that authenticated view compares their consented hash with the latest hash through `docs:versionStore` and renders the structured result through `ui:documentDiff` so additions, removals, and changed lines are visible before consent. Plain footer links continue to open the current document. If a pre-migration historical version is absent, the API returns an explicit unavailable result and the page displays a localized explanation instead of silently hiding the comparison. Administration shows a searchable consent table only for published documents, with All, Accepted, and Outstanding filters that expose exactly one visibly active pressed state, plus ten-row pagination supplied by the host `ui:pagination` capability; green and red status pills distinguish accepted and outstanding accounts, and Consented Version and Latest Version columns show the version each account accepted beside the currently published hash; accounts without recorded consent receive a localized value, and the internal unpublished sentinel is never exposed as a consented version. Legal document loading completes independently of ancillary user and consent-report requests, preventing reporting failures from presenting published editors as empty. Publishing an update immediately recalculates every displayed account status against the returned version and redraws its report. Successful consent dispatches an immediate browser event, while visible administration reports also refresh from the API every five seconds so consent recorded by other sessions appears without a page reload. Compose and Preview expose matching pressed states and a visible active-button treatment. Consent for each published document is independent; unpublished document columns use an explicit non-null sentinel. Public legal routes never display the consent popup, initialize loading and authenticated sessions before the page composer, render the version store’s Markdown field, and use a content-sized composer element so signed-in users receive a correctly sized full Cognis shell.
 
 Scoped registrations are removed when the module is disabled. If an already-loaded browser hook observes that the module consent endpoint is temporarily unavailable during an update or restart, it logs the unavailable endpoint, yields without blocking navigation, and continues periodic retries so enforcement resumes after recovery. Back-forward cache page hides preserve active listeners and timers. Documents and consent survive disable and restart; uninstall removes them only when `deleteContent` is true. Browser resources use `cognis.uiCtx`, host feedback, navigation, API, popup, i18n, and page-entry contracts.
 
-## Repository Quality
+### Repository Quality
 
 Root manifest, package, lockfile, and route metadata remain synchronized. Server code lives in `api/`, browser code in `ui/`, operational commands in `cli/`, localized documentation in `docs/`, release metadata in `docs/changelog/`, and artwork in `assets/`. Tests use local capability fakes and cover routes, persistence, flows, lifecycle, localization, and packaging.
 
 ### Owned action flows
 
 HTTP operations run through module-owned ctx flows with validation, execution and presentation stages. Tests execute these stages and reject persistence when validation or schema initialization fails.
-
-### Contributor layout and host ownership
-
-Start new modules from [cognis-module-template](https://github.com/Cognis-Labs-HQ/cognis-module-template); this repository follows its pinned contributor guidance in `AGENTS.md`. `bootstrap.js` owns lifecycle orchestration, `api/index.js` wires ctx-derived dependencies, `api/routes/<domain>/index.js` owns HTTP handlers, and reusable server code belongs in `api/reuse/`. Browser features stay under `ui/`, styles under `ui/styles/`, reusable markup under `ui/templates/`, and localized documentation under `docs/index.<locale>.md`. Historical release entries live in `docs/changelog/` and are excluded from package hashes. Optional concerns are omitted when unsupported.
-
-Consume public ctx capabilities and declared flows; do not import Cognis internals or sibling modules. Dashboard capability/navbar providers export `mountProvider(scopedUiCtx)` and return cleanup for owned resources. Imports must not register module behavior. The host disposes scoped capabilities, flow hooks, listeners and provider state when disabled, then mounts cached providers again when re-enabled. Settings/admin factories and authentication-footer descriptor providers follow their own documented host contracts. Test these contracts with standalone fakes, run the executable layout guard, regenerate hashes after the final packaged edit, and run lint, tests and manifest validation before publishing.
-
-The banner keeps the complete Cognis logo, title and document artwork in a central safe band for the marketplace’s height-limited crop. The existing document icon is preserved.
-
-Package validation checks that entrypoints, icons, banners and screenshots are regular files inside the checkout, including resolved paths. Documentation describes public contracts and refers to manifests for release metadata; changelogs retain release provenance. Public legal pages consume the host direct-entry lifecycle signal. Cancelled translation or document loads cannot publish stale UI, composers are destroyed on abort, and late initialization cannot refresh the destination page footer. Every loading token is released on completion, failure or cancellation.
-
-A cancelled direct page releases its shared loading token immediately, even while translation, provider or composer initialization is pending. Resource cleanup remains bound to the same host signal.
-
-Publish, consent-report, and consent-recording flows authenticate the request inside their authorization stage using `auth:requireAuth`. Publishing and account-wide consent reports require an administrator; actor and consent account identities come only from verified claims. Invoke `terms-of-service:listConsentForDocument` with `[request, response, slug]`; a slug alone or a non-administrator request is rejected before any consent rows are read. Successful publishing and consent recording log one `info` audit entry inside the executing flow, including the verified account and affected document, so direct ctx calls and HTTP requests have the same audit coverage. Tests cover direct calls, forged identities, rejected report access, and unsuccessful persistence.
-
-Load module-owned CSS through the public page-styles helper. The shared stylesheet catalog accepts only reuse-relative names; passing a module URL rejected the UI import and hid the Legal section. Tests enforce this boundary and verify administration discovery.
 
 ### Preserve module IDs in locale keys
 
@@ -52,21 +46,17 @@ Public legal pages, footer contributions, and consent enforcement use the host `
 
 Initial consent enforcement is awaited during provider mounting. A missing or empty English fallback key rejects the mount and releases owned footer links and navigation listeners. Missing translations during foreground refresh also propagate and stop further polling instead of silently skipping mandatory consent. Ordinary footer-rendering failures remain logged independently so they do not prevent consent enforcement.
 
-## Queued Delivery and Consent
+### Queued Delivery and Consent
 
 Recovery refreshes providers and runs `authenticate-session` before the final `afterSession` stage can replay activity. Required providers declare `offlineAccessGuard` in the server catalog. Unknown requirements or missing consent fail closed. Terms of Service caches the latest fetched document versions and server-confirmed acceptance per account. A new unaccepted version immediately blocks offline reads, navigation and queued writes, and prevents replay until online consent succeeds. Offline acceptance is unavailable. Private content snapshots remain tab-local; only the bounded operation queue and legal snapshots survive reload.
 
 The host exposes `offline:outbox`, `offline:state` and `offline:accessPolicy` through ctx. Components register delivery handlers for their provider lifetime and submit stable operation IDs through `offline:enqueue`; `offline:flush` authorizes and delivers. The durable account-bound queue holds at most 1,000 records and 1 MB for seven days, without tokens. It preserves original IDs and timestamps, retries transient failures and removes acknowledged or permanently rejected records. A localized warning reports rejected records. Logout clears the account queue; changing accounts never replays another account’s data. Disabling Offline Mode stops new queued writes. Pending writes may still deliver online.
 
-## Consent Cache Safety
+### Consent Cache Safety
 
 Consent snapshots retain previously observed documents omitted by an older response. Newly published, unaccepted documents continue blocking offline access and replay until their current versions are accepted by the server. Cache size limits and storage failures revoke offline permission without discarding the fresh online status: mandatory consent, online acceptance and public legal rendering continue. Shared, account-scoped in-memory state preserves observed versions during a cache failure and prevents stale stored permission from being restored by another client in the same page. Offline permission returns only after a complete accepted snapshot is successfully cached.
 
-## Guided tutorial
-
-[Guided tutorial](tutorials.en.md)
-
-## Scoped registration consent
+### Scoped registration consent
 
 Registration uses the version-one auth:onboarding contract. The canonical constructRegistrationUi contribution declares only terms-of-service:consent:status and terms-of-service:consent:record. The browser completion callback receives executeOnboarding and refuses to proceed without an explicitly selected consent checkbox. It submits exactly the current published document versions; missing acceptance or malformed/incomplete versions fail, and changed or already accepted versions return a conflict rather than silently recording another acceptance.
 
@@ -79,3 +69,25 @@ A consent write and Auth credential revocation are separate operations. An in-fl
 Tutorial review: legal-page and administration tutorials keep their existing targets and never accept consent. The registration checkbox remains a required user action; no guide selects or submits it.
 
 Document-version reads and consent persistence are not a cross-store transaction. A concurrent publication can make newly recorded consent outdated immediately; normal consent enforcement checks the current versions again.
+
+Provider tests check the public contract, all four translations, availability rules, rollback and rejection of unsupported host versions.
+
+The legal guide matches Terms of Service, Privacy Policy and EULA pages and stays on the document that the user opened.
+
+The shared host provides queued floating actions. First visits offer Next/Finish without Cancel or Skip; replays offer Skip before the last visible step. Restart Tutorial appears after the first visible step. Completion survives content updates. Explicit highlightNext flags enable only a breathing animation for explanatory steps; reduced motion disables it. Each stage highlights a distinct rendered control in UI order. Guides stay bound to the current view, handle empty and optional states, and release their resources on navigation or owner removal.
+
+Start with one legal document. For a new document, click Add; for a published document, use its existing editor. Type or revise Markdown, then click Preview to inspect the reader’s view. No tutorial action publishes the draft. Save and Discard become available through the queued changes menu after the guide yields. The compliance branch chooses a published document independently of the draft, opens its tracker, and explains account search, Accepted/Outstanding/All filters and accepted-versus-latest version columns. Empty matches and unpublished installations are handled without creating consent records.
+
+## Security
+
+Consent requires the account’s explicit acceptance of the exact current document version. Public text and cached snapshots do not authorize consent writes. Publication and account-wide compliance reports require administrator access. Registration consent uses the declared scoped onboarding operation; cancellation and changed document versions cannot authorize stale acceptance.
+
+## Reference
+
+- [manifest.json](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/blob/HEAD/manifest.json)
+- [bootstrap.js](https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/blob/HEAD/bootstrap.js)
+- [Cognis](https://github.com/Cognis-Labs-HQ/Cognis/blob/HEAD/src/docs/modules/external/TECHNICAL.en.md)
+
+### Naming validation
+
+`npm test` checks binding names with the local syntax-tree detector, including bootstrap, scripts, tests and fixtures. Parsing errors fail validation. The detector regression fixtures cover declarations, parameters, private members, TypeScript assertions and legitimate type-only names. See the [host naming standard](https://github.com/Cognis-Labs-HQ/Cognis/blob/HEAD/src/docs/standard/TECHNICAL.en.md#binding-names) for the shared policy. Conventional vocabulary such as `args`, `db` and LDAP `dn` is accepted as standalone names. Composite identifiers, including upstream types and methods, use expanded words such as `DatabaseExecutor`, `createDatabaseExecutor` and `baseDistinguishedName`; owned APIs use one canonical name across declarations, exports and callers. Naming-only export aliases fail validation. Measurement-unit tokens (`ms`, `sec`, `px`, `rad`, `deg`) stay abbreviated within composites, such as `INVITE_EXPIRY_MS` and `widthPx`; other composite abbreviations still expand.

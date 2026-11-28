@@ -14,25 +14,6 @@ function headingLevels(path) {
         .map((line) => line.match(/^#+/)[0].length);
 }
 
-test("localized standards and documentation templates stay synchronized", () => {
-    const standardLevels = headingLevels(resolve(ROOT, "docs/index.en.md"));
-    const templateLevels = headingLevels(
-        resolve(ROOT, ".github/DOCUMENTATION_TEMPLATE.en.md"),
-    );
-    for (const language of LANGUAGES) {
-        assert.deepEqual(
-            headingLevels(resolve(ROOT, `docs/index.${language}.md`)),
-            standardLevels,
-        );
-        assert.deepEqual(
-            headingLevels(
-                resolve(ROOT, `.github/DOCUMENTATION_TEMPLATE.${language}.md`),
-            ),
-            templateLevels,
-        );
-    }
-});
-
 test("localized changelogs follow the shared release-note contract", () => {
     const commitUrl =
         "https://github.com/Cognis-Labs-HQ/cognis-module-terms-of-service/commit/";

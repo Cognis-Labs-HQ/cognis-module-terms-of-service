@@ -13,7 +13,7 @@ export function registerUi(ctx) {
         scriptUrl: "/static/modules/terms-of-service/tutorials/provider.js",
         providesCapabilities: ["terms-of-service:tutorials"],
     });
-    ctx.registerStaticDir("", path.join(ctx.moduleRoot, "ui"));
+    ctx.registerStaticDirectory("", path.join(ctx.moduleRoot, "ui"));
     ctx.registerAdminSection({
         id: "terms-of-service-legal",
         label: "module.terms.of.service.admin.title",

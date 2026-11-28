@@ -232,8 +232,8 @@ test("public legal documents use one naturally scrolling composed page", () => {
     assert.match(source, /requireAccountSession: authenticated/);
     assert.match(source, /loadReuseStylesheet\("document-diff\.css"\)/);
     assert.match(source, /URLSearchParams\(window\.location\.search\)/);
-    assert.match(source, /capabilities\.get\("ui:documentDiff"\)/);
-    assert.match(source, /renderMarkdownDocumentDiff/);
+    assert.match(source, /capabilities\.get\(\s*"ui:documentDiff",?\s*\)/);
+    assert.match(source, /renderMarkdownDocumentDifference/);
     assert.match(source, /consent-diff\/\$\{slug\}/);
     assert.match(
         source,

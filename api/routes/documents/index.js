@@ -59,7 +59,7 @@ export function registerDocumentRoutes(
                 try {
                     await ready;
                     sendJson(response, 200, {
-                        data: await service.consentDiff(
+                        data: await service.consentDifference(
                             accountId(claims),
                             slug,
                         ),
